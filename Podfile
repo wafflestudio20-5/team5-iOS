@@ -14,4 +14,14 @@ target 'KreamWaffleApp' do
     pod 'BetterSegmentedControl', '~> 2.0'
     pod 'Kingfisher', '~> 7.0'
 
+post_install do |installer_representation|
+    installer_representation.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['ONLY_ACTIVE_ARCH'] = 'NO'
+            config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+            config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+        end
+    end
+end
+
 end
