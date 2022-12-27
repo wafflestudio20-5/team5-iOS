@@ -133,6 +133,7 @@
 				9428AE282957170600DC7907 /* Sources */,
 				9428AE292957170600DC7907 /* Frameworks */,
 				9428AE2A2957170600DC7907 /* Resources */,
+				5E43BB35B26CA1B2E877059F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -188,6 +189,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5E43BB35B26CA1B2E877059F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		DB3439160E7C91D702294305 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
