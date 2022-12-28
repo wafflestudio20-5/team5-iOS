@@ -11,7 +11,9 @@ class MyTabViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let loginScreen = LoginViewController()
+        loginScreen.modalPresentationStyle = .fullScreen
+        self.present(loginScreen, animated: false)
         // Do any additional setup after loading the view.
     }
     
