@@ -28,10 +28,7 @@ class LoginViewController: UIViewController {
     
     //login field
     private var loginButton = UIButton()
-    private var helpStack = UIStackView()
-    private var signupButton = UIButton()
-    private var findEmailButton = UIButton()
-    private var findPasswordButton = UIButton()
+    
     
     private var naverLoginButton = UIButton()
     private var appleLoginButton = UIButton()
@@ -57,7 +54,6 @@ class LoginViewController: UIViewController {
         self.view.addSubview(passwordWarningLine)
         self.view.addSubview(eyeButton)
         self.view.addSubview(loginButton)
-        self.view.addSubview(helpStack)
     }
     
     private func configureSubviews(){
@@ -66,7 +62,6 @@ class LoginViewController: UIViewController {
         configureEmailField()
         configurePasswordField()
         configureLoginButton()
-        configureHelpStack()
     }
     
     private func configureExitButton(){
@@ -216,24 +211,6 @@ class LoginViewController: UIViewController {
         self.loginButton.clipsToBounds = true
     }
     
-    private func configureHelpStack(){
-        self.helpStack.axis = .horizontal
-        self.helpStack.distribution = .equalSpacing
-        self.helpStack.addArrangedSubviews([signupButton, findEmailButton, findPasswordButton])
-        self.helpStack.translatesAutoresizingMaskIntoConstraints = false
-        self.helpStack.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
-        self.helpStack.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: 20).isActive = true
-        self.signupButton.setTitle("이메일 가입", for: .normal)
-        self.signupButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        self.signupButton.titleLabel?.textColor = .black
-        self.findEmailButton.setTitle("이메일 찾기", for: .normal)
-        self.findEmailButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        self.findEmailButton.titleLabel?.textColor = .black
-        self.findPasswordButton.setTitle("비밀번호 찾기", for: .normal)
-        self.findPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
-        self.findPasswordButton.titleLabel?.textColor = .black
-    }
     
     @objc func startEditTextfield(_ sender: UITextField){
         if (sender.isEqual(self.emailTextfield)){
@@ -277,13 +254,6 @@ class LoginViewController: UIViewController {
             }
         }
     }
-    
-   
-
-    
-
-    
-
 }
 
 extension LoginViewController {

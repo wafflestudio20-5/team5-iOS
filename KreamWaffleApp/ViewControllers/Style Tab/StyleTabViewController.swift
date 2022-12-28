@@ -10,7 +10,7 @@ import UIKit
 class StyleTabViewController: UIViewController {
     
     private var header = UIView()
-    private var codeSegmented = CustomSegmentedControl(buttonTitle: ["인기", "최신", "팔로잉"])
+    private var codeSegmented = CustomSegmentedControl(buttonTitle: ["최신"])
     private var searchButton = UIButton()
     private var cameraButton = UIButton()
     
@@ -32,19 +32,25 @@ class StyleTabViewController: UIViewController {
         configureSegmentedControl()
         
         //configure search button
-        self.searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        let searchImage = UIImage(systemName: "magnifyingglass")
+        let tintedSearchImage = searchImage?.withRenderingMode(.alwaysTemplate)
+        self.searchButton.setImage(tintedSearchImage, for: .normal)
+        self.searchButton.tintColor = .black
         self.searchButton.translatesAutoresizingMaskIntoConstraints = false
         self.searchButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        self.searchButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.searchButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.searchButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.searchButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         self.searchButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
         
         //configure camera button
-        self.cameraButton.setImage(UIImage(systemName: "camera"), for: .normal)
+        let cameraImage = UIImage(systemName: "camera.circle.fill")
+        let tintedcameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
+        self.cameraButton.setImage(tintedcameraImage, for: .normal)
+        self.cameraButton.tintColor = .lightGray
         self.cameraButton.translatesAutoresizingMaskIntoConstraints = false
         self.cameraButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-        self.cameraButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        self.cameraButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.cameraButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        self.cameraButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         self.cameraButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
     }
     
@@ -61,7 +67,7 @@ class StyleTabViewController: UIViewController {
         self.codeSegmented.translatesAutoresizingMaskIntoConstraints = false
         self.codeSegmented.centerXAnchor.constraint(equalTo: self.header.centerXAnchor).isActive = true
         self.codeSegmented.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
-        self.codeSegmented.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        self.codeSegmented.widthAnchor.constraint(equalToConstant: 50).isActive = true
         self.codeSegmented.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
