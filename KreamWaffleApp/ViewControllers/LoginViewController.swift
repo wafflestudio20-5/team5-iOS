@@ -12,17 +12,22 @@ class LoginViewController: UIViewController {
     private var exitButton = UIButton()
     private var logoImage = UIImageView()
     
+    //email field
     private var emailLabel = UILabel()
     private var emailTextfield = UITextField()
     private var emailLine = UILabel()
     private var emailWarningLine = UILabel()
+    private var deleteButton = UIButton()
+    
+    //password field
     private var passwordLabel = UILabel()
     private var passwordTextfield = UITextField()
     private var passwordLine = UILabel()
     private var passwordWarningLine = UILabel()
     private var eyeButton = UIButton()
-    private var loginButton = UIButton()
     
+    //login field
+    private var loginButton = UIButton()
     private var helpStack = UIStackView()
     private var signupButton = UIButton()
     private var findEmailButton = UIButton()
@@ -45,10 +50,12 @@ class LoginViewController: UIViewController {
         self.view.addSubview(emailTextfield)
         self.view.addSubview(emailLine)
         self.view.addSubview(emailWarningLine)
+        self.view.addSubview(deleteButton)
         self.view.addSubview(passwordLabel)
         self.view.addSubview(passwordTextfield)
         self.view.addSubview(passwordLine)
         self.view.addSubview(passwordWarningLine)
+        self.view.addSubview(eyeButton)
         self.view.addSubview(loginButton)
         self.view.addSubview(helpStack)
     }
@@ -101,21 +108,37 @@ class LoginViewController: UIViewController {
         self.emailTextfield.autocorrectionType = .no
         self.emailTextfield.autocapitalizationType = .none
         self.emailTextfield.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        //self.emailTextfield.addTarget(self, action: #selector(startEditTextfield), for: .allEditingEvents)
-        //self.emailTextfield.addTarget(self, action: #selector(endEditTextfield), for: .editingDidEnd)
+        self.emailTextfield.addTarget(self, action: #selector(startEditTextfield(_:)), for: .editingChanged)
+        self.emailTextfield.addTarget(self, action: #selector(endEditTextfield(_:)), for: .editingDidEnd)
+        
         self.emailLine.backgroundColor = .lightGray
         self.emailLine.translatesAutoresizingMaskIntoConstraints = false
         self.emailLine.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.emailLine.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.emailLine.topAnchor.constraint(equalTo: self.emailTextfield.bottomAnchor, constant: 10).isActive = true
-        self.emailLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        self.emailLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
         
         self.emailWarningLine.text = "올바른 이메일을 입력해주세요."
         self.emailWarningLine.textColor = .clear
         self.emailWarningLine.translatesAutoresizingMaskIntoConstraints = false
         self.emailWarningLine.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        self.emailWarningLine.topAnchor.constraint(equalTo: self.emailLine.bottomAnchor, constant: 2).isActive = true
-        self.emailWarningLine.font = UIFont.systemFont(ofSize: 10, weight: .light)
+        self.emailWarningLine.topAnchor.constraint(equalTo: self.emailLine.bottomAnchor, constant: 4).isActive = true
+        self.emailWarningLine.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        
+        let deleteImage = UIImage(systemName: "xmark.circle.fill")
+        let tintedImage = deleteImage?.withRenderingMode(.alwaysTemplate)
+        self.deleteButton.setImage(tintedImage, for: .normal)
+        self.deleteButton.tintColor = .clear
+        self.deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        self.deleteButton.trailingAnchor.constraint(equalTo: self.emailLine.trailingAnchor).isActive = true
+        self.deleteButton.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        self.deleteButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        self.deleteButton.centerYAnchor.constraint(equalTo: self.emailTextfield.centerYAnchor).isActive = true
+        self.deleteButton.addTarget(self, action: #selector(didTapEmptyTextField), for: .touchUpInside)
+    }
+    
+    @objc func didTapEmptyTextField(){
+        self.emailTextfield.text?.removeAll()
     }
     
     private func configurePasswordField(){
@@ -124,7 +147,7 @@ class LoginViewController: UIViewController {
         self.passwordLabel.textColor = .black
         self.passwordLabel.translatesAutoresizingMaskIntoConstraints = false
         self.passwordLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        self.passwordLabel.topAnchor.constraint(equalTo: self.emailLine.bottomAnchor, constant: 20).isActive = true
+        self.passwordLabel.topAnchor.constraint(equalTo: self.emailLine.bottomAnchor, constant: 30).isActive = true
         
         self.passwordTextfield.backgroundColor = .clear
         self.passwordTextfield.translatesAutoresizingMaskIntoConstraints = false
@@ -134,15 +157,49 @@ class LoginViewController: UIViewController {
         self.passwordTextfield.autocorrectionType = .no
         self.passwordTextfield.autocapitalizationType = .none
         self.passwordTextfield.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        //self.passwordTextfield.addTarget(self, action: #selector(startEditTextfield), for: .editingDidBegin)
-        //self.passwordTextfield.addTarget(self, action: #selector(endEditTextfield), for: .editingDidEnd)
+        self.passwordTextfield.addTarget(self, action: #selector(startEditTextfield(_:)), for: .editingChanged)
+        self.passwordTextfield.addTarget(self, action: #selector(endEditTextfield(_:)), for: .editingDidEnd)
+        self.passwordTextfield.isSecureTextEntry = true
         
         self.passwordLine.backgroundColor = .lightGray
         self.passwordLine.translatesAutoresizingMaskIntoConstraints = false
         self.passwordLine.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.passwordLine.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.passwordLine.topAnchor.constraint(equalTo: self.passwordTextfield.bottomAnchor, constant: 10).isActive = true
-        self.passwordLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        self.passwordLine.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        
+        self.passwordWarningLine.text = "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)"
+        self.passwordWarningLine.textColor = .clear
+        self.passwordWarningLine.translatesAutoresizingMaskIntoConstraints = false
+        self.passwordWarningLine.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        self.passwordWarningLine.topAnchor.constraint(equalTo: self.passwordLine.bottomAnchor, constant: 4).isActive = true
+        self.passwordWarningLine.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        
+        let eyeImage = UIImage(systemName: "eye.slash")
+        let tintedImage = eyeImage?.withRenderingMode(.alwaysTemplate)
+        self.eyeButton.setImage(tintedImage, for: .normal)
+        self.eyeButton.tintColor = .darkGray
+        self.eyeButton.translatesAutoresizingMaskIntoConstraints = false
+        self.eyeButton.trailingAnchor.constraint(equalTo: self.passwordLine.trailingAnchor).isActive = true
+        self.eyeButton.widthAnchor.constraint(equalToConstant: 21).isActive = true
+        self.eyeButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        self.eyeButton.centerYAnchor.constraint(equalTo: self.passwordTextfield.centerYAnchor).isActive = true
+        self.eyeButton.addTarget(self, action: #selector(didTapSeePassword), for: .touchUpInside)
+    }
+    
+    @objc func didTapSeePassword(){
+        if (self.passwordTextfield.isSecureTextEntry){
+            let openeyeImage = UIImage(systemName: "eye")
+            let tintedeyeImage = openeyeImage?.withRenderingMode(.alwaysTemplate)
+            self.eyeButton.setImage(tintedeyeImage, for: .normal)
+            self.eyeButton.tintColor = .darkGray
+        }else{
+            let eyeImage = UIImage(systemName: "eye.slash")
+            let tintedImage = eyeImage?.withRenderingMode(.alwaysTemplate)
+            self.eyeButton.setImage(tintedImage, for: .normal)
+            self.eyeButton.tintColor = .darkGray
+        }
+        self.passwordTextfield.isSecureTextEntry = !self.passwordTextfield.isSecureTextEntry
     }
 
     private func configureLoginButton(){
@@ -178,26 +235,46 @@ class LoginViewController: UIViewController {
         self.findPasswordButton.titleLabel?.textColor = .black
     }
     
-    @objc func startEditTextfield(sender: UITextField){
+    @objc func startEditTextfield(_ sender: UITextField){
         if (sender.isEqual(self.emailTextfield)){
+        self.emailLine.backgroundColor = .black
+            self.deleteButton.tintColor = .darkGray
+        if(!isValidEmail(email: sender.text!)){
+            self.emailLabel.textColor = colors.errorRed
+            self.emailWarningLine.textColor = colors.errorRed
+            self.emailLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        }else{
+            self.emailLabel.textColor = .black
+            self.emailWarningLine.textColor = .clear
+        }
+        }else{
+            //password field sending
             self.passwordLine.backgroundColor = .black
-            while(!isValidEmail(passwordTextfield.text ?? "")){
-                self.emailLabel.textColor = .red
-                self.emailWarningLine.backgroundColor = .red
+            if (!isValidPassword(password: sender.text!)){
+                self.passwordLabel.textColor = colors.errorRed
+                self.passwordWarningLine.textColor = colors.errorRed
+                self.passwordLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+            }else{
+                self.passwordLabel.textColor = .black
+                self.passwordWarningLine.textColor = .clear
             }
-                self.emailLabel.textColor = .black
-                self.emailWarningLine.backgroundColor = .clear
-        }else if (sender.isEqual(self.passwordTextfield)){
-            
         }
     }
     
-    @objc func endEditTextfield(sender: UITextField){
+    @objc func endEditTextfield(_ sender: UITextField){
         if (sender.isEqual(self.passwordTextfield)){
-            
+            if (isValidPassword(password: sender.text!)){
+                self.passwordLine.backgroundColor = .lightGray
+            }else{
+                self.passwordLine.backgroundColor = colors.errorRed
+            }
             
         }else if (sender.isEqual(self.emailTextfield)){
-            
+            if (isValidEmail(email: sender.text!)){
+                self.emailLine.backgroundColor = .lightGray
+            }else{
+                self.emailLine.backgroundColor = colors.errorRed
+            }
         }
     }
     
@@ -236,9 +313,15 @@ extension LoginViewController {
         return newImage!
     }
     
-    func isValidEmail(_ email: String) -> Bool {
+    public func isValidEmail(email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailPred.evaluate(with: email)
+    }
+    
+    public func isValidPassword(password: String) -> Bool {
+        let passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*()\\-_=+{}|?>.<,:;~`’]{8,}$"
+        let passwordPred = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
+        return passwordPred.evaluate(with: password)
     }
 }
