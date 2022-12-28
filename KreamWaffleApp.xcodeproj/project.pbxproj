@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
 		65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F34295B5B01002F250B /* CustomSegmentedControl.swift */; };
 		65653F37295B5B25002F250B /* colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F36295B5B25002F250B /* colors.swift */; };
@@ -33,6 +34,7 @@
 		0F929C068274C1C53DC91508 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 		612C22526C3A6E1487D9FEFC /* Pods_KreamWaffleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KreamWaffleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62542F8FC9EA3EAB81A03D31 /* Pods-KreamWaffleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.release.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.release.xcconfig"; sourceTree = "<group>"; };
+		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65653F34295B5B01002F250B /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		65653F36295B5B25002F250B /* colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colors.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				9428AE482957193D00DC7907 /* HomeTabViewController.swift */,
 				948C66942958482E00561C59 /* MyTabViewController.swift */,
 				944A111A2959A6F800F8CDB7 /* ProductDetailViewController.swift */,
+				65188907295C1CE70026E003 /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
 				9428AE342957170600DC7907 /* ViewController.swift in Sources */,
+				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,
 				9428AE4B2957197B00DC7907 /* StyleTabViewController.swift in Sources */,
