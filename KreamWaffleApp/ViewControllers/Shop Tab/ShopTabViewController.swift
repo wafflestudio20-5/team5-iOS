@@ -66,7 +66,6 @@ class ShopTabViewController: UIViewController {
         self.searchBar.searchTextField.textColor = .black
         self.searchBar.layer.borderColor = UIColor.clear.cgColor
         self.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        print(self.searchBar.frame)
     }
     
     @objc func didTapSearchBar(){

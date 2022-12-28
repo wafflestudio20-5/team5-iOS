@@ -11,18 +11,41 @@ class StyleTabViewController: UIViewController {
     
     private var header = UIView()
     private var codeSegmented = CustomSegmentedControl(buttonTitle: ["인기", "최신", "팔로잉"])
+    private var searchButton = UIButton()
+    private var cameraButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.navigationItem.titleView = self.header
         addSubviews()
-        configureSegmentedControl()
+        configureHeader()
     }
     
     func addSubviews(){
         view.addSubview(header)
         header.addSubview(codeSegmented)
-       
+        header.addSubview(searchButton)
+        header.addSubview(cameraButton)
+    }
+    
+    func configureHeader(){
+        configureSegmentedControl()
+        
+        //configure search button
+        self.searchButton.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        self.searchButton.translatesAutoresizingMaskIntoConstraints = false
+        self.searchButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        self.searchButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.searchButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.searchButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
+        
+        //configure camera button
+        self.cameraButton.setImage(UIImage(systemName: "camera"), for: .normal)
+        self.cameraButton.translatesAutoresizingMaskIntoConstraints = false
+        self.cameraButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
+        self.cameraButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.cameraButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        self.cameraButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
     }
     
     
@@ -36,11 +59,10 @@ class StyleTabViewController: UIViewController {
                                     
         self.codeSegmented.backgroundColor = .white
         self.codeSegmented.translatesAutoresizingMaskIntoConstraints = false
-        self.codeSegmented.topAnchor.constraint(equalTo: self.header.topAnchor).isActive = true
         self.codeSegmented.centerXAnchor.constraint(equalTo: self.header.centerXAnchor).isActive = true
+        self.codeSegmented.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
         self.codeSegmented.widthAnchor.constraint(equalToConstant: 150).isActive = true
         self.codeSegmented.heightAnchor.constraint(equalToConstant: 30).isActive = true
-      
         
     }
    

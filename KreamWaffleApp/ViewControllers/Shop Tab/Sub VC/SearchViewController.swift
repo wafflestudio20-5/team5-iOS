@@ -24,7 +24,6 @@ class SearchViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .red
         //self.view.addSubview(table)
         //configureTable()
     }

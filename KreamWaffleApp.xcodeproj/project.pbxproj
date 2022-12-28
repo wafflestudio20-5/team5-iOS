@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
 		65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F34295B5B01002F250B /* CustomSegmentedControl.swift */; };
 		65653F37295B5B25002F250B /* colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F36295B5B25002F250B /* colors.swift */; };
 		65653F3A295B73C9002F250B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F39295B73C9002F250B /* SearchViewController.swift */; };
@@ -32,6 +33,7 @@
 		0F929C068274C1C53DC91508 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 		612C22526C3A6E1487D9FEFC /* Pods_KreamWaffleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KreamWaffleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62542F8FC9EA3EAB81A03D31 /* Pods-KreamWaffleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.release.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.release.xcconfig"; sourceTree = "<group>"; };
+		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65653F34295B5B01002F250B /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		65653F36295B5B25002F250B /* colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colors.swift; sourceTree = "<group>"; };
 		65653F39295B73C9002F250B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				65653F34295B5B01002F250B /* CustomSegmentedControl.swift */,
 				65653F36295B5B25002F250B /* colors.swift */,
 				65653F42295B8217002F250B /* Extensions.swift */,
+				654D9691295BFC4900B93EE0 /* Constants.swift */,
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -305,6 +308,7 @@
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
+				654D9692295BFC4900B93EE0 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
