@@ -8,14 +8,16 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
-    let shopViewModel : ShopViewModel
+    let shopViewModel: ShopViewModel
+    let styleViewModel: StyleViewModel
     let homeTabBarItem: UITabBarItem
     let styleTabBarItem: UITabBarItem
     let shopTabBarItem: UITabBarItem
     let myTabBarItem: UITabBarItem
 
-    init(shopViewModel: ShopViewModel) {
+    init(shopViewModel: ShopViewModel, styleViewModel: StyleViewModel) {
         self.shopViewModel = shopViewModel
+        self.styleViewModel = styleViewModel
         
         self.homeTabBarItem = UITabBarItem(title: "HOME", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         self.styleTabBarItem = UITabBarItem(title: "STYLE", image: UIImage(systemName: "heart.text.square"), selectedImage: UIImage(systemName: "heart.text.square.fill"))
@@ -41,7 +43,7 @@ class TabBarViewController: UITabBarController {
         homeTab.modalPresentationStyle = .fullScreen
         homeTab.tabBarItem = homeTabBarItem
 
-        let styleTab = UINavigationController(rootViewController: StyleTabViewController())
+        let styleTab = UINavigationController(rootViewController: StyleTabViewController(viewModel: self.styleViewModel))
         styleTab.tabBarItem = styleTabBarItem
 
         let shopTab = UINavigationController(rootViewController: ShopTabViewController(viewModel: self.shopViewModel))
@@ -56,7 +58,5 @@ class TabBarViewController: UITabBarController {
 
         setViewControllers([homeTab, styleTab, shopTab, myTab], animated: true)
 
-        }
-
-
+    }
 }

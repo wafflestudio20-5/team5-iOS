@@ -12,7 +12,6 @@ import RxCocoa
 class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     //서치하지 않을때 서치할때 아래 view controller 를 갈아끼우기
     
-    private let bag = DisposeBag()
     private var searchVC : SearchViewController
     private var shopVC : ShopMainViewController
     
