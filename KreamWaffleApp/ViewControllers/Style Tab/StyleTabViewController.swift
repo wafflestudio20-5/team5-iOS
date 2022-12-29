@@ -8,18 +8,37 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import CHTCollectionViewWaterfallLayout
 
 class StyleTabViewController: UIViewController {
     private let viewModel: StyleViewModel
+    private let disposeBag = DisposeBag()
     
     private var header = UIView()
     private var codeSegmented = CustomSegmentedControl(buttonTitle: ["최신"])
     private var searchButton = UIButton()
     private var cameraButton = UIButton()
+        
+    private let collectionView: UICollectionView = {
+//        let layout = CHTCollectionViewWaterfallLayout()
+//        layout.itemRenderDirection = .leftToRight
+//        layout.columnCount = 2
+//        layout.minimumColumnSpacing = 5
+//        layout.minimumInteritemSpacing = 5
+//
+//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: StyleCollectionViewFlowLayout())
+        
+        collectionView.register(StyleCollectionViewCell.self, forCellWithReuseIdentifier: StyleCollectionViewCell.identifier)
+        return collectionView
+    }()
     
     init(viewModel: StyleViewModel) {
         self.viewModel = viewModel
+
         super.init(nibName: nil, bundle: nil)
+        collectionView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -31,7 +50,8 @@ class StyleTabViewController: UIViewController {
         //self.navigationItem.titleView = self.header
         addSubviews()
         configureHeader()
-        
+        setUpCollectionView()
+        bindCollectionView()
     }
     
     func addSubviews(){
@@ -84,9 +104,43 @@ class StyleTabViewController: UIViewController {
         self.codeSegmented.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
     }
-   
+    
+    func setUpCollectionView() {
+        view.addSubview(collectionView)
+
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0),
+            self.collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            self.collectionView.topAnchor.constraint(equalTo: self.header.bottomAnchor, constant: 0),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+        ])
+    }
+    
+    func bindCollectionView() {
+        collectionView.register(StyleCollectionViewCell.self, forCellWithReuseIdentifier: "StyleCollectionViewCell")
+        
+        viewModel.styleDataSource
+            .bind(to: collectionView.rx.items(cellIdentifier: "StyleCollectionViewCell", cellType: StyleCollectionViewCell.self)) { index, item, cell in
+                cell.configure(with: item)
+            }
+            .disposed(by: disposeBag)
+
+    }
 }
 
 extension StyleTabViewController: UICollectionViewDelegate{
     
 }
+//
+//extension StyleTabViewController: CHTCollectionViewDelegateWaterfallLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//
+////        let imageHeight = viewModel.getImageByIndex(index: indexPath.item).size.height
+//        let imageHeight = 500
+//
+//        return CGSize(width: Int(view.frame.size.width) / 2, height: imageHeight+50)
+////        return CGSize(width: 400, height: 1000)
+//
+//    }
+//}

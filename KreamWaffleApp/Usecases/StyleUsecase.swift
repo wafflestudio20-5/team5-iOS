@@ -13,4 +13,6 @@ final class StyleUsecase {
     init (repository: StyleRepository) {
         self.repository = repository
     }
+    
+    
 }
