@@ -41,10 +41,10 @@ class TabBarViewController: UITabBarController {
         homeTab.modalPresentationStyle = .fullScreen
         homeTab.tabBarItem = homeTabBarItem
 
-        let styleTab = UINavigationController(rootViewController: StyleTabViewController(viewModel: self.shopViewModel))
+        let styleTab = UINavigationController(rootViewController: StyleTabViewController())
         styleTab.tabBarItem = styleTabBarItem
 
-        let shopTab = UINavigationController(rootViewController: ShopTabViewController())
+        let shopTab = UINavigationController(rootViewController: ShopTabViewController(viewModel: self.shopViewModel))
         shopTab.tabBarItem = shopTabBarItem
         
         let myTab = UINavigationController(rootViewController: MyTabViewController())
