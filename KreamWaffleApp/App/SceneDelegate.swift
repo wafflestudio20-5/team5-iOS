@@ -21,7 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: scene)
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
-        let rootVC = TabBarViewController(shopViewModel: shopViewModel)
+        let styleViewModel = StyleViewModel(usecase: StyleUsecase(repository: StyleRepository()))
+        let rootVC = TabBarViewController(shopViewModel: shopViewModel, styleViewModel: styleViewModel)
         
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
