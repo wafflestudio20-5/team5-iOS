@@ -38,6 +38,7 @@ class LoginViewController: UIViewController {
         self.view.backgroundColor = .white
         addSubviews()
         configureSubviews()
+        self.hideKeyboardWhenTappedAround()
     }
     
     private func addSubviews(){

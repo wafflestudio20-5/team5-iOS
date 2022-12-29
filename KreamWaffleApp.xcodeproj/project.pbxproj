@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */; };
+		64B6153DC9C7AEA55C7BE008 /* Pods_KreamWaffleApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A12D14C019AE1FC69A73279 /* Pods_KreamWaffleApp.framework */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
 		65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F34295B5B01002F250B /* CustomSegmentedControl.swift */; };
@@ -19,7 +21,6 @@
 		9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9409BB6729587B8400107717 /* TabBarViewController.swift */; };
 		9428AE302957170600DC7907 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE2F2957170600DC7907 /* AppDelegate.swift */; };
 		9428AE322957170600DC7907 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE312957170600DC7907 /* SceneDelegate.swift */; };
-		9428AE342957170600DC7907 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE332957170600DC7907 /* ViewController.swift */; };
 		9428AE392957170E00DC7907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9428AE382957170E00DC7907 /* Assets.xcassets */; };
 		9428AE47295718E200DC7907 /* ShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE46295718E200DC7907 /* ShopViewModel.swift */; };
 		9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE482957193D00DC7907 /* HomeTabViewController.swift */; };
@@ -32,12 +33,10 @@
 		944A114B295D6ADF00F8CDB7 /* ShopUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A114A295D6ADF00F8CDB7 /* ShopUsecase.swift */; };
 		944A114D295D6D5C00F8CDB7 /* ProductRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A114C295D6D5C00F8CDB7 /* ProductRequestModel.swift */; };
 		948C66952958482E00561C59 /* MyTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948C66942958482E00561C59 /* MyTabViewController.swift */; };
-		E7DF0F9210C114E17798A5A4 /* Pods_KreamWaffleApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05D771900CCF7C56455F9617 /* Pods_KreamWaffleApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		05D771900CCF7C56455F9617 /* Pods_KreamWaffleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KreamWaffleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1289145296B6BC2B8742DBEB /* Pods-KreamWaffleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.release.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.release.xcconfig"; sourceTree = "<group>"; };
+		5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+hideKeyboard.swift"; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65653F34295B5B01002F250B /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -47,11 +46,11 @@
 		65653F3E295B7BDF002F250B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		65653F40295B8148002F250B /* ShopMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopMainViewController.swift; sourceTree = "<group>"; };
 		65653F42295B8217002F250B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		7BE8EA2EFB4AA509DCAF84E1 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 		9409BB6729587B8400107717 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		9428AE2C2957170600DC7907 /* KreamWaffleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KreamWaffleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9428AE2F2957170600DC7907 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9428AE312957170600DC7907 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9428AE332957170600DC7907 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9428AE382957170E00DC7907 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9428AE3D2957170E00DC7907 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9428AE46295718E200DC7907 /* ShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewModel.swift; sourceTree = "<group>"; };
@@ -65,7 +64,8 @@
 		944A114A295D6ADF00F8CDB7 /* ShopUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopUsecase.swift; sourceTree = "<group>"; };
 		944A114C295D6D5C00F8CDB7 /* ProductRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductRequestModel.swift; sourceTree = "<group>"; };
 		948C66942958482E00561C59 /* MyTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabViewController.swift; sourceTree = "<group>"; };
-		EB45C5E1B15EE13800FC81DC /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
+		9A12D14C019AE1FC69A73279 /* Pods_KreamWaffleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KreamWaffleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F122331DD65FD034FF9C3C3A /* Pods-KreamWaffleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.release.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,19 +73,52 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7DF0F9210C114E17798A5A4 /* Pods_KreamWaffleApp.framework in Frameworks */,
+				64B6153DC9C7AEA55C7BE008 /* Pods_KreamWaffleApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5F93086AC14F8B3420D32CA0 /* Frameworks */ = {
+		3DB03D682972A02638A8567B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				05D771900CCF7C56455F9617 /* Pods_KreamWaffleApp.framework */,
+				7BE8EA2EFB4AA509DCAF84E1 /* Pods-KreamWaffleApp.debug.xcconfig */,
+				F122331DD65FD034FF9C3C3A /* Pods-KreamWaffleApp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		541A851BDEBC9E14A89FD220 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9A12D14C019AE1FC69A73279 /* Pods_KreamWaffleApp.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5C2F9C9F295D76E30021D437 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5C2F9CA2295D77350021D437 /* My Tab */ = {
+			isa = PBXGroup;
+			children = (
+				948C66942958482E00561C59 /* MyTabViewController.swift */,
+			);
+			path = "My Tab";
+			sourceTree = "<group>";
+		};
+		5C2F9CA3295D77430021D437 /* Home Tab */ = {
+			isa = PBXGroup;
+			children = (
+				9428AE482957193D00DC7907 /* HomeTabViewController.swift */,
+			);
+			path = "Home Tab";
 			sourceTree = "<group>";
 		};
 		65653F33295B5AF2002F250B /* Customs */ = {
@@ -140,8 +173,8 @@
 			children = (
 				9428AE2E2957170600DC7907 /* KreamWaffleApp */,
 				9428AE2D2957170600DC7907 /* Products */,
-				9903D0428129842E88FF06BD /* Pods */,
-				5F93086AC14F8B3420D32CA0 /* Frameworks */,
+				3DB03D682972A02638A8567B /* Pods */,
+				541A851BDEBC9E14A89FD220 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -156,6 +189,7 @@
 		9428AE2E2957170600DC7907 /* KreamWaffleApp */ = {
 			isa = PBXGroup;
 			children = (
+				5C2F9C9F295D76E30021D437 /* Extensions */,
 				944A1149295D6AC200F8CDB7 /* Usecases */,
 				944A1146295D18E100F8CDB7 /* Cells */,
 				944A1143295D156B00F8CDB7 /* Layouts */,
@@ -207,25 +241,15 @@
 		948C669629587B2200561C59 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				5C2F9CA3295D77430021D437 /* Home Tab */,
+				5C2F9CA2295D77350021D437 /* My Tab */,
 				65653F3B295B73FC002F250B /* Shop Tab */,
 				65653F38295B73B2002F250B /* Style Tab */,
-				9428AE332957170600DC7907 /* ViewController.swift */,
 				9409BB6729587B8400107717 /* TabBarViewController.swift */,
-				9428AE482957193D00DC7907 /* HomeTabViewController.swift */,
-				948C66942958482E00561C59 /* MyTabViewController.swift */,
 				944A111A2959A6F800F8CDB7 /* ProductDetailViewController.swift */,
 				65188907295C1CE70026E003 /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		9903D0428129842E88FF06BD /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				EB45C5E1B15EE13800FC81DC /* Pods-KreamWaffleApp.debug.xcconfig */,
-				1289145296B6BC2B8742DBEB /* Pods-KreamWaffleApp.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,11 +259,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9428AE402957170E00DC7907 /* Build configuration list for PBXNativeTarget "KreamWaffleApp" */;
 			buildPhases = (
-				D86241C05E7C4619E621BDD1 /* [CP] Check Pods Manifest.lock */,
+				A11804AD41C8CD5764B4473F /* [CP] Check Pods Manifest.lock */,
 				9428AE282957170600DC7907 /* Sources */,
 				9428AE292957170600DC7907 /* Frameworks */,
 				9428AE2A2957170600DC7907 /* Resources */,
-				F8A7621B7C687C3CAC2CA660 /* [CP] Embed Pods Frameworks */,
+				AA540EE2A56730B4BBDAEE1A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -295,7 +319,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		D86241C05E7C4619E621BDD1 /* [CP] Check Pods Manifest.lock */ = {
+		A11804AD41C8CD5764B4473F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -317,7 +341,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F8A7621B7C687C3CAC2CA660 /* [CP] Embed Pods Frameworks */ = {
+		AA540EE2A56730B4BBDAEE1A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -345,7 +369,6 @@
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
 				944A1148295D191100F8CDB7 /* ProductCollectionViewCell.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
-				9428AE342957170600DC7907 /* ViewController.swift in Sources */,
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,
@@ -354,6 +377,7 @@
 				9428AE322957170600DC7907 /* SceneDelegate.swift in Sources */,
 				944A114B295D6ADF00F8CDB7 /* ShopUsecase.swift in Sources */,
 				9428AE4D295719A500DC7907 /* ShopTabViewController.swift in Sources */,
+				5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */,
 				65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */,
 				65653F3A295B73C9002F250B /* SearchViewController.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ProductRequestModel.swift in Sources */,
@@ -488,7 +512,7 @@
 		};
 		9428AE412957170E00DC7907 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EB45C5E1B15EE13800FC81DC /* Pods-KreamWaffleApp.debug.xcconfig */;
+			baseConfigurationReference = 7BE8EA2EFB4AA509DCAF84E1 /* Pods-KreamWaffleApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -516,7 +540,7 @@
 		};
 		9428AE422957170E00DC7907 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1289145296B6BC2B8742DBEB /* Pods-KreamWaffleApp.release.xcconfig */;
+			baseConfigurationReference = F122331DD65FD034FF9C3C3A /* Pods-KreamWaffleApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
