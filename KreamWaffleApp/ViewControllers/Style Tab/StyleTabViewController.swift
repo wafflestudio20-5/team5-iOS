@@ -20,15 +20,19 @@ class StyleTabViewController: UIViewController {
     private var cameraButton = UIButton()
         
     private let collectionView: UICollectionView = {
+        //waterfall *************************************
 //        let layout = CHTCollectionViewWaterfallLayout()
 //        layout.itemRenderDirection = .leftToRight
 //        layout.columnCount = 2
 //        layout.minimumColumnSpacing = 5
 //        layout.minimumInteritemSpacing = 5
-//
 //        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        //waterfall *************************************
         
+        
+        //custom *************************************
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: StyleCollectionViewFlowLayout())
+        //custom *************************************
         
         collectionView.register(StyleCollectionViewCell.self, forCellWithReuseIdentifier: StyleCollectionViewCell.identifier)
         return collectionView
@@ -112,7 +116,7 @@ class StyleTabViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0),
             self.collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: 0),
-            self.collectionView.topAnchor.constraint(equalTo: self.header.bottomAnchor, constant: 0),
+            self.collectionView.topAnchor.constraint(equalTo: self.header.bottomAnchor, constant: 10),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
     }
@@ -136,11 +140,11 @@ extension StyleTabViewController: UICollectionViewDelegate{
 //extension StyleTabViewController: CHTCollectionViewDelegateWaterfallLayout {
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //
-////        let imageHeight = viewModel.getImageByIndex(index: indexPath.item).size.height
+//        let imageHeight = viewModel.getImageByIndex(index: indexPath.item).size.height
 //        let imageHeight = 500
 //
 //        return CGSize(width: Int(view.frame.size.width) / 2, height: imageHeight+50)
-////        return CGSize(width: 400, height: 1000)
+//        return CGSize(width: 400, height: 1000)
 //
 //    }
 //}
