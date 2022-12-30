@@ -122,13 +122,14 @@ extension StyleTabViewController: UICollectionViewDelegate{
 extension StyleTabViewController: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let cellWidth: CGFloat = (view.bounds.width - 10)/2 //셀 가로 크기
-        let imageWidth = viewModel.styleCellModelList[indexPath.row].thumbnailImage!.size.width
-        let imageHeight = viewModel.styleCellModelList[indexPath.row].thumbnailImage!.size.height
-        let imageRatio = imageHeight/imageWidth
-        
+        let targetImageSize = viewModel.getStyleCellModelListAt(index:indexPath.row).thumbnailImage!.size 
 
-        return CGSize(width: cellWidth, height: imageRatio * cellWidth + 100)
+        let cellWidth: CGFloat = (view.bounds.width - 10)/2 //셀 가로 크기
+        let imageWidth = targetImageSize.width
+        let imageHeight = targetImageSize.height
+        let imageRatio = imageHeight/imageWidth
+
+        return CGSize(width: cellWidth, height: imageRatio * cellWidth + 60)
     }
 }
 
@@ -138,13 +139,13 @@ extension StyleTabViewController: UICollectionViewDataSource {
             return StyleCollectionViewCell()
         }
         
-        cell.configure(with: self.viewModel.styleCellModelList[indexPath.row])
+        cell.configure(with: self.viewModel.getStyleCellModelListAt(index: indexPath.row))
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.viewModel.styleCellModelList.count
+        return self.viewModel.getStyleCellModelListNum()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

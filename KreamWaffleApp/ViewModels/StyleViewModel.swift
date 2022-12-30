@@ -13,33 +13,16 @@ import RxCocoa
 final class StyleViewModel {
     private let usecase: StyleUsecase
     private let disposeBag = DisposeBag()
-    
-    var styleCellModelList = [StyleCellModel]()
-    
+        
     init(usecase: StyleUsecase) {
         self.usecase = usecase
-        subscribeStylePostRelay()
     }
     
-    func subscribeStylePostRelay() {
-        self.usecase.stylePostRelay
-            .subscribe { event in //Event<[StylePost]>
-                switch event {
-                case .next:
-                    var list = [StyleCellModel]()
-                    event.map { stylePostList in
-                        stylePostList.map {
-                            list.append(StyleCellModel(stylePost: $0))
-                        }
-                    }
-                    self.styleCellModelList = list
-                case .completed:
-                    break
-                case .error:
-                    break
-                }
-                
-            }
-            .disposed(by: disposeBag)
+    func getStyleCellModelListAt(index: Int) -> StyleCellModel {
+        return self.usecase.styleCellModelList[index]
+    }
+    
+    func getStyleCellModelListNum() -> Int {
+        return self.usecase.styleCellModelList.count
     }
 }

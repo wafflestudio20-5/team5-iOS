@@ -25,9 +25,12 @@ final class StyleUsecase {
         }
     }
     
+    var styleCellModelList = [StyleCellModel]()
+    
     init (repository: StyleRepository) {
         self.repository = repository
         setTestData()
+        subscribeStylePostRelay()
     }
     
     func setTestData() {
@@ -38,5 +41,27 @@ final class StyleUsecase {
             StylePost(imageSources: ["https://media.npr.org/assets/img/2021/08/11/gettyimages-1279899488_wide-f3860ceb0ef19643c335cb34df3fa1de166e2761-s1600-c85.webp"], id: "postId4", numLikes: 4, content: "네번째 게시글"),
             StylePost(imageSources: ["https://images.unsplash.com/photo-1611915387288-fd8d2f5f928b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60"], id: "postId5", numLikes: 5, content: "다섯번째 게시글"),
         ]
+    }
+    
+    func subscribeStylePostRelay() {
+        self.stylePostRelay
+            .subscribe { event in //Event<[StylePost]>
+                switch event {
+                case .next:
+                    var list = [StyleCellModel]()
+                    event.map { stylePostList in
+                        stylePostList.map {
+                            list.append(StyleCellModel(stylePost: $0))
+                        }
+                    }
+                    self.styleCellModelList = list
+                case .completed:
+                    break
+                case .error:
+                    break
+                }
+                
+            }
+            .disposed(by: disposeBag)
     }
 }
