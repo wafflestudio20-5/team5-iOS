@@ -15,6 +15,7 @@
 		5C2F9CB1295D83140021D437 /* StyleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CB0295D83140021D437 /* StyleCollectionViewCell.swift */; };
 		5C2F9CB3295D95D20021D437 /* StylePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CB2295D95D20021D437 /* StylePost.swift */; };
 		5C2F9CB5295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CB4295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift */; };
+		5C2F9CB9295F3EDB0021D437 /* StyleCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CB8295F3EDB0021D437 /* StyleCellModel.swift */; };
 		64B6153DC9C7AEA55C7BE008 /* Pods_KreamWaffleApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A12D14C019AE1FC69A73279 /* Pods_KreamWaffleApp.framework */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
@@ -51,6 +52,7 @@
 		5C2F9CB0295D83140021D437 /* StyleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleCollectionViewCell.swift; sourceTree = "<group>"; };
 		5C2F9CB2295D95D20021D437 /* StylePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePost.swift; sourceTree = "<group>"; };
 		5C2F9CB4295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		5C2F9CB8295F3EDB0021D437 /* StyleCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleCellModel.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65653F34295B5B01002F250B /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				944A1141295D0DBF00F8CDB7 /* Product.swift */,
 				944A114C295D6D5C00F8CDB7 /* ProductRequestModel.swift */,
 				5C2F9CB2295D95D20021D437 /* StylePost.swift */,
+				5C2F9CB8295F3EDB0021D437 /* StyleCellModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
 				944A1142295D0DC000F8CDB7 /* Product.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
+				5C2F9CB9295F3EDB0021D437 /* StyleCellModel.swift in Sources */,
 				5C2F9CA8295D7B600021D437 /* StyleUsecase.swift in Sources */,
 				944A1145295D16ED00F8CDB7 /* ShopCollectionViewFlowLayout.swift in Sources */,
 				654D9692295BFC4900B93EE0 /* Constants.swift in Sources */,

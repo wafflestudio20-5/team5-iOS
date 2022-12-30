@@ -10,13 +10,13 @@ import Kingfisher
 
 class StylePost: Codable {
     let imageSources: [String]
-    let id: String
+    let userId: String
     let numLikes: Int
     let content: String
     
     init(imageSources: [String], id: String, numLikes: Int, content: String) {
         self.imageSources = imageSources
-        self.id = id
+        self.userId = id
         self.numLikes = numLikes
         self.content = content
     }

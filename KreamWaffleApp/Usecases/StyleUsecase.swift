@@ -7,9 +7,12 @@
 
 import Foundation
 import RxCocoa
+import RxSwift
+import Kingfisher
 
 final class StyleUsecase {
     private let repository: StyleRepository
+    private let disposeBag = DisposeBag()
     
     let stylePostRelay: BehaviorRelay<[StylePost]> = .init(value: [])
     // 얘가 업데이트 되면 얘를 구독하던 애가 거기서 map으로 thumbnail image 뽑아내서 저장한다.

@@ -60,13 +60,20 @@ final class StyleCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with stylePost: StylePost) {
-        self.idLabel.text = stylePost.id
-        self.contentLabel.text = stylePost.content
-        self.thumbnailImageSource = stylePost.imageSources[0]
-        
-        let roundProcessor = RoundCornerImageProcessor(cornerRadius: 10)
-        thumbnailImageView.kf.setImage(with: URL(string: self.thumbnailImageSource!), placeholder: nil, options: [.processor(roundProcessor)])
+//    func configure(with stylePost: StylePost) {
+//        self.idLabel.text = stylePost.userId
+//        self.contentLabel.text = stylePost.content
+//        self.thumbnailImageSource = stylePost.imageSources[0]
+//        
+//        let roundProcessor = RoundCornerImageProcessor(cornerRadius: 10)
+//        thumbnailImageView.kf.setImage(with: URL(string: self.thumbnailImageSource!), placeholder: nil, options: [.processor(roundProcessor)])
+//    }
+    
+    func configure(with styleCellModel: StyleCellModel) {
+        self.idLabel.text = styleCellModel.userId
+        self.contentLabel.text = styleCellModel.content
+
+        self.thumbnailImageView.image = styleCellModel.thumbnailImage
     }
     
     override func prepareForReuse() {

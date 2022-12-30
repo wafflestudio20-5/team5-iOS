@@ -20,19 +20,12 @@ class StyleTabViewController: UIViewController {
     private var cameraButton = UIButton()
         
     private let collectionView: UICollectionView = {
-        //waterfall *************************************
-//        let layout = CHTCollectionViewWaterfallLayout()
-//        layout.itemRenderDirection = .leftToRight
-//        layout.columnCount = 2
-//        layout.minimumColumnSpacing = 5
-//        layout.minimumInteritemSpacing = 5
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        //waterfall *************************************
-        
-        
-        //custom *************************************
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: StyleCollectionViewFlowLayout())
-        //custom *************************************
+        let layout = CHTCollectionViewWaterfallLayout()
+        layout.itemRenderDirection = .leftToRight
+        layout.columnCount = 2
+        layout.minimumColumnSpacing = 5
+        layout.minimumInteritemSpacing = 5
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         collectionView.register(StyleCollectionViewCell.self, forCellWithReuseIdentifier: StyleCollectionViewCell.identifier)
         return collectionView
@@ -43,6 +36,7 @@ class StyleTabViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
         collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     required init?(coder: NSCoder) {
@@ -55,7 +49,6 @@ class StyleTabViewController: UIViewController {
         addSubviews()
         configureHeader()
         setUpCollectionView()
-        bindCollectionView()
     }
     
     func addSubviews(){
@@ -120,31 +113,41 @@ class StyleTabViewController: UIViewController {
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
     }
-    
-    func bindCollectionView() {
-        collectionView.register(StyleCollectionViewCell.self, forCellWithReuseIdentifier: "StyleCollectionViewCell")
-        
-        viewModel.styleDataSource
-            .bind(to: collectionView.rx.items(cellIdentifier: "StyleCollectionViewCell", cellType: StyleCollectionViewCell.self)) { index, item, cell in
-                cell.configure(with: item)
-            }
-            .disposed(by: disposeBag)
-
-    }
 }
 
 extension StyleTabViewController: UICollectionViewDelegate{
     
 }
-//
-//extension StyleTabViewController: CHTCollectionViewDelegateWaterfallLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//
-//        let imageHeight = viewModel.getImageByIndex(index: indexPath.item).size.height
-//        let imageHeight = 500
-//
-//        return CGSize(width: Int(view.frame.size.width) / 2, height: imageHeight+50)
-//        return CGSize(width: 400, height: 1000)
-//
-//    }
-//}
+
+extension StyleTabViewController: CHTCollectionViewDelegateWaterfallLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let cellWidth: CGFloat = (view.bounds.width - 10)/2 //셀 가로 크기
+        let imageWidth = viewModel.styleCellModelList[indexPath.row].thumbnailImage!.size.width
+        let imageHeight = viewModel.styleCellModelList[indexPath.row].thumbnailImage!.size.height
+        let imageRatio = imageHeight/imageWidth
+        
+
+        return CGSize(width: cellWidth, height: imageRatio * cellWidth + 100)
+    }
+}
+
+extension StyleTabViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StyleCollectionViewCell.identifier, for: indexPath) as? StyleCollectionViewCell else {
+            return StyleCollectionViewCell()
+        }
+        
+        cell.configure(with: self.viewModel.styleCellModelList[indexPath.row])
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.viewModel.styleCellModelList.count
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+}
