@@ -17,6 +17,7 @@
 		5C2F9CB5295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CB4295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift */; };
 		5C2F9CB9295F3EDB0021D437 /* StyleCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CB8295F3EDB0021D437 /* StyleCellModel.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
+		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
 		65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F34295B5B01002F250B /* CustomSegmentedControl.swift */; };
 		65653F37295B5B25002F250B /* colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F36295B5B25002F250B /* colors.swift */; };
@@ -25,6 +26,13 @@
 		65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F3E295B7BDF002F250B /* SearchTableViewCell.swift */; };
 		65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F40295B8148002F250B /* ShopMainViewController.swift */; };
 		65653F43295B8217002F250B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F42295B8217002F250B /* Extensions.swift */; };
+		656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */; };
+		656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */; };
+		6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E22960B5E6007C741F /* SignUpViewController.swift */; };
+		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
+		6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */; };
+		65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */; };
+		65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48962961E13C00AF6CDB /* TermsButton.swift */; };
 		9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9409BB6729587B8400107717 /* TabBarViewController.swift */; };
 		9428AE302957170600DC7907 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE2F2957170600DC7907 /* AppDelegate.swift */; };
 		9428AE322957170600DC7907 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE312957170600DC7907 /* SceneDelegate.swift */; };
@@ -56,6 +64,7 @@
 		5C2F9CB4295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		5C2F9CB8295F3EDB0021D437 /* StyleCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleCellModel.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65653F34295B5B01002F250B /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		65653F36295B5B25002F250B /* colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colors.swift; sourceTree = "<group>"; };
@@ -64,6 +73,14 @@
 		65653F3E295B7BDF002F250B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		65653F40295B8148002F250B /* ShopMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopMainViewController.swift; sourceTree = "<group>"; };
 		65653F42295B8217002F250B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionViewController.swift; sourceTree = "<group>"; };
+		656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
+		6583C9E22960B5E6007C741F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
+		6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
+		65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizefield.swift; sourceTree = "<group>"; };
+		65DF48962961E13C00AF6CDB /* TermsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsButton.swift; sourceTree = "<group>"; };
+		7BE8EA2EFB4AA509DCAF84E1 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 		9409BB6729587B8400107717 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		9428AE2C2957170600DC7907 /* KreamWaffleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KreamWaffleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9428AE2F2957170600DC7907 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -158,10 +175,13 @@
 		65653F33295B5AF2002F250B /* Customs */ = {
 			isa = PBXGroup;
 			children = (
+				6520AEAA295EB9CF002D549D /* LoginTextfield.swift */,
 				65653F34295B5B01002F250B /* CustomSegmentedControl.swift */,
 				65653F36295B5B25002F250B /* colors.swift */,
 				65653F42295B8217002F250B /* Extensions.swift */,
 				654D9691295BFC4900B93EE0 /* Constants.swift */,
+				65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */,
+				65DF48962961E13C00AF6CDB /* TermsButton.swift */,
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -195,6 +215,24 @@
 			path = "Sub VC";
 			sourceTree = "<group>";
 		};
+		6583C9E82960DCB4007C741F /* Help Tab */ = {
+			isa = PBXGroup;
+			children = (
+				6583C9E22960B5E6007C741F /* SignUpViewController.swift */,
+				6583C9E42960DCA5007C741F /* FindEmailViewController.swift */,
+				6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */,
+				656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */,
+			);
+			path = "Help Tab";
+			sourceTree = "<group>";
+		};
+		65A2AD05295DB12400213175 /* Login Tab */ = {
+			isa = PBXGroup;
+			children = (
+				6583C9E82960DCB4007C741F /* Help Tab */,
+				65188907295C1CE70026E003 /* LoginViewController.swift */,
+			);
+			path = "Login Tab";
 		6B4CAD4697F1BE26272BA4D1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				944A1147295D191100F8CDB7 /* ProductCollectionViewCell.swift */,
+				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -289,13 +328,13 @@
 		948C669629587B2200561C59 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				65A2AD05295DB12400213175 /* Login Tab */,
 				5C2F9CA3295D77430021D437 /* Home Tab */,
 				5C2F9CA2295D77350021D437 /* My Tab */,
 				65653F3B295B73FC002F250B /* Shop Tab */,
 				65653F38295B73B2002F250B /* Style Tab */,
 				9409BB6729587B8400107717 /* TabBarViewController.swift */,
 				944A111A2959A6F800F8CDB7 /* ProductDetailViewController.swift */,
-				65188907295C1CE70026E003 /* LoginViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -422,6 +461,7 @@
 				5C2F9CB1295D83140021D437 /* StyleCollectionViewCell.swift in Sources */,
 				944A1148295D191100F8CDB7 /* ProductCollectionViewCell.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
+				65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */,
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,
@@ -432,18 +472,26 @@
 				9428AE4D295719A500DC7907 /* ShopTabViewController.swift in Sources */,
 				5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */,
 				65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */,
+				6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */,
 				65653F3A295B73C9002F250B /* SearchViewController.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ProductRequestModel.swift in Sources */,
 				65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */,
 				944A111B2959A6F800F8CDB7 /* ProductDetailViewController.swift in Sources */,
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
+				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
 				944A1142295D0DC000F8CDB7 /* Product.swift in Sources */,
+				6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */,
+				656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */,
+				65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
 				5C2F9CB9295F3EDB0021D437 /* StyleCellModel.swift in Sources */,
 				5C2F9CA8295D7B600021D437 /* StyleUsecase.swift in Sources */,
+				6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */,
 				944A1145295D16ED00F8CDB7 /* ShopCollectionViewFlowLayout.swift in Sources */,
 				654D9692295BFC4900B93EE0 /* Constants.swift in Sources */,
+				6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */,
+        5C2F9CB5295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift in Sources */,
 				5C2F9CB5295DBDCB0021D437 /* StyleCollectionViewFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

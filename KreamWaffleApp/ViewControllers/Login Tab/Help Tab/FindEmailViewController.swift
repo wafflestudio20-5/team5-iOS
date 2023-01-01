@@ -1,21 +1,18 @@
 //
-//  MyTabViewController.swift
+//  FindEmailViewController.swift
 //  KreamWaffleApp
 //
-//  Created by 이선재 on 2022/12/25.
+//  Created by grace kim  on 2023/01/01.
 //
 
 import UIKit
 
-class MyTabViewController: UIViewController {
+class FindEmailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let shoeScreen = ShoeSizeSelectionViewController()
-        //shoeScreen.modalPresentationStyle = .fullScreen
-        let loginScreen = LoginViewController()
-        loginScreen.modalPresentationStyle = .fullScreen
-        self.present(loginScreen, animated: false)
+
+        // Do any additional setup after loading the view.
     }
     
 
