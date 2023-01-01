@@ -15,7 +15,7 @@ class MyTabViewController: UIViewController {
         //shoeScreen.modalPresentationStyle = .fullScreen
         let loginScreen = LoginViewController()
         loginScreen.modalPresentationStyle = .fullScreen
-        self.present(shoeScreen, animated: false)
+        self.present(loginScreen, animated: false)
     }
     
 

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
 
@@ -14,13 +16,14 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     var emailField : LoginTextfield?
     var passwordField : LoginTextfield?
     
+    var sizeField : ShoeSizefield?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.emailField = LoginTextfield(titleText: "이메일 주소 *", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: nil, defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
         self.passwordField = LoginTextfield(titleText: "비밀번호 *", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: nil, defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
-    
-        
+        self.sizeField = ShoeSizefield(selectedSize: nil)
         addSubviews()
         configureSubviews()
     }
@@ -30,11 +33,13 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.view.addSubview(titleLabel)
         self.view.addSubview(emailField!)
         self.view.addSubview(passwordField!)
+        self.view.addSubview(sizeField!)
     }
     
     func configureSubviews(){
         configureBackandTitle()
         configureTextfields()
+        configureShoeSizeField()
     }
     
     func configureBackandTitle(){
@@ -72,8 +77,53 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.passwordField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.passwordField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.passwordField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
-        
-        
     }
+    
+    func configureShoeSizeField(){
+        self.sizeField?.translatesAutoresizingMaskIntoConstraints = false
+        self.sizeField?.topAnchor.constraint(equalTo: self.passwordField!.bottomAnchor, constant: 30).isActive = true
+        self.sizeField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        self.sizeField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        self.sizeField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        self.sizeField?.button.addTarget(self, action: #selector(didTapSelectShoeSize), for: .touchUpInside)
+    }
+    
+    @objc func didTapSelectShoeSize(){
+        let vc = ShoeSizeSelectionViewController()
+        //vc.view.backgroundColor = .systemYellow
+        vc.modalPresentationStyle = .pageSheet
+        if let sheet = vc.sheetPresentationController {
+            //지원할 크기 지정
+            sheet.detents = [.medium()]
+            //크기 변하는거 감지
+            sheet.delegate = self
+                   
+            //시트 상단에 그래버 표시 (기본 값은 false)
+            sheet.prefersGrabberVisible = true
+                    
+            //처음 크기 지정 (기본 값은 가장 작은 크기)
+            //sheet.selectedDetentIdentifier = .large
+                    
+            //뒤 배경 흐리게 제거 (기본 값은 모든 크기에서 배경 흐리게 됨)
+            //sheet.largestUndimmedDetentIdentifier = .medium
+        }
+        
+        self.present(vc, animated: true, completion: nil)
+        
+        vc.sizeView.rx.itemSelected
+            .subscribe(onNext: { index in
+                let selectedRow = index.row
+                let selectedSize = vc.shoeSizes[selectedRow]
+                print(selectedSize)
+                self.sizeField?.setTextfield(SelectedSize: selectedSize)
+        })
+            .disposed(by: DisposeBag())
+    }
+}
 
+extension SignUpViewController: UISheetPresentationControllerDelegate {
+    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+        //크기 변경 됐을 경우
+        print(sheetPresentationController.selectedDetentIdentifier == .large ? "large" : "medium")
+    }
 }

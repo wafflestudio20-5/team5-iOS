@@ -13,12 +13,12 @@ import RxCocoa
 //for the half screen modal view 
 class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout {
     private let bag = DisposeBag()
-    private var sizeView : UICollectionView!
+    var sizeView : UICollectionView!
     private var layout = UICollectionViewFlowLayout()
     private var backButton = UIButton()
     private var titleLabel = UILabel()
     
-    private let shoeSizes = [220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290, 295, 300]
+    let shoeSizes = [220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290, 295, 300]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +70,7 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
         backButton.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/20).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: self.view.frame.height/20).isActive = true
+        backButton.addTarget(self, action: #selector(exitVC), for: .touchUpInside)
     
         layout.scrollDirection = .vertical
         self.sizeView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
@@ -85,7 +86,11 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             let width = collectionView.bounds.width
             let cellWidth = (width - 30) / 3
-        return CGSize(width: cellWidth, height: cellWidth / 2.5)
+        return CGSize(width: cellWidth, height: cellWidth / 2.2)
         }
+    
+    @objc func exitVC(){
+        self.dismiss(animated: true)
+    }
 }
 
