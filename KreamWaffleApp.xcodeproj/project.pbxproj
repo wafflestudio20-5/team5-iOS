@@ -29,6 +29,7 @@
 		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
 		6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */; };
 		65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */; };
+		65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48962961E13C00AF6CDB /* TermsButton.swift */; };
 		9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9409BB6729587B8400107717 /* TabBarViewController.swift */; };
 		9428AE302957170600DC7907 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE2F2957170600DC7907 /* AppDelegate.swift */; };
 		9428AE322957170600DC7907 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE312957170600DC7907 /* SceneDelegate.swift */; };
@@ -68,6 +69,7 @@
 		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
 		6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizefield.swift; sourceTree = "<group>"; };
+		65DF48962961E13C00AF6CDB /* TermsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsButton.swift; sourceTree = "<group>"; };
 		7BE8EA2EFB4AA509DCAF84E1 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 		9409BB6729587B8400107717 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		9428AE2C2957170600DC7907 /* KreamWaffleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KreamWaffleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,6 +172,7 @@
 				65653F42295B8217002F250B /* Extensions.swift */,
 				654D9691295BFC4900B93EE0 /* Constants.swift */,
 				65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */,
+				65DF48962961E13C00AF6CDB /* TermsButton.swift */,
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
 				944A1148295D191100F8CDB7 /* ProductCollectionViewCell.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
+				65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */,
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,

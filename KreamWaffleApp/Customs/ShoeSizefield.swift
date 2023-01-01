@@ -80,8 +80,8 @@ class ShoeSizefield : UIView {
         self.button.tintColor = .lightGray
         self.button.translatesAutoresizingMaskIntoConstraints = false
         self.button.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        self.button.widthAnchor.constraint(equalToConstant: 16).isActive = true
-        self.button.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        self.button.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        self.button.heightAnchor.constraint(equalToConstant: 25).isActive = true
         self.button.centerYAnchor.constraint(equalTo: self.textfield.centerYAnchor).isActive = true
     }
     

@@ -122,8 +122,18 @@ class LoginTextfield : UIView {
         self.button.tintColor = .darkGray
         self.button.translatesAutoresizingMaskIntoConstraints = false
         self.button.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        self.button.widthAnchor.constraint(equalToConstant: 16).isActive = true
-        self.button.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        var buttonWidth = 0.0
+        var buttonHeight = 0.0
+        switch(self.errorCondition){
+        case .password:
+            buttonWidth = 25
+            buttonHeight = 20
+        case .email, .phoneNumber:
+            buttonWidth = 25
+            buttonHeight = 25
+        }
+        self.button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
+        self.button.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         self.button.centerYAnchor.constraint(equalTo: self.textfield.centerYAnchor).isActive = true
         
         switch(self.errorCondition){

@@ -115,7 +115,7 @@ class LoginViewController: UIViewController {
         self.loginButton.translatesAutoresizingMaskIntoConstraints = false
         self.loginButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.loginButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
-        self.loginButton.topAnchor.constraint(equalTo: self.passwordfield!.bottomAnchor, constant: self.view.frame.height/32).isActive = true
+        self.loginButton.topAnchor.constraint(equalTo: self.passwordfield!.bottomAnchor, constant: self.view.frame.height/32 + 10).isActive = true
         self.loginButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
         self.loginButton.setTitle("로그인", for: .normal)
         self.loginButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
