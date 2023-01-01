@@ -23,6 +23,8 @@
 		65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F3E295B7BDF002F250B /* SearchTableViewCell.swift */; };
 		65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F40295B8148002F250B /* ShopMainViewController.swift */; };
 		65653F43295B8217002F250B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F42295B8217002F250B /* Extensions.swift */; };
+		656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */; };
+		656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */; };
 		6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E22960B5E6007C741F /* SignUpViewController.swift */; };
 		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
 		6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */; };
@@ -59,6 +61,8 @@
 		65653F3E295B7BDF002F250B /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		65653F40295B8148002F250B /* ShopMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopMainViewController.swift; sourceTree = "<group>"; };
 		65653F42295B8217002F250B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionViewController.swift; sourceTree = "<group>"; };
+		656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		6583C9E22960B5E6007C741F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
 		6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 				6583C9E22960B5E6007C741F /* SignUpViewController.swift */,
 				6583C9E42960DCA5007C741F /* FindEmailViewController.swift */,
 				6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */,
+				656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */,
 			);
 			path = "Help Tab";
 			sourceTree = "<group>";
@@ -281,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				944A1147295D191100F8CDB7 /* ProductCollectionViewCell.swift */,
+				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -445,8 +451,10 @@
 				944A111B2959A6F800F8CDB7 /* ProductDetailViewController.swift in Sources */,
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
+				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
 				944A1142295D0DC000F8CDB7 /* Product.swift in Sources */,
 				6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */,
+				656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
 				5C2F9CA8295D7B600021D437 /* StyleUsecase.swift in Sources */,
 				6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */,

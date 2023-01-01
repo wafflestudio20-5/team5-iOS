@@ -11,9 +11,11 @@ class MyTabViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let shoeScreen = ShoeSizeSelectionViewController()
+        //shoeScreen.modalPresentationStyle = .fullScreen
         let loginScreen = LoginViewController()
         loginScreen.modalPresentationStyle = .fullScreen
-        self.present(loginScreen, animated: false)
+        self.present(shoeScreen, animated: false)
     }
     
 

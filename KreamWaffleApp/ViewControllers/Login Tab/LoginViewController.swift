@@ -81,7 +81,6 @@ class LoginViewController: UIViewController {
     
     @objc func popVC(){
         //바로 홈화면으로 가네 --> set tab bar controller to index 0
-        print("exit pressed")
         self.dismiss(animated: false)
     }
     

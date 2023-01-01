@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
 
     var backButton = UIButton()
     var titleLabel = UILabel()
