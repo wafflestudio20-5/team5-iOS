@@ -122,7 +122,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.signupButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
         self.signupButton.setTitle("가입하기", for: .normal)
         self.signupButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        self.signupButton.backgroundColor = .lightGray
+        self.signupButton.backgroundColor = colors.lessLightGray
         self.signupButton.titleLabel?.textColor = .white
         self.signupButton.layer.cornerRadius = 10
         self.signupButton.clipsToBounds = true
