@@ -26,3 +26,4 @@ final class StyleViewModel {
         return self.usecase.styleCellModelList.count
     }
 }
+

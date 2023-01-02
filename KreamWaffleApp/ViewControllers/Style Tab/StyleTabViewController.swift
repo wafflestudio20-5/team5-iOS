@@ -121,8 +121,7 @@ extension StyleTabViewController: UICollectionViewDelegate{
 
 extension StyleTabViewController: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let targetImageSize = viewModel.getStyleCellModelListAt(index:indexPath.row).thumbnailImage!.size 
+        let targetImageSize = viewModel.getStyleCellModelListAt(index:indexPath.row).thumbnailImage!.size
 
         let cellWidth: CGFloat = (view.bounds.width - 10)/2 //셀 가로 크기
         let imageWidth = targetImageSize.width

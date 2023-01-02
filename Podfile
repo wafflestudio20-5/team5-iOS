@@ -13,6 +13,7 @@ target 'KreamWaffleApp' do
     pod 'CHTCollectionViewWaterfallLayout'
     pod 'BetterSegmentedControl', '~> 2.0'
     pod 'Kingfisher', '~> 7.0'
+    pod 'naveridlogin-sdk-ios'
 
 post_install do |installer|
   installer.pods_project.build_configurations.each do |config|

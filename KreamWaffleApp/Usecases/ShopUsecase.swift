@@ -77,3 +77,4 @@ final class ShopUsecase {
         return self.productList[index]
     }
 }
+
