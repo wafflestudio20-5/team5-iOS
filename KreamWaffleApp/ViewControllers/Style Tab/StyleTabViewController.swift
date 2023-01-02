@@ -35,8 +35,6 @@ class StyleTabViewController: UIViewController {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
-        collectionView.delegate = self
-        collectionView.dataSource = self
     }
     
     required init?(coder: NSCoder) {
@@ -103,6 +101,9 @@ class StyleTabViewController: UIViewController {
     }
     
     func setUpCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
         view.addSubview(collectionView)
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
