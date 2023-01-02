@@ -44,6 +44,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     
     func addSubviews(){
         self.view.addSubview(searchBar)
+        self.view.addSubview(collectionView)
     }
     
     func configureSubviews(){
@@ -80,7 +81,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
             self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
         ])
@@ -91,6 +92,8 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         
         self.collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
+        
+        print(self.viewModel.shopDataSource)
         
         self.viewModel.shopDataSource
             .bind(to: self.collectionView.rx.items(cellIdentifier: "ProductCollectionViewCell", cellType: ProductCollectionViewCell.self)) { index, productData, cell in

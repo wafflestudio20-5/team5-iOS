@@ -11,6 +11,7 @@ PODS:
     - CHTCollectionViewWaterfallLayout/Swift (= 0.9.10)
   - CHTCollectionViewWaterfallLayout/Swift (0.9.10)
   - Kingfisher (7.4.1)
+  - naveridlogin-sdk-ios (4.1.5)
   - Realm (3.18.0):
     - Realm/Headers (= 3.18.0)
   - Realm/Headers (3.18.0)
@@ -29,6 +30,7 @@ DEPENDENCIES:
   - ChartsRealm
   - CHTCollectionViewWaterfallLayout
   - Kingfisher (~> 7.0)
+  - naveridlogin-sdk-ios
   - RxCocoa (= 6.5.0)
   - RxSwift (= 6.5.0)
 
@@ -40,6 +42,7 @@ SPEC REPOS:
     - ChartsRealm
     - CHTCollectionViewWaterfallLayout
     - Kingfisher
+    - naveridlogin-sdk-ios
     - Realm
     - RealmSwift
     - RxCocoa
@@ -53,12 +56,13 @@ SPEC CHECKSUMS:
   ChartsRealm: 2ae8bf478211a94b3b6dd20738db0b9b132eb66b
   CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
+  naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
   Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
   RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: 4621c28f2c12d3dae3c48652ea260c6b15b40b22
+PODFILE CHECKSUM: a89e99031741746c8e4c94e839c4cea4834c22a8
 
 COCOAPODS: 1.11.3

@@ -19,12 +19,15 @@ final class ShopViewModel {
     var shopDataSource: Observable<[ProductData]> {
         return self.usecase.products
             .map { product in
-                return product.map { ProductData(product: $0)}
+                return product.map { ProductData(product: $0) }
             }
     }
 }
 
 extension ShopViewModel {
+    func requestData() {
+        self.usecase.requestData()
+    }
     
 }
 
