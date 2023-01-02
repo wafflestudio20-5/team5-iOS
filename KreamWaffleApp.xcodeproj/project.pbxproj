@@ -328,6 +328,7 @@
 				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
 				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
 				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
+				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
