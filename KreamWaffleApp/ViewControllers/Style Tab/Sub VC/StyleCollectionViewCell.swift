@@ -73,4 +73,3 @@ final class StyleCollectionViewCell: UICollectionViewCell {
         thumbnailImageView.image = nil
     }
 }
-

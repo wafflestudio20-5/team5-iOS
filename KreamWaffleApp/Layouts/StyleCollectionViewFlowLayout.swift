@@ -25,4 +25,3 @@ class StyleCollectionViewFlowLayout: UICollectionViewFlowLayout {
         fatalError("init(coder:) has not been implemented")
     }
 }
-

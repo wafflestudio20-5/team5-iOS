@@ -16,7 +16,6 @@ final class StyleUsecase {
     
     let stylePostRelay: BehaviorRelay<[StylePost]> = .init(value: [])
     // 얘가 업데이트 되면 얘를 구독하던 애가 거기서 map으로 thumbnail image 뽑아내서 저장한다.
-    //
     // 그 다음에 collectionView를 업데이트한다.
     
     var stylePostList = [StylePost]() {
