@@ -22,6 +22,10 @@ final class ShopViewModel {
                 return product.map { ProductData(product: $0) }
             }
     }
+    
+    var filterDataSource: Observable<[String]> {
+        return self.usecase.filterCategories
+    }
 }
 
 extension ShopViewModel {
