@@ -13,6 +13,7 @@ import RxCocoa
 final class ShopUsecase {
     private let repository: ShopRepository
     private let shopSubject: BehaviorRelay<[Product]> = .init(value: [])
+    private let filterCategoriesSubject: BehaviorRelay<[String]> = .init(value: ["신발", "의류", "패션 잡화", "라이프", "테크"])
     private let disposeBag = DisposeBag()
     private var page: Int = 1
     
@@ -30,8 +31,12 @@ final class ShopUsecase {
     ]
     
     var products: Observable<[Product]> {
-        self.shopSubject.accept(self.productList)
+        self.shopSubject.accept(self.productList) // delete later
         return self.shopSubject.asObservable()
+    }
+    
+    var filterCategories: Observable<[String]> {
+        return self.filterCategoriesSubject.asObservable()
     }
     
     init(repository: ShopRepository) {
@@ -77,4 +82,3 @@ final class ShopUsecase {
         return self.productList[index]
     }
 }
-

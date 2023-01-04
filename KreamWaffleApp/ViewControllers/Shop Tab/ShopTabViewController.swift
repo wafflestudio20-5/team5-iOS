@@ -18,6 +18,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     var header = UIView()
     var searchBar = UISearchBar()
     
+    private let filterCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopFilterCollectionViewFlowLayout())
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCollectionViewFlowLayout())
     
     private let viewModel: ShopViewModel
@@ -38,6 +39,8 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         addSubviews()
         configureSubviews()
+        configureFilterCollectionView()
+        bindFilterCollectionView()
         setupCollectionView()
         bindCollectionView()
     }
@@ -58,11 +61,9 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.add(shopVC)
         self.shopVC.view.frame = CGRect(x: 0, y: self.searchBar.frame.maxY, width: self.view.frame.width, height: self.view.frame.height)
         searchVC.view.isHidden = true
-        
-        
     }
     
-    func configureSearchBar(){
+    private func configureSearchBar(){
         self.searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width - 80, height: 0)
         self.searchBar.searchTextField.addTarget(self, action: #selector(didTapSearchBar), for: .editingDidBegin)
         
@@ -76,11 +77,36 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14, weight: .medium)
     }
     
+    private func configureFilterCollectionView() {
+        // hide scroll bar
+        
+        self.view.addSubview(self.filterCollectionView)
+        self.filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.filterCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.filterCollectionView.bottomAnchor.constraint(equalTo: self.filterCollectionView.topAnchor, constant: 50),
+            self.filterCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            self.filterCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
+        ])
+    }
+    
+    private func bindFilterCollectionView() {
+        self.filterCollectionView.register(FilterCollectionViewCell.self, forCellWithReuseIdentifier: "FilterCollectionViewCell")
+        
+        self.filterCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.filterDataSource
+            .bind(to: self.filterCollectionView.rx.items(cellIdentifier: "FilterCollectionViewCell", cellType: FilterCollectionViewCell.self)) { index, categoryName, cell in
+                cell.configure(categoryName: categoryName)
+            }.disposed(by: self.disposeBag)
+    }
+    
     private func setupCollectionView() {
         self.view.addSubview(collectionView)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.collectionView.topAnchor.constraint(equalTo: self.filterCollectionView.bottomAnchor),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
             self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
@@ -92,8 +118,6 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         
         self.collectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
-        
-        print(self.viewModel.shopDataSource)
         
         self.viewModel.shopDataSource
             .bind(to: self.collectionView.rx.items(cellIdentifier: "ProductCollectionViewCell", cellType: ProductCollectionViewCell.self)) { index, productData, cell in
