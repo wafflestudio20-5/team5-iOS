@@ -329,6 +329,7 @@
 				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
 				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
 				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
+				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
