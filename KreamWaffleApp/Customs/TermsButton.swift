@@ -40,7 +40,7 @@ class TermsButton : UIView {
         let tinted_unchecked = unchecked?.withRenderingMode(.alwaysTemplate)
         let tinted_checked = checked?.withRenderingMode(.alwaysTemplate)
         self.checkButton.setImage(tinted_unchecked, for: .normal)
-        self.checkButton.setImage(tinted_checked, for: .selected)
+        self.checkButton.setImage(tinted_checked, for: .highlighted)
         self.checkButton.tintColor = .systemGray
         self.checkButton.translatesAutoresizingMaskIntoConstraints = false
         self.checkButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
