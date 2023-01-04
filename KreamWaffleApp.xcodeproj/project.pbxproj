@@ -130,6 +130,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2F440B94E568FF33E997E3AD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B2035B578738C582F686B604 /* Pods-KreamWaffleApp.debug.xcconfig */,
+				DCC7DD7F079FBE6CF8B2A98A /* Pods-KreamWaffleApp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		5C2F9C9F295D76E30021D437 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,7 +250,6 @@
 		65F8FBB22962103E00679E72 /* Sub VC */ = {
 			isa = PBXGroup;
 			children = (
-				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
 			);
 			path = "Sub VC";
 			sourceTree = "<group>";
@@ -318,6 +326,9 @@
 			children = (
 				944A1147295D191100F8CDB7 /* ProductCollectionViewCell.swift */,
 				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
+				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
+				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
+				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
 				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
 			);
 			path = Cells;

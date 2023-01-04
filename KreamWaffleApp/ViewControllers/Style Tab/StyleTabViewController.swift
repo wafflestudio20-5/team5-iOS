@@ -23,8 +23,8 @@ class StyleTabViewController: UIViewController {
         let layout = CHTCollectionViewWaterfallLayout()
         layout.itemRenderDirection = .leftToRight
         layout.columnCount = 2
-        layout.minimumColumnSpacing = 5
-        layout.minimumInteritemSpacing = 5
+        layout.minimumColumnSpacing = 10
+        layout.minimumInteritemSpacing = 3
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
         collectionView.register(StyleCollectionViewCell.self, forCellWithReuseIdentifier: StyleCollectionViewCell.identifier)
@@ -108,8 +108,8 @@ class StyleTabViewController: UIViewController {
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.collectionView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0),
-            self.collectionView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+            self.collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
             self.collectionView.topAnchor.constraint(equalTo: self.header.bottomAnchor, constant: 10),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
@@ -124,7 +124,7 @@ extension StyleTabViewController: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let targetImageSize = viewModel.getStyleCellModelListAt(index:indexPath.row).thumbnailImage!.size
 
-        let cellWidth: CGFloat = (view.bounds.width - 10)/2 //셀 가로 크기
+        let cellWidth: CGFloat = (view.bounds.width - 20)/2 //셀 가로 넓이
         let imageWidth = targetImageSize.width
         let imageHeight = targetImageSize.height
         let imageRatio = imageHeight/imageWidth

@@ -37,9 +37,11 @@ class StyleCellModel {
                 switch result {
                 case .success(let value):
                     self.thumbnailImage = value.image
-                    print("Image: \(value.image). Got from: \(value.cacheType)")
                 case .failure(let error):
-                    print("Error: \(error)")
+                    let blankImage = UIImage()
+                    blankImage.withTintColor(.lightGray)
+                    self.thumbnailImage = UIImage()
+                    print(error)
                 }
             }
     }
