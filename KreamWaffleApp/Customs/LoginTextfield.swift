@@ -41,7 +41,7 @@ class LoginTextfield : UIView {
     var pressedButtonImage : String?
     
     var titleLabel = UILabel()
-    var textfield = UITextField()
+    var textfield = UITextField() 
     var bottomLine = UILabel()
     var warningLine = UILabel()
     var button = UIButton()
@@ -198,23 +198,23 @@ class LoginTextfield : UIView {
     }
     
     @objc func endEditTextfield(_ sender: UITextField){
-        switch(self.errorCondition){
-            
-        case .password:
-            if (errorCondition.isValidPassword(input: self.textfield.text ?? "")){
-                self.bottomLine.backgroundColor = .lightGray
-            }else{
-                self.bottomLine.backgroundColor = colors.errorRed
-            }
-        case .email:
-            if (errorCondition.isValidEmail(input: self.textfield.text ?? "")){
-                self.bottomLine.backgroundColor = .lightGray
-            }else{
-                self.bottomLine.backgroundColor = colors.errorRed
-            }
-        case .phoneNumber:
-            //TODO
+        let valid = self.isValid()
+        if (valid){
             self.bottomLine.backgroundColor = .lightGray
+        }else{
+            self.bottomLine.backgroundColor = colors.errorRed
+        }
+    }
+    
+    //외부에서 접근 가능
+    func isValid()->Bool{
+        switch(self.errorCondition){
+        case .email:
+            return errorCondition.isValidEmail(input: self.textfield.text ?? "")
+        case .password:
+            return errorCondition.isValidPassword(input: self.textfield.text ?? "")
+        case .phoneNumber:
+            return errorCondition.isValidPhoneNumber(inpput: self.textfield.text ?? "")
         }
     }
 }

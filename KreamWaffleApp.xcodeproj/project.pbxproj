@@ -15,6 +15,7 @@
 		5C2F9CAD295D7C650021D437 /* StyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CAC295D7C650021D437 /* StyleRepository.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
+		653F17C42965701600949FF8 /* RegisterRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653F17C32965701600949FF8 /* RegisterRepository.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
 		65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F34295B5B01002F250B /* CustomSegmentedControl.swift */; };
 		65653F37295B5B25002F250B /* colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F36295B5B25002F250B /* colors.swift */; };
@@ -65,6 +66,8 @@
 		5C2F9CAC295D7C650021D437 /* StyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleRepository.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
+		653F17C229655F1F00949FF8 /* KreamWaffleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KreamWaffleApp.entitlements; sourceTree = "<group>"; };
+		653F17C32965701600949FF8 /* RegisterRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRepository.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65653F34295B5B01002F250B /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
 		65653F36295B5B25002F250B /* colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = colors.swift; sourceTree = "<group>"; };
@@ -130,18 +133,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2F440B94E568FF33E997E3AD /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B2035B578738C582F686B604 /* Pods-KreamWaffleApp.debug.xcconfig */,
-				DCC7DD7F079FBE6CF8B2A98A /* Pods-KreamWaffleApp.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		5C2F9C9F295D76E30021D437 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				65653F42295B8217002F250B /* Extensions.swift */,
 				5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */,
 			);
 			path = Extensions;
@@ -178,6 +173,7 @@
 			children = (
 				5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */,
 				5C2F9CAC295D7C650021D437 /* StyleRepository.swift */,
+				653F17C32965701600949FF8 /* RegisterRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -188,7 +184,6 @@
 				6520AEAA295EB9CF002D549D /* LoginTextfield.swift */,
 				65653F34295B5B01002F250B /* CustomSegmentedControl.swift */,
 				65653F36295B5B25002F250B /* colors.swift */,
-				65653F42295B8217002F250B /* Extensions.swift */,
 				654D9691295BFC4900B93EE0 /* Constants.swift */,
 				65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */,
 				65DF48962961E13C00AF6CDB /* TermsButton.swift */,
@@ -284,6 +279,7 @@
 		9428AE2E2957170600DC7907 /* KreamWaffleApp */ = {
 			isa = PBXGroup;
 			children = (
+				653F17C229655F1F00949FF8 /* KreamWaffleApp.entitlements */,
 				5C2F9CA9295D7BBD0021D437 /* Repositories */,
 				5C2F9CA4295D7AF90021D437 /* App */,
 				5C2F9C9F295D76E30021D437 /* Extensions */,
@@ -326,8 +322,6 @@
 			children = (
 				944A1147295D191100F8CDB7 /* ProductCollectionViewCell.swift */,
 				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
-				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
-				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
 				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
 				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
 			);
@@ -513,6 +507,7 @@
 				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
 				944A1142295D0DC000F8CDB7 /* Product.swift in Sources */,
 				6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */,
+				653F17C42965701600949FF8 /* RegisterRepository.swift in Sources */,
 				656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */,
 				65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
@@ -651,6 +646,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = KreamWaffleApp/KreamWaffleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZK7MDCDTQ4;
@@ -679,6 +675,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = KreamWaffleApp/KreamWaffleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZK7MDCDTQ4;

@@ -19,10 +19,12 @@ class LoginViewController: UIViewController {
     private var logoImage = UIImageView()
     
     //email field
-    private var emailfield : LoginTextfield?
+    private var emailfield : LoginTextfield? 
+    private var emailValid = false
     
     //password field
     private var passwordfield: LoginTextfield?
+    private var passwordValid = false
     
     //login field
     private var loginButton = UIButton()
@@ -30,8 +32,8 @@ class LoginViewController: UIViewController {
     
     //social login field
     private var naverLoginButton = UIButton()
-    //private var appleLoginButton = UIButton()
-
+    private var googleLoginButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -40,6 +42,7 @@ class LoginViewController: UIViewController {
         addSubviews()
         configureSubviews()
         self.hideKeyboardWhenTappedAround()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +61,7 @@ class LoginViewController: UIViewController {
         self.view.addSubview(helpStack)
         
         self.view.addSubview(naverLoginButton)
+        self.view.addSubview(googleLoginButton)
         
     }
     
@@ -207,24 +211,24 @@ class LoginViewController: UIViewController {
         self.naverLoginButton.clipsToBounds = true
         self.naverLoginButton.addTarget(self, action: #selector(loginWithNaver), for: .touchUpInside)
         
-        /*
-        let Apple_logo = UIImage(named: "Apple_logo")
-        let resized_Apple_logo = resizeImage(image: Apple_logo!, targetSize: CGSize(width: self.view.frame.height/32, height: self.view.frame.height/32))
-        self.appleLoginButton.setImage(resized_Apple_logo, for: .normal)
-        self.appleLoginButton.translatesAutoresizingMaskIntoConstraints = false
-        self.appleLoginButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        self.appleLoginButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
-        self.appleLoginButton.topAnchor.constraint(equalTo: self.naverLoginButton.bottomAnchor, constant: self.view.frame.height/64).isActive = true
-        self.appleLoginButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
-        self.appleLoginButton.setTitle("Apple로 로그인", for: .normal)
-        self.appleLoginButton.configuration?.imagePlacement = .leading
-        self.appleLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        self.appleLoginButton.backgroundColor = .clear
-        self.appleLoginButton.layer.borderWidth = 0.5
-        self.appleLoginButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.appleLoginButton.setTitleColor(.black, for: .normal)
-        self.appleLoginButton.layer.cornerRadius = 10
-        self.appleLoginButton.clipsToBounds = true*/
+        
+        let google_logo = UIImage(named: "Google_logo")
+        let resized_Apple_logo = google_logo?.resize(targetSize: CGSize(width: self.view.frame.height/30, height: self.view.frame.height/30))
+        self.googleLoginButton.setImage(resized_Apple_logo, for: .normal)
+        self.googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        self.googleLoginButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        self.googleLoginButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        self.googleLoginButton.topAnchor.constraint(equalTo: self.naverLoginButton.bottomAnchor, constant: self.view.frame.height/64).isActive = true
+        self.googleLoginButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
+        self.googleLoginButton.setTitle("Google로 로그인", for: .normal)
+        self.googleLoginButton.configuration?.imagePlacement = .leading
+        self.googleLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        self.googleLoginButton.backgroundColor = .clear
+        self.googleLoginButton.layer.borderWidth = 0.5
+        self.googleLoginButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.googleLoginButton.setTitleColor(.black, for: .normal)
+        self.googleLoginButton.layer.cornerRadius = 10
+        self.googleLoginButton.clipsToBounds = true
         
     }
     
