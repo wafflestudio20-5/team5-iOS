@@ -22,16 +22,16 @@ final class StyleViewModel {
         self.usecase = usecase
     }
     
+    func requestStylePostData(page: Int) {
+        self.usecase.requestStylePostData(page: page)
+    }
+    
     func getStylePostListAt(at index: Int) -> StylePost {
         return self.usecase.stylePostList[index]
     }
     
     func getStylePostListCount() -> Int {
         return self.usecase.stylePostList.count
-    }
-    
-    func requestStylePostData(page: Int) {
-        self.usecase.requestStylePostData(page: page)
     }
 }
 

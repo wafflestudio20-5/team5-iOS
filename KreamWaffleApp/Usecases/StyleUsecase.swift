@@ -28,9 +28,16 @@ final class StyleUsecase {
     }
     
     func requestStylePostData(page: Int) {
-        setTestData()
+        // ******* For Testing *********
+        if (page == 1) {
+            setTestData()
+        } else {
+            setTestData(page: page)
+        }
+        // ******* For Testing *********
     }
     
+    // ******* For Testing *********
     // API 세팅 후에는 얘가 API call로 데이터 load 하는 함수가 될 것.
     func setTestData() {
         self.stylePostList = [
@@ -42,5 +49,17 @@ final class StyleUsecase {
             StylePost(imageSources: ["https://kream-phinf.pstatic.net/MjAyMzAxMDNfMTYy/MDAxNjcyNzU2OTg2MDk5.EmFv8HUZNOpwJh6yGELuPX3v6Pmv19WbOPnxvX6a0ugg.ppNvmi85ExMikuGEc5mpjnjOre0uCIpp62usWWERUHQg.JPEG/p_b1f52152926c4d189018324b8808bc43.jpeg?type=l"], id: "iieioaa", numLikes: 6, content: "#데일리룩 #고프코어 #아식스 #코디 #데일리룩 #좋아요 #데일리 #미니멀룩 #가을코디 #남친룩 #남자데일리룩 #남자패션 #갬성", thumbnailImageRatio: 4/3),
         ]
     }
+    
+    func setTestData(page: Int) {
+        let newData = [
+            StylePost(imageSources:["https://kream-phinf.pstatic.net/MjAyMzAxMDJfMTc1/MDAxNjcyNjYzNTAxMzY0.AqlChMQVgHUMvdfgCYkaH3kFqjbqR1_GeM-Cy4ITTXEg.a-Az98SalFV4lyfo-q82hwgAhkeTjKaNQ7VXhR-aMyIg.JPEG/p_b6e2018049c44483be43ab6437f19d18.jpeg?type=l"], id: "j.hingg", numLikes: 4, content: "네번째 게시글", thumbnailImageRatio: 1),
+            StylePost(imageSources:["https://kream-phinf.pstatic.net/MjAyMzAxMDJfMTc1/MDAxNjcyNjY2NjY3Mzgw.9WEQoAE-OzHg1Sp2EM1KyjiOgFo36WlEHe1yGnRCMpkg.lYpvKmgm86affUOWKDN1fA6ypT7M0d4Y_AGrh4Xa_z8g.JPEG/p_591cb1f4cf654239b548c86a9366b31c.jpg?type=l"], id: "ssssom", numLikes: 5, content: "다섯번째 게시글", thumbnailImageRatio: 4/3),
+            StylePost(imageSources: ["https://kream-phinf.pstatic.net/MjAyMzAxMDNfMTYy/MDAxNjcyNzU2OTg2MDk5.EmFv8HUZNOpwJh6yGELuPX3v6Pmv19WbOPnxvX6a0ugg.ppNvmi85ExMikuGEc5mpjnjOre0uCIpp62usWWERUHQg.JPEG/p_b1f52152926c4d189018324b8808bc43.jpeg?type=l"], id: "iieioaa", numLikes: 6, content: "#데일리룩 #고프코어 #아식스 #코디 #데일리룩 #좋아요 #데일리 #미니멀룩 #가을코디 #남친룩 #남자데일리룩 #남자패션 #갬성", thumbnailImageRatio: 4/3),
+        ]
+        
+        self.stylePostList.append(contentsOf: newData)
+    }
+    // ******* For Testing *********
+
 }
 

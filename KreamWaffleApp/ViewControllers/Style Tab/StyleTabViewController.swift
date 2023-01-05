@@ -17,7 +17,7 @@ class StyleTabViewController: UIViewController {
 //    private var header = UIView()
     private var codeSegmented = CustomSegmentedControl(buttonTitle: ["최신"])
     private var searchButton = UIButton()
-    private var cameraButton = UIButton()
+    private lazy var cameraButton = UIButton()
     private var styleTabCollectionViewVC: StyleTabCollectionViewVC
     
     init(viewModel: StyleViewModel) {
@@ -76,6 +76,7 @@ class StyleTabViewController: UIViewController {
         let tintedcameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
         self.cameraButton.setImage(tintedcameraImage, for: .normal)
         self.cameraButton.tintColor = .lightGray
+        
         self.cameraButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.cameraButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
@@ -98,8 +99,4 @@ class StyleTabViewController: UIViewController {
             self.styleTabCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
     }
-}
-
-extension StyleTabViewController: UICollectionViewDelegate{
-    
 }

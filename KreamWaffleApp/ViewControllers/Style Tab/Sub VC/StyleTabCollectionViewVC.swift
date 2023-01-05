@@ -64,7 +64,7 @@ final class StyleTabCollectionViewVC : UIViewController{
     
     func bindCollectionView() {
         self.viewModel.stylePostDataSource
-                    .subscribe { [weak self] event in //Event<[StylePost]>
+                    .subscribe { [weak self] event in
                         switch event {
                         case .next:
                             self!.collectionView.reloadData()
@@ -117,4 +117,11 @@ extension StyleTabCollectionViewVC: UICollectionViewDataSource {
     }
 }
 
-
+extension StyleTabCollectionViewVC : UIScrollViewDelegate  {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+            self.viewModel.requestStylePostData(page: 2)
+        }
+    }
+}
