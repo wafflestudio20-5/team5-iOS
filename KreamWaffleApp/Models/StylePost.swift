@@ -13,12 +13,14 @@ class StylePost: Codable {
     let userId: String
     let numLikes: Int
     let content: String
+    let thumbnailImageRatio: Float // (세로/가로) 비율
     
-    init(imageSources: [String], id: String, numLikes: Int, content: String) {
+    init(imageSources: [String], id: String, numLikes: Int, content: String, thumbnailImageRatio: Float) {
         self.imageSources = imageSources
         self.userId = id
         self.numLikes = numLikes
         self.content = content
+        self.thumbnailImageRatio = thumbnailImageRatio
     }
     
     

@@ -39,12 +39,26 @@ final class StyleCollectionViewCell: UICollectionViewCell {
         setUpLayout()
     }
     
-    
-    func configure(with styleCellModel: StyleCellModel) {
-        self.idLabel.text = styleCellModel.userId
-        self.contentLabel.text = styleCellModel.content
-        self.numLikesLabel.text = "😊 \(styleCellModel.numLikes)"
-        self.thumbnailImageView.image = styleCellModel.thumbnailImage
+    func configure(with stylePost: StylePost) {
+        self.idLabel.text = stylePost.userId
+        self.contentLabel.text = stylePost.content
+        self.numLikesLabel.text = "😊 \(stylePost.numLikes)"
+        
+        let urlString = stylePost.imageSources[0]
+        guard let url = URL.init(string: urlString) else {
+                return
+            }
+        let resource = ImageResource(downloadURL: url)
+
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+            switch result {
+            case .success(let value):
+                self.thumbnailImageView.image = value.image
+            case .failure(let error):
+                print("Error: \(error)")
+                //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
+            }
+        }
     }
     
     override func prepareForReuse() {

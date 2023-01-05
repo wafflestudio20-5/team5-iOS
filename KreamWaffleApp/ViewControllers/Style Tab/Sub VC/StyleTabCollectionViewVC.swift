@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 import CHTCollectionViewWaterfallLayout
+import RxSwift
 
 final class StyleTabCollectionViewVC : UIViewController{
     /*  이 view model을 뭘 끼우느냐에 따라서
      *  1. STYLE탭 메인에서 보여주는 collection view
      *  2. 사용자별 프로필 페이지에서 피드를 보여주는 collection view
      */
-    
+    private let disposeBag = DisposeBag()
     private let viewModel: StyleViewModel
     
     private let collectionView: UICollectionView = {
@@ -42,6 +43,7 @@ final class StyleTabCollectionViewVC : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCollectionView()
+        bindCollectionView()
         requestNewData()
     }
     
@@ -60,6 +62,21 @@ final class StyleTabCollectionViewVC : UIViewController{
         ])
     }
     
+    func bindCollectionView() {
+        self.viewModel.stylePostDataSource
+                    .subscribe { [weak self] event in //Event<[StylePost]>
+                        switch event {
+                        case .next:
+                            self!.collectionView.reloadData()
+                        case .completed:
+                            break
+                        case .error:
+                            break
+                        }
+                    }
+                    .disposed(by: disposeBag)
+    }
+    
     func requestNewData() {
         self.viewModel.requestStylePostData(page: 1)
     }
@@ -71,14 +88,12 @@ final class StyleTabCollectionViewVC : UIViewController{
 
 extension StyleTabCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let targetImageSize = viewModel.getStyleCellModelListAt(index:indexPath.row).thumbnailImage!.size
-
+        
+        let targetImageRatio = CGFloat(viewModel.getStylePostListAt(at: indexPath.row).thumbnailImageRatio)
+        
         let cellWidth: CGFloat = (view.bounds.width - 20)/2 //셀 가로 넓이
-        let imageWidth = targetImageSize.width
-        let imageHeight = targetImageSize.height
-        let imageRatio = imageHeight/imageWidth
 
-        return CGSize(width: cellWidth, height: imageRatio * cellWidth + 60)
+        return CGSize(width: cellWidth, height: targetImageRatio * cellWidth + 60)
     }
 }
 
@@ -88,13 +103,13 @@ extension StyleTabCollectionViewVC: UICollectionViewDataSource {
             return StyleCollectionViewCell()
         }
         
-        cell.configure(with: self.viewModel.getStyleCellModelListAt(index: indexPath.row))
+        cell.configure(with: self.viewModel.getStylePostListAt(at: indexPath.row))
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.viewModel.getStyleCellModelListNum()
+        return self.viewModel.getStylePostListCount()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
