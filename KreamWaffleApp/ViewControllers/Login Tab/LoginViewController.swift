@@ -153,6 +153,7 @@ class LoginViewController: UIViewController {
         divider_1.widthAnchor.constraint(equalToConstant: 1).isActive = true
         divider_1.heightAnchor.constraint(equalToConstant: self.view.frame.height/150).isActive = true
         
+        /*
         let findEmail = UIButton()
         findEmail.setTitle("이메일 찾기", for: .normal)
         findEmail.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -164,7 +165,7 @@ class LoginViewController: UIViewController {
         divider_2.backgroundColor = colors.lessLightGray
         divider_2.translatesAutoresizingMaskIntoConstraints = false
         divider_2.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        divider_2.heightAnchor.constraint(equalToConstant: self.view.frame.height/150).isActive = true
+        divider_2.heightAnchor.constraint(equalToConstant: self.view.frame.height/150).isActive = true*/
         
         let findPassword = UIButton()
         findPassword.setTitle("비밀번호 찾기", for: .normal)
@@ -172,23 +173,30 @@ class LoginViewController: UIViewController {
         findPassword.backgroundColor = .clear
         findPassword.translatesAutoresizingMaskIntoConstraints = false
         findPassword.setTitleColor(.black, for: .normal)
+        findPassword.addTarget(self, action: #selector(didTapFindPassword), for: .touchUpInside)
         
-        self.helpStack.addArrangedSubviews([signup, divider_2, findEmail, divider_1, findPassword])
+        self.helpStack.addArrangedSubviews([signup, divider_1, findPassword])
         self.helpStack.backgroundColor = .clear
         self.helpStack.translatesAutoresizingMaskIntoConstraints = false
         self.helpStack.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         self.helpStack.heightAnchor.constraint(equalToConstant: self.view.frame.height/32).isActive = true
         self.helpStack.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: self.view.frame.height/40).isActive = true
-        self.helpStack.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40).isActive = true
-        self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40).isActive = true
+        self.helpStack.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 80).isActive = true
+        self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -80).isActive = true
     }
     
     
     @objc func didTapSignup(){
         let signupVC = SignUpViewController()
         signupVC.modalPresentationStyle = .fullScreen
-        self.present(signupVC, animated: false)
+        self.present(signupVC, animated: true)
         //self.present(signupVC, animated: true)
+    }
+    
+    @objc func didTapFindPassword(){
+        let findpasswordVC = FindPasswordViewController()
+        findpasswordVC.modalPresentationStyle = .fullScreen
+        self.present(findpasswordVC, animated: true)
     }
     
     func configureSocialLogin(){

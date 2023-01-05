@@ -21,38 +21,81 @@ class LoginRepository {
     
     private var semaphore = DispatchSemaphore (value: 0)
     private let apiKey = "f330b07acf479c98b184db47a4d2608b"
-    private let baseAPIURL = "https://api.themoviedb.org/3"
+    private let baseAPIURL = "http://15.165.92.103/accounts"
     private let urlSession = URLSession.shared
     
     init() {}
     
-    /*
-    func registerAccount(with email: String, password: String, completion: Bool){
-        let URLString = "\(baseAPIURL)/movie/\(endpoint.rawValue)?api_key=\(apiKey)&language=en-US&page=\"
+    func registerAccount(with email: String, password: String, shoe_size: Int){
+        let URLString = "\(baseAPIURL)/registration/"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
-            completion(.failure(.invalidEndPoint))
             print("url error")
             return
         }
         
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-        guard error == nil else {
-            print(String(describing: error))
-            return }
-        guard let data = data else {
-            self.semaphore.signal()
-            return
-        }
+        //TODO: request X-CSRFT token first?
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        //request.setValue("CDZtko1uXdwHLfx26ArX3oW43yQxtGjTft3MSfHl8aOZAWdinyIpHG5K7xxLKGYM", forHTTPHeaderField: "X-CSRFToken")
+        request.method = .post
+        
+        let parameters: [String: Any] = [
+            "email": email,
+            "password1": password,
+            "password2": password,
+            "shoe_size": shoe_size,
+        ]
+        
         do {
-            let results : MovieResponse = try JSONDecoder().decode(MovieResponse.self, from: data)
-            completion(.success(results))
-            self.semaphore.signal()
-            } catch {
+            // convert parameters to Data and assign dictionary to httpBody of request
+            request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+          } catch let error {
             print(error.localizedDescription)
-        }
-        }
-        task.resume()
+            return
+          }
+        
+        // create dataTask using the session object to send data to the server
+          let task = urlSession.dataTask(with: request) { data, response, error in
+            
+            if let error = error {
+              print("Post Request Error: \(error.localizedDescription)")
+              return
+            }
+            
+            // ensure there is valid response code returned from this HTTP response
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode)
+            else {
+              print("Invalid Response received from the server")
+                print(response as Any)
+              return
+            }
+            
+            // ensure there is data returned
+            guard let responseData = data else {
+              print("nil Data received from the server")
+              return
+            }
+            
+            do {
+              // create json object from data or use JSONDecoder to convert to Model stuct
+              if let jsonResponse = try JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? [String: Any] {
+                print(jsonResponse)
+                // handle json response
+              } else {
+                print("data maybe corrupted or in wrong format")
+                throw URLError(.badServerResponse)
+              }
+            } catch let error {
+              print(error.localizedDescription)
+            }
+          }
+          // perform the task
+          task.resume()
         self.semaphore.wait()
-    }*/
+        }
+           
+        
+    }
    
-}

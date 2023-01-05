@@ -11,15 +11,13 @@ import RxCocoa
 
 class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
-    //TODO: if nothing in textfield for email --> button should not be visible
-    //TODO: even if there is nothing in textfield, the error should show
-
     var backButton = UIButton()
     var titleLabel = UILabel()
     var emailField : LoginTextfield?
     var passwordField : LoginTextfield?
     
     var sizeField : ShoeSizefield?
+    var sizeSelected = false
     
     var necessaryTerms : TermsButton?
     var additionalTerms : TermsButton?
@@ -38,6 +36,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.emailField?.textfield.becomeFirstResponder()
         addSubviews()
         configureSubviews()
+        self.hideKeyboardWhenTappedAround()
     }
     
     @objc func didSelectShoeSize(_ notification : Notification){
@@ -45,6 +44,8 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         //0 뜨면 에러임.
         self.sizeField?.textfield.text = String(size)
         self.sizeField?.textfield.textColor = .black
+        self.sizeSelected = true
+        allFieldValid()
     }
     
     func addSubviews(){
@@ -95,12 +96,14 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.emailField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.emailField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.emailField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        self.emailField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
         
         self.passwordField?.translatesAutoresizingMaskIntoConstraints = false
         self.passwordField?.topAnchor.constraint(equalTo: self.emailField!.bottomAnchor, constant: 30).isActive = true
         self.passwordField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.passwordField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.passwordField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        self.passwordField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
     }
     
     func configureShoeSizeField(){
@@ -118,6 +121,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.necessaryTerms?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.necessaryTerms?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.necessaryTerms?.heightAnchor.constraint(greaterThanOrEqualToConstant: 30).isActive = true
+        self.necessaryTerms?.checkButton.addTarget(self, action: #selector(allFieldValid), for: .touchUpInside)
         
         self.additionalTerms?.translatesAutoresizingMaskIntoConstraints = false
         self.additionalTerms?.topAnchor.constraint(equalTo: self.necessaryTerms!.bottomAnchor, constant: 15).isActive = true
@@ -138,6 +142,22 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.signupButton.titleLabel?.textColor = .white
         self.signupButton.layer.cornerRadius = 10
         self.signupButton.clipsToBounds = true
+        self.signupButton.addTarget(self, action: #selector(didTapSignup), for: .touchUpInside)
+    }
+    
+    @objc func allFieldValid(){
+        if (self.sizeSelected && ((self.emailField?.isValid()) != nil) && ((self.passwordField?.isValid()) != nil) && ((self.necessaryTerms?.checked) != false)){
+            self.signupButton.backgroundColor = .black
+            self.signupButton.setTitleColor(.white, for: .normal)
+        }else{
+            self.signupButton.backgroundColor = .systemGray
+        }
+    }
+    
+    //TODO: connect with view model
+    @objc func didTapSignup(){
+        let repository = LoginRepository()
+        repository.registerAccount(with: "user@example.commmmmmm`", password: "sample05#", shoe_size: 220)
     }
     
     @objc func didTapSelectShoeSize(){
