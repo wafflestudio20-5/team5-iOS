@@ -43,7 +43,7 @@ class StyleTabViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationItem.titleView = self.header
+//        self.navigationItem.titleView = self.header
         addSubviews()
         configureHeader()
         setUpCollectionView()
@@ -65,10 +65,12 @@ class StyleTabViewController: UIViewController {
         self.searchButton.setImage(tintedSearchImage, for: .normal)
         self.searchButton.tintColor = .black
         self.searchButton.translatesAutoresizingMaskIntoConstraints = false
-        self.searchButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
-        self.searchButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        self.searchButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        self.searchButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            self.searchButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            self.searchButton.heightAnchor.constraint(equalToConstant: 50),
+            self.searchButton.widthAnchor.constraint(equalToConstant: 50),
+            self.searchButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor),
+        ])
         
         //configure camera button
         let cameraImage = UIImage(systemName: "camera.circle.fill")
@@ -76,28 +78,33 @@ class StyleTabViewController: UIViewController {
         self.cameraButton.setImage(tintedcameraImage, for: .normal)
         self.cameraButton.tintColor = .lightGray
         self.cameraButton.translatesAutoresizingMaskIntoConstraints = false
-        self.cameraButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-        self.cameraButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        self.cameraButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        self.cameraButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            self.cameraButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            self.cameraButton.widthAnchor.constraint(equalToConstant: 50),
+            self.cameraButton.heightAnchor.constraint(equalToConstant: 50),
+            self.cameraButton.centerYAnchor.constraint(equalTo: self.header.centerYAnchor),
+        ])
     }
     
     
     func configureSegmentedControl(){
         self.header.backgroundColor = .white
         self.header.translatesAutoresizingMaskIntoConstraints = false
-        self.header.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        self.header.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
-        self.header.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.header.heightAnchor.constraint(equalToConstant: 40).isActive = true
-                                    
+        NSLayoutConstraint.activate([
+            self.header.heightAnchor.constraint(equalToConstant: 40),
+            self.header.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -50),
+            self.header.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.header.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+                         
         self.codeSegmented.backgroundColor = .white
         self.codeSegmented.translatesAutoresizingMaskIntoConstraints = false
-        self.codeSegmented.centerXAnchor.constraint(equalTo: self.header.centerXAnchor).isActive = true
-        self.codeSegmented.centerYAnchor.constraint(equalTo: self.header.centerYAnchor).isActive = true
-        self.codeSegmented.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        self.codeSegmented.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
+        NSLayoutConstraint.activate([
+            self.codeSegmented.centerXAnchor.constraint(equalTo: self.header.centerXAnchor),
+            self.codeSegmented.centerYAnchor.constraint(equalTo: self.header.centerYAnchor),
+            self.codeSegmented.widthAnchor.constraint(equalToConstant: 50),
+            self.codeSegmented.heightAnchor.constraint(equalToConstant: 30),
+        ])
     }
     
     func setUpCollectionView() {
