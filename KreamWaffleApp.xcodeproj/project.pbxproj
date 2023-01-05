@@ -13,6 +13,7 @@
 		5C2F9CA8295D7B600021D437 /* StyleUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA7295D7B600021D437 /* StyleUsecase.swift */; };
 		5C2F9CAB295D7BCA0021D437 /* ShopRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */; };
 		5C2F9CAD295D7C650021D437 /* StyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CAC295D7C650021D437 /* StyleRepository.swift */; };
+		5CC0F56629668F26004E0819 /* StyleTabCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC0F56529668F26004E0819 /* StyleTabCollectionViewVC.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
@@ -63,6 +64,7 @@
 		5C2F9CA7295D7B600021D437 /* StyleUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUsecase.swift; sourceTree = "<group>"; };
 		5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopRepository.swift; sourceTree = "<group>"; };
 		5C2F9CAC295D7C650021D437 /* StyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleRepository.swift; sourceTree = "<group>"; };
+		5CC0F56529668F26004E0819 /* StyleTabCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabCollectionViewVC.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -130,15 +132,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2F440B94E568FF33E997E3AD /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B2035B578738C582F686B604 /* Pods-KreamWaffleApp.debug.xcconfig */,
-				DCC7DD7F079FBE6CF8B2A98A /* Pods-KreamWaffleApp.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		5C2F9C9F295D76E30021D437 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -182,6 +175,14 @@
 			path = Repositories;
 			sourceTree = "<group>";
 		};
+		5CC0F56429668F14004E0819 /* Sub VC */ = {
+			isa = PBXGroup;
+			children = (
+				5CC0F56529668F26004E0819 /* StyleTabCollectionViewVC.swift */,
+			);
+			path = "Sub VC";
+			sourceTree = "<group>";
+		};
 		65653F33295B5AF2002F250B /* Customs */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,7 +202,7 @@
 		65653F38295B73B2002F250B /* Style Tab */ = {
 			isa = PBXGroup;
 			children = (
-				65F8FBB22962103E00679E72 /* Sub VC */,
+				5CC0F56429668F14004E0819 /* Sub VC */,
 				9428AE4A2957197B00DC7907 /* StyleTabViewController.swift */,
 			);
 			path = "Style Tab";
@@ -245,13 +246,6 @@
 				65188907295C1CE70026E003 /* LoginViewController.swift */,
 			);
 			path = "Login Tab";
-			sourceTree = "<group>";
-		};
-		65F8FBB22962103E00679E72 /* Sub VC */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Sub VC";
 			sourceTree = "<group>";
 		};
 		9409BB6929587BB200107717 /* ViewModels */ = {
@@ -326,8 +320,6 @@
 			children = (
 				944A1147295D191100F8CDB7 /* ProductCollectionViewCell.swift */,
 				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
-				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
-				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
 				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
 				944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */,
 			);
@@ -479,6 +471,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CC0F56629668F26004E0819 /* StyleTabCollectionViewVC.swift in Sources */,
 				5C2F9CAB295D7BCA0021D437 /* ShopRepository.swift in Sources */,
 				65F8FBB8296211E000679E72 /* ProfileSubviewSubCell.swift in Sources */,
 				5C2F9CAD295D7C650021D437 /* StyleRepository.swift in Sources */,
