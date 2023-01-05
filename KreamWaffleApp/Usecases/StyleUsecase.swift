@@ -29,12 +29,12 @@ final class StyleUsecase {
     init (repository: StyleRepository) {
         self.repository = repository
         subscribeStylePostRelay()
-        setTestData()
+        requestStylePostData(page: 1)
     }
     
     func subscribeStylePostRelay() {
         self.stylePostRelay
-            .subscribe { event in //Event<[StylePost]>
+            .subscribe { [weak self] event in //Event<[StylePost]>
                 switch event {
                 case .next:
                     var list = [StyleCellModel]()
@@ -43,17 +43,22 @@ final class StyleUsecase {
                             list.append(StyleCellModel(stylePost: $0))
                         }
                     }
-                    self.styleCellModelList = list
+                    self!.styleCellModelList = list
+                    //여기서 notificatioin center로 알림
                 case .completed:
                     break
                 case .error:
                     break
                 }
-                
             }
             .disposed(by: disposeBag)
     }
     
+    func requestStylePostData(page: Int) {
+        setTestData()
+    }
+    
+    // API 세팅 후에는 얘가 API call로 데이터 load 하는 함수가 될 것.
     func setTestData() {
         self.stylePostList = [
             StylePost(imageSources: ["https://kream-phinf.pstatic.net/MjAyMzAxMDNfMjY3/MDAxNjcyNzU0OTAwOTY3.toeDt1DlK3krk9xBjBzhVsx2GhQsYNx4sA4PQxWjwSYg.Cph6_U3j9iVvKvoUEbObe6Lu7q7kDcXjML2FYCfR3Wkg.JPEG/p_bdd6d1073d3d4b43b0eda8b2d996e972.jpeg?type=l"], id: "mangocheezz", numLikes: 1, content: "아더에러 ✨"),

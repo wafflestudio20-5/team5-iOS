@@ -25,5 +25,9 @@ final class StyleViewModel {
     func getStyleCellModelListNum() -> Int {
         return self.usecase.styleCellModelList.count
     }
+    
+    func requestStylePostData(page: Int) {
+        self.usecase.requestStylePostData(page: page)
+    }
 }
 

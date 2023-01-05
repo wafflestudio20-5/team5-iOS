@@ -8,12 +8,14 @@
 import Foundation
 import UIKit
 import CHTCollectionViewWaterfallLayout
-import RxSwift
-import RxCocoa
 
 final class StyleTabCollectionViewVC : UIViewController{
+    /*  이 view model을 뭘 끼우느냐에 따라서
+     *  1. STYLE탭 메인에서 보여주는 collection view
+     *  2. 사용자별 프로필 페이지에서 피드를 보여주는 collection view
+     */
+    
     private let viewModel: StyleViewModel
-    private let disposeBag = DisposeBag()
     
     private let collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
@@ -40,6 +42,7 @@ final class StyleTabCollectionViewVC : UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpCollectionView()
+        requestNewData()
     }
     
     func setUpCollectionView() {
@@ -55,6 +58,14 @@ final class StyleTabCollectionViewVC : UIViewController{
             self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    func requestNewData() {
+        self.viewModel.requestStylePostData(page: 1)
+    }
+    
+    func requestStylePostData(page: Int) {
+        self.viewModel.requestStylePostData(page: page)
     }
 }
 
@@ -90,3 +101,5 @@ extension StyleTabCollectionViewVC: UICollectionViewDataSource {
         return 1
     }
 }
+
+
