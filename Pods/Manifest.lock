@@ -1,5 +1,7 @@
 PODS:
   - Alamofire (5.6.2)
+  - AlamofireImage (4.2.0):
+    - Alamofire (~> 5.4)
   - BetterSegmentedControl (2.0.1)
   - Charts (3.4.0):
     - Charts/Core (= 3.4.0)
@@ -10,6 +12,15 @@ PODS:
   - CHTCollectionViewWaterfallLayout (0.9.10):
     - CHTCollectionViewWaterfallLayout/Swift (= 0.9.10)
   - CHTCollectionViewWaterfallLayout/Swift (0.9.10)
+  - ImageSlideshow (1.9.2):
+    - ImageSlideshow/Core (= 1.9.2)
+  - ImageSlideshow/Alamofire (1.9.2):
+    - AlamofireImage (~> 4.0)
+    - ImageSlideshow/Core
+  - ImageSlideshow/Core (1.9.2)
+  - ImageSlideshow/Kingfisher (1.9.2):
+    - ImageSlideshow/Core
+    - Kingfisher (> 3.0)
   - Kingfisher (7.4.1)
   - naveridlogin-sdk-ios (4.1.5)
   - Realm (3.18.0):
@@ -29,6 +40,9 @@ DEPENDENCIES:
   - BetterSegmentedControl (~> 2.0)
   - ChartsRealm
   - CHTCollectionViewWaterfallLayout
+  - ImageSlideshow (~> 1.9.0)
+  - ImageSlideshow/Alamofire
+  - ImageSlideshow/Kingfisher
   - Kingfisher (~> 7.0)
   - naveridlogin-sdk-ios
   - RxCocoa (= 6.5.0)
@@ -37,10 +51,12 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - AlamofireImage
     - BetterSegmentedControl
     - Charts
     - ChartsRealm
     - CHTCollectionViewWaterfallLayout
+    - ImageSlideshow
     - Kingfisher
     - naveridlogin-sdk-ios
     - Realm
@@ -51,10 +67,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   BetterSegmentedControl: 09607b27861d49cbce48b7673b74f9150a3d371a
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   ChartsRealm: 2ae8bf478211a94b3b6dd20738db0b9b132eb66b
   CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
+  ImageSlideshow: be305b54eaf2b2cfc7a7141c7c734605d44dc07d
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
   Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
@@ -63,6 +81,6 @@ SPEC CHECKSUMS:
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: a89e99031741746c8e4c94e839c4cea4834c22a8
+PODFILE CHECKSUM: 5aab215bdecd19d021e9ab0ae2fd2c1a401df3e3
 
 COCOAPODS: 1.11.3

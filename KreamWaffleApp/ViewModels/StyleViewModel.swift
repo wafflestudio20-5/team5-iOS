@@ -13,17 +13,25 @@ import RxCocoa
 final class StyleViewModel {
     private let usecase: StyleUsecase
     private let disposeBag = DisposeBag()
+    
+    var stylePostDataSource: Observable<[StylePost]> {
+        return usecase.stylePostRelay.asObservable()
+    }
         
     init(usecase: StyleUsecase) {
         self.usecase = usecase
     }
     
-    func getStyleCellModelListAt(index: Int) -> StyleCellModel {
-        return self.usecase.styleCellModelList[index]
+    func requestStylePostData(page: Int) {
+        self.usecase.requestStylePostData(page: page)
     }
     
-    func getStyleCellModelListNum() -> Int {
-        return self.usecase.styleCellModelList.count
+    func getStylePostAt(at index: Int) -> StylePost {
+        return self.usecase.stylePostList[index]
+    }
+    
+    func getStylePostListCount() -> Int {
+        return self.usecase.stylePostList.count
     }
 }
 
