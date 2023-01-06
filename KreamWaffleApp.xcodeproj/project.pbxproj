@@ -16,6 +16,7 @@
 		5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */; };
 		5CB810DF29683D4E0021FDD6 /* StyleTabDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DE29683D4E0021FDD6 /* StyleTabDetailRepository.swift */; };
 		5CB810E129683D6A0021FDD6 /* StyleTabDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */; };
+		5CB810E529684F000021FDD6 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
 		6527350829680B8100C859B8 /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350729680B8100C859B8 /* EndPoint.swift */; };
@@ -75,6 +76,7 @@
 		5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabPostDetailViewController.swift; sourceTree = "<group>"; };
 		5CB810DE29683D4E0021FDD6 /* StyleTabDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabDetailRepository.swift; sourceTree = "<group>"; };
 		5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabDetailViewModel.swift; sourceTree = "<group>"; };
+		5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
 		6527350729680B8100C859B8 /* EndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				65DF48962961E13C00AF6CDB /* TermsButton.swift */,
 				65F8FBB5296211B800679E72 /* ProfileSubview.swift */,
 				65F8FBB7296211E000679E72 /* ProfileSubviewSubCell.swift */,
+				5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */,
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C2F9CAB295D7BCA0021D437 /* ShopRepository.swift in Sources */,
+				5CB810E529684F000021FDD6 /* UnderlineSegmentedControl.swift in Sources */,
 				65F8FBB8296211E000679E72 /* ProfileSubviewSubCell.swift in Sources */,
 				5C2F9CAD295D7C650021D437 /* StyleRepository.swift in Sources */,
 				9428AE47295718E200DC7907 /* ShopViewModel.swift in Sources */,

@@ -21,6 +21,11 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        setUpNavigationBar()
+    }
+    
+    func setUpNavigationBar() {
         self.navigationController?.navigationBar.tintColor = .lightGray
+        self.navigationItem.title = "최신"
     }
 }
