@@ -85,6 +85,7 @@ class ShoeSizefield : UIView {
         self.button.centerYAnchor.constraint(equalTo: self.textfield.centerYAnchor).isActive = true
     }
     
+    
     //외부에서 접근가능함.
     func setTextfield(SelectedSize: Int){
         self.selectedSize = SelectedSize

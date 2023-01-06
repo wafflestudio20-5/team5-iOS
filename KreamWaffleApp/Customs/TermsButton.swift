@@ -12,6 +12,10 @@ class TermsButton : UIView {
     var checkButton = UIButton()
     var titleLabel = UILabel()
     var  rightButton = UIButton()
+    var checked = false
+    
+    let tinted_unchecked = UIImage(systemName: "checkmark.square")?.withRenderingMode(.alwaysTemplate)
+    let tinted_checked = UIImage(systemName: "checkmark.square.fill")?.withRenderingMode(.alwaysTemplate)
     
     var titleString : String?
     
@@ -26,7 +30,7 @@ class TermsButton : UIView {
         self.backgroundColor = .clear
         self.addSubview(checkButton)
         self.addSubview(titleLabel)
-        self.addSubview(rightButton)
+        //self.addSubview(rightButton)
         configureDesigns()
     }
     
@@ -35,13 +39,9 @@ class TermsButton : UIView {
     }
     
     func configureDesigns(){
-        let unchecked = UIImage(systemName: "checkmark.square")
-        let checked = UIImage(systemName: "checkmark.square.fill")
-        let tinted_unchecked = unchecked?.withRenderingMode(.alwaysTemplate)
-        let tinted_checked = checked?.withRenderingMode(.alwaysTemplate)
         self.checkButton.setImage(tinted_unchecked, for: .normal)
-        self.checkButton.setImage(tinted_checked, for: .selected)
-        self.checkButton.tintColor = .systemGray
+        self.checkButton.addTarget(self, action: #selector(switcher), for: .touchUpInside)
+        self.checkButton.tintColor = .black
         self.checkButton.translatesAutoresizingMaskIntoConstraints = false
         self.checkButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
         self.checkButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
@@ -55,12 +55,22 @@ class TermsButton : UIView {
         self.titleLabel.leadingAnchor.constraint(equalTo: self.checkButton.trailingAnchor, constant: 10).isActive = true
         self.titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
+        /*
         self.rightButton.translatesAutoresizingMaskIntoConstraints = false
         self.rightButton.translatesAutoresizingMaskIntoConstraints = false
         self.rightButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         self.rightButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.rightButton.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        self.rightButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.rightButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true*/
         
+    }
+    
+    @objc func switcher(){
+        self.checked = !self.checked
+        if (self.checked){
+            self.checkButton.setImage(tinted_checked, for: .normal)
+        }else{
+            self.checkButton.setImage(tinted_unchecked, for: .normal)
+        }
     }
 }

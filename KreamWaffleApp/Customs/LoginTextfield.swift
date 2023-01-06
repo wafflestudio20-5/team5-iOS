@@ -15,7 +15,7 @@ enum errorCondition{
     case phoneNumber
     
     public func isValidPassword(input: String)->Bool{
-        let passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*()\\-_=+{}|?>.<,:;~`’]{8,}$"
+        let passwordRegex = "^(?=.*[a-z])(?=.*[$@$#!%*?&]).{8,}$"
         let passwordPred = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
         return passwordPred.evaluate(with: input)
     }
@@ -41,7 +41,7 @@ class LoginTextfield : UIView {
     var pressedButtonImage : String?
     
     var titleLabel = UILabel()
-    var textfield = UITextField()
+    var textfield = UITextField() 
     var bottomLine = UILabel()
     var warningLine = UILabel()
     var button = UIButton()
@@ -94,7 +94,27 @@ class LoginTextfield : UIView {
         self.textfield.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         self.textfield.addTarget(self, action: #selector(startEditTextfield(_:)), for: .editingChanged)
         self.textfield.addTarget(self, action: #selector(endEditTextfield(_:)), for: .editingDidEnd)
+        self.textfield.addTarget(self, action: #selector(touchedTextfield(_:)), for: .editingDidBegin)
+        if (self.errorCondition == .password){
+            self.textfield.isSecureTextEntry =  true
+        }
     }
+    
+    @objc func touchedTextfield(_ sender: UITextField){
+        self.titleLabel.textColor = .black
+        self.bottomLine.backgroundColor = .black
+        self.warningLine.textColor = .clear
+    }
+    
+    @objc func changedTextfield(){
+        if (self.textfield.hasText){
+            self.button.tintColor = .darkGray
+        }else{
+            self.button.tintColor = .clear
+        }
+    }
+    
+    
     
     func configureErrorMessage(){
         self.bottomLine.backgroundColor = .lightGray
@@ -129,6 +149,8 @@ class LoginTextfield : UIView {
             buttonWidth = 25
             buttonHeight = 20
         case .email, .phoneNumber:
+            self.textfield.addTarget(self, action: #selector(changedTextfield), for: .allEditingEvents)
+            self.button.tintColor = .clear
             buttonWidth = 25
             buttonHeight = 25
         }
@@ -148,6 +170,7 @@ class LoginTextfield : UIView {
     
     @objc func didTapEmptyTextField(){
         self.textfield.text?.removeAll()
+        self.button.tintColor = .clear
     }
     
     @objc func didTapHideTextfield(){
@@ -167,9 +190,15 @@ class LoginTextfield : UIView {
     
     @objc func startEditTextfield(_ sender: UITextField){
         
+        self.titleLabel.textColor = .black
+        self.bottomLine.backgroundColor = .black
+        
         switch(self.errorCondition){
         case .email:
-            self.bottomLine.backgroundColor = .black
+            if (sender.hasText){
+                self.button.tintColor = .darkGray
+            }
+            self.titleLabel.textColor = colors.errorRed
             if(!errorCondition.isValidEmail(input: self.textfield.text ?? "")){
                 self.titleLabel.textColor = colors.errorRed
                 self.warningLine.textColor = colors.errorRed
@@ -180,7 +209,6 @@ class LoginTextfield : UIView {
             }
             
         case .password:
-            self.bottomLine.backgroundColor = .black
             if(!errorCondition.isValidPassword(input: self.textfield.text ?? "")){
                 self.titleLabel.textColor = colors.errorRed
                 self.warningLine.textColor = colors.errorRed
@@ -198,23 +226,25 @@ class LoginTextfield : UIView {
     }
     
     @objc func endEditTextfield(_ sender: UITextField){
-        switch(self.errorCondition){
-            
-        case .password:
-            if (errorCondition.isValidPassword(input: self.textfield.text ?? "")){
-                self.bottomLine.backgroundColor = .lightGray
-            }else{
-                self.bottomLine.backgroundColor = colors.errorRed
-            }
-        case .email:
-            if (errorCondition.isValidEmail(input: self.textfield.text ?? "")){
-                self.bottomLine.backgroundColor = .lightGray
-            }else{
-                self.bottomLine.backgroundColor = colors.errorRed
-            }
-        case .phoneNumber:
-            //TODO
+        let valid = (self.isValid() && ((self.textfield.text) != nil))
+        if (valid){
             self.bottomLine.backgroundColor = .lightGray
+        }else{
+            self.bottomLine.backgroundColor = colors.errorRed
+            self.warningLine.textColor = colors.errorRed
+            self.titleLabel.textColor = colors.errorRed
+        }
+    }
+    
+    //외부에서 접근 가능
+    func isValid()->Bool{
+        switch(self.errorCondition){
+        case .email:
+            return errorCondition.isValidEmail(input: self.textfield.text ?? "")
+        case .password:
+            return errorCondition.isValidPassword(input: self.textfield.text ?? "")
+        case .phoneNumber:
+            return errorCondition.isValidPhoneNumber(inpput: self.textfield.text ?? "")
         }
     }
 }

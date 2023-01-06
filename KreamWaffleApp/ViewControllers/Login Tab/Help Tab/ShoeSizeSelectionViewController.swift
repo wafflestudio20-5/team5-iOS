@@ -22,12 +22,17 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(forName: Notification.Name("didSelectShoeSize"), object: nil, queue: nil, using: didSelectShoeSize)
         self.view.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 250/255.0, alpha: 1.0)
         bind()
         self.view.addSubview(titleLabel)
         self.view.addSubview(backButton)
         self.view.addSubview(sizeView)
         configureCollectionView()
+    }
+    
+    @objc func didSelectShoeSize(_ notification: Notification){
+        self.dismiss(animated: true)
     }
     
     private func bind(){

@@ -12,6 +12,7 @@ import Kingfisher
 
 class LoginViewController: UIViewController {
     
+    //TODO: 나중에 의존성 수정하기
     
     let NaverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
@@ -19,10 +20,12 @@ class LoginViewController: UIViewController {
     private var logoImage = UIImageView()
     
     //email field
-    private var emailfield : LoginTextfield?
+    private var emailfield : LoginTextfield? 
+    private var emailValid = false
     
     //password field
     private var passwordfield: LoginTextfield?
+    private var passwordValid = false
     
     //login field
     private var loginButton = UIButton()
@@ -30,8 +33,8 @@ class LoginViewController: UIViewController {
     
     //social login field
     private var naverLoginButton = UIButton()
-    //private var appleLoginButton = UIButton()
-
+    private var googleLoginButton = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -40,6 +43,7 @@ class LoginViewController: UIViewController {
         addSubviews()
         configureSubviews()
         self.hideKeyboardWhenTappedAround()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +62,7 @@ class LoginViewController: UIViewController {
         self.view.addSubview(helpStack)
         
         self.view.addSubview(naverLoginButton)
+        self.view.addSubview(googleLoginButton)
         
     }
     
@@ -149,6 +154,7 @@ class LoginViewController: UIViewController {
         divider_1.widthAnchor.constraint(equalToConstant: 1).isActive = true
         divider_1.heightAnchor.constraint(equalToConstant: self.view.frame.height/150).isActive = true
         
+        /*
         let findEmail = UIButton()
         findEmail.setTitle("이메일 찾기", for: .normal)
         findEmail.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -160,7 +166,7 @@ class LoginViewController: UIViewController {
         divider_2.backgroundColor = colors.lessLightGray
         divider_2.translatesAutoresizingMaskIntoConstraints = false
         divider_2.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        divider_2.heightAnchor.constraint(equalToConstant: self.view.frame.height/150).isActive = true
+        divider_2.heightAnchor.constraint(equalToConstant: self.view.frame.height/150).isActive = true*/
         
         let findPassword = UIButton()
         findPassword.setTitle("비밀번호 찾기", for: .normal)
@@ -168,23 +174,30 @@ class LoginViewController: UIViewController {
         findPassword.backgroundColor = .clear
         findPassword.translatesAutoresizingMaskIntoConstraints = false
         findPassword.setTitleColor(.black, for: .normal)
+        findPassword.addTarget(self, action: #selector(didTapFindPassword), for: .touchUpInside)
         
-        self.helpStack.addArrangedSubviews([signup, divider_2, findEmail, divider_1, findPassword])
+        self.helpStack.addArrangedSubviews([signup, divider_1, findPassword])
         self.helpStack.backgroundColor = .clear
         self.helpStack.translatesAutoresizingMaskIntoConstraints = false
         self.helpStack.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         self.helpStack.heightAnchor.constraint(equalToConstant: self.view.frame.height/32).isActive = true
         self.helpStack.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: self.view.frame.height/40).isActive = true
-        self.helpStack.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 40).isActive = true
-        self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -40).isActive = true
+        self.helpStack.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 80).isActive = true
+        self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -80).isActive = true
     }
     
     
     @objc func didTapSignup(){
         let signupVC = SignUpViewController()
         signupVC.modalPresentationStyle = .fullScreen
-        self.present(signupVC, animated: false)
+        self.present(signupVC, animated: true)
         //self.present(signupVC, animated: true)
+    }
+    
+    @objc func didTapFindPassword(){
+        let findpasswordVC = FindPasswordViewController()
+        findpasswordVC.modalPresentationStyle = .fullScreen
+        self.present(findpasswordVC, animated: true)
     }
     
     func configureSocialLogin(){
@@ -207,24 +220,24 @@ class LoginViewController: UIViewController {
         self.naverLoginButton.clipsToBounds = true
         self.naverLoginButton.addTarget(self, action: #selector(loginWithNaver), for: .touchUpInside)
         
-        /*
-        let Apple_logo = UIImage(named: "Apple_logo")
-        let resized_Apple_logo = resizeImage(image: Apple_logo!, targetSize: CGSize(width: self.view.frame.height/32, height: self.view.frame.height/32))
-        self.appleLoginButton.setImage(resized_Apple_logo, for: .normal)
-        self.appleLoginButton.translatesAutoresizingMaskIntoConstraints = false
-        self.appleLoginButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        self.appleLoginButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
-        self.appleLoginButton.topAnchor.constraint(equalTo: self.naverLoginButton.bottomAnchor, constant: self.view.frame.height/64).isActive = true
-        self.appleLoginButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
-        self.appleLoginButton.setTitle("Apple로 로그인", for: .normal)
-        self.appleLoginButton.configuration?.imagePlacement = .leading
-        self.appleLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        self.appleLoginButton.backgroundColor = .clear
-        self.appleLoginButton.layer.borderWidth = 0.5
-        self.appleLoginButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.appleLoginButton.setTitleColor(.black, for: .normal)
-        self.appleLoginButton.layer.cornerRadius = 10
-        self.appleLoginButton.clipsToBounds = true*/
+        
+        let google_logo = UIImage(named: "Google_logo")
+        let resized_Apple_logo = google_logo?.resize(targetSize: CGSize(width: self.view.frame.height/30, height: self.view.frame.height/30))
+        self.googleLoginButton.setImage(resized_Apple_logo, for: .normal)
+        self.googleLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        self.googleLoginButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        self.googleLoginButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        self.googleLoginButton.topAnchor.constraint(equalTo: self.naverLoginButton.bottomAnchor, constant: self.view.frame.height/64).isActive = true
+        self.googleLoginButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
+        self.googleLoginButton.setTitle("Google로 로그인", for: .normal)
+        self.googleLoginButton.configuration?.imagePlacement = .leading
+        self.googleLoginButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        self.googleLoginButton.backgroundColor = .clear
+        self.googleLoginButton.layer.borderWidth = 0.5
+        self.googleLoginButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.googleLoginButton.setTitleColor(.black, for: .normal)
+        self.googleLoginButton.layer.cornerRadius = 10
+        self.googleLoginButton.clipsToBounds = true
         
     }
     
@@ -240,28 +253,14 @@ class LoginViewController: UIViewController {
           return
         }
         
-        guard let tokenType = NaverLoginInstance?.tokenType else { return }
         guard let accessToken = NaverLoginInstance?.accessToken else { return }
-        let urlStr = "https://openapi.naver.com/v1/nid/me"
-        let url = URL(string: urlStr)!
-        //MARK: - 여기서 부턱 다시 Alamofire에 문제가 있는듯하다.
-        let authorization = "\(tokenType) \(accessToken)"
         
-        //let req = Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": authorization])
-        //let req = Alamofire.URLRequest(url: url, method: .get, headers: ["Authorization": authorization])
-        
-        /*
-        req.responseJSON { response in
-          guard let result = response.result.value as? [String: Any] else { return }
-          guard let object = result["response"] as? [String: Any] else { return }
-          guard let name = object["name"] as? String else { return }
-          guard let email = object["email"] as? String else { return }
-          guard let nickname = object["nickname"] as? String else { return }
-          
-          self.nameLabel.text = "\(name)"
-          self.emailLabel.text = "\(email)"
-          self.nicknameLabel.text = "\(nickname)"
-        }*/
+        print(accessToken, "is the access token")
+        let repo = LoginRepository()
+        let usecase = UserUsecase(dataRepository: repo)
+        let UserVM = UserViewModel(UserUseCase: usecase)
+        UserVM.getUserWithSocialToken(with: accessToken)
+        print(UserVM.User?.email ?? "error: not returned email")
       }
 }
 

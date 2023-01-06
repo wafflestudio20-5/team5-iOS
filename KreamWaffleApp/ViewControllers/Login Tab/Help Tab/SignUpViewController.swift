@@ -10,13 +10,14 @@ import RxSwift
 import RxCocoa
 
 class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
-
+    
     var backButton = UIButton()
     var titleLabel = UILabel()
     var emailField : LoginTextfield?
     var passwordField : LoginTextfield?
     
     var sizeField : ShoeSizefield?
+    var sizeSelected = false
     
     var necessaryTerms : TermsButton?
     var additionalTerms : TermsButton?
@@ -25,14 +26,26 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(forName: Notification.Name("didSelectShoeSize"), object: nil, queue: nil, using: didSelectShoeSize)
         self.view.backgroundColor = .white
         self.emailField = LoginTextfield(titleText: "이메일 주소 *", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: nil, defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
         self.passwordField = LoginTextfield(titleText: "비밀번호 *", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: nil, defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
         self.sizeField = ShoeSizefield(selectedSize: nil)
         self.necessaryTerms = TermsButton(title: "[필수] 만 14세 이상이며 모두 동의합니다.", rightButtonImage: "plus", pressedRightButtonImage: "minus")
         self.additionalTerms = TermsButton(title: "[선택] 광고성 정보 수신에 모두 동의합니다.", rightButtonImage: "plus", pressedRightButtonImage: "minus")
+        self.emailField?.textfield.becomeFirstResponder()
         addSubviews()
         configureSubviews()
+        self.hideKeyboardWhenTappedAround()
+    }
+    
+    @objc func didSelectShoeSize(_ notification : Notification){
+        let size = notification.userInfo!["size"] as? Int ?? 0
+        //0 뜨면 에러임.
+        self.sizeField?.textfield.text = String(size)
+        self.sizeField?.textfield.textColor = .black
+        self.sizeSelected = true
+        allFieldValid()
     }
     
     func addSubviews(){
@@ -83,12 +96,14 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.emailField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.emailField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.emailField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        self.emailField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
         
         self.passwordField?.translatesAutoresizingMaskIntoConstraints = false
         self.passwordField?.topAnchor.constraint(equalTo: self.emailField!.bottomAnchor, constant: 30).isActive = true
         self.passwordField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.passwordField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.passwordField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
+        self.passwordField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
     }
     
     func configureShoeSizeField(){
@@ -106,6 +121,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.necessaryTerms?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.necessaryTerms?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.necessaryTerms?.heightAnchor.constraint(greaterThanOrEqualToConstant: 30).isActive = true
+        self.necessaryTerms?.checkButton.addTarget(self, action: #selector(allFieldValid), for: .touchUpInside)
         
         self.additionalTerms?.translatesAutoresizingMaskIntoConstraints = false
         self.additionalTerms?.topAnchor.constraint(equalTo: self.necessaryTerms!.bottomAnchor, constant: 15).isActive = true
@@ -126,6 +142,22 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.signupButton.titleLabel?.textColor = .white
         self.signupButton.layer.cornerRadius = 10
         self.signupButton.clipsToBounds = true
+        self.signupButton.addTarget(self, action: #selector(didTapSignup), for: .touchUpInside)
+    }
+    
+    @objc func allFieldValid(){
+        if (self.sizeSelected && ((self.emailField?.isValid()) != nil) && ((self.passwordField?.isValid()) != nil) && ((self.necessaryTerms?.checked) != false)){
+            self.signupButton.backgroundColor = .black
+            self.signupButton.setTitleColor(.white, for: .normal)
+        }else{
+            self.signupButton.backgroundColor = .systemGray
+        }
+    }
+    
+    //TODO: connect with view model
+    @objc func didTapSignup(){
+        let repository = LoginRepository()
+        repository.registerAccount(with: "example@example.com", password: "sample05#", shoe_size: 220)
     }
     
     @objc func didTapSelectShoeSize(){
@@ -150,14 +182,6 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         
         self.present(vc, animated: true, completion: nil)
         
-        vc.sizeView.rx.itemSelected
-            .subscribe(onNext: { index in
-                let selectedRow = index.row
-                let selectedSize = vc.shoeSizes[selectedRow]
-                print(selectedSize)
-                self.sizeField?.setTextfield(SelectedSize: selectedSize)
-        })
-            .disposed(by: DisposeBag())
     }
 }
 

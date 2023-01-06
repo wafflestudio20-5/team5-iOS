@@ -47,6 +47,15 @@ class ShoeSizeSelectionCollectionViewCell: UICollectionViewCell {
         self.contentView.layer.cornerRadius = 7
     }
     
+    override var isSelected: Bool {
+        didSet{
+            if isSelected {
+                //노티 올리기, TODO 나중에 rx 이용해서 조금 더 깔끔하게..?
+                NotificationCenter.default.post(name: NSNotification.Name("didSelectShoeSize"), object: nil, userInfo: ["size": self.size!])
+            }
+        }
+    }
+    
     //only used in myinfo page
     func setSelectedDesign(){
         
