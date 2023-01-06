@@ -26,7 +26,7 @@ final class StyleViewModel {
         self.usecase.requestStylePostData(page: page)
     }
     
-    func getStylePostListAt(at index: Int) -> StylePost {
+    func getStylePostAt(at index: Int) -> StylePost {
         return self.usecase.stylePostList[index]
     }
     

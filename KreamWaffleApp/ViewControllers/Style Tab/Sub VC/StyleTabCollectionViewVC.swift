@@ -18,6 +18,8 @@ final class StyleTabCollectionViewVC : UIViewController{
     private let disposeBag = DisposeBag()
     private let viewModel: StyleViewModel
     
+    private let detailViewRepository = StyleTabDetailRepository()
+    
     private let collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
         layout.itemRenderDirection = .leftToRight
@@ -89,7 +91,7 @@ final class StyleTabCollectionViewVC : UIViewController{
 extension StyleTabCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let targetImageRatio = CGFloat(viewModel.getStylePostListAt(at: indexPath.row).thumbnailImageRatio)
+        let targetImageRatio = CGFloat(viewModel.getStylePostAt(at: indexPath.row).thumbnailImageRatio)
         
         let cellWidth: CGFloat = (view.bounds.width - 20)/2 //셀 가로 넓이
 
@@ -103,7 +105,7 @@ extension StyleTabCollectionViewVC: UICollectionViewDataSource {
             return StyleCollectionViewCell()
         }
         
-        cell.configure(with: self.viewModel.getStylePostListAt(at: indexPath.row))
+        cell.configure(with: self.viewModel.getStylePostAt(at: indexPath.row))
         
         return cell
     }
@@ -117,11 +119,19 @@ extension StyleTabCollectionViewVC: UICollectionViewDataSource {
     }
 }
 
-extension StyleTabCollectionViewVC : UIScrollViewDelegate  {
+extension StyleTabCollectionViewVC: UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        let position = scrollView.contentOffset.y
 //        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
 //            self.viewModel.requestStylePostData(page: 2)
 //        }
+    }
+}
+
+extension StyleTabCollectionViewVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailViewModel = StyleTabDetailViewModel(repository: detailViewRepository, stylePost: self.viewModel.getStylePostAt(at: indexPath.row))
+        let newDetailViewController = StyleTabPostDetailViewController(viewModel: detailViewModel)
+        self.navigationController?.pushViewController(newDetailViewController, animated: true)
     }
 }

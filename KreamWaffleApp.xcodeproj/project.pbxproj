@@ -13,6 +13,9 @@
 		5C2F9CAB295D7BCA0021D437 /* ShopRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */; };
 		5C2F9CAD295D7C650021D437 /* StyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CAC295D7C650021D437 /* StyleRepository.swift */; };
 		5CB810DB29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DA29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift */; };
+		5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */; };
+		5CB810DF29683D4E0021FDD6 /* StyleTabDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DE29683D4E0021FDD6 /* StyleTabDetailRepository.swift */; };
+		5CB810E129683D6A0021FDD6 /* StyleTabDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
 		6527350829680B8100C859B8 /* EndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350729680B8100C859B8 /* EndPoint.swift */; };
@@ -69,6 +72,9 @@
 		5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopRepository.swift; sourceTree = "<group>"; };
 		5C2F9CAC295D7C650021D437 /* StyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleRepository.swift; sourceTree = "<group>"; };
 		5CB810DA29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabCollectionViewVC.swift; sourceTree = "<group>"; };
+		5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabPostDetailViewController.swift; sourceTree = "<group>"; };
+		5CB810DE29683D4E0021FDD6 /* StyleTabDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabDetailRepository.swift; sourceTree = "<group>"; };
+		5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabDetailViewModel.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
 		6527350729680B8100C859B8 /* EndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPoint.swift; sourceTree = "<group>"; };
@@ -183,6 +189,7 @@
 				5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */,
 				5C2F9CAC295D7C650021D437 /* StyleRepository.swift */,
 				653F17C32965701600949FF8 /* LoginRepository.swift */,
+				5CB810DE29683D4E0021FDD6 /* StyleTabDetailRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -191,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				5CB810DA29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift */,
+				5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */,
 			);
 			path = "Sub VC";
 			sourceTree = "<group>";
@@ -282,6 +290,7 @@
 				9428AE46295718E200DC7907 /* ShopViewModel.swift */,
 				5C2F9CA5295D7B250021D437 /* StyleViewModel.swift */,
 				6527350E2968196200C859B8 /* UserViewModel.swift */,
+				5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -504,15 +513,18 @@
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
 				65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */,
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
+				5CB810DF29683D4E0021FDD6 /* StyleTabDetailRepository.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
 				6527350829680B8100C859B8 /* EndPoint.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,
 				9428AE4B2957197B00DC7907 /* StyleTabViewController.swift in Sources */,
 				948C66952958482E00561C59 /* MyTabViewController.swift in Sources */,
 				944A11572963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift in Sources */,
+				5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */,
 				9428AE322957170600DC7907 /* SceneDelegate.swift in Sources */,
 				944A114B295D6ADF00F8CDB7 /* ShopUsecase.swift in Sources */,
 				65F8FBB42962104E00679E72 /* StyleCollectionViewCell.swift in Sources */,
+				5CB810E129683D6A0021FDD6 /* StyleTabDetailViewModel.swift in Sources */,
 				6527350B29680C1900C859B8 /* User.swift in Sources */,
 				5CB810DB29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift in Sources */,
 				9428AE4D295719A500DC7907 /* ShopTabViewController.swift in Sources */,

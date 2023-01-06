@@ -13,11 +13,6 @@ import CHTCollectionViewWaterfallLayout
 class StyleTabViewController: UIViewController {
     private let viewModel: StyleViewModel
     private let disposeBag = DisposeBag()
-    
-//    private var header = UIView()
-    private var codeSegmented = CustomSegmentedControl(buttonTitle: ["최신"])
-//    private var searchButton = UIButton()
-//    private lazy var cameraButton = UIButton()
     private var styleTabCollectionViewVC: StyleTabCollectionViewVC
     
     init(viewModel: StyleViewModel) {
@@ -33,27 +28,16 @@ class StyleTabViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSubviews()
-        setUpSegmentedControl()
+        setUpNavigationBar()
         setUpButtons()
         setUpChildVC()
     }
     
-    func addSubviews(){
-        self.view.addSubview(codeSegmented)
-        self.view.addSubview(styleTabCollectionViewVC.view)
-    }
-    
-    func setUpSegmentedControl() {
-        self.codeSegmented.backgroundColor = .white
-        self.codeSegmented.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            self.codeSegmented.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
-            self.codeSegmented.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -10),
-            self.codeSegmented.widthAnchor.constraint(equalToConstant: 50),
-            self.codeSegmented.heightAnchor.constraint(equalToConstant: 30),
-        ])
+    func setUpNavigationBar() {
+        self.navigationController?.title = "최신"
+        self.navigationController?.navigationBar.backIndicatorImage = UIImage(systemName: "arrow.backward")
+        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(systemName: "arrow.backward")
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     func setUpButtons() {
@@ -75,6 +59,7 @@ class StyleTabViewController: UIViewController {
     }
     
     func setUpChildVC() {
+        self.view.addSubview(styleTabCollectionViewVC.view)
         self.addChild(styleTabCollectionViewVC)
         styleTabCollectionViewVC.didMove(toParent: self)
         
