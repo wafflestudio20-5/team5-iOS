@@ -41,7 +41,9 @@ final class StyleUsecase {
     // API 세팅 후에는 얘가 API call로 데이터 load 하는 함수가 될 것.
     func setTestData() {
         self.stylePostList = [
-            StylePost(imageSources: ["https://kream-phinf.pstatic.net/MjAyMzAxMDNfMjY3/MDAxNjcyNzU0OTAwOTY3.toeDt1DlK3krk9xBjBzhVsx2GhQsYNx4sA4PQxWjwSYg.Cph6_U3j9iVvKvoUEbObe6Lu7q7kDcXjML2FYCfR3Wkg.JPEG/p_bdd6d1073d3d4b43b0eda8b2d996e972.jpeg?type=l"], id: "mangocheezz", numLikes: 1, content: "아더에러 ✨", thumbnailImageRatio: 4/3),
+            StylePost(imageSources: [
+                "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMTQ2/MDAxNjcwODIwODk1NjEw.nf2jbxLWZCgGzECgQeMPHE7ezHjcuSIUu2q9PeMOAiIg.WVRRPpwBA7VVfWmfdMlpqOORYPUm91ORfmjjSk3AIc0g.JPEG/p_ff64de1147824dec9712c634e93cf993.jpeg?type=l", "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMjQ0/MDAxNjcwODIwODk2MjQz.scgGqUEmzUIAUxe9xy6qMpbiMnZcva325JUohoIsIa0g.Aztf7mK85JfAJT1UZg8S-BhTjJzAJhM8MNz72TnAoM0g.JPEG/p_fa2aedd66c6b4f77b48f9939540879d0.jpeg?type=l_webp"
+            ], id: "mangocheezz", numLikes: 1, content: "아더에러 ✨", thumbnailImageRatio: 4/3),
             StylePost(imageSources:["https://kream-phinf.pstatic.net/MjAyMzAxMDRfMjgz/MDAxNjcyNzk2NzYwNDQy.Wevy_PRf7WIRazGTBOSnrawYtkORHTpttq-TQeaSaycg.utFzIapF6u42cGPSiQKFuew38p8BMhljzanB_pOm0XUg.JPEG/p_98d5413c43764b37a96af46325deb243.jpeg?type=l"], id: "kko_gen", numLikes: 2, content: "게시물2.길어서 짤리는 경우", thumbnailImageRatio: 1),
             StylePost(imageSources:["https://kream-phinf.pstatic.net/MjAyMzAxMDRfMjk1/MDAxNjcyNzU4NzEwODM3.MF0WBuhvMiLUzLaXEcmiAF9j3tnLEkjEtlAjyH4Ew2Mg.jLUER_r3FUO8pJExwLxmEqRroX1dpynZ929Th2CuZAAg.JPEG/p_321f10f8c86a478e94b14a58832c2b4f.jpeg?type=l"], id: "dustn5101", numLikes: 3, content: "#결산템챌린지 #ootd #데일리룩 #아웃핏 #KREAM스타일 #겨울여자코디 #보헤미안서울 #노스페이스눕시 #패딩추천 #스트릿룩 #무채색룩", thumbnailImageRatio: 4/3),
             StylePost(imageSources:["https://kream-phinf.pstatic.net/MjAyMzAxMDJfMTc1/MDAxNjcyNjYzNTAxMzY0.AqlChMQVgHUMvdfgCYkaH3kFqjbqR1_GeM-Cy4ITTXEg.a-Az98SalFV4lyfo-q82hwgAhkeTjKaNQ7VXhR-aMyIg.JPEG/p_b6e2018049c44483be43ab6437f19d18.jpeg?type=l"], id: "j.hingg", numLikes: 4, content: "네번째 게시글", thumbnailImageRatio: 1),

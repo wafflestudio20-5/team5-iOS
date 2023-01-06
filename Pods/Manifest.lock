@@ -1,5 +1,7 @@
 PODS:
   - Alamofire (5.6.2)
+  - AlamofireImage (4.2.0):
+    - Alamofire (~> 5.4)
   - BetterSegmentedControl (2.0.1)
   - Charts (3.4.0):
     - Charts/Core (= 3.4.0)
@@ -12,7 +14,13 @@ PODS:
   - CHTCollectionViewWaterfallLayout/Swift (0.9.10)
   - ImageSlideshow (1.9.2):
     - ImageSlideshow/Core (= 1.9.2)
+  - ImageSlideshow/Alamofire (1.9.2):
+    - AlamofireImage (~> 4.0)
+    - ImageSlideshow/Core
   - ImageSlideshow/Core (1.9.2)
+  - ImageSlideshow/Kingfisher (1.9.2):
+    - ImageSlideshow/Core
+    - Kingfisher (> 3.0)
   - Kingfisher (7.4.1)
   - naveridlogin-sdk-ios (4.1.5)
   - Realm (3.18.0):
@@ -33,6 +41,8 @@ DEPENDENCIES:
   - ChartsRealm
   - CHTCollectionViewWaterfallLayout
   - ImageSlideshow (~> 1.9.0)
+  - ImageSlideshow/Alamofire
+  - ImageSlideshow/Kingfisher
   - Kingfisher (~> 7.0)
   - naveridlogin-sdk-ios
   - RxCocoa (= 6.5.0)
@@ -41,6 +51,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - AlamofireImage
     - BetterSegmentedControl
     - Charts
     - ChartsRealm
@@ -56,6 +67,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   BetterSegmentedControl: 09607b27861d49cbce48b7673b74f9150a3d371a
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   ChartsRealm: 2ae8bf478211a94b3b6dd20738db0b9b132eb66b
@@ -69,6 +81,6 @@ SPEC CHECKSUMS:
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: fc2ac69676e24f06709db8ed224fef281ad125bb
+PODFILE CHECKSUM: 5aab215bdecd19d021e9ab0ae2fd2c1a401df3e3
 
 COCOAPODS: 1.11.3

@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 import Kingfisher
 
+struct StyleCollectionViewCellConstants {
+    static let labelHeight: CGFloat = 20
+    static let interLabelSpacing: CGFloat = 2
+}
+
 final class StyleCollectionViewCell: UICollectionViewCell {
     static let identifier = "StyleCollectionViewCell"
     private let idLabel = UILabel()
@@ -80,7 +85,11 @@ final class StyleCollectionViewCell: UICollectionViewCell {
             self.thumbnailImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             self.thumbnailImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
             self.thumbnailImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            self.thumbnailImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -44),
+            self.thumbnailImageView.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant:
+                    -2*(StyleCollectionViewCellConstants.labelHeight + StyleCollectionViewCellConstants.interLabelSpacing)
+            ),
         ])
     }
     
@@ -97,8 +106,8 @@ final class StyleCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             self.idLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3),
             self.idLabel.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.5),
-            self.idLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: 2),
-            self.idLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.idLabel.topAnchor.constraint(equalTo: thumbnailImageView.bottomAnchor, constant: StyleCollectionViewCellConstants.interLabelSpacing),
+            self.idLabel.heightAnchor.constraint(equalToConstant: StyleCollectionViewCellConstants.labelHeight),
         ])
     }
     
@@ -115,8 +124,8 @@ final class StyleCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             self.numLikesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -3),
             self.numLikesLabel.widthAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.5, constant: -5.0),
-            self.numLikesLabel.topAnchor.constraint(equalTo: idLabel.topAnchor, constant: 0),
-            self.numLikesLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.numLikesLabel.topAnchor.constraint(equalTo: idLabel.topAnchor),
+            self.numLikesLabel.heightAnchor.constraint(equalToConstant: StyleCollectionViewCellConstants.labelHeight),
         ])
     }
     
@@ -133,8 +142,8 @@ final class StyleCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             self.contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3),
             self.contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -3),
-            self.contentLabel.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: 2),
-            self.contentLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.contentLabel.topAnchor.constraint(equalTo: idLabel.bottomAnchor, constant: StyleCollectionViewCellConstants.interLabelSpacing),
+            self.contentLabel.heightAnchor.constraint(equalToConstant: StyleCollectionViewCellConstants.labelHeight),
         ])
     }
 }

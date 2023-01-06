@@ -15,6 +15,8 @@ target 'KreamWaffleApp' do
     pod 'Kingfisher', '~> 7.0'
     pod 'naveridlogin-sdk-ios'
     pod 'ImageSlideshow', '~> 1.9.0'
+    pod 'ImageSlideshow/Kingfisher'
+    pod 'ImageSlideshow/Alamofire'
 
 post_install do |installer|
   installer.pods_project.build_configurations.each do |config|

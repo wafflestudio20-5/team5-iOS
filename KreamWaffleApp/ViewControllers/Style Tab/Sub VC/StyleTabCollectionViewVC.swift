@@ -95,7 +95,7 @@ extension StyleTabCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
         
         let cellWidth: CGFloat = (view.bounds.width - 20)/2 //셀 가로 넓이
 
-        return CGSize(width: cellWidth, height: targetImageRatio * cellWidth + 60)
+        return CGSize(width: cellWidth, height: targetImageRatio * cellWidth + 3*StyleCollectionViewCellConstants.labelHeight)
     }
 }
 
