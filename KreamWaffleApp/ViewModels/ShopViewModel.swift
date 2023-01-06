@@ -4,7 +4,6 @@
 //
 //  Created by 이선재 on 2022/12/24.
 //
-
 import Foundation
 import Alamofire
 import RxSwift
@@ -33,6 +32,9 @@ extension ShopViewModel {
         self.usecase.requestData()
     }
     
+    func getProductAtIndex(index: Int) -> Product {
+        return self.usecase.getProductAtIndex(index: index)
+    }
 }
 
 struct ProductData {
