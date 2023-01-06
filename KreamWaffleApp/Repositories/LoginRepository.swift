@@ -16,6 +16,7 @@ import UIKit
 //import XCTest
 #endif
 
+
 ///wraps up database, networking, and data source handling logic for registering account
 class LoginRepository {
     
@@ -62,21 +63,23 @@ class LoginRepository {
               print("Post Request Error: \(error.localizedDescription)")
               return
             }
-            
+    
             // ensure there is valid response code returned from this HTTP response
+              /*
             guard let httpResponse = response as? HTTPURLResponse,
                   (200...299).contains(httpResponse.statusCode)
             else {
               print("Invalid Response received from the server")
                 print(response as Any)
               return
-            }
+            }*/
             
             // ensure there is data returned
             guard let responseData = data else {
               print("nil Data received from the server")
               return
             }
+              
             
             do {
               // create json object from data or use JSONDecoder to convert to Model stuct
@@ -95,7 +98,44 @@ class LoginRepository {
           task.resume()
         self.semaphore.wait()
         }
-           
+    
+    ///with Naver's access token, get user info from custom server
+    func loginWithNaver(naverToken: String, completion: @escaping (Result<UserReponse, Error>) -> ()){
         
+        let URLString = "\(baseAPIURL)/accounts/social/naver?token=\(naverToken)"
+        print(URLString)
+        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+            print("url error")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.method = .get
+        
+        let task = urlSession.dataTask(with: request) { data, response, error in
+                guard error == nil else {
+                    print(String(describing: error))
+                    return }
+                guard let data = data else {
+                    self.semaphore.signal()
+                    return
+                }
+                do {
+                    print(data)
+                    let results : UserReponse = try JSONDecoder().decode(UserReponse.self, from: data)
+                    completion(.success(results))
+                    print("getting is completed in repository")
+                    self.semaphore.signal()
+                    } catch {
+                    completion(.failure(error))
+                    print("problem is here")
+                    print(error.localizedDescription)
+                }
+                }
+                task.resume()
+                self.semaphore.wait()
     }
+}
    

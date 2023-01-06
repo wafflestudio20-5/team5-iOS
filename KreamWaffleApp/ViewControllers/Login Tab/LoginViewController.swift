@@ -12,6 +12,7 @@ import Kingfisher
 
 class LoginViewController: UIViewController {
     
+    //TODO: 나중에 의존성 수정하기
     
     let NaverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
@@ -252,28 +253,14 @@ class LoginViewController: UIViewController {
           return
         }
         
-        guard let tokenType = NaverLoginInstance?.tokenType else { return }
         guard let accessToken = NaverLoginInstance?.accessToken else { return }
-        let urlStr = "https://openapi.naver.com/v1/nid/me"
-        let url = URL(string: urlStr)!
-        //MARK: - 여기서 부턱 다시 Alamofire에 문제가 있는듯하다.
-        let authorization = "\(tokenType) \(accessToken)"
         
-        //let req = Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: ["Authorization": authorization])
-        //let req = Alamofire.URLRequest(url: url, method: .get, headers: ["Authorization": authorization])
-        
-        /*
-        req.responseJSON { response in
-          guard let result = response.result.value as? [String: Any] else { return }
-          guard let object = result["response"] as? [String: Any] else { return }
-          guard let name = object["name"] as? String else { return }
-          guard let email = object["email"] as? String else { return }
-          guard let nickname = object["nickname"] as? String else { return }
-          
-          self.nameLabel.text = "\(name)"
-          self.emailLabel.text = "\(email)"
-          self.nicknameLabel.text = "\(nickname)"
-        }*/
+        print(accessToken, "is the access token")
+        let repo = LoginRepository()
+        let usecase = UserUsecase(dataRepository: repo)
+        let UserVM = UserViewModel(UserUseCase: usecase)
+        UserVM.getUserWithSocialToken(with: accessToken)
+        print(UserVM.User?.email ?? "error: not returned email")
       }
 }
 

@@ -157,7 +157,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     //TODO: connect with view model
     @objc func didTapSignup(){
         let repository = LoginRepository()
-        repository.registerAccount(with: "user@example.commmmmmm`", password: "sample05#", shoe_size: 220)
+        repository.registerAccount(with: "example@example.com", password: "sample05#", shoe_size: 220)
     }
     
     @objc func didTapSelectShoeSize(){
