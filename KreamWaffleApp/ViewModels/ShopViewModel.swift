@@ -33,6 +33,9 @@ extension ShopViewModel {
         self.usecase.requestData()
     }
     
+    func getProductAtIndex(index: Int) -> Product {
+        return self.usecase.getProductAtIndex(index: index)
+    }
 }
 
 struct ProductData {

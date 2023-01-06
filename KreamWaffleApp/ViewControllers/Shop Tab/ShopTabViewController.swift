@@ -159,3 +159,12 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     }
    
 }
+
+extension ShopTabViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var selectedProduct = self.viewModel.getProductAtIndex(index: indexPath.row)
+        
+        let productDetailVC = ProductDetailViewController(productModel: selectedProduct)
+        navigationController?.pushViewController(productDetailVC, animated: true)
+    }
+}

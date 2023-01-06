@@ -197,7 +197,6 @@ class ProductCollectionViewCell: UICollectionViewCell {
             self.priceSubLabel.topAnchor.constraint(equalTo: self.priceLabel.bottomAnchor, constant: 0),
 //            priceSubLabel.bottomAnchor.constraint(equalTo: self.priceLabel.topAnchor, constant: 30)
         ])
-        
     }
     
     private func setupBookmarkButton() {
