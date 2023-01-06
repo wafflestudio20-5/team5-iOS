@@ -16,8 +16,8 @@ class StyleTabViewController: UIViewController {
     
 //    private var header = UIView()
     private var codeSegmented = CustomSegmentedControl(buttonTitle: ["최신"])
-    private var searchButton = UIButton()
-    private lazy var cameraButton = UIButton()
+//    private var searchButton = UIButton()
+//    private lazy var cameraButton = UIButton()
     private var styleTabCollectionViewVC: StyleTabCollectionViewVC
     
     init(viewModel: StyleViewModel) {
@@ -40,9 +40,8 @@ class StyleTabViewController: UIViewController {
     }
     
     func addSubviews(){
-        view.addSubview(codeSegmented)
-        view.addSubview(searchButton)
-        view.addSubview(cameraButton)
+        self.view.addSubview(codeSegmented)
+        self.view.addSubview(styleTabCollectionViewVC.view)
     }
     
     func setUpSegmentedControl() {
@@ -51,7 +50,7 @@ class StyleTabViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             self.codeSegmented.centerXAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerXAnchor),
-            self.codeSegmented.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50),
+            self.codeSegmented.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -10),
             self.codeSegmented.widthAnchor.constraint(equalToConstant: 50),
             self.codeSegmented.heightAnchor.constraint(equalToConstant: 30),
         ])
@@ -61,42 +60,38 @@ class StyleTabViewController: UIViewController {
         //configure search button
         let searchImage = UIImage(systemName: "magnifyingglass")
         let tintedSearchImage = searchImage?.withRenderingMode(.alwaysTemplate)
-        self.searchButton.setImage(tintedSearchImage, for: .normal)
-        self.searchButton.tintColor = .black
-        self.searchButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.searchButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            self.searchButton.centerYAnchor.constraint(equalTo: self.codeSegmented.centerYAnchor),
-            self.searchButton.widthAnchor.constraint(equalToConstant: 50),
-            self.searchButton.heightAnchor.constraint(equalToConstant: 50),
-        ])
+        let searchButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(searchButtonTapped))
+        searchButton.image = tintedSearchImage
+        searchButton.tintColor = .black
+        navigationItem.leftBarButtonItem = searchButton
         
         //configure camera button
         let cameraImage = UIImage(systemName: "camera.circle.fill")
-        let tintedcameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
-        self.cameraButton.setImage(tintedcameraImage, for: .normal)
-        self.cameraButton.tintColor = .lightGray
-        
-        self.cameraButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            self.cameraButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            self.cameraButton.centerYAnchor.constraint(equalTo: self.codeSegmented.centerYAnchor),
-            self.cameraButton.widthAnchor.constraint(equalToConstant: 50),
-            self.cameraButton.heightAnchor.constraint(equalToConstant: 50),
-        ])
+        let tintedCameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
+        let cameraButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(cameraButtonTapped))
+        cameraButton.image = tintedCameraImage
+        cameraButton.tintColor = .lightGray
+        navigationItem.rightBarButtonItem = cameraButton
     }
     
     func setUpChildVC() {
         self.addChild(styleTabCollectionViewVC)
-        self.view.addSubview(styleTabCollectionViewVC.view)
         styleTabCollectionViewVC.didMove(toParent: self)
         
         styleTabCollectionViewVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.styleTabCollectionViewVC.view.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0),
             self.styleTabCollectionViewVC.view.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: 0),
-            self.styleTabCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0),
+            self.styleTabCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
             self.styleTabCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
+    }
+    
+    @objc func cameraButtonTapped() {
+        print("camera button tapped")
+    }
+    
+    @objc func searchButtonTapped() {
+        print("search button tapped")
     }
 }

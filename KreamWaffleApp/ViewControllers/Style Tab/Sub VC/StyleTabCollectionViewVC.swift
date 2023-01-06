@@ -119,9 +119,9 @@ extension StyleTabCollectionViewVC: UICollectionViewDataSource {
 
 extension StyleTabCollectionViewVC : UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-            self.viewModel.requestStylePostData(page: 2)
-        }
+//        let position = scrollView.contentOffset.y
+//        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+//            self.viewModel.requestStylePostData(page: 2)
+//        }
     }
 }
