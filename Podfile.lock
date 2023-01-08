@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.6.2)
+  - Alamofire (5.6.4)
   - AlamofireImage (4.2.0):
     - Alamofire (~> 5.4)
   - BetterSegmentedControl (2.0.1)
@@ -21,7 +21,7 @@ PODS:
   - ImageSlideshow/Kingfisher (1.9.2):
     - ImageSlideshow/Core
     - Kingfisher (> 3.0)
-  - Kingfisher (7.4.1)
+  - Kingfisher (7.5.0)
   - naveridlogin-sdk-ios (4.1.5)
   - Realm (3.18.0):
     - Realm/Headers (= 3.18.0)
@@ -66,14 +66,14 @@ SPEC REPOS:
     - RxSwift
 
 SPEC CHECKSUMS:
-  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   BetterSegmentedControl: 09607b27861d49cbce48b7673b74f9150a3d371a
   Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
   ChartsRealm: 2ae8bf478211a94b3b6dd20738db0b9b132eb66b
   CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
   ImageSlideshow: be305b54eaf2b2cfc7a7141c7c734605d44dc07d
-  Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
+  Kingfisher: b9c2a4a4af2990a768445c277359b27bde287d71
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
   Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
   RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
