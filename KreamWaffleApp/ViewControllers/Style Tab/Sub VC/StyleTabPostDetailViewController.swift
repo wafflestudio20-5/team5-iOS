@@ -76,6 +76,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         self.contentLabel.adjustsFontSizeToFitWidth = false
         self.contentLabel.numberOfLines = Int.max
         
+        //scrollview로 바꿔서 해보자!
         self.contentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.contentLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
@@ -131,7 +132,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     func setUpData() {
         self.idLabel.text = self.viewModel.getUserId()
         self.contentLabel.text = self.viewModel.getContent()
-//        self.contentLabel.text = testString
+        self.contentLabel.text = testString
 //        let newSize = contentLabel.sizeThatFits( CGSize(width: contentLabel.frame.width, height: CGFloat.greatestFiniteMagnitude))
 //        self.contentLabel.frame.size.height = newSize.height
         self.contentLabel.sizeToFit()
