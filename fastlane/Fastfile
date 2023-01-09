@@ -52,7 +52,7 @@ platform :ios do
 
   desc "🔐 Configure certificates and provisioning profiles for distribution"
   lane :certificates_distribution do
-    match(type: "appstore", app_identifier: [BUNDLE_IDENTIFIER], readonly: false)
+    match(type: "appstore", app_identifier: [BUNDLE_IDENTIFIER], readonly: true)
     update_xcodeproj(type: "appstore")
   end
 
