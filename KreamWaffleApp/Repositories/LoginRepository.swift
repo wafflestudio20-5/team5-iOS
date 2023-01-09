@@ -22,10 +22,49 @@ class LoginRepository {
     
     private var semaphore = DispatchSemaphore (value: 0)
     private let apiKey = "f330b07acf479c98b184db47a4d2608b"
-    private let baseAPIURL = "http://15.165.92.103/accounts"
+    private let baseAPIURL = "https://kream-waffle.cf/accounts"
     private let urlSession = URLSession.shared
     
     init() {}
+    
+    func loginAccount(email: String, password: String, completion: @escaping (Result<UserReponse, Error>) -> ()){
+        
+        let URLString = "\(baseAPIURL)/accounts/login"
+        print(URLString)
+        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+            print("url error")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.method = .get
+        
+        let task = urlSession.dataTask(with: request) { data, response, error in
+                guard error == nil else {
+                    print(String(describing: error))
+                    return }
+                guard let data = data else {
+                    self.semaphore.signal()
+                    return
+                }
+                do {
+                    print(data)
+                    let results : UserReponse = try JSONDecoder().decode(UserReponse.self, from: data)
+                    completion(.success(results))
+                    print("getting is completed in repository")
+                    self.semaphore.signal()
+                    } catch {
+                    completion(.failure(error))
+                    print("problem is here")
+                    print(error.localizedDescription)
+                }
+                }
+                task.resume()
+                self.semaphore.wait()
+    }
+    
     
     func registerAccount(with email: String, password: String, shoe_size: Int){
         let URLString = "\(baseAPIURL)/registration/"
@@ -139,3 +178,4 @@ class LoginRepository {
     }
 }
    
+

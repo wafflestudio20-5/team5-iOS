@@ -12,11 +12,23 @@ final class UserUsecase {
     
     private let dataRepository : LoginRepository
     private let disposeBag = DisposeBag()
-    private var error : Error?
+    var error : Error?
     var user : User?
     
     init(dataRepository : LoginRepository){
         self.dataRepository = dataRepository
+    }
+    
+    func customLogin(email: String, password: String){
+        dataRepository.loginAccount(email: email, password: password) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.user = response.user
+            case .failure(let error):
+                self.error = error as NSError
+            }
+        }
     }
     
     ///gets user info
@@ -34,3 +46,4 @@ final class UserUsecase {
         }
     }
 }
+

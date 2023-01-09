@@ -88,3 +88,14 @@ extension UIImage {
 
 }
 
+extension UIStackView {
+
+    func addBackground(color: UIColor) {
+        let subview = UIView(frame: bounds)
+        subview.backgroundColor = color
+        subview.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        insertSubview(subview, at: 0)
+    }
+
+}
+

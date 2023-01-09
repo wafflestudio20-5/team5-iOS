@@ -21,6 +21,12 @@ class MyTabViewController: UIViewController {
     let nicknameLabel = UILabel()
     let idLabel = UILabel()
     let profileChangeButton = UIButton()
+    let divider = UILabel()
+    
+    //Child VCs
+    //구매 데이터를 usecase 로 받도록 나중에 설정할 필요있음.
+    private var myShoppingVC = MyShoppingViewController()
+    private var myProfileVC = MyProfileViewController()
     
     
     // **************** 임시!! ********************
@@ -39,13 +45,14 @@ class MyTabViewController: UIViewController {
         super.viewDidLoad()
         //shoeScreen.modalPresentationStyle = .fullScreen
         let loginScreen = LoginViewController()
-        let profile = ProfileViewController()
         loginScreen.modalPresentationStyle = .fullScreen
         self.present(loginScreen, animated: false)
-        
+
         setUpSegmentedControl()
         setUpFixedViewLayout()
         setUpData()
+        setupDivider()
+        setupChildVC()
     }
     
     func setUpSegmentedControl() {
@@ -174,15 +181,41 @@ class MyTabViewController: UIViewController {
         self.idLabel.text = temporaryUserData.id
     }
     
+    func setupDivider(){
+        self.view.addSubview(divider)
+        self.divider.backgroundColor = colors.lightGray
+        self.divider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.divider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.divider.heightAnchor.constraint(equalToConstant: 20),
+            self.divider.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: self.view.frame.height/64),
+        ])
+    }
+    
+    func setupChildVC(){
+        self.add(self.myShoppingVC)
+        self.add(self.myProfileVC)
+        //TODO: y 값 조정하기
+        self.myShoppingVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
+        self.myProfileVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
+        self.myProfileVC.view.isHidden = true
+    }
+    
     @objc func navigationSegmentedControlValueChanged(_ sender: BetterSegmentedControl) {
         //***** !! To 은혜님 !! ******
         // 여기서 어떤 뷰컨 숨기고 어떤 뷰컨 드러낼지 설정하시면 됩니다!
+        //넹
         if sender.index == 0 {
-            print("Turning lights on.")
-            view.backgroundColor = .white
+            //print("Turning lights on.")
+            //view.backgroundColor = .white
+            self.myShoppingVC.view.isHidden = false
+            self.myProfileVC.view.isHidden = true
         } else {
-            print("Turning lights off.")
-            view.backgroundColor = .darkGray
+            //print("Turning lights off.")
+            //view.backgroundColor = .darkGray
+            self.myShoppingVC.view.isHidden = true
+            self.myProfileVC.view.isHidden = false
         }
     }
     
