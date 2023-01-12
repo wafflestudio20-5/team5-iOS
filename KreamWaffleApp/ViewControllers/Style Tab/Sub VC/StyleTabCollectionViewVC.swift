@@ -54,7 +54,8 @@ final class StyleTabCollectionViewVC : UIViewController{
         collectionView.dataSource = self
 
         view.addSubview(collectionView)
-
+        collectionView.showsVerticalScrollIndicator = false
+        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 5),

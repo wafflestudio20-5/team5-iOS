@@ -11,16 +11,17 @@ import ImageSlideshow
 
 final class StyleTabPostDetailViewController: UIViewController {
     
-    struct StylePostDetailViewConstants {
+    struct Constants {
         static let idLabelHeight: CGFloat = 20
         static let spacing: CGFloat = 10
+        static let likeAndCommentButtonSideLength: CGFloat = 50
     }
     
     private let viewModel: StyleTabDetailViewModel
     
     //main views
     private let scrollView = UIScrollView()
-    private let scrollViewContentView = UIView()
+    private let contentView = UIView()
     private let slideshow = ImageSlideshow()
     
     //labels
@@ -68,18 +69,18 @@ final class StyleTabPostDetailViewController: UIViewController {
         ])
         
         
-        scrollView.addSubview(scrollViewContentView)
-        scrollViewContentView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollViewContentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            scrollViewContentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            scrollViewContentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            scrollViewContentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -100)
         ])
         
-        scrollViewContentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
 
-        let contentViewHeight = scrollViewContentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
+        let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
         contentViewHeight.priority = .defaultLow
         contentViewHeight.isActive = true
         scrollView.showsVerticalScrollIndicator = false
@@ -91,7 +92,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpLabelLayout() {
-        view.addSubview(idLabel)
+        contentView.addSubview(idLabel)
 
         idLabel.font = UIFont.boldSystemFont(ofSize: 14)
         idLabel.textColor = .black
@@ -102,15 +103,34 @@ final class StyleTabPostDetailViewController: UIViewController {
         
         idLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            idLabel.leadingAnchor.constraint(equalTo: scrollViewContentView.leadingAnchor, constant: 10),
-            idLabel.trailingAnchor.constraint(equalTo: scrollViewContentView.trailingAnchor, constant: -10),
-            idLabel.topAnchor.constraint(equalTo: scrollViewContentView.topAnchor),
+            idLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            idLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            idLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             idLabel.heightAnchor.constraint(
-                equalToConstant: StylePostDetailViewConstants.idLabelHeight
+                equalToConstant: Constants.idLabelHeight
             ),
         ])
         
-        view.addSubview(contentLabel)
+        contentView.addSubview(numLikesLabel)
+        
+        numLikesLabel.font = UIFont.systemFont(ofSize: 14)
+        numLikesLabel.textColor = .lightGray
+        numLikesLabel.textAlignment = .left
+        numLikesLabel.adjustsFontSizeToFitWidth = false
+        numLikesLabel.numberOfLines = 1
+        
+        numLikesLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            numLikesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            numLikesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            numLikesLabel.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing + Constants.likeAndCommentButtonSideLength + Constants.spacing
+            ),
+            numLikesLabel.heightAnchor.constraint(equalToConstant: Constants.idLabelHeight),
+        ])
+        
+        contentView.addSubview(contentLabel)
         contentLabel.font = UIFont.systemFont(ofSize: 14)
         contentLabel.textColor = .black
         contentLabel.lineBreakStrategy = .hangulWordPriority
@@ -120,25 +140,13 @@ final class StyleTabPostDetailViewController: UIViewController {
         
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            contentLabel.leadingAnchor.constraint(equalTo: scrollViewContentView.leadingAnchor, constant: 10),
-            contentLabel.trailingAnchor.constraint(equalTo: scrollViewContentView.trailingAnchor, constant: -10),
-            contentLabel.topAnchor.constraint(equalTo: self.numLikesLabel.bottomAnchor),
-            contentLabel.bottomAnchor.constraint(equalTo: scrollViewContentView.bottomAnchor)
-        ])
-        
-        view.addSubview(self.numLikesLabel)
-        numLikesLabel.font = UIFont.systemFont(ofSize: 14)
-        numLikesLabel.textColor = .lightGray
-        numLikesLabel.textAlignment = .left
-        numLikesLabel.adjustsFontSizeToFitWidth = false
-        numLikesLabel.numberOfLines = 1
-        
-        numLikesLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            numLikesLabel.leadingAnchor.constraint(equalTo: scrollViewContentView.leadingAnchor, constant: 10),
-            numLikesLabel.trailingAnchor.constraint(equalTo: scrollViewContentView.trailingAnchor, constant: -10),
-            numLikesLabel.topAnchor.constraint(equalTo: self.likeButton.bottomAnchor),
-            numLikesLabel.bottomAnchor.constraint(equalTo: scrollViewContentView.bottomAnchor)
+            contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            contentLabel.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing + Constants.likeAndCommentButtonSideLength + Constants.spacing + Constants.idLabelHeight + Constants.spacing
+            ),
+            contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
     }
@@ -157,65 +165,76 @@ final class StyleTabPostDetailViewController: UIViewController {
         followButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             followButton.widthAnchor.constraint(equalToConstant: 60),
-            followButton.trailingAnchor.constraint(equalTo: scrollViewContentView.trailingAnchor, constant: -10),
-            followButton.heightAnchor.constraint(equalToConstant: 40),
-            followButton.centerYAnchor.constraint(equalTo: self.idLabel.centerYAnchor)
+            followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            followButton.heightAnchor.constraint(equalToConstant: Constants.idLabelHeight * 1.5),
+            followButton.centerYAnchor.constraint(equalTo: idLabel.centerYAnchor)
         ])
         
         
-        view.addSubview(likeButton)
+        contentView.addSubview(likeButton)
         likeButton.setImage(UIImage(systemName: "face.smiling"), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        likeButton.tintColor = .black
         
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            likeButton.leadingAnchor.constraint(equalTo: scrollViewContentView.leadingAnchor, constant: 10),
-            likeButton.widthAnchor.constraint(equalToConstant: 50),
-            likeButton.topAnchor.constraint(
-                equalTo: scrollViewContentView.topAnchor,
-                constant: imageHeight + StylePostDetailViewConstants.idLabelHeight
+            likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            likeButton.widthAnchor.constraint(
+                equalToConstant: Constants.likeAndCommentButtonSideLength
             ),
-            likeButton.heightAnchor.constraint(equalToConstant: 50)
+            likeButton.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing
+            ),
+            likeButton.heightAnchor.constraint(
+                equalToConstant: Constants.likeAndCommentButtonSideLength
+            ),
         ])
         
-        view.addSubview(commentButton)
+        contentView.addSubview(commentButton)
         commentButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
         commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
+        commentButton.tintColor = .black
         
         commentButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            commentButton.leadingAnchor.constraint(equalTo: self.likeButton.trailingAnchor),
-            commentButton.widthAnchor.constraint(equalToConstant: 50),
+            commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor),
+            commentButton.widthAnchor.constraint(
+                equalToConstant: Constants.likeAndCommentButtonSideLength
+            ),
             commentButton.topAnchor.constraint(equalTo: self.likeButton.topAnchor),
-            commentButton.heightAnchor.constraint(equalToConstant: 50)
+            commentButton.heightAnchor.constraint(
+                equalToConstant: Constants.likeAndCommentButtonSideLength
+            )
         ])
     }
     
     func setUpSlideShowLayout() {
-        self.view.addSubview(self.slideshow)
-        self.slideshow.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(self.slideshow)
+        slideshow.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.slideshow.leadingAnchor.constraint(equalTo: self.scrollViewContentView.leadingAnchor),
-            self.slideshow.trailingAnchor.constraint(equalTo: self.scrollViewContentView.trailingAnchor),
+            self.slideshow.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.slideshow.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             self.slideshow.topAnchor.constraint(
-                equalTo: self.scrollViewContentView.topAnchor,
-                constant: StylePostDetailViewConstants.idLabelHeight + StylePostDetailViewConstants.spacing
+                equalTo: self.contentView.topAnchor,
+                constant: Constants.idLabelHeight + Constants.spacing
             ),
             self.slideshow.heightAnchor.constraint(equalToConstant: imageHeight),
         ])
     }
     
     func configureSlideShow() {
-        self.slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
-        self.slideshow.contentScaleMode = UIViewContentMode.scaleAspectFit
-        self.slideshow.circular = false
-        
-        let pageControl = UIPageControl()
-        pageControl.currentPageIndicatorTintColor = UIColor.black
-        pageControl.pageIndicatorTintColor = UIColor.lightGray
-        self.slideshow.pageIndicator = pageControl
-
+        if (viewModel.getImageSources().count > 1) {
+            self.slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
+            self.slideshow.contentScaleMode = UIViewContentMode.scaleAspectFit
+            self.slideshow.circular = false
+            
+            let pageControl = UIPageControl()
+            pageControl.currentPageIndicatorTintColor = UIColor.black
+            pageControl.pageIndicatorTintColor = UIColor.lightGray
+            self.slideshow.pageIndicator = pageControl
+        }
     }
     
     func setUpSlideShowData() {
@@ -232,7 +251,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         self.idLabel.text = self.viewModel.getUserId()
         self.contentLabel.text = self.viewModel.getContent()
         self.contentLabel.sizeToFit()
-        self.numLikesLabel.text = "😀\(self.viewModel.getNumLikes())"
+        self.numLikesLabel.text = "공감 \(self.viewModel.getNumLikes())개"
         self.numLikesLabel.sizeToFit()
     }
 }
