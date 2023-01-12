@@ -13,6 +13,7 @@
 		5C2F9CA8295D7B600021D437 /* StyleUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA7295D7B600021D437 /* StyleUsecase.swift */; };
 		5C2F9CAB295D7BCA0021D437 /* ShopRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */; };
 		5C2F9CAD295D7C650021D437 /* StyleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CAC295D7C650021D437 /* StyleRepository.swift */; };
+		5C63455D296FE3DC00DA6D29 /* UIViewController+setUpBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C63455C296FE3DC00DA6D29 /* UIViewController+setUpBackButton.swift */; };
 		5CB810DB29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DA29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift */; };
 		5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */; };
 		5CB810DF29683D4E0021FDD6 /* StyleTabDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DE29683D4E0021FDD6 /* StyleTabDetailRepository.swift */; };
@@ -86,6 +87,7 @@
 		5C2F9CA7295D7B600021D437 /* StyleUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleUsecase.swift; sourceTree = "<group>"; };
 		5C2F9CAA295D7BCA0021D437 /* ShopRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopRepository.swift; sourceTree = "<group>"; };
 		5C2F9CAC295D7C650021D437 /* StyleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleRepository.swift; sourceTree = "<group>"; };
+		5C63455C296FE3DC00DA6D29 /* UIViewController+setUpBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+setUpBackButton.swift"; sourceTree = "<group>"; };
 		5CB810DA29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabCollectionViewVC.swift; sourceTree = "<group>"; };
 		5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabPostDetailViewController.swift; sourceTree = "<group>"; };
 		5CB810DE29683D4E0021FDD6 /* StyleTabDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabDetailRepository.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			children = (
 				65653F42295B8217002F250B /* Extensions.swift */,
 				5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */,
+				5C63455C296FE3DC00DA6D29 /* UIViewController+setUpBackButton.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -405,7 +408,6 @@
 				6A2A5E895CB8D4C6DB5F6282 /* Pods-KreamWaffleApp.debug.xcconfig */,
 				69CD0FB1AB92DD441106C8F8 /* Pods-KreamWaffleApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -546,6 +548,7 @@
 				944A11572963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift in Sources */,
 				5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */,
 				9428AE322957170600DC7907 /* SceneDelegate.swift in Sources */,
+				5C63455D296FE3DC00DA6D29 /* UIViewController+setUpBackButton.swift in Sources */,
 				944A114B295D6ADF00F8CDB7 /* ShopUsecase.swift in Sources */,
 				65F8FBB42962104E00679E72 /* StyleCollectionViewCell.swift in Sources */,
 				5CB810E129683D6A0021FDD6 /* StyleTabDetailViewModel.swift in Sources */,
