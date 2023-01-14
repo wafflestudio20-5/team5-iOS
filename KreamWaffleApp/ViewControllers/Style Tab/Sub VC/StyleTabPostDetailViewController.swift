@@ -174,11 +174,13 @@ final class StyleTabPostDetailViewController: UIViewController {
         contentView.addSubview(likeButton)
         likeButton.setImage(UIImage(systemName: "face.smiling"), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        likeButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
+
         likeButton.tintColor = .black
         
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             likeButton.widthAnchor.constraint(
                 equalToConstant: Constants.likeAndCommentButtonSideLength
             ),
@@ -193,6 +195,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         
         contentView.addSubview(commentButton)
         commentButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
+        commentButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
         commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
         commentButton.tintColor = .black
         
