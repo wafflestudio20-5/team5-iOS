@@ -57,6 +57,10 @@ final class UserViewModel {
         self.UserUseCase.getSavedUser()
     }
     
+    func registerAccount(email: String, password: String, shoeSize: Int){
+        self.UserUseCase.signUp(email: email, password: password, shoeSize: shoeSize)
+    }
+    
     func logout(){
         self.UserUseCase.logout()
     }

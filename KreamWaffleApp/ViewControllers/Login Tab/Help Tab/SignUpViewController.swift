@@ -11,6 +11,8 @@ import RxCocoa
 
 class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
+    var viewModel : UserViewModel
+    
     var backButton = UIButton()
     var titleLabel = UILabel()
     var emailField : LoginTextfield?
@@ -23,6 +25,15 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     var additionalTerms : TermsButton?
     
     var signupButton = UIButton()
+    
+    init(viewModel : UserViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,10 +165,13 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         }
     }
     
-    //TODO: connect with view model
     @objc func didTapSignup(){
-        let repository = LoginRepository()
-        repository.registerAccount(with: (self.emailField?.textfield.text)!, password: (self.passwordField?.textfield.text)!, shoe_size: 240)
+        //TODO: size nil 에러 바꾸기
+        self.viewModel.registerAccount(email: (self.emailField?.textfield.text)!,
+                                       password: (self.passwordField?.textfield.text)!,
+                                       shoeSize: 220)
+        
+        if (self.viewModel.Error != .signupError){
         let loadingVC = LoadingViewController()
 
         // Animate loadingVC over the existing views on screen
@@ -175,6 +189,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
             self.dismiss(animated: true)
         }
     }
+}
     
     @objc func didTapSelectShoeSize(){
         let vc = ShoeSizeSelectionViewController()

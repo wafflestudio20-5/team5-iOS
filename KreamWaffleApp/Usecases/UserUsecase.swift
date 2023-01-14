@@ -55,12 +55,26 @@ final class UserUsecase {
             guard let self = self else { return }
             switch result {
             case .success(let response):
+                self.userResponse = response
                 self.user = response.user
-                print("usecase sucess")
-                print(response.user.email, ": signed in the usecase")
+                self.loggedIn = true
             case .failure(let error):
-                print("usecase failure")
-                //self.error = error as? LoginError
+                self.error = error as LoginError
+                self.loggedIn = false
+            }
+        }
+    }
+    
+    ///registers new account
+    func signUp(email: String, password: String, shoeSize: Int){
+        repository.registerAccount(with: email, password: password, shoe_size: shoeSize) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                print("register success")
+            case .failure(let error):
+                self.error = error as LoginError
+                self.loggedIn = false
             }
         }
     }

@@ -232,7 +232,7 @@ class LoginViewController: UIViewController {
     
     
     @objc func didTapSignup(){
-        let signupVC = SignUpViewController()
+        let signupVC = SignUpViewController(viewModel: self.viewModel)
         signupVC.modalPresentationStyle = .fullScreen
         self.present(signupVC, animated: true)
     }
@@ -299,11 +299,14 @@ class LoginViewController: UIViewController {
         guard let accessToken = NaverLoginInstance?.accessToken else { return }
         
         print(accessToken, "is the access token")
-        let repo = LoginRepository()
-        let usecase = UserUsecase(dataRepository: repo)
-        let UserVM = UserViewModel(UserUseCase: usecase)
-        UserVM.getUserWithSocialToken(with: accessToken)
-        print(UserVM.User?.email ?? "error: not returned email")
+        self.viewModel.getUserWithSocialToken(with: accessToken)
+        if (self.viewModel.LoggedIn){
+            print("login success")
+            self.dismiss(animated: true)
+        }else{
+            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
+            print("login failure")
+        }
       }
 }
 
@@ -350,9 +353,9 @@ extension LoginViewController {
 extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
   // 로그인 버튼을 눌렀을 경우 열게 될 브라우저
   func oauth20ConnectionDidOpenInAppBrowser(forOAuth request: URLRequest!) {
-//     let naverSignInVC = NLoginThirdPartyOAuth20InAppBrowserViewController(request: request)!
-//     naverSignInVC.parentOrientation = UIInterfaceOrientation(rawValue: UIDevice.current.orientation.rawValue)!
-//     present(naverSignInVC, animated: false, completion: nil)
+    //let naverSignInVC = NLoginThirdPartyOAuth20InAppBrowserViewController(request: request)!
+   // naverSignInVC.parentOrientation = UIInterfaceOrientation(rawValue: UIDevice.current.orientation.rawValue)!
+   // present(naverSignInVC, animated: false, completion: nil)
   }
   
   // 로그인에 성공했을 경우 호출
@@ -373,6 +376,6 @@ extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
   
   // 모든 Error
   func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-    print("[Error] :", error.localizedDescription)
+    print("[Error] :", error)
   }
 }

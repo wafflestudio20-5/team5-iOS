@@ -13,6 +13,7 @@ enum LoginError: Error {
     case passwordFormatError //password 이 제대로된 password 가 아닐때.
     case unknownError //그이외의 error
     case noError //초기값을 갖기 위해서
+    case signupError 
  }
 
 func checkErrorMessage(_ errorMessage: String) -> LoginError{

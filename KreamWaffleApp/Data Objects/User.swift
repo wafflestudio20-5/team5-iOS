@@ -19,6 +19,7 @@ struct User : Codable {
         case email = "email"
         case shoeSize = "shoe_size"
         case phoneNumber = "phone_number"
+        
     }
 }
 
@@ -26,11 +27,13 @@ struct UserResponse: Codable {
     let accessToken : String
     let refreshToken : String
     var user: User
+    let exists: Bool?
     
     private enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
         case refreshToken = "refresh_token"
         case user = "user"
+        case exists = "exists"
     }
 }
 
