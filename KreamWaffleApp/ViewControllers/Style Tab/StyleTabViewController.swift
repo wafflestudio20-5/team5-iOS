@@ -35,9 +35,7 @@ class StyleTabViewController: UIViewController {
     
     func setUpNavigationBar() {
         self.navigationItem.title = "최신"
-        self.navigationController?.navigationBar.backIndicatorImage = UIImage(systemName: "arrow.backward")
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(systemName: "arrow.backward")
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.setUpBackButton()
     }
     
     func setUpButtons() {
