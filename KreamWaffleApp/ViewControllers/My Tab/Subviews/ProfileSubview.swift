@@ -25,7 +25,14 @@ class ProfileSubview : UIView {
     
     var title = UILabel()
     var seeMore = UIButton()
-    var divider = UILabel()
+    var divider: UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        view.backgroundColor = .lightGray
+//        view.frame.size.width = 20
+        return view
+    }
     var stackView = UIStackView()
     
     init(subviewData : subviewData){
@@ -67,9 +74,10 @@ class ProfileSubview : UIView {
         self.divider.backgroundColor = .lightGray
         
         
-        self.divider.translatesAutoresizingMaskIntoConstraints = false
-        self.divider.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        self.divider.heightAnchor.constraint(equalTo: self.stackView.heightAnchor).isActive = true
+//        self.divider.translatesAutoresizingMaskIntoConstraints = false
+//        self.divider.widthAnchor.constraint(equalToConstant: 1).isActive = true
+//        self.divider.heightAnchor.constraint(equalTo: self.stackView.heightAnchor).isActive = true
+        
         
         self.stackView.translatesAutoresizingMaskIntoConstraints = false
         self.stackView.topAnchor.constraint(equalTo: self.title.bottomAnchor, constant: 10).isActive = true
@@ -83,6 +91,10 @@ class ProfileSubview : UIView {
         self.stackView.addBackground(color: .systemGray)
         self.stackView.layer.cornerRadius = 10
         //self.stackView.clipsToBounds = true
+        
+        //디버깅용 출력문
+        print("!!!stackview content: \(stackView.arrangedSubviews)")
+        //디버깅용 출력문
     }
     
     required init?(coder: NSCoder) {

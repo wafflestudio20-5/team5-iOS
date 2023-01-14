@@ -56,8 +56,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         setUpSegmentedControl()
         setUpFixedViewLayout()
         setUpData()
-        //setupDivider()
-        //setupChildVC()
+        setupDivider()
+        setupChildVC()
     }
     
     func setUpSegmentedControl() {
