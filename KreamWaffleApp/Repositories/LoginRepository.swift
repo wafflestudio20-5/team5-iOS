@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import Alamofire
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -21,50 +22,69 @@ import UIKit
 class LoginRepository {
     
     private var semaphore = DispatchSemaphore (value: 0)
-    private let apiKey = "f330b07acf479c98b184db47a4d2608b"
+    private let apiKey = "f330b07acf479c98b184db47a4d2608b" //for Naver
     private let baseAPIURL = "https://kream-waffle.cf/accounts"
     private let urlSession = URLSession.shared
+    private let userDefaults = UserDefaults.standard
     
     init() {}
     
-    func loginAccount(email: String, password: String, completion: @escaping (Result<UserReponse, Error>) -> ()){
+    //save or get saved user from defaults
+    func saveUser(user: User) {
+        userDefaults.set(try? PropertyListEncoder().encode(user), forKey: "savedUser")
+       }
+    
+    func getUser()->User?{
+        if let storedObject: Data = UserDefaults.standard.object(forKey: "savedUser") as? Data {
+                    return try? PropertyListDecoder().decode(User.self, from: storedObject)
+            }
+        return nil
+    }
+    
+    func logOutUser(){
+        userDefaults.removeObject(forKey: "savedUser")
+    }
+       
+    //login with custom or social
+    func loginAccount(email: String, password: String, completion: @escaping (Result<UserResponse, LoginError>) -> ()){
         
-        let URLString = "\(baseAPIURL)/accounts/login"
-        print(URLString)
-        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+        let URLString = "\(baseAPIURL)/login/"
+        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else {
             print("url error")
             return
         }
         
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "accept")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.method = .get
+        let headers : HTTPHeaders = [
+            .contentType("application/json")
+        ]
         
-        let task = urlSession.dataTask(with: request) { data, response, error in
-                guard error == nil else {
-                    print(String(describing: error))
-                    return }
-                guard let data = data else {
-                    self.semaphore.signal()
-                    return
-                }
-                do {
-                    print(data)
-                    let results : UserReponse = try JSONDecoder().decode(UserReponse.self, from: data)
+        let parameters = [
+            "email": email,
+            "password": password,
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers).response{ response in
+            switch response.result {
+            case .success(let data):
+                do{
+                    let results : UserResponse = try JSONDecoder().decode(UserResponse.self, from: data!)
+                    self.saveUser(user: results.user)
+                    print("LoginRepository: User is", results.user)
                     completion(.success(results))
-                    print("getting is completed in repository")
-                    self.semaphore.signal()
-                    } catch {
-                    completion(.failure(error))
-                    print("problem is here")
-                    print(error.localizedDescription)
+                }catch{
+                    completion(.failure(.unknownError))
                 }
-                }
-                task.resume()
-                self.semaphore.wait()
+                
+            case .failure(let error):
+                let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                let loginError = checkErrorMessage(String(describing: json))
+                completion(.failure(loginError))
+                print(error)
+            }
+            
+        }
     }
-    
+          
     
     func registerAccount(with email: String, password: String, shoe_size: Int){
         let URLString = "\(baseAPIURL)/registration/"
@@ -73,11 +93,9 @@ class LoginRepository {
             return
         }
         
-        //TODO: request X-CSRFT token first?
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "accept")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.setValue("CDZtko1uXdwHLfx26ArX3oW43yQxtGjTft3MSfHl8aOZAWdinyIpHG5K7xxLKGYM", forHTTPHeaderField: "X-CSRFToken")
         request.method = .post
         
         let parameters: [String: Any] = [
@@ -86,6 +104,7 @@ class LoginRepository {
             "password2": password,
             "shoe_size": shoe_size,
         ]
+        
         
         do {
             // convert parameters to Data and assign dictionary to httpBody of request
@@ -111,13 +130,15 @@ class LoginRepository {
               print("Invalid Response received from the server")
                 print(response as Any)
               return
-            }*/
-            
+            }
+            */
+              
             // ensure there is data returned
             guard let responseData = data else {
               print("nil Data received from the server")
               return
             }
+              
               
             
             do {
@@ -139,7 +160,7 @@ class LoginRepository {
         }
     
     ///with Naver's access token, get user info from custom server
-    func loginWithNaver(naverToken: String, completion: @escaping (Result<UserReponse, Error>) -> ()){
+    func loginWithNaver(naverToken: String, completion: @escaping (Result<UserResponse, Error>) -> ()){
         
         let URLString = "\(baseAPIURL)/accounts/social/naver?token=\(naverToken)"
         print(URLString)
@@ -163,7 +184,7 @@ class LoginRepository {
                 }
                 do {
                     print(data)
-                    let results : UserReponse = try JSONDecoder().decode(UserReponse.self, from: data)
+                    let results : UserResponse = try JSONDecoder().decode(UserResponse.self, from: data)
                     completion(.success(results))
                     print("getting is completed in repository")
                     self.semaphore.signal()

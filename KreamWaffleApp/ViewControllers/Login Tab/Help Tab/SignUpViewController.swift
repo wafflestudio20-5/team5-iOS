@@ -157,7 +157,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     //TODO: connect with view model
     @objc func didTapSignup(){
         let repository = LoginRepository()
-        //repository.registerAccount(with: (self.emailField?.textfield.text)!, password: (self.passwordField?.textfield.text)!, shoe_size: (self.sizeField?.selectedSize)!)
+        repository.registerAccount(with: (self.emailField?.textfield.text)!, password: (self.passwordField?.textfield.text)!, shoe_size: 240)
         let loadingVC = LoadingViewController()
 
         // Animate loadingVC over the existing views on screen

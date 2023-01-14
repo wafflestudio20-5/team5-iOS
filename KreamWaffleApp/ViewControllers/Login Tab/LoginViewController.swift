@@ -12,7 +12,7 @@ import Kingfisher
 
 class LoginViewController: UIViewController {
     
-    //TODO: 나중에 의존성 수정하기
+    var viewModel : UserViewModel
     
     let NaverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
@@ -44,6 +44,15 @@ class LoginViewController: UIViewController {
         configureSubviews()
         self.hideKeyboardWhenTappedAround()
         
+    }
+    
+    init(viewModel : UserViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +100,12 @@ class LoginViewController: UIViewController {
     
     @objc func popVC(){
         //바로 홈화면으로 가네 --> set tab bar controller to index 0
-        self.dismiss(animated: false)
+        if (self.viewModel.LoggedIn){
+        self.dismiss(animated: true)
+        }else{
+            self.dismiss(animated: true)
+            self.tabBarController?.selectedIndex = 1
+        }
     }
     
     private func configureLogoImage(){
@@ -133,6 +147,36 @@ class LoginViewController: UIViewController {
         self.loginButton.titleLabel?.textColor = .white
         self.loginButton.layer.cornerRadius = 10
         self.loginButton.clipsToBounds = true
+        self.loginButton.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
+    }
+    
+    @objc func didTapLogin(){
+        self.viewModel.getUserWithLogin(with: (self.emailfield?.textfield.text)!, password: (self.passwordfield?.textfield.text)!)
+        if (self.viewModel.LoggedIn){
+            print("login success")
+            self.dismiss(animated: true)
+        }else{
+            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
+            print("login failure")
+        }
+    }
+    
+    private func loginFailure(failureMessage: String){
+        let loadingVC = LoadingViewController()
+
+        // Animate loadingVC over the existing views on screen
+        loadingVC.modalPresentationStyle = .overCurrentContext
+
+        // Animate loadingVC with a fade in animation
+        loadingVC.modalTransitionStyle = .crossDissolve
+        
+        loadingVC.setUpNotification(notificationText: failureMessage)
+        self.present(loadingVC, animated: true, completion: nil)
+        
+        let seconds = 2.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            loadingVC.dismiss(animated: true)
+    }
     }
     
     private func configureHelpStack(){
@@ -191,7 +235,6 @@ class LoginViewController: UIViewController {
         let signupVC = SignUpViewController()
         signupVC.modalPresentationStyle = .fullScreen
         self.present(signupVC, animated: true)
-        //self.present(signupVC, animated: true)
     }
     
     @objc func didTapFindPassword(){

@@ -99,3 +99,37 @@ extension UIStackView {
 
 }
 
+
+enum UserDefaultsKeys : String {
+    case isLoggedIn
+    case userID
+    case savedUser
+}
+
+extension UserDefaults{
+
+    //MARK: Check Login
+    func setLoggedIn(value: Bool) {
+        set(value, forKey: UserDefaultsKeys.isLoggedIn.rawValue)
+    }
+
+    func isLoggedIn()-> Bool {
+        return bool(forKey: UserDefaultsKeys.isLoggedIn.rawValue)
+    }
+
+    //MARK: Save User Data
+    func setUserID(value: Int){
+        set(value, forKey: UserDefaultsKeys.userID.rawValue)
+        //synchronize()
+    }
+
+    //MARK: Retrieve User Data
+    func getUserID() -> Int{
+        return integer(forKey: UserDefaultsKeys.userID.rawValue)
+    }
+    
+    func reset() {
+        removeObject(forKey: UserDefaultsKeys.savedUser.rawValue)
+    }
+}
+

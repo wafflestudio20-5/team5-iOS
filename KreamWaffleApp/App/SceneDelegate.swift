@@ -22,7 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
         let styleViewModel = StyleViewModel(usecase: StyleUsecase(repository: StyleRepository()))
-        let rootVC = TabBarViewController(shopViewModel: shopViewModel, styleViewModel: styleViewModel)
+        let userViewModel = UserViewModel(UserUseCase: UserUsecase(dataRepository: LoginRepository()))
+        userViewModel.getSavedUser()
+        let rootVC = TabBarViewController(shopViewModel: shopViewModel, styleViewModel: styleViewModel, userViewModel: userViewModel)
         
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
