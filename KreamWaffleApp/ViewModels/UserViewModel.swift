@@ -7,17 +7,63 @@
 
 import Foundation
 
+
 final class UserViewModel {
     
     private let UserUseCase : UserUsecase
-    var User : User?
+    
+    var User : User? {
+            get {
+                self.UserUseCase.user
+            }
+        }
+    
+    var UserReponse: UserResponse? {
+        get {
+            self.UserUseCase.userResponse
+        }
+    }
+    
+    var Error : LoginError? {
+        get {
+            self.UserUseCase.error
+        }
+    }
+    
+    var LoggedIn : Bool {
+        get {
+            self.UserUseCase.loggedIn
+        }
+    }
     
     init (UserUseCase : UserUsecase){
         self.UserUseCase = UserUseCase
     }
     
     func getUserWithSocialToken(with token: String){
-        self.UserUseCase.getUserInfoWithSocialToken(with: token)
-        self.User = UserUseCase.user
+        self.UserUseCase.socialLogin(with: token)
     }
+    
+    func getUserWithCustomToken(token: String){
+        
+    }
+    
+    func getUserWithLogin(with email: String, password: String){
+        self.UserUseCase.customLogin(email: email, password: password)
+        print("User View Model: Logged In is", self.UserUseCase.loggedIn)
+    }
+    
+    func getSavedUser(){
+        self.UserUseCase.getSavedUser()
+    }
+    
+    func registerAccount(email: String, password: String, shoeSize: Int){
+        self.UserUseCase.signUp(email: email, password: password, shoeSize: shoeSize)
+    }
+    
+    func logout(){
+        self.UserUseCase.logout()
+    }
+    
 }
+

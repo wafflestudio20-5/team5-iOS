@@ -11,6 +11,8 @@ import RxCocoa
 
 class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
+    var viewModel : UserViewModel
+    
     var backButton = UIButton()
     var titleLabel = UILabel()
     var emailField : LoginTextfield?
@@ -23,6 +25,15 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     var additionalTerms : TermsButton?
     
     var signupButton = UIButton()
+    
+    init(viewModel : UserViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,11 +165,31 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         }
     }
     
-    //TODO: connect with view model
     @objc func didTapSignup(){
-        let repository = LoginRepository()
-        repository.registerAccount(with: "example@example.com", password: "sample05#", shoe_size: 220)
+        //TODO: size nil 에러 바꾸기
+        self.viewModel.registerAccount(email: (self.emailField?.textfield.text)!,
+                                       password: (self.passwordField?.textfield.text)!,
+                                       shoeSize: 220)
+        
+        if (self.viewModel.Error != .signupError){
+        let loadingVC = LoadingViewController()
+
+        // Animate loadingVC over the existing views on screen
+        loadingVC.modalPresentationStyle = .overCurrentContext
+
+        // Animate loadingVC with a fade in animation
+        loadingVC.modalTransitionStyle = .crossDissolve
+        
+        loadingVC.setUpNotification(notificationText: "이메일로 인증링크가 발송되었습니다.")
+        self.present(loadingVC, animated: true, completion: nil)
+        
+        let seconds = 2.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            loadingVC.dismiss(animated: true)
+            self.dismiss(animated: true)
+        }
     }
+}
     
     @objc func didTapSelectShoeSize(){
         let vc = ShoeSizeSelectionViewController()

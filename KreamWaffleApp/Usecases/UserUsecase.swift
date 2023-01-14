@@ -10,27 +10,80 @@ import RxSwift
 
 final class UserUsecase {
     
-    private let dataRepository : LoginRepository
+    private let repository : LoginRepository
     private let disposeBag = DisposeBag()
-    private var error : Error?
+    var error : LoginError
     var user : User?
+    var userResponse : UserResponse?
+    var loggedIn : Bool 
     
     init(dataRepository : LoginRepository){
-        self.dataRepository = dataRepository
+        self.repository = dataRepository
+        self.error = .noError
+        self.loggedIn = false
     }
     
-    ///gets user info
-    func getUserInfoWithSocialToken(with socialToken: String){
-        dataRepository.loginWithNaver(naverToken: socialToken) { [weak self] (result) in
+    //Login fields
+    func getSavedUser(){
+        if let savedUser =  repository.getUser(){
+            self.user = savedUser
+            self.loggedIn = true
+        }else{
+            print("no saved user")
+        }
+    }
+    
+    ///gets user info with customLogin
+    func customLogin(email: String, password: String){
+        repository.loginAccount(email: email, password: password) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let response):
+                self.userResponse = response
                 self.user = response.user
-                print("usecase sucess")
-                print(response.user.email, ": signed in the usecase")
+                self.loggedIn = true
             case .failure(let error):
-                self.error = error as NSError
+                self.error = error as LoginError
+                self.loggedIn = false
             }
         }
     }
+
+    ///gets user info with social login
+    func socialLogin(with socialToken: String){
+        repository.loginWithNaver(naverToken: socialToken) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.userResponse = response
+                self.user = response.user
+                self.loggedIn = true
+            case .failure(let error):
+                self.error = error as LoginError
+                self.loggedIn = false
+            }
+        }
+    }
+    
+    ///registers new account
+    func signUp(email: String, password: String, shoeSize: Int){
+        repository.registerAccount(with: email, password: password, shoe_size: shoeSize) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                print("register success")
+            case .failure(let error):
+                self.error = error as LoginError
+                self.loggedIn = false
+            }
+        }
+    }
+    
+    func logout(){
+        repository.logOutUser()
+        self.userResponse = nil
+        self.user = nil
+        self.loggedIn = false
+    }
 }
+

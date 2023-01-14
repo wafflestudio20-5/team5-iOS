@@ -15,19 +15,28 @@ struct TemporaryUserData {
 }
 
 
-class MyTabViewController: UIViewController {
+class MyTabViewController: UIViewController, UITabBarControllerDelegate {
+    
+    let viewModel : UserViewModel
     let fixedView = UIView()
     let profileImageView = UIImageView()
     let nicknameLabel = UILabel()
     let idLabel = UILabel()
     let profileChangeButton = UIButton()
+    let divider = UILabel()
+    
+    //Child VCs
+    //구매 데이터를 usecase 로 받도록 나중에 설정할 필요있음.
+    private var myShoppingVC = MyShoppingViewController()
+    private var myProfileVC = MyProfileViewController()
     
     
     // **************** 임시!! ********************
     let temporaryUserData = TemporaryUserData()
     // **************** 임시!! ********************
 
-    init() {
+    init(viewModel : UserViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,14 +47,17 @@ class MyTabViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //shoeScreen.modalPresentationStyle = .fullScreen
-        let loginScreen = LoginViewController()
-        let profile = ProfileViewController()
-        loginScreen.modalPresentationStyle = .fullScreen
-        self.present(loginScreen, animated: false)
-        
+        if (!self.viewModel.LoggedIn){
+            let loginScreen = LoginViewController(viewModel: self.viewModel)
+            loginScreen.modalPresentationStyle = .fullScreen
+            self.present(loginScreen, animated: false)
+        }
+    
         setUpSegmentedControl()
         setUpFixedViewLayout()
         setUpData()
+        //setupDivider()
+        //setupChildVC()
     }
     
     func setUpSegmentedControl() {
@@ -147,7 +159,7 @@ class MyTabViewController: UIViewController {
     func setUpButtonLayout() {
         self.view.addSubview(self.profileChangeButton)
         
-        self.profileChangeButton.setTitle("프로필 관리", for: .normal)
+        self.profileChangeButton.setTitle("로그아웃", for: .normal)
         self.profileChangeButton.titleLabel!.font = .systemFont(ofSize: 14.0, weight: .semibold)
         self.profileChangeButton.setTitleColor(.black, for: .normal)
         self.profileChangeButton.layer.cornerRadius = 7.5
@@ -167,26 +179,59 @@ class MyTabViewController: UIViewController {
     
     func setUpData() {
         // 서버에서 받아온 user data를 뷰에 세팅하는 함수.
-        // 일단은 임시 데이터로 채우겠습니다.
+        //TODO: 닉네임에 대한 정보는 API에서 딱히 없는듯합니다.
         let url = URL(string: self.temporaryUserData.profileImageUrl)
         self.profileImageView.kf.setImage(with: url)
         self.nicknameLabel.text = temporaryUserData.nickname
-        self.idLabel.text = temporaryUserData.id
+        self.idLabel.text = self.viewModel.User?.email
+    }
+    
+    func setupDivider(){
+        self.view.addSubview(divider)
+        self.divider.backgroundColor = colors.lightGray
+        self.divider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.divider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.divider.heightAnchor.constraint(equalToConstant: 20),
+            self.divider.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: self.view.frame.height/64),
+        ])
+    }
+    
+    func setupChildVC(){
+        self.add(self.myShoppingVC)
+        self.add(self.myProfileVC)
+        //TODO: y 값 조정하기
+        self.myShoppingVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
+        self.myProfileVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
+        self.myProfileVC.view.isHidden = true
     }
     
     @objc func navigationSegmentedControlValueChanged(_ sender: BetterSegmentedControl) {
         //***** !! To 은혜님 !! ******
         // 여기서 어떤 뷰컨 숨기고 어떤 뷰컨 드러낼지 설정하시면 됩니다!
+        //넹
         if sender.index == 0 {
-            print("Turning lights on.")
-            view.backgroundColor = .white
+            //print("Turning lights on.")
+            //view.backgroundColor = .white
+            self.myShoppingVC.view.isHidden = false
+            self.myProfileVC.view.isHidden = true
         } else {
-            print("Turning lights off.")
-            view.backgroundColor = .darkGray
+            //print("Turning lights off.")
+            //view.backgroundColor = .darkGray
+            self.myShoppingVC.view.isHidden = true
+            self.myProfileVC.view.isHidden = false
         }
     }
     
+    //임시적으로 로그아웃
     @objc func profileChangeButtonTapped() {
-        print("profile Change Button Tapped")
+        print("로그아웃 누름")
+        //API에서 로그아웃 관련 서비스를 구현하지 않은 관계로 우선은 user default 이용
+        //user default 에서 사용자 삭제 후 login VC 올림
+        self.viewModel.logout()
+        let loginScreen = LoginViewController(viewModel: self.viewModel)
+        loginScreen.modalPresentationStyle = .fullScreen
+        self.present(loginScreen, animated: false)
     }
 }

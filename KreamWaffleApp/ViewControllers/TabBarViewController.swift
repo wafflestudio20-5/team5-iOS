@@ -10,14 +10,17 @@ import UIKit
 class TabBarViewController: UITabBarController {
     let shopViewModel: ShopViewModel
     let styleViewModel: StyleViewModel
+    let userViewModel : UserViewModel
     let homeTabBarItem: UITabBarItem
     let styleTabBarItem: UITabBarItem
     let shopTabBarItem: UITabBarItem
     let myTabBarItem: UITabBarItem
+    
 
-    init(shopViewModel: ShopViewModel, styleViewModel: StyleViewModel) {
+    init(shopViewModel: ShopViewModel, styleViewModel: StyleViewModel, userViewModel:UserViewModel) {
         self.shopViewModel = shopViewModel
         self.styleViewModel = styleViewModel
+        self.userViewModel = userViewModel
         
         self.homeTabBarItem = UITabBarItem(title: "HOME", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         self.styleTabBarItem = UITabBarItem(title: "STYLE", image: UIImage(systemName: "heart.text.square"), selectedImage: UIImage(systemName: "heart.text.square.fill"))
@@ -49,7 +52,7 @@ class TabBarViewController: UITabBarController {
         let shopTab = UINavigationController(rootViewController: ShopTabViewController(viewModel: self.shopViewModel))
         shopTab.tabBarItem = shopTabBarItem
         
-        let myTab = UINavigationController(rootViewController: MyTabViewController())
+        let myTab = UINavigationController(rootViewController: MyTabViewController(viewModel: self.userViewModel))
         myTab.tabBarItem = myTabBarItem
 
         self.tabBar.tintColor = .black

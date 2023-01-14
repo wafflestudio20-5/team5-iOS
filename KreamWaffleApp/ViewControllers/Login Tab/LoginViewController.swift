@@ -12,7 +12,7 @@ import Kingfisher
 
 class LoginViewController: UIViewController {
     
-    //TODO: 나중에 의존성 수정하기
+    var viewModel : UserViewModel
     
     let NaverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
@@ -44,6 +44,15 @@ class LoginViewController: UIViewController {
         configureSubviews()
         self.hideKeyboardWhenTappedAround()
         
+    }
+    
+    init(viewModel : UserViewModel){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +100,12 @@ class LoginViewController: UIViewController {
     
     @objc func popVC(){
         //바로 홈화면으로 가네 --> set tab bar controller to index 0
-        self.dismiss(animated: false)
+        if (self.viewModel.LoggedIn){
+        self.dismiss(animated: true)
+        }else{
+            self.dismiss(animated: true)
+            self.tabBarController?.selectedIndex = 1
+        }
     }
     
     private func configureLogoImage(){
@@ -133,6 +147,36 @@ class LoginViewController: UIViewController {
         self.loginButton.titleLabel?.textColor = .white
         self.loginButton.layer.cornerRadius = 10
         self.loginButton.clipsToBounds = true
+        self.loginButton.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
+    }
+    
+    @objc func didTapLogin(){
+        self.viewModel.getUserWithLogin(with: (self.emailfield?.textfield.text)!, password: (self.passwordfield?.textfield.text)!)
+        if (self.viewModel.LoggedIn){
+            print("login success")
+            self.dismiss(animated: true)
+        }else{
+            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
+            print("login failure")
+        }
+    }
+    
+    private func loginFailure(failureMessage: String){
+        let loadingVC = LoadingViewController()
+
+        // Animate loadingVC over the existing views on screen
+        loadingVC.modalPresentationStyle = .overCurrentContext
+
+        // Animate loadingVC with a fade in animation
+        loadingVC.modalTransitionStyle = .crossDissolve
+        
+        loadingVC.setUpNotification(notificationText: failureMessage)
+        self.present(loadingVC, animated: true, completion: nil)
+        
+        let seconds = 2.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            loadingVC.dismiss(animated: true)
+    }
     }
     
     private func configureHelpStack(){
@@ -188,10 +232,9 @@ class LoginViewController: UIViewController {
     
     
     @objc func didTapSignup(){
-        let signupVC = SignUpViewController()
+        let signupVC = SignUpViewController(viewModel: self.viewModel)
         signupVC.modalPresentationStyle = .fullScreen
         self.present(signupVC, animated: true)
-        //self.present(signupVC, animated: true)
     }
     
     @objc func didTapFindPassword(){
@@ -256,11 +299,14 @@ class LoginViewController: UIViewController {
         guard let accessToken = NaverLoginInstance?.accessToken else { return }
         
         print(accessToken, "is the access token")
-        let repo = LoginRepository()
-        let usecase = UserUsecase(dataRepository: repo)
-        let UserVM = UserViewModel(UserUseCase: usecase)
-        UserVM.getUserWithSocialToken(with: accessToken)
-        print(UserVM.User?.email ?? "error: not returned email")
+        self.viewModel.getUserWithSocialToken(with: accessToken)
+        if (self.viewModel.LoggedIn){
+            print("login success")
+            self.dismiss(animated: true)
+        }else{
+            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
+            print("login failure")
+        }
       }
 }
 
@@ -307,9 +353,9 @@ extension LoginViewController {
 extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
   // 로그인 버튼을 눌렀을 경우 열게 될 브라우저
   func oauth20ConnectionDidOpenInAppBrowser(forOAuth request: URLRequest!) {
-//     let naverSignInVC = NLoginThirdPartyOAuth20InAppBrowserViewController(request: request)!
-//     naverSignInVC.parentOrientation = UIInterfaceOrientation(rawValue: UIDevice.current.orientation.rawValue)!
-//     present(naverSignInVC, animated: false, completion: nil)
+    //let naverSignInVC = NLoginThirdPartyOAuth20InAppBrowserViewController(request: request)!
+   // naverSignInVC.parentOrientation = UIInterfaceOrientation(rawValue: UIDevice.current.orientation.rawValue)!
+   // present(naverSignInVC, animated: false, completion: nil)
   }
   
   // 로그인에 성공했을 경우 호출
@@ -330,6 +376,6 @@ extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
   
   // 모든 Error
   func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-    print("[Error] :", error.localizedDescription)
+    print("[Error] :", error)
   }
 }
