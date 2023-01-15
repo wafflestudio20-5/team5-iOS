@@ -26,15 +26,19 @@ class ProfileSubview : UIView {
     var title = UILabel()
     var seeMore = UIButton()
     var divider = UIView()
-    
-    var stackView = UIStackView()
-    
+    var contentView = UIView()
+        
     init(subviewData : subviewData){
         self.subviewData = subviewData
         super.init(frame: .zero)
-        self.addSubviews(title, seeMore, stackView)
+        self.addSubviews(title, seeMore)
         configureTitle()
-        configureStackView()
+        setUpContentViewLayout()
+        setUpCellLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func configureTitle(){
@@ -46,67 +50,69 @@ class ProfileSubview : UIView {
         self.title.text = subviewData?.total_title
     }
     
-    
-    func configureStackView(){
-        stackView.axis = .horizontal
-        stackView.alignment = .top
-        stackView.distribution = .equalSpacing
-//        stackView.layoutMargins = UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10)
-//        self.stackView.addBackground(color: .)
-        stackView.spacing = 0
-        stackView.layer.cornerRadius = 10
+    func setUpContentViewLayout() {
+        self.addSubview(self.contentView)
+        self.contentView.backgroundColor = .white
+        self.contentView.setupCornerRadius(10)
 
-        
-        if (self.subviewData?.total_title == "보관 판매 내역"){
-            self.stackView.backgroundColor = colors.backgroundGreen
-        } else{
-            self.stackView.backgroundColor = colors.lessLightGray
-        }
-        
-        self.stackView.translatesAutoresizingMaskIntoConstraints = false
-        self.stackView.topAnchor.constraint(equalTo: self.title.bottomAnchor).isActive = true
-        self.stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        self.stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
+        self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.contentView.topAnchor.constraint(equalTo: self.title.bottomAnchor, constant: 5),
+            self.contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
+    }
+    
+    func setUpCellLayout() {
         let cell_1 = ProfileSubviewSubCell(mySet: self.subviewData!.set_1)
         let cell_2 = ProfileSubviewSubCell(mySet: self.subviewData!.set_2)
         let cell_3 = ProfileSubviewSubCell(mySet: self.subviewData!.set_3)
         let cell_4 = ProfileSubviewSubCell(mySet: self.subviewData!.set_4)
-                
-        let cellList = [cell_1, divider, cell_2, cell_3, cell_4]
-        self.stackView.addArrangedSubviews(cellList)
-
+        
+        self.contentView.addSubviews(cell_1, divider, cell_2, cell_3, cell_4)
+        let cellWidth = (UIScreen.main.bounds.width - 40)/4
+        
         cell_1.translatesAutoresizingMaskIntoConstraints = false
-        cell_1.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 20).isActive = true
+        NSLayoutConstraint.activate([
+            cell_1.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            cell_1.widthAnchor.constraint(equalToConstant: cellWidth),
+            cell_1.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+            cell_1.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+        ])
         
-        self.divider.backgroundColor = .gray
-        
-        self.divider.translatesAutoresizingMaskIntoConstraints = false
-        self.divider.leadingAnchor.constraint(equalTo: cell_1.trailingAnchor, constant: 10).isActive = true
-        self.divider.widthAnchor.constraint(equalToConstant: 1).isActive = true
-        self.divider.heightAnchor.constraint(equalTo: self.stackView.heightAnchor).isActive = true
+        divider.backgroundColor = .lightGray
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            divider.leadingAnchor.constraint(equalTo: cell_1.trailingAnchor),
+            divider.widthAnchor.constraint(equalToConstant: 1),
+            divider.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            divider.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+        ])
         
         cell_2.translatesAutoresizingMaskIntoConstraints = false
-        cell_2.leadingAnchor.constraint(equalTo: divider.trailingAnchor, constant: 10).isActive = true
+        NSLayoutConstraint.activate([
+            cell_2.leadingAnchor.constraint(equalTo: divider.trailingAnchor),
+            cell_2.widthAnchor.constraint(equalToConstant: cellWidth),
+            cell_2.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+            cell_2.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+        ])
         
         cell_3.translatesAutoresizingMaskIntoConstraints = false
-        cell_3.leadingAnchor.constraint(equalTo: cell_2.trailingAnchor, constant: 10).isActive = true
+        NSLayoutConstraint.activate([
+            cell_3.leadingAnchor.constraint(equalTo: cell_2.trailingAnchor),
+            cell_3.widthAnchor.constraint(equalToConstant: cellWidth),
+            cell_3.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+            cell_3.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+        ])
         
         cell_4.translatesAutoresizingMaskIntoConstraints = false
-        cell_4.leadingAnchor.constraint(equalTo: cell_3.trailingAnchor, constant: 10).isActive = true
-        cell_4.trailingAnchor.constraint(lessThanOrEqualTo:stackView.trailingAnchor, constant: -20).isActive = true
-        
-        
-        for view in stackView.arrangedSubviews {
-            stackView.sendSubviewToBack(view)
-        }
-        
-        print("\(stackView.arrangedSubviews)")
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        NSLayoutConstraint.activate([
+            cell_4.leadingAnchor.constraint(equalTo: cell_3.trailingAnchor),
+            cell_4.widthAnchor.constraint(equalToConstant: cellWidth),
+            cell_4.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+            cell_4.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+        ])
     }
 }
 

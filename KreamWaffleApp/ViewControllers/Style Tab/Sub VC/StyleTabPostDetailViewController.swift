@@ -48,6 +48,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     override func viewDidLoad() {
         imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
         self.view.backgroundColor = .white
+        addAllSubviews()
         setUpNavigationBar()
         setUpScrollView()
         setUpLabelLayout()
@@ -58,8 +59,18 @@ final class StyleTabPostDetailViewController: UIViewController {
         setUpData()
     }
     
+    func addAllSubviews() {
+        view.addSubviews(scrollView, self.followButton)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(idLabel, numLikesLabel, contentLabel, commentButton, self.slideshow)
+    }
+    
+    func setUpNavigationBar() {
+        navigationController?.navigationBar.tintColor = .lightGray
+        navigationItem.title = "최신"
+    }
+    
     func setUpScrollView() {
-        view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -69,7 +80,6 @@ final class StyleTabPostDetailViewController: UIViewController {
         ])
         
         
-        scrollView.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
@@ -86,13 +96,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
     }
     
-    func setUpNavigationBar() {
-        navigationController?.navigationBar.tintColor = .lightGray
-        navigationItem.title = "최신"
-    }
-    
     func setUpLabelLayout() {
-        contentView.addSubview(idLabel)
 
         idLabel.font = UIFont.boldSystemFont(ofSize: 14)
         idLabel.textColor = .black
@@ -111,7 +115,6 @@ final class StyleTabPostDetailViewController: UIViewController {
             ),
         ])
         
-        contentView.addSubview(numLikesLabel)
         
         numLikesLabel.font = UIFont.systemFont(ofSize: 14)
         numLikesLabel.textColor = .lightGray
@@ -130,7 +133,6 @@ final class StyleTabPostDetailViewController: UIViewController {
             numLikesLabel.heightAnchor.constraint(equalToConstant: Constants.idLabelHeight),
         ])
         
-        contentView.addSubview(contentLabel)
         contentLabel.font = UIFont.systemFont(ofSize: 14)
         contentLabel.textColor = .black
         contentLabel.lineBreakStrategy = .hangulWordPriority
@@ -152,7 +154,6 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpButtonLayout() {
-        view.addSubview(self.followButton)
         // **팔로우 상태에 따라 다르게. 나중에 수정해야함.
         followButton.setTitle("팔로우", for: .normal)
         // **************************************
@@ -193,7 +194,6 @@ final class StyleTabPostDetailViewController: UIViewController {
             ),
         ])
         
-        contentView.addSubview(commentButton)
         commentButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
         commentButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
         commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
@@ -213,7 +213,6 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpSlideShowLayout() {
-        contentView.addSubview(self.slideshow)
         slideshow.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([

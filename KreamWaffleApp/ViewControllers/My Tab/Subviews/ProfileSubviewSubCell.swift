@@ -39,7 +39,7 @@ class ProfileSubviewSubCell : UIView {
         self.titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         
-        self.numberLabel.textColor = .green
+        self.numberLabel.textColor = .black
         self.numberLabel.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         self.numberLabel.translatesAutoresizingMaskIntoConstraints = false
         self.numberLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
