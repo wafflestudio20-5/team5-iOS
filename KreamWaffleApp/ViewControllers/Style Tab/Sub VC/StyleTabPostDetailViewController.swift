@@ -62,7 +62,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     func addAllSubviews() {
         view.addSubviews(scrollView, self.followButton)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(idLabel, numLikesLabel, contentLabel, commentButton, self.slideshow)
+        contentView.addSubviews(idLabel, numLikesLabel, contentLabel, likeButton, commentButton, self.slideshow)
     }
     
     func setUpNavigationBar() {
@@ -78,7 +78,6 @@ final class StyleTabPostDetailViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -97,7 +96,6 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpLabelLayout() {
-
         idLabel.font = UIFont.boldSystemFont(ofSize: 14)
         idLabel.textColor = .black
         idLabel.lineBreakMode = .byTruncatingTail
@@ -126,10 +124,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             numLikesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             numLikesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            numLikesLabel.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing + Constants.likeAndCommentButtonSideLength + Constants.spacing
-            ),
+            numLikesLabel.topAnchor.constraint(equalTo: likeButton.bottomAnchor, constant: Constants.spacing),
             numLikesLabel.heightAnchor.constraint(equalToConstant: Constants.idLabelHeight),
         ])
         
@@ -144,10 +139,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            contentLabel.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing + Constants.likeAndCommentButtonSideLength + Constants.spacing + Constants.idLabelHeight + Constants.spacing
-            ),
+            contentLabel.topAnchor.constraint(equalTo: numLikesLabel.bottomAnchor, constant: Constants.spacing),
             contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
@@ -172,7 +164,6 @@ final class StyleTabPostDetailViewController: UIViewController {
         ])
         
         
-        contentView.addSubview(likeButton)
         likeButton.setImage(UIImage(systemName: "face.smiling"), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
@@ -186,8 +177,8 @@ final class StyleTabPostDetailViewController: UIViewController {
                 equalToConstant: Constants.likeAndCommentButtonSideLength
             ),
             likeButton.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing
+                equalTo: idLabel.bottomAnchor,
+                constant: Constants.spacing + imageHeight + Constants.spacing
             ),
             likeButton.heightAnchor.constraint(
                 equalToConstant: Constants.likeAndCommentButtonSideLength
@@ -219,8 +210,8 @@ final class StyleTabPostDetailViewController: UIViewController {
             self.slideshow.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
             self.slideshow.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             self.slideshow.topAnchor.constraint(
-                equalTo: self.contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing
+                equalTo: self.idLabel.bottomAnchor,
+                constant: Constants.spacing
             ),
             self.slideshow.heightAnchor.constraint(equalToConstant: imageHeight),
         ])
