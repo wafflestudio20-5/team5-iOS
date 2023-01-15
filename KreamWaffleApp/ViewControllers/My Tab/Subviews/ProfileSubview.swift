@@ -25,14 +25,6 @@ class ProfileSubview : UIView {
     
     var title = UILabel()
     var seeMore = UIButton()
-//    var divider: UIView {
-//        let view = UIView()
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.widthAnchor.constraint(equalToConstant: 20).isActive = true
-//        view.backgroundColor = .lightGray
-////        view.frame.size.width = 20
-//        return view
-//    }
     var divider = UIView()
     
     var stackView = UIStackView()
@@ -61,7 +53,7 @@ class ProfileSubview : UIView {
         stackView.distribution = .equalSpacing
 //        stackView.layoutMargins = UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10)
 //        self.stackView.addBackground(color: .)
-        stackView.spacing = 1
+        stackView.spacing = 0
         stackView.layer.cornerRadius = 10
 
         
@@ -84,31 +76,25 @@ class ProfileSubview : UIView {
                 
         let cellList = [cell_1, divider, cell_2, cell_3, cell_4]
         self.stackView.addArrangedSubviews(cellList)
-//        cellList.forEach { $0.sizeToFit() }
-//        let cellWidth: CGFloat = 10
 
         cell_1.translatesAutoresizingMaskIntoConstraints = false
-        cell_1.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: 20).isActive = true
-//        cell_1.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        cell_1.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 20).isActive = true
         
         self.divider.backgroundColor = .gray
         
         self.divider.translatesAutoresizingMaskIntoConstraints = false
-        self.divider.leadingAnchor.constraint(greaterThanOrEqualTo: cell_1.trailingAnchor).isActive = true
+        self.divider.leadingAnchor.constraint(equalTo: cell_1.trailingAnchor, constant: 10).isActive = true
         self.divider.widthAnchor.constraint(equalToConstant: 1).isActive = true
         self.divider.heightAnchor.constraint(equalTo: self.stackView.heightAnchor).isActive = true
         
         cell_2.translatesAutoresizingMaskIntoConstraints = false
-        cell_2.leadingAnchor.constraint(greaterThanOrEqualTo: divider.trailingAnchor).isActive = true
-//        cell_2.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        cell_2.leadingAnchor.constraint(equalTo: divider.trailingAnchor, constant: 10).isActive = true
         
         cell_3.translatesAutoresizingMaskIntoConstraints = false
-        cell_3.leadingAnchor.constraint(greaterThanOrEqualTo: cell_2.trailingAnchor).isActive = true
-//        cell_3.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        cell_3.leadingAnchor.constraint(equalTo: cell_2.trailingAnchor, constant: 10).isActive = true
         
         cell_4.translatesAutoresizingMaskIntoConstraints = false
-        cell_4.leadingAnchor.constraint(greaterThanOrEqualTo: cell_3.trailingAnchor).isActive = true
-//        cell_4.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        cell_4.leadingAnchor.constraint(equalTo: cell_3.trailingAnchor, constant: 10).isActive = true
         cell_4.trailingAnchor.constraint(lessThanOrEqualTo:stackView.trailingAnchor, constant: -20).isActive = true
         
         
@@ -116,8 +102,6 @@ class ProfileSubview : UIView {
             stackView.sendSubviewToBack(view)
         }
         
-        //self.stackView.layer.cornerRadius = 10
-        //self.stackView.clipsToBounds = true
         print("\(stackView.arrangedSubviews)")
     }
     
