@@ -25,20 +25,21 @@ class ProfileSubview : UIView {
     
     var title = UILabel()
     var seeMore = UIButton()
-    var divider: UIView {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        view.backgroundColor = .lightGray
-//        view.frame.size.width = 20
-        return view
-    }
+//    var divider: UIView {
+//        let view = UIView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.widthAnchor.constraint(equalToConstant: 20).isActive = true
+//        view.backgroundColor = .lightGray
+////        view.frame.size.width = 20
+//        return view
+//    }
+    var divider = UIView()
+    
     var stackView = UIStackView()
     
     init(subviewData : subviewData){
         self.subviewData = subviewData
         super.init(frame: .zero)
-        self.backgroundColor = .clear
         self.addSubviews(title, seeMore, stackView)
         configureTitle()
         configureStackView()
@@ -55,46 +56,69 @@ class ProfileSubview : UIView {
     
     
     func configureStackView(){
-        self.stackView.axis = .horizontal
-        self.stackView.alignment = .center
-        self.stackView.distribution = .equalSpacing
-        self.stackView.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        stackView.axis = .horizontal
+        stackView.alignment = .top
+        stackView.distribution = .equalSpacing
+//        stackView.layoutMargins = UIEdgeInsets(top: -10, left: -10, bottom: -10, right: -10)
+//        self.stackView.addBackground(color: .)
+        stackView.spacing = 1
+        stackView.layer.cornerRadius = 10
+
         
         if (self.subviewData?.total_title == "보관 판매 내역"){
             self.stackView.backgroundColor = colors.backgroundGreen
-        }else{
-            self.stackView.backgroundColor = colors.lightGray
+        } else{
+            self.stackView.backgroundColor = colors.lessLightGray
         }
+        
+        self.stackView.translatesAutoresizingMaskIntoConstraints = false
+        self.stackView.topAnchor.constraint(equalTo: self.title.bottomAnchor).isActive = true
+        self.stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
         let cell_1 = ProfileSubviewSubCell(mySet: self.subviewData!.set_1)
         let cell_2 = ProfileSubviewSubCell(mySet: self.subviewData!.set_2)
         let cell_3 = ProfileSubviewSubCell(mySet: self.subviewData!.set_3)
         let cell_4 = ProfileSubviewSubCell(mySet: self.subviewData!.set_4)
+                
+        let cellList = [cell_1, divider, cell_2, cell_3, cell_4]
+        self.stackView.addArrangedSubviews(cellList)
+//        cellList.forEach { $0.sizeToFit() }
+//        let cellWidth: CGFloat = 10
+
+        cell_1.translatesAutoresizingMaskIntoConstraints = false
+        cell_1.leadingAnchor.constraint(greaterThanOrEqualTo: stackView.leadingAnchor, constant: 20).isActive = true
+//        cell_1.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
         
-        self.divider.backgroundColor = .lightGray
+        self.divider.backgroundColor = .gray
+        
+        self.divider.translatesAutoresizingMaskIntoConstraints = false
+        self.divider.leadingAnchor.constraint(greaterThanOrEqualTo: cell_1.trailingAnchor).isActive = true
+        self.divider.widthAnchor.constraint(equalToConstant: 1).isActive = true
+        self.divider.heightAnchor.constraint(equalTo: self.stackView.heightAnchor).isActive = true
+        
+        cell_2.translatesAutoresizingMaskIntoConstraints = false
+        cell_2.leadingAnchor.constraint(greaterThanOrEqualTo: divider.trailingAnchor).isActive = true
+//        cell_2.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        
+        cell_3.translatesAutoresizingMaskIntoConstraints = false
+        cell_3.leadingAnchor.constraint(greaterThanOrEqualTo: cell_2.trailingAnchor).isActive = true
+//        cell_3.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        
+        cell_4.translatesAutoresizingMaskIntoConstraints = false
+        cell_4.leadingAnchor.constraint(greaterThanOrEqualTo: cell_3.trailingAnchor).isActive = true
+//        cell_4.widthAnchor.constraint(equalToConstant: cellWidth).isActive = true
+        cell_4.trailingAnchor.constraint(lessThanOrEqualTo:stackView.trailingAnchor, constant: -20).isActive = true
         
         
-//        self.divider.translatesAutoresizingMaskIntoConstraints = false
-//        self.divider.widthAnchor.constraint(equalToConstant: 1).isActive = true
-//        self.divider.heightAnchor.constraint(equalTo: self.stackView.heightAnchor).isActive = true
-        
-        
-        self.stackView.translatesAutoresizingMaskIntoConstraints = false
-        self.stackView.topAnchor.constraint(equalTo: self.title.bottomAnchor, constant: 10).isActive = true
-        self.stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-        self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20).isActive = true
-        self.stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: self.frame.height/16).isActive = true
-        
-        self.stackView.addArrangedSubviews([cell_1, divider, cell_2, cell_3, cell_4])
+        for view in stackView.arrangedSubviews {
+            stackView.sendSubviewToBack(view)
+        }
         
         //self.stackView.layer.cornerRadius = 10
-        self.stackView.addBackground(color: .systemGray)
-        self.stackView.layer.cornerRadius = 10
         //self.stackView.clipsToBounds = true
-        
-        //디버깅용 출력문
-        print("!!!stackview content: \(stackView.arrangedSubviews)")
-        //디버깅용 출력문
+        print("\(stackView.arrangedSubviews)")
     }
     
     required init?(coder: NSCoder) {
