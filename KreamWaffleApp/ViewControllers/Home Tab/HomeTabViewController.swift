@@ -12,6 +12,12 @@ import RxCocoa
 class HomeTabViewController: UIViewController {
     private let viewModel: HomeViewModel
     private let disposeBag = DisposeBag()
+    
+    // main views
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    
+    // sub collection views
     private var justDroppedCollectionViewVC: HomeTabShopCollectionViewVC
     private var stylePicksCollectionViewVC: HomeTabStyleCollectionViewVC
     private var brandsCollectionViewVC: HomeTabBrandsCollectionViewVC
@@ -31,6 +37,7 @@ class HomeTabViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpScrollView()
         setUpNavigationBar()
         setUpButtons()
         setUpChildVC()
@@ -39,6 +46,34 @@ class HomeTabViewController: UIViewController {
     func setUpNavigationBar() {
         self.navigationItem.title = "투데이"
 //        self.setUpBackButton()
+    }
+    
+    func setUpScrollView() {
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -100)
+        ])
+        
+        contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+
+        let contentViewHeight = contentView.heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor)
+        contentViewHeight.priority = .defaultLow
+        contentViewHeight.isActive = true
+        scrollView.showsVerticalScrollIndicator = false
     }
     
     func setUpButtons() {
@@ -54,42 +89,42 @@ class HomeTabViewController: UIViewController {
     
     func setUpChildVC() {
         // Just Dropped 발매 상품
-        self.view.addSubview(justDroppedCollectionViewVC.view)
-        self.addChild(justDroppedCollectionViewVC)
-        justDroppedCollectionViewVC.didMove(toParent: self)
+        self.contentView.addSubview(justDroppedCollectionViewVC.view)
+//        content.addChild(justDroppedCollectionViewVC)
+//        justDroppedCollectionViewVC.didMove(toParent: self)
         
         justDroppedCollectionViewVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.justDroppedCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.justDroppedCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.justDroppedCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.justDroppedCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 200),
+            self.justDroppedCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.justDroppedCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.justDroppedCollectionViewVC.view.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            self.justDroppedCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 300),
         ])
         
         // Brands 브랜드
-        self.view.addSubview(brandsCollectionViewVC.view)
-        self.addChild(brandsCollectionViewVC)
-        brandsCollectionViewVC.didMove(toParent: self)
+        self.contentView.addSubview(brandsCollectionViewVC.view)
+//        self.addChild(brandsCollectionViewVC)
+//        brandsCollectionViewVC.didMove(toParent: self)
         
         brandsCollectionViewVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.brandsCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.brandsCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.brandsCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 200),
-            self.brandsCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 200),
+            self.brandsCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.brandsCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.brandsCollectionViewVC.view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 300),
+            self.brandsCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 600),
         ])
         
         // Style Picks
-        self.view.addSubview(stylePicksCollectionViewVC.view)
-        self.addChild(stylePicksCollectionViewVC)
-        stylePicksCollectionViewVC.didMove(toParent: self)
+        self.contentView.addSubview(stylePicksCollectionViewVC.view)
+//        self.addChild(stylePicksCollectionViewVC)
+//        stylePicksCollectionViewVC.didMove(toParent: self)
         
         stylePicksCollectionViewVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.stylePicksCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.stylePicksCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.stylePicksCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 90),
-            self.stylePicksCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 150),
+            self.stylePicksCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.stylePicksCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.stylePicksCollectionViewVC.view.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 600),
+            self.stylePicksCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 900),
         ])
     }
     
