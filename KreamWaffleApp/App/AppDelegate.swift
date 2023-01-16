@@ -7,12 +7,28 @@
 import UIKit
 
 import NaverThirdPartyLogin
+import GoogleSignIn
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+    
+    var google_user: GIDGoogleUser?
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        //google 은 User 싱글톤으로?
+        if let error = error {
+            if(error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
+            print("not signed in before or signed out")
+            } else {
+            print(error.localizedDescription)
+            }
+        }
+                
+        // singleton 객체 - user가 로그인을 하면, AppDelegate.user로 다른곳에서 사용 가능
+        self.google_user = user
+        return
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
@@ -35,7 +51,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         instance?.consumerSecret = "q9NIM1RykO"
         // 애플리케이션 이름
         instance?.appName = "Kream"
-            
+        
+        
+        //google
+        GIDSignIn.sharedInstance()?.clientID = "806966291001-oqdbe0bq0la26ao89h4t4imqnci2f27e.apps.googleusercontent.com"
+        GIDSignIn.sharedInstance()?.delegate = self
+    
         return true
     }
 
@@ -53,8 +74,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
-        return true
+        let naverHandled = NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
+        let googlehandled = GIDSignIn.sharedInstance()?.handle(url) ?? false
+        if (googlehandled || (naverHandled != nil)){
+           return true
+         }else {
+             return false
+         }
+    
       }
 
 

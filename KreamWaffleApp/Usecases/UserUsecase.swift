@@ -65,6 +65,21 @@ final class UserUsecase {
         }
     }
     
+    func googleLogin(with socialToken: String){
+        repository.loginWithGoogle(googleToken: socialToken) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.userResponse = response
+                self.user = response.user
+                self.loggedIn = true
+            case .failure(let error):
+                self.error = error as LoginError
+                self.loggedIn = false
+            }
+        }
+    }
+    
     ///registers new account
     func signUp(email: String, password: String, shoeSize: Int){
         repository.registerAccount(with: email, password: password, shoe_size: shoeSize) { [weak self] (result) in

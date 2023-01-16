@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum Social {
+    case Naver
+    case Google
+}
 
 final class UserViewModel {
     
@@ -40,7 +44,7 @@ final class UserViewModel {
         self.UserUseCase = UserUseCase
     }
     
-    func getUserWithSocialToken(with token: String){
+    func getUserWithSocialToken(token: String, social: Social){
         self.UserUseCase.socialLogin(with: token)
     }
     
