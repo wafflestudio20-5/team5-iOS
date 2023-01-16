@@ -13,10 +13,15 @@ final class ShopViewModel {
     
     init(usecase: ShopUsecase) {
         self.usecase = usecase
+        requestData()
     }
     
     var shopDataSource: Observable<[ProductData]> {
-        return self.usecase.products
+//        return self.usecase.products
+//            .map { product in
+//                return product.map { ProductData(product: $0) }
+//            }
+        return self.usecase.shopObservable
             .map { product in
                 return product.map { ProductData(product: $0) }
             }
@@ -29,7 +34,9 @@ final class ShopViewModel {
 
 extension ShopViewModel {
     func requestData() {
-        self.usecase.requestData()
+        self.usecase.loadShopPosts()
+//        self.usecase.requestData()
+        
     }
     
     func getProductAtIndex(index: Int) -> Product {
@@ -38,24 +45,31 @@ extension ShopViewModel {
 }
 
 struct ProductData {
-    let imageSource: String
-    let brand: String
-    let productNameEng: String
-    let productNameKor: String
+    let id: Int
+    let brand: Int
+    let eng_name: String
+    let kor_name: String
+    let delivery_tag: String
+    let productimage_set: [Int]
+    let brand_name: String
     let price: Int
-    let transactionCount: Int
-    let bookmarkCount: Int
-    let relatedStyleCount: Int
+    let total_wishes: Int
+    let total_shares: Int
+//
+    let imageSource: String
     
     init(product: Product) {
-        self.imageSource = product.imageSource
+        self.id = product.id
         self.brand = product.brand
-        self.productNameEng = product.productNameEng
-        self.productNameKor = product.productNameKor
+        self.eng_name = product.eng_name
+        self.kor_name = product.kor_name
+        self.delivery_tag = product.delivery_tag
+        self.productimage_set = product.productimage_set
+        self.brand_name = product.brand_name
         self.price = product.price
-        self.transactionCount = product.transactionCount
-        self.bookmarkCount = product.bookmarkCount
-        self.relatedStyleCount = product.relatedStyleCount
+        self.total_wishes = product.total_wishes
+        self.total_shares = product.total_shares
+        self.imageSource = product.imageSource
     }
 }
 
