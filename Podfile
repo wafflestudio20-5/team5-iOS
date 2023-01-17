@@ -14,11 +14,10 @@ target 'KreamWaffleApp' do
     pod 'BetterSegmentedControl', '~> 2.0'
     pod 'Kingfisher', '~> 7.0'
     pod 'naveridlogin-sdk-ios'
+    pod "ImageSlideshow/Alamofire"
+    pod "ImageSlideshow/Kingfisher"
     pod 'ImageSlideshow', '~> 1.9.0'
-    pod 'ImageSlideshow/Kingfisher'
-    pod 'ImageSlideshow/Alamofire'
-    pod 'GoogleSignIn'
-
+    pod 'GoogleSignIn', '~> 5.0.2'
 end
 
 post_install do |installer|

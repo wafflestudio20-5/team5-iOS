@@ -442,7 +442,8 @@ extension KFOptionSetter {
     ///                         to form a processor pipeline.
     /// - Returns: A `Self` value with changes applied.
     ///
-    /// - Note: To append processors to current ones instead of replacing them all, concatenate them by `|>`, then use
+    /// - Note:
+    /// To append processors to current ones instead of replacing them all, concatenate them by `|>`, then use
     /// `appendProcessor(_:)`.
     public func setProcessors(_ processors: [ImageProcessor]) -> Self {
         switch processors.count {
