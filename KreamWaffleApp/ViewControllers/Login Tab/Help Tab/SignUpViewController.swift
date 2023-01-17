@@ -11,7 +11,7 @@ import RxCocoa
 
 class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
-    var viewModel : UserViewModel
+    var viewModel : LoginViewModel
     
     var backButton = UIButton()
     var titleLabel = UILabel()
@@ -26,7 +26,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     
     var signupButton = UIButton()
     
-    init(viewModel : UserViewModel){
+    init(viewModel : LoginViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

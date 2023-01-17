@@ -37,11 +37,7 @@ struct KFImageRenderer<HoldingView> : View where HoldingView: KFImageHoldingView
     let context: KFImage.Context<HoldingView>
     
     var body: some View {
-        if context.startLoadingBeforeViewAppear && !binder.loadingOrSucceeded {
-            DispatchQueue.main.async { binder.start(context: context) }
-        }
-        
-        return ZStack {
+        ZStack {
             context.configurations
                 .reduce(HoldingView.created(from: binder.loadedImage, context: context)) {
                     current, config in config(current)

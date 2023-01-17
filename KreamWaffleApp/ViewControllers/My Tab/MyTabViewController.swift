@@ -14,10 +14,10 @@ struct TemporaryUserData {
     let nickname = "크림맛와플"
 }
 
-
 class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
-    let viewModel : UserViewModel
+    let userInfoVM : UserInfoViewModel
+    let loginVM: LoginViewModel
     let fixedView = UIView()
     let profileImageView = UIImageView()
     let nicknameLabel = UILabel()
@@ -35,8 +35,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     let temporaryUserData = TemporaryUserData()
     // **************** 임시!! ********************
 
-    init(viewModel : UserViewModel) {
-        self.viewModel = viewModel
+    init(userInfoVM : UserInfoViewModel, loginVM: LoginViewModel) {
+        self.userInfoVM = userInfoVM
+        self.loginVM = loginVM
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,11 +48,11 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         //shoeScreen.modalPresentationStyle = .fullScreen
-        if (!self.viewModel.LoggedIn){
-            let loginScreen = LoginViewController(viewModel: self.viewModel)
+        //if (!self.loginVM.LoggedIn){
+            let loginScreen = LoginViewController(viewModel: self.loginVM)
             loginScreen.modalPresentationStyle = .fullScreen
             self.present(loginScreen, animated: false)
-        }
+        //}
     
         setUpSegmentedControl()
         setUpFixedViewLayout()
@@ -173,17 +174,15 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
             self.profileChangeButton.heightAnchor.constraint(equalToConstant: 24),
             self.profileChangeButton.topAnchor.constraint(equalTo: self.nicknameLabel.bottomAnchor, constant: 10),
         ])
-        
         self.profileChangeButton.addTarget(self, action: #selector(profileChangeButtonTapped), for: .touchUpInside)
     }
     
     func setUpData() {
         // 서버에서 받아온 user data를 뷰에 세팅하는 함수.
-        //TODO: 닉네임에 대한 정보는 API에서 딱히 없는듯합니다.
         let url = URL(string: self.temporaryUserData.profileImageUrl)
         self.profileImageView.kf.setImage(with: url)
         self.nicknameLabel.text = temporaryUserData.nickname
-        self.idLabel.text = self.viewModel.User?.email
+        self.idLabel.text = self.userInfoVM.User?.parsed_email
     }
     
     func setupDivider(){
@@ -229,8 +228,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         print("로그아웃 누름")
         //API에서 로그아웃 관련 서비스를 구현하지 않은 관계로 우선은 user default 이용
         //user default 에서 사용자 삭제 후 login VC 올림
-        self.viewModel.logout()
-        let loginScreen = LoginViewController(viewModel: self.viewModel)
+        self.loginVM.logout()
+        let loginScreen = LoginViewController(viewModel: self.loginVM)
         loginScreen.modalPresentationStyle = .fullScreen
         self.present(loginScreen, animated: false)
     }
