@@ -8,6 +8,7 @@
 import UIKit
 
 class TabBarViewController: UITabBarController {
+    let homeViewModel: HomeViewModel
     let shopViewModel: ShopViewModel
     let styleViewModel: StyleViewModel
     let userViewModel : UserViewModel
@@ -17,7 +18,8 @@ class TabBarViewController: UITabBarController {
     let myTabBarItem: UITabBarItem
     
 
-    init(shopViewModel: ShopViewModel, styleViewModel: StyleViewModel, userViewModel:UserViewModel) {
+    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleViewModel: StyleViewModel, userViewModel:UserViewModel) {
+        self.homeViewModel = homeViewModel
         self.shopViewModel = shopViewModel
         self.styleViewModel = styleViewModel
         self.userViewModel = userViewModel
@@ -42,7 +44,7 @@ class TabBarViewController: UITabBarController {
     }
     
     func setUpTabBarViewController() {
-        let homeTab = UINavigationController(rootViewController: HomeTabViewController())
+        let homeTab = UINavigationController(rootViewController: HomeTabViewController(viewModel: self.homeViewModel))
         homeTab.modalPresentationStyle = .fullScreen
         homeTab.tabBarItem = homeTabBarItem
 

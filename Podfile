@@ -17,6 +17,7 @@ target 'KreamWaffleApp' do
     pod 'ImageSlideshow', '~> 1.9.0'
     pod 'ImageSlideshow/Kingfisher'
     pod 'ImageSlideshow/Alamofire'
+    pod 'GoogleSignIn'
 
 end
 

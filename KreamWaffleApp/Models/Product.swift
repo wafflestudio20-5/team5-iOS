@@ -8,50 +8,69 @@
 import Foundation
 
 struct Product: Codable {
-    let imageSource: String
-    let brand: String
-    let productNameEng: String
-    let productNameKor: String
+    let id: Int
+    let brand: Int
+    let eng_name: String
+    let kor_name: String
+    let delivery_tag: String
+    let productimage_set: [Int]
+    let brand_name: String
     let price: Int
-    let transactionCount: Int
-    let bookmarkCount: Int
-    let relatedStyleCount: Int
+    let total_wishes: Int
+    let total_shares: Int
+//
+    let imageSource: String
+//    let transactionCount: Int
+//    let bookmarkCount: Int
+//    let relatedStyleCount: Int
     
     private enum CodingKeys: String, CodingKey {
-        case imageSource, brand, productNameEng, productNameKor, price, transactionCount, bookmarkCount, relatedStyleCount
+        case id, brand, eng_name, kor_name, delivery_tag, productimage_set, brand_name, price, total_wishes, total_shares, imageSource
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        imageSource = try container.decodeIfPresent(String.self, forKey: .imageSource) ?? "-"
-        brand = try container.decodeIfPresent(String.self, forKey: .brand) ?? "-"
-        productNameEng = try container.decodeIfPresent(String.self, forKey: .productNameEng) ?? "-"
-        productNameKor = try container.decodeIfPresent(String.self, forKey: .productNameKor) ?? "-"
+        id = try container.decodeIfPresent(Int.self, forKey: .id) ?? -1
+        brand = try container.decodeIfPresent(Int.self, forKey: .brand) ?? -1
+        eng_name = try container.decodeIfPresent(String.self, forKey: .eng_name) ?? "-"
+        kor_name = try container.decodeIfPresent(String.self, forKey: .kor_name) ?? "-"
+        delivery_tag = try container.decodeIfPresent(String.self, forKey: .delivery_tag) ?? "-"
+        productimage_set = try container.decodeIfPresent([Int].self, forKey: .productimage_set) ?? []
+        brand_name = try container.decodeIfPresent(String.self, forKey: .brand_name) ?? "-"
         price = try container.decodeIfPresent(Int.self, forKey: .price) ?? 0
-        transactionCount = try container.decodeIfPresent(Int.self, forKey: .transactionCount) ?? 0
-        bookmarkCount = try container.decodeIfPresent(Int.self, forKey: .bookmarkCount) ?? 0
-        relatedStyleCount = try container.decodeIfPresent(Int.self, forKey: .relatedStyleCount) ?? 0
+        total_wishes = try container.decodeIfPresent(Int.self, forKey: .total_wishes) ?? 0
+        total_shares = try container.decodeIfPresent(Int.self, forKey: .total_shares) ?? 0
+        
+        imageSource = try container.decodeIfPresent(String.self, forKey: .imageSource) ?? "-"
     }
     
     init(
-        imageSource: String,
-        brand: String,
-        productNameEng: String,
-        productNameKor: String,
+        id: Int,
+        brand: Int,
+        eng_name: String,
+        kor_name: String,
+        delivery_tag: String,
+        productimage_set: [Int],
+        brand_name: String,
         price: Int,
-        transactionCount: Int,
-        bookmarkCount: Int,
-        relatedStyleCount: Int
+        total_wishes: Int,
+        total_shares: Int,
+        
+        imageSource: String
     ) {
-        self.imageSource = imageSource
+        self.id = id
         self.brand = brand
-        self.productNameEng = productNameEng
-        self.productNameKor = productNameKor
+        self.eng_name = eng_name
+        self.kor_name = kor_name
+        self.delivery_tag = delivery_tag
+        self.productimage_set = productimage_set
+        self.brand_name = brand_name
         self.price = price
-        self.transactionCount = transactionCount
-        self.bookmarkCount = bookmarkCount
-        self.relatedStyleCount = relatedStyleCount
+        self.total_wishes = total_wishes
+        self.total_shares = total_shares
+        
+        self.imageSource = imageSource
     }
     
     

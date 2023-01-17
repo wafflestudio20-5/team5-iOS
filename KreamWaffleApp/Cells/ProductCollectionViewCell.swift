@@ -15,12 +15,12 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
     let imageView = UIImageView()
     let brandLabel = UILabel()
-    let productNameEngLabel = UILabel()
-    let productNameKorLabel = UILabel()
+    let eng_nameLabel = UILabel()
+    let kor_nameLabel = UILabel()
     let priceLabel = UILabel()
     let priceSubLabel = UILabel()
-    let transactionCountLabel = UILabel()
-    var transactionCount = Int()
+//    let transactionCountLabel = UILabel()
+//    var transactionCount = Int()
 //    let bookmarkCountLabel = UILabel()
     var bookmarkCount = Int()
     let relatedStyleCountLabel = UILabel()
@@ -30,8 +30,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
     let relatedStyleButton = UIButton()
     
     let h1FontSize: CGFloat = 14 // priceLabel
-    let h2FontSize: CGFloat = 13 // brandLabel, productNameEngLabel
-    let h3FontSize: CGFloat = 11 // productNameKorLabel, priceSubLabel
+    let h2FontSize: CGFloat = 13 // brandLabel, eng_nameLabel
+    let h3FontSize: CGFloat = 11 // kor_nameLabel, priceSubLabel
     let mainFontColor: UIColor = .black
     let subFontColor: UIColor = .darkGray
     
@@ -41,8 +41,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
         applyDesign()
         setupImageView()
         setupBrandLabel()
-        setupProductNameEngLabel()
-        setupProductNameKorLabel()
+        setupeng_nameLabel()
+        setupkor_nameLabel()
         setupPriceLabel()
         setupBookmarkButton()
         setupRelatedStyleButton()
@@ -51,17 +51,16 @@ class ProductCollectionViewCell: UICollectionViewCell {
     func configure(product: ProductData) {
         let imageUrl = URL(string: product.imageSource)
         self.imageView.kf.setImage(with: imageUrl)
-        self.brandLabel.text = product.brand
-        self.productNameEngLabel.text = product.productNameEng
-        self.productNameKorLabel.text = product.productNameKor
+        self.brandLabel.text = product.brand_name
+        self.eng_nameLabel.text = product.eng_name
+        self.kor_nameLabel.text = product.kor_name
         self.priceLabel.text = "\(product.price) 원"
-        self.transactionCountLabel.text = "\(product.transactionCount)"
-        self.transactionCount = product.transactionCount
-//        self.bookmarkCountLabel.text = "\(product.bookmarkCount)"
-        self.bookmarkCount = product.bookmarkCount
-        print(self.bookmarkCount)
-        self.relatedStyleCountLabel.text = "\(product.relatedStyleCount)"
-        self.relatedStyleCount = product.relatedStyleCount
+//        self.transactionCountLabel.text = "\(product.transactionCount)"
+//        self.transactionCount = product.transactionCount
+//        self.bookmarkCountLabel.text = "\(product.total_wishes)"
+        self.bookmarkCount = product.total_wishes
+        self.relatedStyleCountLabel.text = "\(product.total_shares)"
+        self.relatedStyleCount = product.total_shares
     }
     
     private func applyDesign() {
@@ -87,24 +86,24 @@ class ProductCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    private func setupTransactionCountLabel() {
-        self.transactionCountLabel.font = UIFont.boldSystemFont(ofSize: 15)
-        self.transactionCountLabel.textColor = self.mainFontColor
-        self.transactionCountLabel.lineBreakMode = .byWordWrapping
-        self.transactionCountLabel.numberOfLines = 1
-        self.transactionCountLabel.textAlignment = .left
-        self.transactionCountLabel.adjustsFontSizeToFitWidth = true
-        
-        self.contentView.addSubview(self.transactionCountLabel)
-        transactionCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            transactionCountLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-            transactionCountLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            transactionCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            transactionCountLabel.topAnchor.constraint(equalTo: self.imageView.topAnchor, constant: 5),
-            transactionCountLabel.bottomAnchor.constraint(equalTo: self.transactionCountLabel.topAnchor, constant: 30)
-        ])
-    }
+//    private func setupTransactionCountLabel() {
+//        self.transactionCountLabel.font = UIFont.boldSystemFont(ofSize: 15)
+//        self.transactionCountLabel.textColor = self.mainFontColor
+//        self.transactionCountLabel.lineBreakMode = .byWordWrapping
+//        self.transactionCountLabel.numberOfLines = 1
+//        self.transactionCountLabel.textAlignment = .left
+//        self.transactionCountLabel.adjustsFontSizeToFitWidth = true
+//
+//        self.contentView.addSubview(self.transactionCountLabel)
+//        transactionCountLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            transactionCountLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+//            transactionCountLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+//            transactionCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+//            transactionCountLabel.topAnchor.constraint(equalTo: self.imageView.topAnchor, constant: 5),
+//            transactionCountLabel.bottomAnchor.constraint(equalTo: self.transactionCountLabel.topAnchor, constant: 30)
+//        ])
+//    }
     
     private func setupBrandLabel() {
         self.brandLabel.font = UIFont.boldSystemFont(ofSize: self.h2FontSize)
@@ -126,43 +125,43 @@ class ProductCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    private func setupProductNameEngLabel() {
-        self.productNameEngLabel.font = UIFont.systemFont(ofSize: self.h2FontSize)
-        self.productNameEngLabel.textColor = self.mainFontColor
-        self.productNameEngLabel.numberOfLines = 2
-        self.productNameEngLabel.lineBreakMode = .byTruncatingTail
-//        self.productNameEngLabel.textAlignment = .left
-        self.productNameEngLabel.adjustsFontSizeToFitWidth = false
+    private func setupeng_nameLabel() {
+        self.eng_nameLabel.font = UIFont.systemFont(ofSize: self.h2FontSize)
+        self.eng_nameLabel.textColor = self.mainFontColor
+        self.eng_nameLabel.numberOfLines = 2
+        self.eng_nameLabel.lineBreakMode = .byTruncatingTail
+//        self.eng_nameLabel.textAlignment = .left
+        self.eng_nameLabel.adjustsFontSizeToFitWidth = false
         
         
-        self.contentView.addSubview(self.productNameEngLabel)
-        productNameEngLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.eng_nameLabel)
+        eng_nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            productNameEngLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-            productNameEngLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            productNameEngLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            productNameEngLabel.topAnchor.constraint(equalTo: self.brandLabel.bottomAnchor, constant: 0),
-//            productNameEngLabel.bottomAnchor.constraint(equalTo: self.productNameEngLabel.topAnchor, constant: 30)
+            eng_nameLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+            eng_nameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            eng_nameLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            eng_nameLabel.topAnchor.constraint(equalTo: self.brandLabel.bottomAnchor, constant: 0),
+//            eng_nameLabel.bottomAnchor.constraint(equalTo: self.eng_nameLabel.topAnchor, constant: 30)
         ])
     }
     
-    private func setupProductNameKorLabel() {
-        self.productNameKorLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
-        self.productNameKorLabel.textColor = self.subFontColor
-        self.productNameKorLabel.numberOfLines = 1
-        self.productNameKorLabel.lineBreakMode = .byTruncatingTail
-//        self.productNameKorLabel.textAlignment = .left
-        self.productNameKorLabel.adjustsFontSizeToFitWidth = false
+    private func setupkor_nameLabel() {
+        self.kor_nameLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
+        self.kor_nameLabel.textColor = self.subFontColor
+        self.kor_nameLabel.numberOfLines = 1
+        self.kor_nameLabel.lineBreakMode = .byTruncatingTail
+//        self.kor_nameLabel.textAlignment = .left
+        self.kor_nameLabel.adjustsFontSizeToFitWidth = false
         
         
-        self.contentView.addSubview(self.productNameKorLabel)
-        productNameKorLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.kor_nameLabel)
+        kor_nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            productNameKorLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-            productNameKorLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            productNameKorLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            productNameKorLabel.topAnchor.constraint(equalTo: self.productNameEngLabel.bottomAnchor, constant: 2),
-//            productNameKorLabel.bottomAnchor.constraint(equalTo: self.productNameKorLabel.topAnchor, constant: 30)
+            kor_nameLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+            kor_nameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            kor_nameLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            kor_nameLabel.topAnchor.constraint(equalTo: self.eng_nameLabel.bottomAnchor, constant: 2),
+//            kor_nameLabel.bottomAnchor.constraint(equalTo: self.kor_nameLabel.topAnchor, constant: 30)
         ])
     }
     
@@ -180,7 +179,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
             priceLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
             priceLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             priceLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            priceLabel.topAnchor.constraint(equalTo: self.productNameKorLabel.bottomAnchor, constant: 10),
+            priceLabel.topAnchor.constraint(equalTo: self.kor_nameLabel.bottomAnchor, constant: 10),
 //            priceLabel.bottomAnchor.constraint(equalTo: self.priceLabel.topAnchor, constant: 30)
         ])
         
