@@ -12,8 +12,8 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     let imageView = UIImageView() // change to collectionView layer
     let imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ProductDetailImagesCollectionViewFlowLayout())
     let brandLabel = UILabel()
-    let productNameEngLabel = UILabel()
-    let productNameKorLabel = UILabel()
+    let eng_nameLabel = UILabel()
+    let kor_nameLabel = UILabel()
     var sizeField : ShoeSizefield?
 //    let sizeButton = UIButton()
     let priceLabel = UILabel()
@@ -28,8 +28,8 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     let sellButton = UIButton()
     
     let h1FontSize: CGFloat = 18 // brandLabel, priceLabel
-    let h2FontSize: CGFloat = 16 // productNameEngLabel
-    let h3FontSize: CGFloat = 14 // productNameKorLabel, priceSubLabel
+    let h2FontSize: CGFloat = 16 // eng_nameLabel
+    let h3FontSize: CGFloat = 14 // kor_nameLabel, priceSubLabel
     let h4FontSize: CGFloat = 13 // priceSubLabel
     let mainFontColor: UIColor = .black
     let subFontColor: UIColor = .darkGray
@@ -46,8 +46,8 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         applyDesign()
         setupImageView()
         setupBrandLabel()
-        setupProductNameEngLabel()
-        setupProductNameKorLabel()
+        setupeng_nameLabel()
+        setupkor_nameLabel()
         
         setupShoeSizeField()
 //        setupSizeButton()
@@ -59,11 +59,11 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     private func configure() {
         let imageUrl = URL(string: self.productModel.imageSource)
         self.imageView.kf.setImage(with: imageUrl)
-        self.brandLabel.text = self.productModel.brand
-        self.productNameEngLabel.text = self.productModel.productNameEng
-        self.productNameKorLabel.text = self.productModel.productNameKor
+        self.brandLabel.text = "\(self.productModel.brand)"
+        self.eng_nameLabel.text = self.productModel.eng_name
+        self.kor_nameLabel.text = self.productModel.kor_name
         self.priceLabel.text = "\(self.productModel.price)원"
-        self.bookmarkCount = self.productModel.bookmarkCount
+        self.bookmarkCount = self.productModel.total_wishes
         self.purchasePrice = self.productModel.price
     }
     
@@ -107,43 +107,43 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         ])
     }
     
-    private func setupProductNameEngLabel() {
-        self.productNameEngLabel.font = UIFont.systemFont(ofSize: self.h2FontSize)
-        self.productNameEngLabel.textColor = self.mainFontColor
-        self.productNameEngLabel.numberOfLines = 0
-        self.productNameEngLabel.lineBreakMode = .byWordWrapping
-//        self.productNameEngLabel.textAlignment = .left
-        self.productNameEngLabel.adjustsFontSizeToFitWidth = false
+    private func setupeng_nameLabel() {
+        self.eng_nameLabel.font = UIFont.systemFont(ofSize: self.h2FontSize)
+        self.eng_nameLabel.textColor = self.mainFontColor
+        self.eng_nameLabel.numberOfLines = 0
+        self.eng_nameLabel.lineBreakMode = .byWordWrapping
+//        self.eng_nameLabel.textAlignment = .left
+        self.eng_nameLabel.adjustsFontSizeToFitWidth = false
         
         
-        self.view.addSubview(self.productNameEngLabel)
-        productNameEngLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.eng_nameLabel)
+        eng_nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            productNameEngLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            productNameEngLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.marginConstant),
-            productNameEngLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.marginConstant),
-            productNameEngLabel.topAnchor.constraint(equalTo: self.brandLabel.bottomAnchor, constant: 5),
-//            productNameEngLabel.bottomAnchor.constraint(equalTo: self.productNameEngLabel.topAnchor, constant: 30)
+            eng_nameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            eng_nameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.marginConstant),
+            eng_nameLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.marginConstant),
+            eng_nameLabel.topAnchor.constraint(equalTo: self.brandLabel.bottomAnchor, constant: 5),
+//            eng_nameLabel.bottomAnchor.constraint(equalTo: self.eng_nameLabel.topAnchor, constant: 30)
         ])
     }
     
-    private func setupProductNameKorLabel() {
-        self.productNameKorLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
-        self.productNameKorLabel.textColor = self.subFontColor
-        self.productNameKorLabel.numberOfLines = 0
-        self.productNameKorLabel.lineBreakMode = .byWordWrapping
-//        self.productNameKorLabel.textAlignment = .left
-        self.productNameKorLabel.adjustsFontSizeToFitWidth = false
+    private func setupkor_nameLabel() {
+        self.kor_nameLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
+        self.kor_nameLabel.textColor = self.subFontColor
+        self.kor_nameLabel.numberOfLines = 0
+        self.kor_nameLabel.lineBreakMode = .byWordWrapping
+//        self.kor_nameLabel.textAlignment = .left
+        self.kor_nameLabel.adjustsFontSizeToFitWidth = false
         
         
-        self.view.addSubview(self.productNameKorLabel)
-        productNameKorLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.kor_nameLabel)
+        kor_nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            productNameKorLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            productNameKorLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.marginConstant),
-            productNameKorLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.marginConstant),
-            productNameKorLabel.topAnchor.constraint(equalTo: self.productNameEngLabel.bottomAnchor, constant: 2),
-//            productNameKorLabel.bottomAnchor.constraint(equalTo: self.productNameKorLabel.topAnchor, constant: 30)
+            kor_nameLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            kor_nameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.marginConstant),
+            kor_nameLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.marginConstant),
+            kor_nameLabel.topAnchor.constraint(equalTo: self.eng_nameLabel.bottomAnchor, constant: 2),
+//            kor_nameLabel.bottomAnchor.constraint(equalTo: self.kor_nameLabel.topAnchor, constant: 30)
         ])
     }
     
@@ -151,7 +151,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.sizeField = ShoeSizefield(selectedSize: nil)
         self.view.addSubview(sizeField!)
         self.sizeField?.translatesAutoresizingMaskIntoConstraints = false
-        self.sizeField?.topAnchor.constraint(equalTo: self.productNameKorLabel.bottomAnchor, constant: 30).isActive = true
+        self.sizeField?.topAnchor.constraint(equalTo: self.kor_nameLabel.bottomAnchor, constant: 30).isActive = true
         self.sizeField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.sizeField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.sizeField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
@@ -183,7 +183,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
 //            sizeButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
 //            sizeButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.marginConstant),
 //            sizeButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.marginConstant),
-//            sizeButton.topAnchor.constraint(equalTo: self.productNameKorLabel.bottomAnchor, constant: 20),
+//            sizeButton.topAnchor.constraint(equalTo: self.kor_nameLabel.bottomAnchor, constant: 20),
 ////            priceLabel.bottomAnchor.constraint(equalTo: self.priceLabel.topAnchor, constant: 30)
 //        ])
 //    }

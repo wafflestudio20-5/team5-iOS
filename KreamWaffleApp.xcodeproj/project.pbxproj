@@ -69,6 +69,12 @@
 		944A11552963E42900F8CDB7 /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A11542963E42900F8CDB7 /* FilterCollectionViewCell.swift */; };
 		944A11572963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A11562963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift */; };
 		948C66952958482E00561C59 /* MyTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948C66942958482E00561C59 /* MyTabViewController.swift */; };
+		94CDFF9029746FF100C2095C /* HomeTabShopCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF8F29746FF100C2095C /* HomeTabShopCollectionViewVC.swift */; };
+		94CDFF932974730300C2095C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF922974730300C2095C /* HomeViewModel.swift */; };
+		94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */; };
+		94CDFF972974742400C2095C /* HomeTabBrandsCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF962974742400C2095C /* HomeTabBrandsCollectionViewVC.swift */; };
+		94CDFF9A297481E200C2095C /* HomeTabShopCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF99297481E200C2095C /* HomeTabShopCollectionViewCell.swift */; };
+		94CDFF9C29751F6A00C2095C /* ShopModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF9B29751F6A00C2095C /* ShopModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -152,6 +158,12 @@
 		944A11562963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		948C66942958482E00561C59 /* MyTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabViewController.swift; sourceTree = "<group>"; };
 		A676F3894201C76D06D3396D /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
+		94CDFF8F29746FF100C2095C /* HomeTabShopCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabShopCollectionViewVC.swift; sourceTree = "<group>"; };
+		94CDFF922974730300C2095C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabStyleCollectionViewVC.swift; sourceTree = "<group>"; };
+		94CDFF962974742400C2095C /* HomeTabBrandsCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBrandsCollectionViewVC.swift; sourceTree = "<group>"; };
+		94CDFF99297481E200C2095C /* HomeTabShopCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabShopCollectionViewCell.swift; sourceTree = "<group>"; };
+		94CDFF9B29751F6A00C2095C /* ShopModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +202,7 @@
 		5C2F9CA3295D77430021D437 /* Home Tab */ = {
 			isa = PBXGroup;
 			children = (
+				94CDFF8E29746FBF00C2095C /* Sub VC */,
 				9428AE482957193D00DC7907 /* HomeTabViewController.swift */,
 			);
 			path = "Home Tab";
@@ -310,6 +323,7 @@
 		9409BB6929587BB200107717 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				94CDFF922974730300C2095C /* HomeViewModel.swift */,
 				9428AE46295718E200DC7907 /* ShopViewModel.swift */,
 				5C2F9CA5295D7B250021D437 /* StyleViewModel.swift */,
 				6527350E2968196200C859B8 /* UserViewModel.swift */,
@@ -363,6 +377,7 @@
 				944A1141295D0DBF00F8CDB7 /* Product.swift */,
 				944A114C295D6D5C00F8CDB7 /* ProductRequestModel.swift */,
 				65F8FBB029620FCC00679E72 /* StylePost.swift */,
+				94CDFF9B29751F6A00C2095C /* ShopModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -381,6 +396,7 @@
 		944A1146295D18E100F8CDB7 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				94CDFF982974819900C2095C /* Home Tab */,
 				944A1147295D191100F8CDB7 /* ProductCollectionViewCell.swift */,
 				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
 				65F8FBB32962104E00679E72 /* StyleCollectionViewCell.swift */,
@@ -414,12 +430,29 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+
 		9AFD9A22E036AA03F8FA341C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				64F151702679D7AC7CE76D7E /* Pods_KreamWaffleApp.framework */,
 			);
 			name = Frameworks;
+		94CDFF8E29746FBF00C2095C /* Sub VC */ = {
+			isa = PBXGroup;
+			children = (
+				94CDFF8F29746FF100C2095C /* HomeTabShopCollectionViewVC.swift */,
+				94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */,
+				94CDFF962974742400C2095C /* HomeTabBrandsCollectionViewVC.swift */,
+			);
+			path = "Sub VC";
+			sourceTree = "<group>";
+		};
+		94CDFF982974819900C2095C /* Home Tab */ = {
+			isa = PBXGroup;
+			children = (
+				94CDFF99297481E200C2095C /* HomeTabShopCollectionViewCell.swift */,
+			);
+			path = "Home Tab";
 			sourceTree = "<group>";
 		};
 		D11222DD1DD286E50EA59C49 /* Pods */ = {
@@ -571,6 +604,7 @@
 				65F8FBAD29620F7600679E72 /* StyleCollectionViewFlowLayout.swift in Sources */,
 				5C2F9CA6295D7B250021D437 /* StyleViewModel.swift in Sources */,
 				5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */,
+				94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */,
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
 				944A1148295D191100F8CDB7 /* ProductCollectionViewCell.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
@@ -579,9 +613,11 @@
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5CB810DF29683D4E0021FDD6 /* StyleTabDetailRepository.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
+				94CDFF9C29751F6A00C2095C /* ShopModel.swift in Sources */,
 				6527350829680B8100C859B8 /* EndPoint.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,
 				9428AE4B2957197B00DC7907 /* StyleTabViewController.swift in Sources */,
+				94CDFF9029746FF100C2095C /* HomeTabShopCollectionViewVC.swift in Sources */,
 				948C66952958482E00561C59 /* MyTabViewController.swift in Sources */,
 				944A11572963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift in Sources */,
 				5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */,
@@ -591,6 +627,7 @@
 				65F8FBB42962104E00679E72 /* StyleCollectionViewCell.swift in Sources */,
 				5CB810E129683D6A0021FDD6 /* StyleTabDetailViewModel.swift in Sources */,
 				6527350B29680C1900C859B8 /* User.swift in Sources */,
+				94CDFF932974730300C2095C /* HomeViewModel.swift in Sources */,
 				5CB810DB29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift in Sources */,
 				9428AE4D295719A500DC7907 /* ShopTabViewController.swift in Sources */,
 				6527350F2968196200C859B8 /* UserViewModel.swift in Sources */,
@@ -609,6 +646,7 @@
 				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
 				944A1142295D0DC000F8CDB7 /* Product.swift in Sources */,
 				655A94CF296C73FB00F0184B /* MyProfileViewController.swift in Sources */,
+				94CDFF9A297481E200C2095C /* HomeTabShopCollectionViewCell.swift in Sources */,
 				65B4DE332972DC9200771920 /* CustomError.swift in Sources */,
 				6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */,
 				653F17C42965701600949FF8 /* LoginRepository.swift in Sources */,
@@ -616,6 +654,7 @@
 				65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
 				5C2F9CA8295D7B600021D437 /* StyleUsecase.swift in Sources */,
+				94CDFF972974742400C2095C /* HomeTabBrandsCollectionViewVC.swift in Sources */,
 				65F8FBB6296211B800679E72 /* ProfileSubview.swift in Sources */,
 				6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */,
 				944A1145295D16ED00F8CDB7 /* ShopCollectionViewFlowLayout.swift in Sources */,

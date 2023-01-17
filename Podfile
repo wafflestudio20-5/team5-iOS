@@ -18,8 +18,6 @@ target 'KreamWaffleApp' do
     pod "ImageSlideshow/Alamofire"
     pod "ImageSlideshow/Kingfisher"
     pod 'GoogleSignIn', '~> 5.0.2'
-
-
 end
 
 post_install do |installer|

@@ -5,26 +5,65 @@
 //  Created by 최성혁 on 2022/12/29.
 //
 
+import Foundation
+import Alamofire
+import RxCocoa
+import RxSwift
+
 final class ShopRepository {
-//    func requestProducts(parameters: ProductRequestModel) -> Single<[Product]> {
+    func requestShopPostData(page: Int, completionHandler: @escaping (Error?, [Product]?) -> Void) {
+        let url = URL(string: "https://kream-waffle.cf/shop/productinfos/")
+
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "X-CSRFToken": "jbFr0YqXW1gRUCkvMe5fASSCsdzPJUpHt3eo5Goh71RUMn4fsCKdcuhGSZBUakes"
+        ]
+        
+        URLSession.shared.dataTask(with: url!, completionHandler: { data, response, error in
+                guard let data = data, error == nil else {
+                    print("something went wrong.")
+                    return
+                }
+                var result: [Product]?
+                do {
+                    result = try JSONDecoder().decode([Product].self, from: data)
+                    completionHandler(nil, result)
+                }
+                catch {
+                    print(error)
+                    completionHandler(error, [])
+                }
+
+            }).resume()
+    }
+    
+  
+//    func requestShopPostData(page: Int) -> Single<[Product]> {
+//
 //        return Single.create { single in
-//            let url = URL(string: "https://api.themoviedb.org/3/movie/popular")
+//
+//            let url = URL(string: "https://kream-waffle.cf/shop/productinfos/")
 //
 //            let headers: HTTPHeaders = [
-//                "Authorization": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMDMzZWEzYTRhM2RiNmM4ZmE2NDYxNDkzYzA3NGI4YiIsInN1YiI6IjYzNDI1OTY0YTI4NGViMDA3OWM0MTYxZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eV0F9zBLPdjef9gth_012Q3We_jiY_bjLRyuaqS9DkI"
+//                "accept": "application/json",
+//                "X-CSRFToken": "jbFr0YqXW1gRUCkvMe5fASSCsdzPJUpHt3eo5Goh71RUMn4fsCKdcuhGSZBUakes"
 //            ]
 //
-//            AF.request(url!, method: .get, parameters: parameters, headers: headers)
-//                .responseDecodable(of: ShopModel.self) { [weak self] response in
-//                    switch response.result {
-//                    case .success(let result):
-//                        single(.success(result.results))
-//                    case .failure(let _):
-//                        single(.success([]))
-//                    }
-//                }
+////            AF.request(url!, method: .get, headers: headers)
+////                .responseDecodable(of: ShopModel.self) { [weak self] response in
+////                    switch response.result {
+////                    case .success(let result):
+////                        print(result)
+////                        single(.success(result))
+////                    case .failure(let _):
+////                        print("failure")
+////                        single(.success([]))
+////                    }
+////                }
 //
 //            return Disposables.create()
 //        }
 //    }
+    
+
 }
