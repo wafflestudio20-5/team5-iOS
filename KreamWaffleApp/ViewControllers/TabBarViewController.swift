@@ -53,9 +53,10 @@ class TabBarViewController: UITabBarController {
 
         let shopTab = UINavigationController(rootViewController: ShopTabViewController(viewModel: self.shopViewModel))
         shopTab.tabBarItem = shopTabBarItem
-    
+        
         let myTab = UINavigationController(rootViewController: MyTabViewController(viewModel: self.userViewModel))
         myTab.tabBarItem = myTabBarItem
+
         self.tabBar.tintColor = .black
         self.tabBar.barTintColor = .white
         self.tabBar.unselectedItemTintColor = .black

@@ -6,7 +6,6 @@
 //
 import UIKit
 import NaverThirdPartyLogin
-import GoogleSignIn
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -36,11 +35,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       NaverThirdPartyLoginConnection
         .getSharedInstance()?
         .receiveAccessToken(URLContexts.first?.url)
-        
-        guard let scheme = URLContexts.first?.url.scheme else { return }
-        if scheme.contains("com.googleusercontent.apps") {
-            GIDSignIn.sharedInstance()?.handle(URLContexts.first!.url)
-        }
         
     }
 

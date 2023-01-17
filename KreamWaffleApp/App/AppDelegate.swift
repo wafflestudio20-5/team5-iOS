@@ -7,12 +7,12 @@
 import UIKit
 
 import NaverThirdPartyLogin
-import GoogleSignIn
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-    
+
+
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
@@ -35,11 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         instance?.consumerSecret = "q9NIM1RykO"
         // 애플리케이션 이름
         instance?.appName = "Kream"
-        
-        
-        //google
-        GIDSignIn.sharedInstance()?.clientID = "806966291001-oqdbe0bq0la26ao89h4t4imqnci2f27e.apps.googleusercontent.com"
-    
+            
         return true
     }
 
@@ -57,14 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        let naverHandled = NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
-        let googlehandled = GIDSignIn.sharedInstance()?.handle(url) ?? false
-        if (googlehandled || (naverHandled != nil)){
-           return true
-         }else {
-             return false
-         }
-    
+        NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
+        return true
       }
 
 

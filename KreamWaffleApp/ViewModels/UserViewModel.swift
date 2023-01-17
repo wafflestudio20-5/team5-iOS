@@ -6,12 +6,7 @@
 //
 
 import Foundation
-import UIKit
 
-enum Social {
-    case Naver
-    case Google
-}
 
 final class UserViewModel {
     
@@ -45,13 +40,8 @@ final class UserViewModel {
         self.UserUseCase = UserUseCase
     }
     
-    func getUserWithSocialToken(token: String, social: Social){
-        switch(social){
-        case .Google:
-            self.UserUseCase.googleLogin(with: token)
-        case .Naver:
-            self.UserUseCase.socialLogin(with: token)
-        }
+    func getUserWithSocialToken(with token: String){
+        self.UserUseCase.socialLogin(with: token)
     }
     
     func getUserWithCustomToken(token: String){
