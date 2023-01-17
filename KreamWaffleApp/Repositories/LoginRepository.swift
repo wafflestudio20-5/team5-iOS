@@ -173,8 +173,6 @@ class LoginRepository {
                 }
                 
             case .failure(let error):
-                //let json = String(data: response.data!, encoding: String.Encoding.utf8)
-                //let loginError = checkErrorMessage(String(describing: json))
                 completion(.failure(.unknownError))
                 print(error)
             }

@@ -10,24 +10,8 @@ import NaverThirdPartyLogin
 import GoogleSignIn
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var google_user: GIDGoogleUser?
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        //google 은 User 싱글톤으로?
-        if let error = error {
-            if(error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
-            print("not signed in before or signed out")
-            } else {
-            print(error.localizedDescription)
-            }
-        }
-                
-        // singleton 객체 - user가 로그인을 하면, AppDelegate.user로 다른곳에서 사용 가능
-        self.google_user = user
-        return
-    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -55,7 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         //google
         GIDSignIn.sharedInstance()?.clientID = "806966291001-oqdbe0bq0la26ao89h4t4imqnci2f27e.apps.googleusercontent.com"
-        GIDSignIn.sharedInstance()?.delegate = self
     
         return true
     }
