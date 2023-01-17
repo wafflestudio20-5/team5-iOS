@@ -124,19 +124,13 @@ class LoginRepository {
     ///with Naver's access token, get user info from custom server
     func loginWithNaver(naverToken: String, completion: @escaping (Result<UserResponse, LoginError>) -> ()){
         
-        let URLString = "\(baseAPIURL)/social/naver"
+        let URLString = "\(baseAPIURL)/social/naver?token=\(naverToken)"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
             print("url error")
             return
         }
         
-        let headers : HTTPHeaders = [
-            .contentType("application/json")
-        ]
-        
-        let parameters = ["token" : naverToken]
-        
-        AF.request(url, method: .get, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers).response{ response in
+        AF.request(url, method: .get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
             switch response.result {
             case .success(let data):
                 do{
@@ -151,6 +145,34 @@ class LoginRepository {
             case .failure(let error):
                 //let json = String(data: response.data!, encoding: String.Encoding.utf8)
                 //let loginError = checkErrorMessage(String(describing: json))
+                completion(.failure(.unknownError))
+                print(error)
+            }
+            
+        }
+    }
+    
+    func loginWithGoogle(googleToken: String, completion: @escaping (Result<UserResponse, LoginError>) -> ()){
+        
+        let URLString = "\(baseAPIURL)/social/google?token=\(googleToken)"
+        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+            print("url error")
+            return
+        }
+        
+        AF.request(url, method: .get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+            switch response.result {
+            case .success(let data):
+                do{
+                    let results : UserResponse = try JSONDecoder().decode(UserResponse.self, from: data!)
+                    self.saveUser(user: results.user)
+                    print("LoginRepository: User is", results.user)
+                    completion(.success(results))
+                }catch{
+                    completion(.failure(.unknownError))
+                }
+                
+            case .failure(let error):
                 completion(.failure(.unknownError))
                 print(error)
             }

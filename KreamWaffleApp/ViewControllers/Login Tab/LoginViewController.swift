@@ -9,6 +9,7 @@ import Accelerate
 import Alamofire
 import NaverThirdPartyLogin
 import Kingfisher
+import GoogleSignIn
 
 class LoginViewController: UIViewController {
     
@@ -37,13 +38,27 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(loginSuccess), name: Notification.Name("loginSuccess"), object: nil)
+        
+        //for google login
+        GIDSignIn.sharedInstance()?.presentingViewController = self // 로그인화면 불러오기
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn() // 자동로그인
+        GIDSignIn.sharedInstance()?.delegate = self
+        
         self.view.backgroundColor = .white
         emailfield = LoginTextfield(titleText: "이메일 주소", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: "예) kream@kream.co.kr", defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
         passwordfield = LoginTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: "", defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
+        
         addSubviews()
         configureSubviews()
         self.hideKeyboardWhenTappedAround()
-        
+    }
+    
+    @objc func appMovedToBackground() {
+        if (self.viewModel.LoggedIn){
+            //앱을 끄면 네이버 토큰을 삭제하게 함. 
+            self.oauth20ConnectionDidFinishDeleteToken()
+        }
     }
     
     init(viewModel : UserViewModel){
@@ -101,10 +116,12 @@ class LoginViewController: UIViewController {
     @objc func popVC(){
         //바로 홈화면으로 가네 --> set tab bar controller to index 0
         if (self.viewModel.LoggedIn){
+        //근데 이런 경우가 있을 수 있나?
+        print("Login VC: Hierarchy Error")
         self.dismiss(animated: true)
         }else{
             self.dismiss(animated: true)
-            self.tabBarController?.selectedIndex = 1
+            //self.tabBarController?.selectedIndex = 1
         }
     }
     
@@ -281,12 +298,29 @@ class LoginViewController: UIViewController {
         self.googleLoginButton.setTitleColor(.black, for: .normal)
         self.googleLoginButton.layer.cornerRadius = 10
         self.googleLoginButton.clipsToBounds = true
+        self.googleLoginButton.addTarget(self, action: #selector(loginWithGoogle), for: .touchUpInside)
+        
+    }
+    
+    @objc func loginWithGoogle(){
+        //TODO: 에러처리하기
+        GIDSignIn.sharedInstance()?.signIn()
         
     }
     
     @objc func loginWithNaver(){
         NaverLoginInstance?.delegate = self
         NaverLoginInstance?.requestThirdPartyLogin()
+    }
+    
+    @objc func loginSuccess(){
+        if (self.viewModel.LoggedIn){
+            print("login success")
+            self.dismiss(animated: true)
+        }else{
+            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
+            print("login failure")
+        }
     }
     
     private func getNaverInfo() {
@@ -299,14 +333,8 @@ class LoginViewController: UIViewController {
         guard let accessToken = NaverLoginInstance?.accessToken else { return }
         
         print(accessToken, "is the access token")
-        self.viewModel.getUserWithSocialToken(with: accessToken)
-        if (self.viewModel.LoggedIn){
-            print("login success")
-            self.dismiss(animated: true)
-        }else{
-            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
-            print("login failure")
-        }
+        self.viewModel.getUserWithSocialToken(token: accessToken, social: .Naver)
+        didTapLogin()
       }
 }
 
@@ -379,3 +407,25 @@ extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
     print("[Error] :", error)
   }
 }
+
+extension LoginViewController: GIDSignInDelegate {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let error = error {
+               if (error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
+                   print("The user has not signed in before or they have since signed out.")
+               } else {
+                   print("[Log] LoginVC: \(error)")
+               }
+               return
+           }
+               
+           // 사용자 정보 가져오기
+        if let accessToken = GIDSignIn.sharedInstance().currentUser.authentication.accessToken {
+            self.viewModel.getUserWithSocialToken(token: accessToken, social: .Google)
+            print("[Log] LoginVC: ", accessToken)
+        }
+        
+        didTapLogin()
+    }
+}
+
