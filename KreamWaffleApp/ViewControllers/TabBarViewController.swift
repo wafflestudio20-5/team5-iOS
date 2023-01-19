@@ -10,7 +10,7 @@ import UIKit
 class TabBarViewController: UITabBarController {
     let homeViewModel: HomeViewModel
     let shopViewModel: ShopViewModel
-    let styleViewModel: StyleViewModel
+    let styleViewModel: StyleFeedViewModel
     let userViewModel : UserViewModel
     let homeTabBarItem: UITabBarItem
     let styleTabBarItem: UITabBarItem
@@ -18,7 +18,7 @@ class TabBarViewController: UITabBarController {
     let myTabBarItem: UITabBarItem
     
 
-    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleViewModel: StyleViewModel, userViewModel:UserViewModel) {
+    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleViewModel: StyleFeedViewModel, userViewModel:UserViewModel) {
         self.homeViewModel = homeViewModel
         self.shopViewModel = shopViewModel
         self.styleViewModel = styleViewModel

@@ -10,11 +10,13 @@ import RxCocoa
 import RxSwift
 import Kingfisher
 
-final class StyleUsecase {
-    private let repository: StyleRepository
+final class StyleFeedUsecase {
+    private let repository: StyleFeedRepository
     private let disposeBag = DisposeBag()
     
     let stylePostRelay: BehaviorRelay<[StylePost]> = .init(value: [])
+    
+    var type: String
     
     var stylePostList = [StylePost]() {
         didSet {
@@ -22,9 +24,10 @@ final class StyleUsecase {
         }
     }
         
-    init (repository: StyleRepository) {
+    init (repository: StyleFeedRepository, type: String) {
         self.repository = repository
-        requestStylePostData(page: 1)
+        self.type = type
+//        requestStylePostData(page: 1)
     }
     
     func requestStylePostData(page: Int) {
@@ -38,7 +41,7 @@ final class StyleUsecase {
     }
     
     // ******* For Testing *********
-    // API 세팅 후에는 얘가 API call로 데이터 load 하는 함수가 될 것.
+    // API 세팅 후에는 얘가 API call로 데이터 load 하는 함수가 될 것. StyleFeedRepository에서 데이터 받아오는.
     func setTestData() {
         self.stylePostList = [
             StylePost(imageSources: [

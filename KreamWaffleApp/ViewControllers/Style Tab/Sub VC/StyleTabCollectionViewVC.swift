@@ -16,9 +16,7 @@ final class StyleTabCollectionViewVC : UIViewController{
      *  2. 사용자별 프로필 페이지에서 피드를 보여주는 collection view
      */
     private let disposeBag = DisposeBag()
-    private let viewModel: StyleViewModel
-    
-    private let detailViewRepository = StyleTabDetailRepository()
+    private let viewModel: StyleFeedViewModel
     
     private let collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
@@ -28,11 +26,11 @@ final class StyleTabCollectionViewVC : UIViewController{
         layout.minimumInteritemSpacing = 3
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
-        collectionView.register(StyleCollectionViewCell.self, forCellWithReuseIdentifier: StyleCollectionViewCell.identifier)
+        collectionView.register(StyleFeedCollectionViewCell.self, forCellWithReuseIdentifier: StyleFeedCollectionViewCell.identifier)
         return collectionView
     }()
     
-    init(viewModel: StyleViewModel) {
+    init(viewModel: StyleFeedViewModel) {
         self.viewModel = viewModel
 
         super.init(nibName: nil, bundle: nil)
@@ -46,7 +44,7 @@ final class StyleTabCollectionViewVC : UIViewController{
         super.viewDidLoad()
         setUpCollectionView()
         bindCollectionView()
-        requestNewData()
+        requestInitialData()
     }
     
     func setUpCollectionView() {
@@ -80,7 +78,7 @@ final class StyleTabCollectionViewVC : UIViewController{
                     .disposed(by: disposeBag)
     }
     
-    func requestNewData() {
+    func requestInitialData() {
         self.viewModel.requestStylePostData(page: 1)
     }
     
@@ -95,15 +93,16 @@ extension StyleTabCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
         let targetImageRatio = CGFloat(viewModel.getStylePostAt(at: indexPath.row).thumbnailImageRatio)
         
         let cellWidth: CGFloat = (view.bounds.width - 20)/2 //셀 가로 넓이
+        let labelHeight: CGFloat = 20 // cell에서 label하나의 높이
 
-        return CGSize(width: cellWidth, height: targetImageRatio * cellWidth + 3*StyleCollectionViewCellConstants.labelHeight)
+        return CGSize(width: cellWidth, height: targetImageRatio * cellWidth + 3*labelHeight)
     }
 }
 
 extension StyleTabCollectionViewVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StyleCollectionViewCell.identifier, for: indexPath) as? StyleCollectionViewCell else {
-            return StyleCollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StyleFeedCollectionViewCell.identifier, for: indexPath) as? StyleFeedCollectionViewCell else {
+            return StyleFeedCollectionViewCell()
         }
         
         cell.configure(with: self.viewModel.getStylePostAt(at: indexPath.row))
@@ -131,7 +130,10 @@ extension StyleTabCollectionViewVC: UIScrollViewDelegate  {
 
 extension StyleTabCollectionViewVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewModel = StyleTabDetailViewModel(repository: detailViewRepository, stylePost: self.viewModel.getStylePostAt(at: indexPath.row))
+        let detailViewRepository = StyleDetailRepository()
+        let detailUsecase = StyleDetailUsecase(repository: detailViewRepository)
+        
+        let detailViewModel = StyleTabDetailViewModel(usecase: detailUsecase, stylePost: self.viewModel.getStylePostAt(at: indexPath.row))
         let newDetailViewController = StyleTabPostDetailViewController(viewModel: detailViewModel)
         self.navigationController?.pushViewController(newDetailViewController, animated: true)
     }

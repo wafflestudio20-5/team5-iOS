@@ -7,6 +7,6 @@
 
 import Foundation
 
-final class StyleTabDetailRepository {
+final class StyleDetailRepository {
     
 }

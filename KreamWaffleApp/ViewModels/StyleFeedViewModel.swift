@@ -10,15 +10,15 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class StyleViewModel {
-    private let usecase: StyleUsecase
+final class StyleFeedViewModel {
+    private let usecase: StyleFeedUsecase
     private let disposeBag = DisposeBag()
     
     var stylePostDataSource: Observable<[StylePost]> {
         return usecase.stylePostRelay.asObservable()
     }
         
-    init(usecase: StyleUsecase) {
+    init(usecase: StyleFeedUsecase) {
         self.usecase = usecase
     }
     
