@@ -17,15 +17,13 @@ final class ShopViewModel {
     }
     
     var shopDataSource: Observable<[ProductData]> {
-//        return self.usecase.products
-//            .map { product in
-//                return product.map { ProductData(product: $0) }
-//            }
         return self.usecase.shopObservable
             .map { product in
                 return product.map { ProductData(product: $0) }
             }
     }
+    
+//    var productImagesDataSource: Observable
     
     var filterDataSource: Observable<[String]> {
         return self.usecase.filterCategories
@@ -35,8 +33,11 @@ final class ShopViewModel {
 extension ShopViewModel {
     func requestData() {
         self.usecase.loadShopPosts()
-//        self.usecase.requestData()
         
+    }
+    
+    func requestMoreData() {
+        self.usecase.loadMoreShopPosts()
     }
     
     func getProductAtIndex(index: Int) -> Product {
@@ -56,7 +57,7 @@ struct ProductData {
     let total_wishes: Int
     let total_shares: Int
 //
-    let imageSource: String
+    let imageSource: [ProductImage]
     
     init(product: Product) {
         self.id = product.id
