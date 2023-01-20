@@ -23,6 +23,7 @@
 		5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E71842977CF1A00D81E2F /* OpeningViewController.swift */; };
+		651E7189297AAF4B00D81E2F /* PhotoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E7188297AAF4B00D81E2F /* PhotoPickerViewController.swift */; };
 		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
 		6527350B29680C1900C859B8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350A29680C1900C859B8 /* User.swift */; };
 		6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350C2968185C00C859B8 /* UserUsecase.swift */; };
@@ -110,6 +111,7 @@
 		5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		651E71842977CF1A00D81E2F /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
+		651E7188297AAF4B00D81E2F /* PhotoPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerViewController.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
 		6527350A29680C1900C859B8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6527350C2968185C00C859B8 /* UserUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUsecase.swift; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 		948C669629587B2200561C59 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				651E7188297AAF4B00D81E2F /* PhotoPickerViewController.swift */,
 				651E71842977CF1A00D81E2F /* OpeningViewController.swift */,
 				655A94CC296C6D4900F0184B /* CustomNotificationView.swift */,
 				655A94CA296C6D4200F0184B /* LoadingViewController.swift */,
@@ -665,6 +668,7 @@
 				5CB810DB29683B4B0021FDD6 /* StyleTabCollectionViewVC.swift in Sources */,
 				9428AE4D295719A500DC7907 /* ShopTabViewController.swift in Sources */,
 				6527350F2968196200C859B8 /* UserInfoViewModel.swift in Sources */,
+				651E7189297AAF4B00D81E2F /* PhotoPickerViewController.swift in Sources */,
 				65781D032976C415000FC684 /* LoginViewModel.swift in Sources */,
 				5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */,
 				65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */,
