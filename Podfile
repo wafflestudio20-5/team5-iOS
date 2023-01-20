@@ -9,7 +9,6 @@ target 'KreamWaffleApp' do
     pod 'RxSwift', '6.5.0'
     pod 'RxCocoa', '6.5.0'
     pod 'Alamofire'
-    pod 'ChartsRealm'
     pod 'CHTCollectionViewWaterfallLayout'
     pod 'BetterSegmentedControl', '~> 2.0'
     pod 'Kingfisher', '~> 7.0'
