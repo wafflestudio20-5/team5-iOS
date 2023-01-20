@@ -9,10 +9,15 @@ import Accelerate
 import Alamofire
 import NaverThirdPartyLogin
 import Kingfisher
+import GoogleSignIn
+import RxSwift
+import RxRelay
 
 class LoginViewController: UIViewController {
     
-    var viewModel : UserViewModel
+    var viewModel : LoginViewModel
+    var loginState = false
+    let bag = DisposeBag()
     
     let NaverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
     
@@ -20,7 +25,7 @@ class LoginViewController: UIViewController {
     private var logoImage = UIImageView()
     
     //email field
-    private var emailfield : LoginTextfield? 
+    private var emailfield : LoginTextfield?
     private var emailValid = false
     
     //password field
@@ -37,16 +42,30 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.viewModel.loginState.asObservable().subscribe { status in
+            self.loginState = status.element!
+            if (status.element!){
+                self.dismiss(animated: true)
+            }
+        }.disposed(by: bag)
+        
+        //for google login
+        GIDSignIn.sharedInstance()?.presentingViewController = self // 로그인화면 불러오기
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn() // 자동로그인
+        GIDSignIn.sharedInstance()?.delegate = self
+        
         self.view.backgroundColor = .white
         emailfield = LoginTextfield(titleText: "이메일 주소", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: "예) kream@kream.co.kr", defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
         passwordfield = LoginTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: "", defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
+        
         addSubviews()
         configureSubviews()
+        bindLoginButton()
         self.hideKeyboardWhenTappedAround()
-        
     }
     
-    init(viewModel : UserViewModel){
+    init(viewModel : LoginViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -72,7 +91,6 @@ class LoginViewController: UIViewController {
         
         self.view.addSubview(naverLoginButton)
         self.view.addSubview(googleLoginButton)
-        
     }
     
     private func configureSubviews(){
@@ -85,6 +103,180 @@ class LoginViewController: UIViewController {
         configureSocialLogin()
     }
     
+    
+    @objc func popVC(){
+        //TODO: set differently according to login state in VM --> 일단은 노티로.
+        NotificationCenter.default.post(name: Notification.Name("popLoginVC"), object: nil)
+        self.dismiss(animated: true)
+    }
+    
+    //changes activation of login button
+    func bindLoginButton(){
+        self.viewModel.bindTextfield(textfield: self.emailfield!.textfield, LoginTextfieldType: .Email)
+        self.viewModel.bindTextfield(textfield: self.passwordfield!.textfield, LoginTextfieldType: .Password)
+        
+        self.viewModel.isValid
+            .bind(to: self.loginButton.rx.isEnabled)
+            .disposed(by: bag)
+        self.viewModel.isValid
+            .map { $0 ? UIColor.black: UIColor.lightGray}
+            .bind(to: self.loginButton.rx.backgroundColor)
+            .disposed(by: bag)
+        self.viewModel.isValid
+            .map { $0 ? UIColor.white: UIColor.darkGray}
+            .bind(to: self.loginButton.rx.tintColor)
+            .disposed(by: bag)
+    }
+    
+    @objc func didTapLogin(){
+        self.viewModel.loginUserWithCustom(email: (self.emailfield?.textfield.text)!, password: (self.passwordfield?.textfield.text)!)
+        //error도 observe 해서 눌렀는데 에러면 에러 화면 뜨게 끔하기.
+    }
+    
+    private func loginFailure(failureMessage: String){
+        let loadingVC = LoadingViewController()
+
+        // Animate loadingVC over the existing views on screen
+        loadingVC.modalPresentationStyle = .overCurrentContext
+
+        // Animate loadingVC with a fade in animation
+        loadingVC.modalTransitionStyle = .crossDissolve
+        
+        loadingVC.setUpNotification(notificationText: failureMessage)
+        self.present(loadingVC, animated: true, completion: nil)
+        
+        let seconds = 2.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            loadingVC.dismiss(animated: true)
+    }
+    }
+    
+    @objc func didTapSignup(){
+        let signupVC = SignUpViewController(viewModel: self.viewModel)
+        signupVC.modalPresentationStyle = .fullScreen
+        self.present(signupVC, animated: true)
+    }
+    
+    @objc func didTapFindPassword(){
+        let findpasswordVC = FindPasswordViewController()
+        findpasswordVC.modalPresentationStyle = .fullScreen
+        self.present(findpasswordVC, animated: true)
+    }
+    
+    @objc func loginWithGoogle(){
+        //TODO: 에러처리하기
+        GIDSignIn.sharedInstance()?.signIn()
+    }
+    
+    @objc func loginWithNaver(){
+        NaverLoginInstance?.delegate = self
+        NaverLoginInstance?.requestThirdPartyLogin()
+    }
+    
+    @objc func loginSuccess(){
+        if (self.loginState){
+            print("login success")
+            self.dismiss(animated: true)
+        }else{
+            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
+            print("login failure")
+        }
+    }
+    
+    private func getNaverInfo() {
+        guard let isValidAccessToken = NaverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
+        
+        if !isValidAccessToken {
+          return
+        }
+        
+        guard let accessToken = NaverLoginInstance?.accessToken else { return }
+        
+        print(accessToken, "is the access token")
+        self.viewModel.loginUserWithSocial(token: accessToken, socialType: .Naver)
+      }
+}
+
+extension LoginViewController {
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+}
+
+extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
+  // 로그인 버튼을 눌렀을 경우 열게 될 브라우저
+  func oauth20ConnectionDidOpenInAppBrowser(forOAuth request: URLRequest!) {
+    //let naverSignInVC = NLoginThirdPartyOAuth20InAppBrowserViewController(request: request)!
+   // naverSignInVC.parentOrientation = UIInterfaceOrientation(rawValue: UIDevice.current.orientation.rawValue)!
+   // present(naverSignInVC, animated: false, completion: nil)
+  }
+  
+  // 로그인에 성공했을 경우 호출
+  func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+    print("[Success] : Success Naver Login")
+    getNaverInfo()
+  }
+  
+  // 접근 토큰 갱신
+  func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+    
+  }
+  
+  // 로그아웃 할 경우 호출(토큰 삭제)
+  func oauth20ConnectionDidFinishDeleteToken() {
+    NaverLoginInstance?.requestDeleteToken()
+  }
+  
+  // 모든 Error
+  func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+    print("[Error] :", error)
+  }
+}
+
+extension LoginViewController: GIDSignInDelegate {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let error = error {
+               if (error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
+                   print("[Log] LoginVC: The user has not signed in before or they have since signed out.")
+               } else {
+                   print("[Log] LoginVC: \(error)")
+               }
+               return
+           }
+               
+           // 사용자 정보 가져오기
+        if let accessToken = GIDSignIn.sharedInstance().currentUser.authentication.accessToken {
+            self.viewModel.loginUserWithSocial(token: accessToken, socialType: .Google)
+            print("[Log] LoginVC: ", accessToken)
+        }
+    }
+}
+
+//MARK: *********** DESIGN RELATED PROPERTIES ***************************
+extension LoginViewController {
+    
     private func configureExitButton(){
         let xImage = UIImage(systemName: "xmark")
         let tintedImage = xImage?.withRenderingMode(.alwaysTemplate)
@@ -96,16 +288,6 @@ class LoginViewController: UIViewController {
         self.exitButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
         self.exitButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
         self.exitButton.addTarget(self, action: #selector(popVC), for: .touchUpInside)
-    }
-    
-    @objc func popVC(){
-        //바로 홈화면으로 가네 --> set tab bar controller to index 0
-        if (self.viewModel.LoggedIn){
-        self.dismiss(animated: true)
-        }else{
-            self.dismiss(animated: true)
-            self.tabBarController?.selectedIndex = 1
-        }
     }
     
     private func configureLogoImage(){
@@ -148,35 +330,6 @@ class LoginViewController: UIViewController {
         self.loginButton.layer.cornerRadius = 10
         self.loginButton.clipsToBounds = true
         self.loginButton.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
-    }
-    
-    @objc func didTapLogin(){
-        self.viewModel.getUserWithLogin(with: (self.emailfield?.textfield.text)!, password: (self.passwordfield?.textfield.text)!)
-        if (self.viewModel.LoggedIn){
-            print("login success")
-            self.dismiss(animated: true)
-        }else{
-            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
-            print("login failure")
-        }
-    }
-    
-    private func loginFailure(failureMessage: String){
-        let loadingVC = LoadingViewController()
-
-        // Animate loadingVC over the existing views on screen
-        loadingVC.modalPresentationStyle = .overCurrentContext
-
-        // Animate loadingVC with a fade in animation
-        loadingVC.modalTransitionStyle = .crossDissolve
-        
-        loadingVC.setUpNotification(notificationText: failureMessage)
-        self.present(loadingVC, animated: true, completion: nil)
-        
-        let seconds = 2.0
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            loadingVC.dismiss(animated: true)
-    }
     }
     
     private func configureHelpStack(){
@@ -230,19 +383,6 @@ class LoginViewController: UIViewController {
         self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -80).isActive = true
     }
     
-    
-    @objc func didTapSignup(){
-        let signupVC = SignUpViewController(viewModel: self.viewModel)
-        signupVC.modalPresentationStyle = .fullScreen
-        self.present(signupVC, animated: true)
-    }
-    
-    @objc func didTapFindPassword(){
-        let findpasswordVC = FindPasswordViewController()
-        findpasswordVC.modalPresentationStyle = .fullScreen
-        self.present(findpasswordVC, animated: true)
-    }
-    
     func configureSocialLogin(){
         let Naver_logo = UIImage(named: "Naver_logo")
         let resized_Naver_logo = Naver_logo?.resize(targetSize: CGSize(width: self.view.frame.height/30, height: self.view.frame.height/30))
@@ -281,101 +421,10 @@ class LoginViewController: UIViewController {
         self.googleLoginButton.setTitleColor(.black, for: .normal)
         self.googleLoginButton.layer.cornerRadius = 10
         self.googleLoginButton.clipsToBounds = true
+        self.googleLoginButton.addTarget(self, action: #selector(loginWithGoogle), for: .touchUpInside)
         
     }
     
-    @objc func loginWithNaver(){
-        NaverLoginInstance?.delegate = self
-        NaverLoginInstance?.requestThirdPartyLogin()
-    }
     
-    private func getNaverInfo() {
-        guard let isValidAccessToken = NaverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
-        
-        if !isValidAccessToken {
-          return
-        }
-        
-        guard let accessToken = NaverLoginInstance?.accessToken else { return }
-        
-        print(accessToken, "is the access token")
-        self.viewModel.getUserWithSocialToken(with: accessToken)
-        if (self.viewModel.LoggedIn){
-            print("login success")
-            self.dismiss(animated: true)
-        }else{
-            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
-            print("login failure")
-        }
-      }
-}
-
-extension LoginViewController {
-    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
-        
-        let widthRatio  = targetSize.width  / size.width
-        let heightRatio = targetSize.height / size.height
-        
-        // Figure out what our orientation is, and use that to form the rectangle
-        var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
-        }
-        
-        // This is the rect that we've calculated out and this is what is actually used below
-        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-        
-        // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.draw(in: rect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-    }
     
-    public func isValidEmail(email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
-    }
-    
-    public func isValidPassword(password: String) -> Bool {
-        let passwordRegex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*()\\-_=+{}|?>.<,:;~`’]{8,}$"
-        let passwordPred = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
-        return passwordPred.evaluate(with: password)
-    }
-}
-
-extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
-  // 로그인 버튼을 눌렀을 경우 열게 될 브라우저
-  func oauth20ConnectionDidOpenInAppBrowser(forOAuth request: URLRequest!) {
-    //let naverSignInVC = NLoginThirdPartyOAuth20InAppBrowserViewController(request: request)!
-   // naverSignInVC.parentOrientation = UIInterfaceOrientation(rawValue: UIDevice.current.orientation.rawValue)!
-   // present(naverSignInVC, animated: false, completion: nil)
-  }
-  
-  // 로그인에 성공했을 경우 호출
-  func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-    print("[Success] : Success Naver Login")
-    getNaverInfo()
-  }
-  
-  // 접근 토큰 갱신
-  func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-    
-  }
-  
-  // 로그아웃 할 경우 호출(토큰 삭제)
-  func oauth20ConnectionDidFinishDeleteToken() {
-    NaverLoginInstance?.requestDeleteToken()
-  }
-  
-  // 모든 Error
-  func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-    print("[Error] :", error)
-  }
 }

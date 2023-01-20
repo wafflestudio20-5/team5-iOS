@@ -1,4 +1,4 @@
-//
+///
 //  SceneDelegate.swift
 //  KreamWaffleApp
 //
@@ -6,6 +6,7 @@
 //
 import UIKit
 import NaverThirdPartyLogin
+import GoogleSignIn
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,10 +22,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = UIWindow(windowScene: scene)
         
         let homeViewModel = HomeViewModel()
+        let loginRepository = LoginRepository()
+        let UserUsecase = UserUsecase(dataRepository: loginRepository)
+        let LoginUsecase = LoginUsecase(repository: loginRepository)
+        
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
+        
         let styleViewModel = StyleFeedViewModel(usecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest"))
-        let userViewModel = UserViewModel(UserUseCase: UserUsecase(dataRepository: LoginRepository()))
-        userViewModel.getSavedUser()
+        let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
+        let loginViewModel = LoginViewModel(UserUseCase: UserUsecase, LoginUseCase: LoginUsecase)
+        
         let rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleViewModel: styleViewModel, userViewModel: userViewModel)
         
         self.window?.rootViewController = rootVC
@@ -35,6 +42,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       NaverThirdPartyLoginConnection
         .getSharedInstance()?
         .receiveAccessToken(URLContexts.first?.url)
+        
+        guard let scheme = URLContexts.first?.url.scheme else { return }
+        if scheme.contains("com.googleusercontent.apps") {
+            GIDSignIn.sharedInstance()?.handle(URLContexts.first!.url)
+        }
         
     }
 
@@ -65,6 +77,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
