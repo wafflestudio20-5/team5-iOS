@@ -20,6 +20,7 @@ final class UserUsecase {
     var loggedIn : Bool {
         didSet {
             loginState.accept(loggedIn)
+            print("[Log] User usecase: logged in changed to", loggedIn)
         }
     }
     
@@ -30,7 +31,6 @@ final class UserUsecase {
         self.repository = dataRepository
         self.error = .noError
         self.loggedIn = false
-        
     }
     
     //MARK: related to log in, log out, sign up

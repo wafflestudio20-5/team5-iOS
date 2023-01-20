@@ -50,9 +50,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.loginVM.loginState.asObservable().subscribe { status in
-            if (status.element!){
+            print("[Log] MyTabVC: The login state is ", status.element)
+            if (status.element! == false){
                 let loginScreen = LoginViewController(viewModel: self.loginVM)
                 loginScreen.modalPresentationStyle = .fullScreen
                 self.present(loginScreen, animated: false)
@@ -232,10 +232,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     @objc func profileChangeButtonTapped() {
         print("로그아웃 누름")
         //API에서 로그아웃 관련 서비스를 구현하지 않은 관계로 우선은 user default 이용
-        //user default 에서 사용자 삭제 후 login VC 올림
+        //user default 에서 사용자 삭제 후 login VC 올림 --> 이건 위에 해줌.
         self.loginVM.logout()
-        let loginScreen = LoginViewController(viewModel: self.loginVM)
-        loginScreen.modalPresentationStyle = .fullScreen
-        self.present(loginScreen, animated: false)
     }
 }
