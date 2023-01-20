@@ -17,15 +17,15 @@ final class StyleTabDetailViewModel {
     }
     
     func getImageSources() -> [String] {
-        return self.stylePost.imageSources
+        return self.stylePost.images
     }
     
-    func getUserId() -> String {
-        return self.stylePost.userId
+    func getProfileName() -> String {
+        return self.stylePost.created_by.profile_name
     }
     
     func getNumLikes() -> Int {
-        return self.stylePost.numLikes
+        return self.stylePost.num_likes
     }
     
     func getContent() -> String {
@@ -33,6 +33,6 @@ final class StyleTabDetailViewModel {
     }
     
     func getThumbnailImageRatio() -> Float {
-        return self.stylePost.thumbnailImageRatio
+        return self.stylePost.image_ratio
     }
 }

@@ -247,7 +247,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpData() {
-        self.idLabel.text = self.styleTabDetailViewModel.getUserId()
+        self.idLabel.text = self.styleTabDetailViewModel.getProfileName()
         self.contentLabel.text = self.styleTabDetailViewModel.getContent()
         self.contentLabel.sizeToFit()
         self.numLikesLabel.text = "공감 \(self.styleTabDetailViewModel.getNumLikes())개"

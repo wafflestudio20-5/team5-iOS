@@ -92,7 +92,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
 extension StyleFeedCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let targetImageRatio = CGFloat(styleFeedViewModel.getStylePostAt(at: indexPath.row).thumbnailImageRatio)
+        let targetImageRatio = CGFloat(styleFeedViewModel.getStylePostAt(at: indexPath.row).image_ratio)
         
         let cellWidth: CGFloat = (view.bounds.width - 20)/2 //셀 가로 넓이
         let labelHeight: CGFloat = 20 // cell에서 label하나의 높이
