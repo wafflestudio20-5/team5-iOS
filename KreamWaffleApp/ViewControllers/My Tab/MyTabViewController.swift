@@ -7,6 +7,7 @@
 import UIKit
 import BetterSegmentedControl
 import Kingfisher
+import RxSwift
 
 struct TemporaryUserData {
     let profileImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/440px-Waffles_with_Strawberries.jpg"
@@ -15,6 +16,8 @@ struct TemporaryUserData {
 }
 
 class MyTabViewController: UIViewController, UITabBarControllerDelegate {
+    
+    let bag = DisposeBag()
     
     let userInfoVM : UserInfoViewModel
     let loginVM: LoginViewModel
@@ -47,12 +50,14 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //shoeScreen.modalPresentationStyle = .fullScreen
-        //if (!self.loginVM.LoggedIn){
-            let loginScreen = LoginViewController(viewModel: self.loginVM)
-            loginScreen.modalPresentationStyle = .fullScreen
-            self.present(loginScreen, animated: false)
-        //}
+        
+        self.loginVM.loginState.asObservable().subscribe { status in
+            if (status.element!){
+                let loginScreen = LoginViewController(viewModel: self.loginVM)
+                loginScreen.modalPresentationStyle = .fullScreen
+                self.present(loginScreen, animated: false)
+            }
+        }.disposed(by: bag)
     
         setUpSegmentedControl()
         setUpFixedViewLayout()

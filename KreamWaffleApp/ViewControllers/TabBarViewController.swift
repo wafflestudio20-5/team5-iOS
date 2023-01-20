@@ -48,6 +48,7 @@ class TabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.present(OpeningViewController(), animated: true)
         self.view.backgroundColor = .white
         setUpTabBarViewController()
     }
