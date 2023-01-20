@@ -9,7 +9,6 @@ target 'KreamWaffleApp' do
     pod 'RxSwift', '6.5.0'
     pod 'RxCocoa', '6.5.0'
     pod 'Alamofire'
-    pod 'ChartsRealm'
     pod 'CHTCollectionViewWaterfallLayout'
     pod 'BetterSegmentedControl', '~> 2.0'
     pod 'Kingfisher', '~> 7.0'
@@ -18,8 +17,7 @@ target 'KreamWaffleApp' do
     pod "ImageSlideshow/Kingfisher"
     pod 'ImageSlideshow', '~> 1.9.2'
     pod 'GoogleSignIn', '~> 5.0.2'
-    pod 'YPImagePicker'
-    use_frameworks!
+
 
 
 end

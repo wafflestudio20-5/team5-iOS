@@ -11,11 +11,11 @@ import RxCocoa
 import CHTCollectionViewWaterfallLayout
 
 class StyleTabViewController: UIViewController {
-    private let viewModel: StyleViewModel
+    private let viewModel: StyleFeedViewModel
     private let disposeBag = DisposeBag()
     private var styleTabCollectionViewVC: StyleTabCollectionViewVC
     
-    init(viewModel: StyleViewModel) {
+    init(viewModel: StyleFeedViewModel) {
         self.viewModel = viewModel
         styleTabCollectionViewVC = StyleTabCollectionViewVC(viewModel: self.viewModel)
 

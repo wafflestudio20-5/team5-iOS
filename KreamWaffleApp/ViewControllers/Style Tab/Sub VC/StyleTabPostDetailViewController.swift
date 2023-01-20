@@ -11,11 +11,9 @@ import ImageSlideshow
 
 final class StyleTabPostDetailViewController: UIViewController {
     
-    struct Constants {
-        static let idLabelHeight: CGFloat = 20
-        static let spacing: CGFloat = 10
-        static let likeAndCommentButtonSideLength: CGFloat = 50
-    }
+    private let idLabelHeight: CGFloat = 20
+    private let spacing: CGFloat = 10
+    private let likeAndCommentButtonSideLength: CGFloat = 50
     
     private let viewModel: StyleTabDetailViewModel
     
@@ -48,6 +46,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     override func viewDidLoad() {
         imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
         self.view.backgroundColor = .white
+        addAllSubviews()
         setUpNavigationBar()
         setUpScrollView()
         setUpLabelLayout()
@@ -58,8 +57,19 @@ final class StyleTabPostDetailViewController: UIViewController {
         setUpData()
     }
     
+    func addAllSubviews() {
+        view.addSubviews(scrollView, self.followButton)
+        scrollView.addSubview(contentView)
+        contentView.addSubviews(idLabel, numLikesLabel, contentLabel, likeButton, commentButton, self.slideshow)
+    }
+    
+    func setUpNavigationBar() {
+        navigationController?.navigationBar.tintColor = .lightGray
+        self.setUpBackButton()
+        navigationItem.title = "최신"
+    }
+    
     func setUpScrollView() {
-        view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -68,8 +78,6 @@ final class StyleTabPostDetailViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
-        
-        scrollView.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
@@ -86,14 +94,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
     }
     
-    func setUpNavigationBar() {
-        navigationController?.navigationBar.tintColor = .lightGray
-        navigationItem.title = "최신"
-    }
-    
     func setUpLabelLayout() {
-        contentView.addSubview(idLabel)
-
         idLabel.font = UIFont.boldSystemFont(ofSize: 14)
         idLabel.textColor = .black
         idLabel.lineBreakMode = .byTruncatingTail
@@ -107,11 +108,10 @@ final class StyleTabPostDetailViewController: UIViewController {
             idLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             idLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             idLabel.heightAnchor.constraint(
-                equalToConstant: Constants.idLabelHeight
+                equalToConstant: idLabelHeight
             ),
         ])
         
-        contentView.addSubview(numLikesLabel)
         
         numLikesLabel.font = UIFont.systemFont(ofSize: 14)
         numLikesLabel.textColor = .lightGray
@@ -119,18 +119,18 @@ final class StyleTabPostDetailViewController: UIViewController {
         numLikesLabel.adjustsFontSizeToFitWidth = false
         numLikesLabel.numberOfLines = 1
         
+        let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.numLikesLabelTapped))
+        self.numLikesLabel.isUserInteractionEnabled = true
+        self.numLikesLabel.addGestureRecognizer(labelTap)
+        
         numLikesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             numLikesLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             numLikesLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            numLikesLabel.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing + Constants.likeAndCommentButtonSideLength + Constants.spacing
-            ),
-            numLikesLabel.heightAnchor.constraint(equalToConstant: Constants.idLabelHeight),
+            numLikesLabel.topAnchor.constraint(equalTo: likeButton.bottomAnchor, constant: spacing),
+            numLikesLabel.heightAnchor.constraint(equalToConstant: idLabelHeight),
         ])
         
-        contentView.addSubview(contentLabel)
         contentLabel.font = UIFont.systemFont(ofSize: 14)
         contentLabel.textColor = .black
         contentLabel.lineBreakStrategy = .hangulWordPriority
@@ -142,17 +142,13 @@ final class StyleTabPostDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            contentLabel.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing + Constants.likeAndCommentButtonSideLength + Constants.spacing + Constants.idLabelHeight + Constants.spacing
-            ),
+            contentLabel.topAnchor.constraint(equalTo: numLikesLabel.bottomAnchor, constant: spacing),
             contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
     }
     
     func setUpButtonLayout() {
-        view.addSubview(self.followButton)
         // **팔로우 상태에 따라 다르게. 나중에 수정해야함.
         followButton.setTitle("팔로우", for: .normal)
         // **************************************
@@ -166,12 +162,11 @@ final class StyleTabPostDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             followButton.widthAnchor.constraint(equalToConstant: 60),
             followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            followButton.heightAnchor.constraint(equalToConstant: Constants.idLabelHeight * 1.5),
+            followButton.heightAnchor.constraint(equalToConstant: idLabelHeight * 1.5),
             followButton.centerYAnchor.constraint(equalTo: idLabel.centerYAnchor)
         ])
         
         
-        contentView.addSubview(likeButton)
         likeButton.setImage(UIImage(systemName: "face.smiling"), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
@@ -182,18 +177,17 @@ final class StyleTabPostDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             likeButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             likeButton.widthAnchor.constraint(
-                equalToConstant: Constants.likeAndCommentButtonSideLength
+                equalToConstant: likeAndCommentButtonSideLength
             ),
             likeButton.topAnchor.constraint(
-                equalTo: contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing + imageHeight + Constants.spacing
+                equalTo: idLabel.bottomAnchor,
+                constant: spacing + imageHeight + spacing
             ),
             likeButton.heightAnchor.constraint(
-                equalToConstant: Constants.likeAndCommentButtonSideLength
+                equalToConstant: likeAndCommentButtonSideLength
             ),
         ])
         
-        contentView.addSubview(commentButton)
         commentButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
         commentButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
         commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
@@ -203,25 +197,24 @@ final class StyleTabPostDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor),
             commentButton.widthAnchor.constraint(
-                equalToConstant: Constants.likeAndCommentButtonSideLength
+                equalToConstant: likeAndCommentButtonSideLength
             ),
             commentButton.topAnchor.constraint(equalTo: self.likeButton.topAnchor),
             commentButton.heightAnchor.constraint(
-                equalToConstant: Constants.likeAndCommentButtonSideLength
+                equalToConstant: likeAndCommentButtonSideLength
             )
         ])
     }
     
     func setUpSlideShowLayout() {
-        contentView.addSubview(self.slideshow)
         slideshow.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.slideshow.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
             self.slideshow.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             self.slideshow.topAnchor.constraint(
-                equalTo: self.contentView.topAnchor,
-                constant: Constants.idLabelHeight + Constants.spacing
+                equalTo: self.idLabel.bottomAnchor,
+                constant: spacing
             ),
             self.slideshow.heightAnchor.constraint(equalToConstant: imageHeight),
         ])
@@ -263,6 +256,10 @@ extension StyleTabPostDetailViewController { //button 관련 메서드들.
     @objc func slideShowTapped() {
         let fullScreenController = slideshow.presentFullScreenController(from: self)
         fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .white, color: nil)
+    }
+    
+    @objc func numLikesLabelTapped() {
+        self.navigationController?.pushViewController(LikedUsersViewController(), animated: true)
     }
     
     @objc func followButtonTapped() {
