@@ -9,12 +9,6 @@ PODS:
   - AppAuth/ExternalUserAgent (1.6.0):
     - AppAuth/Core
   - BetterSegmentedControl (2.0.1)
-  - Charts (3.4.0):
-    - Charts/Core (= 3.4.0)
-  - Charts/Core (3.4.0)
-  - ChartsRealm (3.4.0):
-    - Charts (~> 3.4.0)
-    - RealmSwift (~> 3.18.0)
   - CHTCollectionViewWaterfallLayout (0.9.10):
     - CHTCollectionViewWaterfallLayout/Swift (= 0.9.10)
   - CHTCollectionViewWaterfallLayout/Swift (0.9.10)
@@ -37,11 +31,6 @@ PODS:
     - Kingfisher (> 3.0)
   - Kingfisher (7.4.1)
   - naveridlogin-sdk-ios (4.1.5)
-  - Realm (3.18.0):
-    - Realm/Headers (= 3.18.0)
-  - Realm/Headers (3.18.0)
-  - RealmSwift (3.18.0):
-    - Realm (= 3.18.0)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -52,7 +41,6 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - BetterSegmentedControl (~> 2.0)
-  - ChartsRealm
   - CHTCollectionViewWaterfallLayout
   - GoogleSignIn (~> 5.0.2)
   - ImageSlideshow (~> 1.9.2)
@@ -69,8 +57,6 @@ SPEC REPOS:
     - AlamofireImage
     - AppAuth
     - BetterSegmentedControl
-    - Charts
-    - ChartsRealm
     - CHTCollectionViewWaterfallLayout
     - GoogleSignIn
     - GTMAppAuth
@@ -78,8 +64,6 @@ SPEC REPOS:
     - ImageSlideshow
     - Kingfisher
     - naveridlogin-sdk-ios
-    - Realm
-    - RealmSwift
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -89,8 +73,6 @@ SPEC CHECKSUMS:
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   AppAuth: 8fca6b5563a5baef2c04bee27538025e4ceb2add
   BetterSegmentedControl: 09607b27861d49cbce48b7673b74f9150a3d371a
-  Charts: 74c9f256eaf0460c0c416522d1cf8c634ea6b286
-  ChartsRealm: 2ae8bf478211a94b3b6dd20738db0b9b132eb66b
   CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
@@ -98,12 +80,10 @@ SPEC CHECKSUMS:
   ImageSlideshow: be305b54eaf2b2cfc7a7141c7c734605d44dc07d
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
-  Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
-  RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: 3ad1629eb66ce0470a223d11f3b61528705669bc
+PODFILE CHECKSUM: 66b7e56fcfe1107b943c74dace49d4fd9811da1c
 
 COCOAPODS: 1.11.3
