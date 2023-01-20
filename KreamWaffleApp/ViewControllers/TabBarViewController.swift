@@ -19,11 +19,11 @@ class TabBarViewController: UITabBarController {
     let myTabBarItem: UITabBarItem
     
 
-    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleFeedViewModel: StyleFeedViewModel, userViewModel:UserInfoViewModel, loginViewModel: LoginViewModel) {
+    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleFeedViewModel: StyleFeedViewModel, userInfoViewModel:UserInfoViewModel, loginViewModel: LoginViewModel) {
         self.homeViewModel = homeViewModel
         self.shopViewModel = shopViewModel
         self.styleFeedViewModel = styleFeedViewModel
-        self.userViewModel = userViewModel
+        self.userInfoViewModel = userInfoViewModel
         self.loginViewModel = loginViewModel
         
         self.homeTabBarItem = UITabBarItem(title: "HOME", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))

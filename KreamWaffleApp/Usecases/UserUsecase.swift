@@ -16,10 +16,19 @@ final class UserUsecase {
     var user : User?
     var userResponse : UserResponse?
     
+    var followingSet: Set<Int> = []
+    
     ///toggle when logged in
     var loggedIn : Bool {
         didSet {
             loginState.accept(loggedIn)
+            
+            if (loggedIn) {
+                self.followingSet = self.repository.loadFollowingSet()
+            } else {
+                followingSet.removeAll(keepingCapacity: false)
+            }
+            
             print("[Log] User usecase: logged in changed to", loggedIn)
         }
     }
@@ -96,5 +105,20 @@ final class UserUsecase {
         self.userResponse = nil
         self.user = nil
         self.loggedIn = false
+    }
+    
+    func isFollowing(user_id: Int) -> Bool {
+        return followingSet.contains(user_id)
+    }
+    
+    func requestFollow(user_id: Int) {
+        self.repository.requestFollow(user_id: user_id)
+        if (self.followingSet.contains(user_id)) {
+            self.followingSet.remove(user_id)
+            print(self.followingSet)
+        } else {
+            self.followingSet.insert(user_id)
+            print(self.followingSet)
+        }
     }
 }

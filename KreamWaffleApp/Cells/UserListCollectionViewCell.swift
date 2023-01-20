@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 import Kingfisher
+import RxCocoa
+import RxSwift
 
 
 class UserListCollectionViewCell: UICollectionViewCell {
@@ -20,8 +22,11 @@ class UserListCollectionViewCell: UICollectionViewCell {
     let profileNameLabel = UILabel()
     let userNameLabel = UILabel()
     let profileImageView = UIImageView()
-    let followButton = UIButton()
+    let followButton = FollowButton()
+    let disposeBag = DisposeBag()
     
+    var user_id: Int?
+        
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUpLayout()
@@ -37,7 +42,9 @@ class UserListCollectionViewCell: UICollectionViewCell {
         self.profileImageView.image = nil
     }
     
-    func configure(with nestedProfile: NestedProfile) {
+    func configure(with nestedProfile: NestedProfile, isFollowing: Bool) {
+        self.user_id = nestedProfile.user_id
+        self.followButton.isFollowing = isFollowing
         self.profileNameLabel.text = nestedProfile.profile_name
         self.userNameLabel.text = nestedProfile.user_name
         
@@ -56,6 +63,8 @@ class UserListCollectionViewCell: UICollectionViewCell {
                 //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
             }
         }
+        
+        followButton.configureFollowButton()
     }
     
     func setUpLayout() {
@@ -119,14 +128,8 @@ class UserListCollectionViewCell: UICollectionViewCell {
     }
     
     func setUpFollowButton() {
-        // **팔로우 상태에 따라 다르게. 나중에 수정해야함.
-        followButton.setTitle("팔로우", for: .normal)
-        // **************************************
-        followButton.backgroundColor = .black
         followButton.titleLabel!.font = UIFont.boldSystemFont(ofSize: self.h1FontSize)
-        followButton.setTitleColor(.white, for: .normal)
         followButton.layer.cornerRadius = 7.5
-        followButton.addTarget(self, action: #selector(followButtonTapped), for: .touchUpInside)
         
         contentView.addSubview(followButton)
         followButton.translatesAutoresizingMaskIntoConstraints = false
@@ -136,11 +139,5 @@ class UserListCollectionViewCell: UICollectionViewCell {
             followButton.heightAnchor.constraint(equalToConstant: 30),
             followButton.topAnchor.constraint(equalTo: profileNameLabel.topAnchor),
         ])
-    }
-}
-
-extension UserListCollectionViewCell {
-    @objc func followButtonTapped() {
-        print("follow button tapped")
     }
 }
