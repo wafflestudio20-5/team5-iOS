@@ -9,12 +9,15 @@ import Foundation
 import UIKit
 
 final class LikedUsersViewController: UIViewController {
-    let userListCollectionViewVC: UserListCollectionViewVC
+    private let userListCollectionViewVC: UserListCollectionViewVC
+    private let userInfoViewModel: UserInfoViewModel
     
-    init() {
+    init(userInfoViewModel: UserInfoViewModel) {
+        self.userInfoViewModel = userInfoViewModel
+        
         let repository = LikedUserListRepository()
         let usecase = UserListUsecase(userListRepository: repository)
-        self.userListCollectionViewVC = UserListCollectionViewVC(userListViewModel: UserListViewModel(userListUsecase: usecase))
+        self.userListCollectionViewVC = UserListCollectionViewVC(userListViewModel: UserListViewModel(userListUsecase: usecase), userInfoViewModel: self.userInfoViewModel)
         
         super.init(nibName: nil, bundle: nil)
     }

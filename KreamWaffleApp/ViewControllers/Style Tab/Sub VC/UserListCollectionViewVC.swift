@@ -15,7 +15,7 @@ final class UserListCollectionViewVC: UIViewController {
     let collectionView: UICollectionView
     private let disposeBag = DisposeBag()
     
-    init(userListViewModel: UserListViewModel) {
+    init(userListViewModel: UserListViewModel, userInfoViewModel: UserInfoViewModel) {
         self.userListViewModel = userListViewModel
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UserListCollectionViewLayout())
         super.init(nibName: nil, bundle: nil)

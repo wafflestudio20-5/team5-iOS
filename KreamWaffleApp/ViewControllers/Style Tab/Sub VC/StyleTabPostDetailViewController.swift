@@ -15,7 +15,8 @@ final class StyleTabPostDetailViewController: UIViewController {
     private let spacing: CGFloat = 10
     private let likeAndCommentButtonSideLength: CGFloat = 50
     
-    private let viewModel: StyleTabDetailViewModel
+    private let styleTabDetailViewModel: StyleTabDetailViewModel
+    private let userInfoViewModel: UserInfoViewModel
     
     //main views
     private let scrollView = UIScrollView()
@@ -34,8 +35,10 @@ final class StyleTabPostDetailViewController: UIViewController {
     
     private var imageHeight = CGFloat()
     
-    init(viewModel: StyleTabDetailViewModel) {
-        self.viewModel = viewModel
+    init(styleTabDetailViewModel: StyleTabDetailViewModel, userInfoViewModel: UserInfoViewModel) {
+        self.styleTabDetailViewModel = styleTabDetailViewModel
+        self.userInfoViewModel = userInfoViewModel
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,7 +47,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
+        imageHeight = CGFloat(styleTabDetailViewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
         self.view.backgroundColor = .white
         addAllSubviews()
         setUpNavigationBar()
@@ -221,7 +224,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func configureSlideShow() {
-        if (viewModel.getImageSources().count > 1) {
+        if (styleTabDetailViewModel.getImageSources().count > 1) {
             self.slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
             self.slideshow.contentScaleMode = UIViewContentMode.scaleAspectFit
             self.slideshow.circular = false
@@ -234,7 +237,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpSlideShowData() {
-        let imageSources = self.viewModel.getImageSources().map {
+        let imageSources = self.styleTabDetailViewModel.getImageSources().map {
             KingfisherSource(urlString: $0)!
         }
         self.slideshow.setImageInputs(imageSources)
@@ -244,10 +247,10 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpData() {
-        self.idLabel.text = self.viewModel.getUserId()
-        self.contentLabel.text = self.viewModel.getContent()
+        self.idLabel.text = self.styleTabDetailViewModel.getUserId()
+        self.contentLabel.text = self.styleTabDetailViewModel.getContent()
         self.contentLabel.sizeToFit()
-        self.numLikesLabel.text = "공감 \(self.viewModel.getNumLikes())개"
+        self.numLikesLabel.text = "공감 \(self.styleTabDetailViewModel.getNumLikes())개"
         self.numLikesLabel.sizeToFit()
     }
 }
@@ -259,7 +262,7 @@ extension StyleTabPostDetailViewController { //button 관련 메서드들.
     }
     
     @objc func numLikesLabelTapped() {
-        self.navigationController?.pushViewController(LikedUsersViewController(), animated: true)
+        self.navigationController?.pushViewController(LikedUsersViewController(userInfoViewModel: self.userInfoViewModel), animated: true)
     }
     
     @objc func followButtonTapped() {

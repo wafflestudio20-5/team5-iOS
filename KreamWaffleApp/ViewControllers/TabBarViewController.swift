@@ -10,8 +10,8 @@ import UIKit
 class TabBarViewController: UITabBarController {
     let homeViewModel: HomeViewModel
     let shopViewModel: ShopViewModel
-    let styleViewModel: StyleFeedViewModel
-    let userViewModel : UserInfoViewModel
+    let styleFeedViewModel: StyleFeedViewModel
+    let userInfoViewModel : UserInfoViewModel
     let loginViewModel : LoginViewModel
     let homeTabBarItem: UITabBarItem
     let styleTabBarItem: UITabBarItem
@@ -19,10 +19,10 @@ class TabBarViewController: UITabBarController {
     let myTabBarItem: UITabBarItem
     
 
-    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleViewModel: StyleFeedViewModel, userViewModel:UserInfoViewModel, loginViewModel: LoginViewModel) {
+    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleFeedViewModel: StyleFeedViewModel, userViewModel:UserInfoViewModel, loginViewModel: LoginViewModel) {
         self.homeViewModel = homeViewModel
         self.shopViewModel = shopViewModel
-        self.styleViewModel = styleViewModel
+        self.styleFeedViewModel = styleFeedViewModel
         self.userViewModel = userViewModel
         self.loginViewModel = loginViewModel
         
@@ -58,13 +58,13 @@ class TabBarViewController: UITabBarController {
         homeTab.modalPresentationStyle = .fullScreen
         homeTab.tabBarItem = homeTabBarItem
 
-        let styleTab = UINavigationController(rootViewController: StyleTabViewController(viewModel: self.styleViewModel))
+        let styleTab = UINavigationController(rootViewController: StyleTabViewController(styleFeedViewModel: self.styleFeedViewModel, userInfoViewModel: self.userInfoViewModel))
         styleTab.tabBarItem = styleTabBarItem
 
         let shopTab = UINavigationController(rootViewController: ShopTabViewController(viewModel: self.shopViewModel))
         shopTab.tabBarItem = shopTabBarItem
     
-        let myTab = UINavigationController(rootViewController: MyTabViewController(userInfoVM: self.userViewModel, loginVM: self.loginViewModel))
+        let myTab = UINavigationController(rootViewController: MyTabViewController(userInfoVM: self.userInfoViewModel, loginVM: self.loginViewModel))
         myTab.tabBarItem = myTabBarItem
         self.tabBar.tintColor = .black
         self.tabBar.barTintColor = .white
