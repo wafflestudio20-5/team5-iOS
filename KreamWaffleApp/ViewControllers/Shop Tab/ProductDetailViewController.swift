@@ -5,12 +5,19 @@
 //  Created by 이선재 on 2022/12/26.
 //
 import UIKit
+import ImageSlideshow
 
 class ProductDetailViewController: UIViewController, UISheetPresentationControllerDelegate {
-    private let productModel: Product
+    private let viewModel: ShopTabDetailViewModel
     
-    let imageView = UIImageView() // change to collectionView layer
-    let imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ProductDetailImagesCollectionViewFlowLayout())
+    //main views
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private let slideshow = ImageSlideshow()
+    
+    
+//    let imageView = UIImageView() // change to collectionView layer
+//    let imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ProductDetailImagesCollectionViewFlowLayout())
     let brandLabel = UILabel()
     let eng_nameLabel = UILabel()
     let kor_nameLabel = UILabel()
@@ -27,6 +34,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     let purchaseButton = UIButton()
     let sellButton = UIButton()
     
+    // font sizes
     let h1FontSize: CGFloat = 18 // brandLabel, priceLabel
     let h2FontSize: CGFloat = 16 // eng_nameLabel
     let h3FontSize: CGFloat = 14 // kor_nameLabel, priceSubLabel
@@ -35,8 +43,11 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     let subFontColor: UIColor = .darkGray
     let marginConstant: CGFloat = 15
     
-    init(productModel: Product) {
-        self.productModel = productModel
+    // other variables
+    private var imageHeight = CGFloat()
+    
+    init(viewModel: ShopTabDetailViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,7 +55,9 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.view = UIView()
         configure()
         applyDesign()
-        setupImageView()
+        setUpSlideshow()
+        
+//        setupImageView()
         setupBrandLabel()
         setupeng_nameLabel()
         setupkor_nameLabel()
@@ -57,14 +70,14 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
 
     
     private func configure() {
-        let imageUrl = URL(string: self.productModel.imageSource)
-        self.imageView.kf.setImage(with: imageUrl)
-        self.brandLabel.text = "\(self.productModel.brand)"
-        self.eng_nameLabel.text = self.productModel.eng_name
-        self.kor_nameLabel.text = self.productModel.kor_name
-        self.priceLabel.text = "\(self.productModel.price)원"
-        self.bookmarkCount = self.productModel.total_wishes
-        self.purchasePrice = self.productModel.price
+        imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
+
+        self.brandLabel.text = "\(self.viewModel.getBrand())"
+        self.eng_nameLabel.text = self.viewModel.getEngName()
+        self.kor_nameLabel.text = self.viewModel.getKorName()
+        self.priceLabel.text = "\(self.viewModel.getPrice())원"
+//        self.bookmarkCount = self.viewModel.getTotalWishes()
+//        self.purchasePrice = self.viewModel.price
     }
     
     private func applyDesign() {
@@ -73,20 +86,59 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
 //        self.contentView.isOpaque = true
     }
     
-    private func setupImageView() {
-        self.imageView.sizeToFit()
-        self.imageView.contentMode = .scaleAspectFill
-        self.imageView.backgroundColor = .lightGray
+    private func setUpSlideshow() {
+        configureSlideshow()
+        setUpSlideshowData()
         
-        self.view.addSubview(self.imageView)
-        self.imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.slideshow)
+        print("run")
+        slideshow.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
-            self.imageView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.imageView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            self.imageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-//            self.imageView.bottomAnchor.constraint(equalTo: self.imageView.topAnchor, constant: 150)
+            self.slideshow.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.slideshow.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.slideshow.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.slideshow.heightAnchor.constraint(equalToConstant: imageHeight),
         ])
     }
+    
+    func configureSlideshow() {
+        if (viewModel.getImageSources().count > 1) {
+            self.slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
+            self.slideshow.contentScaleMode = UIViewContentMode.scaleAspectFit
+            self.slideshow.circular = false
+            
+            let pageControl = UIPageControl()
+            pageControl.currentPageIndicatorTintColor = UIColor.black
+            pageControl.pageIndicatorTintColor = UIColor.lightGray
+            self.slideshow.pageIndicator = pageControl
+        }
+    }
+    
+    func setUpSlideshowData() {
+        let imageSources = self.viewModel.getImageSources().map {
+            KingfisherSource(urlString: $0.url)!
+        }
+        self.slideshow.setImageInputs(imageSources)
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(StyleTabPostDetailViewController.slideShowTapped))
+        slideshow.addGestureRecognizer(recognizer)
+    }
+    
+//    private func setupImageView() {
+//        self.imageView.sizeToFit()
+//        self.imageView.contentMode = .scaleAspectFill
+//        self.imageView.backgroundColor = .lightGray
+//
+//        self.view.addSubview(self.imageView)
+//        self.imageView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            self.imageView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+//            self.imageView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+//            self.imageView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+////            self.imageView.bottomAnchor.constraint(equalTo: self.imageView.topAnchor, constant: 150)
+//        ])
+//    }
     
     private func setupBrandLabel() {
         self.brandLabel.font = UIFont.boldSystemFont(ofSize: self.h1FontSize)
@@ -102,7 +154,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
             brandLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             brandLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: self.marginConstant),
             brandLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -self.marginConstant),
-            brandLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 20),
+            brandLabel.topAnchor.constraint(equalTo: self.slideshow.bottomAnchor, constant: 20),
 //            brandLabel.bottomAnchor.constraint(equalTo: self.brandLabel.topAnchor, constant: 14)
         ])
     }

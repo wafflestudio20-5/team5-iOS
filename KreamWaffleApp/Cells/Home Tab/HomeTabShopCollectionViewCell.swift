@@ -36,8 +36,9 @@ class HomeTabShopCollectionViewCell: UICollectionViewCell {
         setupPriceLabel()
     }
     
-    func configure(product: ProductData) {
-        let imageUrl = URL(string: product.imageSource)
+    func configure(product: Product) {
+//        let imageUrl = URL(string: product.imageSource)
+        let imageUrl = URL(string: "https://kream-waffle-api-bucket.s3.amazonaws.com/media/shop/2023/01/15/02034569f88043718b62a3d7b667926d_ProductImage_object_None.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT3ANORTZU4HTFQSI%2F20230117%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20230117T083705Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=8d7a7aea975f5a57b5dfa78979d220dd1627bc2a8a73f8f3910763ac735f7f1d")
         self.imageView.kf.setImage(with: imageUrl)
         self.brandLabel.text = "\(product.brand)"
         self.eng_nameLabel.text = product.eng_name

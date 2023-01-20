@@ -14,22 +14,44 @@ final class ShopUsecase {
     private let repository: ShopRepository
     private let disposeBag = DisposeBag()
     private var page: Int = 1
+    private var paginating = false
     
+    
+    // productinfo
     var shopRelay = BehaviorRelay<[Product]>(value: [])
     var shopObservable: Observable<[Product]> {
         return self.shopRelay.asObservable()
     }
     
-    var productList = [Product]() {
+    var productInfoList = [Product]() {
         didSet {
-            self.getObserver()
+//            for product in productInfoList {
+//                self.loadProductImages(shopPost: product)
+//            }
+            
+            self.getProductInfoObserver()
         }
     }
-
-    func getObserver() {
-        self.shopRelay.accept(productList)
+    func getProductInfoObserver() {
+        self.shopRelay.accept(productInfoList)
     }
     
+    // productimages
+    var productImagesRelay = BehaviorRelay<[String]>(value: [])
+    var productImagesObservable: Observable<[String]> {
+        return self.productImagesRelay.asObservable()
+    }
+    
+    var productImagesList = [String]() {
+        didSet {
+            self.getProductImagesObserver()
+        }
+    }
+    func getProductImagesObserver() {
+        self.productImagesRelay.accept(productImagesList)
+    }
+    
+    // filters
     private let filterCategoriesSubject: BehaviorRelay<[String]> = .init(value: ["신발", "의류", "패션 잡화", "라이프", "테크"])
     
     var filterCategories: Observable<[String]> {
@@ -44,31 +66,71 @@ final class ShopUsecase {
 //                                               object: nil)
     }
     
+    
+}
+
+extension ShopUsecase {
+    // productinfo
     func loadShopPosts() {
-        self.repository.requestShopPostData(page: 1) { [weak self] (error, result) in
-            guard let self = self else { return }
-            self.productList = result!
-        }
+        let parameters = ShopPostRequestParameters(page: 1)
+        self.repository
+            .requestShopPostData(parameters: parameters)
+            .subscribe(onSuccess: { [self] fetchedProductInfos in
+                self.productInfoList = fetchedProductInfos
+            },
+            onFailure: { _ in
+                self.productInfoList = []
+            })
+            .disposed(by: self.disposeBag)
     }
     
-//    func loadMoreProducts() {
-//        self.page += 1
-//        let parameters = ShopRequestModel(page: self.page)
-//
-//        self.repository
-//            .requestProducts(parameters: parameters)
-//            .subscribe(onSuccess: { [weak self] fetchedProducts in
-//                var prevProducts = self?.shopSubject.value ?? []
-//                prevProducts.append(contentsOf: fetchedProducts)
-//                self?.productList = prevProducts
-//            },
-//            onFailure: { _ in
-//                self.productList = []
-//            })
-//            .disposed(by: self.disposeBag)
-//    }
+    func requestShopPostBrand(product: Product) {
+//        self.repository.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
+//            product.brand_name = brandName!
+////            product.setBrandName(brandName: brandName!)
+//        }
+            
+    }
+    
+    
+    
+    func loadMoreShopPosts() {
+        if paginating == true {
+            return
+        }
+        paginating = true
+        
+        self.page += 1
+        print("requested productinfo page \(self.page)")
+        
+        let parameters = ShopPostRequestParameters(page: self.page)
+        self.repository
+            .requestShopPostData(parameters: parameters)
+            .subscribe(onSuccess: { [self] fetchedProductInfos in
+                var prevProductInfos = self.shopRelay.value
+                prevProductInfos.append(contentsOf: fetchedProductInfos)
+                self.productInfoList = prevProductInfos
+//                for product in self.productInfoList {
+//                    requestShopPostBrand(product: &product)
+//                }
+            },
+            onFailure: { _ in
+                self.productInfoList = []
+            })
+            .disposed(by: self.disposeBag)
+        
+        paginating = false
+    }
+}
+
+extension ShopUsecase {
+    // get functions
     
     func getProductAtIndex(index: Int) -> Product {
-        return self.productList[index]
+        return self.productInfoList[index]
+    }
+    
+    func getProductImageUrlAt(id: Int) -> String {
+        return self.productImagesList[id]
     }
 }
