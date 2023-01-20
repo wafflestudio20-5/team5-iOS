@@ -8,11 +8,11 @@
 import Foundation
 
 final class StyleTabDetailViewModel {
-    private let repository: StyleTabDetailRepository
+    private let usecase: StyleDetailUsecase
     private let stylePost: StylePost
     
-    init(repository: StyleTabDetailRepository, stylePost: StylePost) {
-        self.repository = repository
+    init(usecase: StyleDetailUsecase, stylePost: StylePost) {
+        self.usecase = usecase
         self.stylePost = stylePost
     }
     
