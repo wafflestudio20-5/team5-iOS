@@ -15,7 +15,7 @@ enum LoginTextfieldType{
 }
 
 ///only used in login, signup VCs, shares usecase with user info view model
-final class LoginViewModel {
+class LoginViewModel {
     
     private let UserUseCase : UserUsecase
     private let LoginUseCase : LoginUsecase

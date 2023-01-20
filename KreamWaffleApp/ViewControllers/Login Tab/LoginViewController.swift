@@ -44,15 +44,15 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         self.viewModel.loginState.asObservable().subscribe { status in
-            self.loginState = status.element!
             if (status.element!){
+                print("[Log] Login VC: The login state is", status.element)
                 self.dismiss(animated: true)
             }
         }.disposed(by: bag)
         
         //for google login
         GIDSignIn.sharedInstance()?.presentingViewController = self // 로그인화면 불러오기
-        GIDSignIn.sharedInstance()?.restorePreviousSignIn() // 자동로그인
+        //GIDSignIn.sharedInstance()?.restorePreviousSignIn() // 자동로그인
         GIDSignIn.sharedInstance()?.delegate = self
         
         self.view.backgroundColor = .white

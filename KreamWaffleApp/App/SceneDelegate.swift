@@ -16,7 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession`
+        
         guard let scene = scene as? UIWindowScene else { return }
         
         self.window = UIWindow(windowScene: scene)
@@ -31,9 +32,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let styleViewModel = StyleFeedViewModel(usecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest"))
         let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
         let loginViewModel = LoginViewModel(UserUseCase: UserUsecase, LoginUseCase: LoginUsecase)
+        loginViewModel.getSavedUser()
         
         let rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleViewModel: styleViewModel, userViewModel: userViewModel, loginViewModel: loginViewModel)
-        
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
     }
