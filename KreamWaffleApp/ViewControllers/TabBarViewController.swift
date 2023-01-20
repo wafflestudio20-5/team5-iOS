@@ -10,25 +10,16 @@ import UIKit
 class TabBarViewController: UITabBarController {
     let homeViewModel: HomeViewModel
     let shopViewModel: ShopViewModel
-<<<<<<< HEAD
     let styleViewModel: StyleFeedViewModel
-    let userViewModel : UserViewModel
-=======
-    let styleViewModel: StyleViewModel
     let userViewModel : UserInfoViewModel
     let loginViewModel : LoginViewModel
->>>>>>> 4af32feb2fbeb31d55f0c4abe199d8b924a73374
     let homeTabBarItem: UITabBarItem
     let styleTabBarItem: UITabBarItem
     let shopTabBarItem: UITabBarItem
     let myTabBarItem: UITabBarItem
     
 
-<<<<<<< HEAD
-    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleViewModel: StyleFeedViewModel, userViewModel:UserViewModel) {
-=======
-    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleViewModel: StyleViewModel, userViewModel:UserInfoViewModel, loginViewModel: LoginViewModel) {
->>>>>>> 4af32feb2fbeb31d55f0c4abe199d8b924a73374
+    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleViewModel: StyleFeedViewModel, userViewModel:UserInfoViewModel, loginViewModel: LoginViewModel) {
         self.homeViewModel = homeViewModel
         self.shopViewModel = shopViewModel
         self.styleViewModel = styleViewModel
