@@ -7,6 +7,10 @@
 
 import Foundation
 
-struct ProductRequestModel: Codable {
+struct ShopPostRequestParameters: Codable {
+    var page: Int
     
+    init(page: Int) {
+        self.page = page
+    }
 }

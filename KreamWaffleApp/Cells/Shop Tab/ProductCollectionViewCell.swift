@@ -17,6 +17,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     let brandLabel = UILabel()
     let eng_nameLabel = UILabel()
     let kor_nameLabel = UILabel()
+    let deliveryTagLabel = UILabel()
     let priceLabel = UILabel()
     let priceSubLabel = UILabel()
 //    let transactionCountLabel = UILabel()
@@ -29,11 +30,16 @@ class ProductCollectionViewCell: UICollectionViewCell {
     let bookmarkButton = UIButton()
     let relatedStyleButton = UIButton()
     
+    // font sizes
     let h1FontSize: CGFloat = 14 // priceLabel
     let h2FontSize: CGFloat = 13 // brandLabel, eng_nameLabel
     let h3FontSize: CGFloat = 11 // kor_nameLabel, priceSubLabel
+    
+    // colors
     let mainFontColor: UIColor = .black
     let subFontColor: UIColor = .darkGray
+    let immediateDeliveryFontColor: UIColor = UIColor(red: 0.051, green: 0.6588, blue: 0.3843, alpha: 1.0)
+    let brandDeliveryFontColor: UIColor = UIColor(red: 0.3412, green: 0.2235, blue: 0.8078, alpha: 1.0)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,17 +49,43 @@ class ProductCollectionViewCell: UICollectionViewCell {
         setupBrandLabel()
         setupeng_nameLabel()
         setupkor_nameLabel()
+        setupDeliveryTagLabel()
         setupPriceLabel()
         setupBookmarkButton()
         setupRelatedStyleButton()
     }
     
     func configure(product: ProductData) {
-        let imageUrl = URL(string: product.imageSource)
+        let imageUrlString = product.imageSource[0].url
+        let imageUrl = URL(string: imageUrlString)
         self.imageView.kf.setImage(with: imageUrl)
         self.brandLabel.text = product.brand_name
         self.eng_nameLabel.text = product.eng_name
         self.kor_nameLabel.text = product.kor_name
+        
+        let attributedDeliveryString1: NSMutableAttributedString
+        switch product.delivery_tag {
+            case "immediate":
+                attributedDeliveryString1 = NSMutableAttributedString(string: "빠른배송")
+                let deliveryTagImageAttachment = NSTextAttachment()
+                deliveryTagImageAttachment.image = UIImage(systemName: "bolt.fill")?.withTintColor(self.immediateDeliveryFontColor)
+                deliveryTagImageAttachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
+                let attributedDeliveryString2 = NSMutableAttributedString(attachment: deliveryTagImageAttachment)
+                attributedDeliveryString2.append(attributedDeliveryString1)
+                self.deliveryTagLabel.attributedText = attributedDeliveryString2
+                self.deliveryTagLabel.textColor = self.immediateDeliveryFontColor
+                self.deliveryTagLabel.backgroundColor = UIColor(red: 0.898, green: 0.9882, blue: 0.9216, alpha: 1.0)
+            case "brand":
+    //            attributedDeliveryString1 = NSMutableAttributedString(string: "브랜드배송")
+                self.deliveryTagLabel.text = "브랜드배송"
+                self.deliveryTagLabel.textColor = self.brandDeliveryFontColor
+                self.deliveryTagLabel.backgroundColor = UIColor(red: 0.8902, green: 0.898, blue: 0.949, alpha: 1.0)
+    //            self.deliveryTagLabel.sizeToFit()
+            default:
+                self.deliveryTagLabel.text = ""
+        }
+        
+        
         self.priceLabel.text = "\(product.price) 원"
 //        self.transactionCountLabel.text = "\(product.transactionCount)"
 //        self.transactionCount = product.transactionCount
@@ -153,7 +185,6 @@ class ProductCollectionViewCell: UICollectionViewCell {
 //        self.kor_nameLabel.textAlignment = .left
         self.kor_nameLabel.adjustsFontSizeToFitWidth = false
         
-        
         self.contentView.addSubview(self.kor_nameLabel)
         kor_nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -162,6 +193,25 @@ class ProductCollectionViewCell: UICollectionViewCell {
             kor_nameLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             kor_nameLabel.topAnchor.constraint(equalTo: self.eng_nameLabel.bottomAnchor, constant: 2),
 //            kor_nameLabel.bottomAnchor.constraint(equalTo: self.kor_nameLabel.topAnchor, constant: 30)
+        ])
+    }
+    
+    private func setupDeliveryTagLabel() {
+        self.deliveryTagLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
+        
+        self.deliveryTagLabel.numberOfLines = 1
+        self.deliveryTagLabel.textAlignment = .center
+        
+        self.contentView.addSubview(self.deliveryTagLabel)
+        deliveryTagLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            deliveryTagLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+//            deliveryTagLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            deliveryTagLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            deliveryTagLabel.trailingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 75),
+//            deliveryTagLabel.widthAnchor.constraint(equalToConstant: 15),
+            deliveryTagLabel.topAnchor.constraint(equalTo: self.kor_nameLabel.bottomAnchor, constant: 5),
+            deliveryTagLabel.bottomAnchor.constraint(equalTo: self.deliveryTagLabel.topAnchor, constant: 19)
         ])
     }
     
@@ -179,7 +229,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
             priceLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
             priceLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             priceLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            priceLabel.topAnchor.constraint(equalTo: self.kor_nameLabel.bottomAnchor, constant: 10),
+            priceLabel.topAnchor.constraint(equalTo: self.deliveryTagLabel.bottomAnchor, constant: 10),
 //            priceLabel.bottomAnchor.constraint(equalTo: self.priceLabel.topAnchor, constant: 30)
         ])
         
