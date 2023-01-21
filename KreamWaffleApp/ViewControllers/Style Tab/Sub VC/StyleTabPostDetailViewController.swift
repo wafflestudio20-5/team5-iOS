@@ -69,7 +69,8 @@ final class StyleTabPostDetailViewController: UIViewController {
     func setUpNavigationBar() {
         navigationController?.navigationBar.tintColor = .lightGray
         self.setUpBackButton()
-        navigationItem.title = "최신"
+        self.navigationItem.backButtonTitle = ""
+//        navigationItem.title = "최신"
     }
     
     func setUpScrollView() {
@@ -101,9 +102,13 @@ final class StyleTabPostDetailViewController: UIViewController {
         idLabel.font = UIFont.boldSystemFont(ofSize: 14)
         idLabel.textColor = .black
         idLabel.lineBreakMode = .byTruncatingTail
+        idLabel.adjustsFontSizeToFitWidth = false
         idLabel.numberOfLines = 1
         idLabel.textAlignment = .left
-        idLabel.adjustsFontSizeToFitWidth = false
+        
+        let idLabelTap = UITapGestureRecognizer(target: self, action: #selector(self.idLabelTapped))
+        self.idLabel.isUserInteractionEnabled = true
+        self.idLabel.addGestureRecognizer(idLabelTap)
         
         idLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -122,9 +127,9 @@ final class StyleTabPostDetailViewController: UIViewController {
         numLikesLabel.adjustsFontSizeToFitWidth = false
         numLikesLabel.numberOfLines = 1
         
-        let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.numLikesLabelTapped))
+        let numLikesLabelTap = UITapGestureRecognizer(target: self, action: #selector(self.numLikesLabelTapped))
         self.numLikesLabel.isUserInteractionEnabled = true
-        self.numLikesLabel.addGestureRecognizer(labelTap)
+        self.numLikesLabel.addGestureRecognizer(numLikesLabelTap)
         
         numLikesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -258,11 +263,24 @@ final class StyleTabPostDetailViewController: UIViewController {
 extension StyleTabPostDetailViewController { //button 관련 메서드들.
     @objc func slideShowTapped() {
         let fullScreenController = slideshow.presentFullScreenController(from: self)
-        fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .white, color: nil)
+        fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .medium, color: nil)
     }
     
     @objc func numLikesLabelTapped() {
         self.navigationController?.pushViewController(LikedUsersViewController(userInfoViewModel: self.userInfoViewModel), animated: true)
+    }
+
+    @objc func idLabelTapped() {
+        let user_id = self.styleTabDetailViewModel.getUserId()
+        let userProfileUsecase = UserProfileUsecase(userProfileRepository: UserProfileRepository(), user_id: user_id)
+        let userProfileViewModel = UserProfileViewModel(userProfileUsecase: userProfileUsecase)
+        
+        let styleFeedUsecase = StyleFeedUsecase(repository: StyleFeedRepository(), type: "default", user_id: user_id)
+        let styleFeedViewModel = StyleFeedViewModel(styleFeedUsecase: styleFeedUsecase)
+        
+        let userProfileViewController = UserProfileViewController(userInfoViewModel: self.userInfoViewModel, userProfileViewModel: userProfileViewModel, styleFeedViewModel: styleFeedViewModel)
+        
+        self.navigationController?.pushViewController(userProfileViewController, animated: true)
     }
     
     @objc func followButtonTapped() {

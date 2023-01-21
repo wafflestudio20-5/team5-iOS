@@ -16,7 +16,8 @@ final class StyleFeedUsecase {
     
     let stylePostRelay: BehaviorRelay<[StylePost]> = .init(value: [])
     
-    var type: String
+    private let type: String
+    private let user_id: Int?
     
     var stylePostList = [StylePost]() {
         didSet {
@@ -24,9 +25,10 @@ final class StyleFeedUsecase {
         }
     }
         
-    init (repository: StyleFeedRepository, type: String) {
+    init (repository: StyleFeedRepository, type: String, user_id: Int?) {
         self.repository = repository
         self.type = type
+        self.user_id = user_id
 //        requestStylePostData(page: 1)
     }
     

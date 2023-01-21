@@ -8,31 +8,33 @@
 import Foundation
 
 final class StyleTabDetailViewModel {
-    private let usecase: StyleDetailUsecase
-    private let stylePost: StylePost
+    private let styleDetailUsecase: StyleDetailUsecase
     
-    init(usecase: StyleDetailUsecase, stylePost: StylePost) {
-        self.usecase = usecase
-        self.stylePost = stylePost
+    init(styleDetailUsecase: StyleDetailUsecase) {
+        self.styleDetailUsecase = styleDetailUsecase
+    }
+    
+    func getUserId() -> Int {
+        return self.styleDetailUsecase.getUserId()
     }
     
     func getImageSources() -> [String] {
-        return self.stylePost.images
+        return self.styleDetailUsecase.getImageSources()
     }
     
     func getProfileName() -> String {
-        return self.stylePost.created_by.profile_name
+        return self.styleDetailUsecase.getProfileName()
     }
     
     func getNumLikes() -> Int {
-        return self.stylePost.num_likes
+        return self.styleDetailUsecase.getNumLikes()
     }
     
     func getContent() -> String {
-        return self.stylePost.content
+        return self.styleDetailUsecase.getContent()
     }
     
     func getThumbnailImageRatio() -> Float {
-        return self.stylePost.image_ratio
+        return self.styleDetailUsecase.getThumbnailImageRatio()
     }
 }

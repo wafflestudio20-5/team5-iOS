@@ -25,7 +25,7 @@ final class UserUsecase {
             
             if (loggedIn) {
                 self.followingSet = self.repository.loadFollowingSet()
-            } else {
+            } else { // 로그아웃되면 followingSet 초기화.
                 followingSet.removeAll(keepingCapacity: false)
             }
             
