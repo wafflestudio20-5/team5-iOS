@@ -38,6 +38,7 @@
 		651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E71842977CF1A00D81E2F /* OpeningViewController.swift */; };
 		651E7189297AAF4B00D81E2F /* PhotoPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E7188297AAF4B00D81E2F /* PhotoPickerViewController.swift */; };
 		651E718B297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */; };
+		651E718D297B989000D81E2F /* AutoAddPaddingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */; };
 		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
 		6527350B29680C1900C859B8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350A29680C1900C859B8 /* User.swift */; };
 		6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350C2968185C00C859B8 /* UserUsecase.swift */; };
@@ -138,6 +139,7 @@
 		651E71842977CF1A00D81E2F /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		651E7188297AAF4B00D81E2F /* PhotoPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerViewController.swift; sourceTree = "<group>"; };
 		651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabSharedUIStackVIew.swift; sourceTree = "<group>"; };
+		651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAddPaddingButton.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
 		6527350A29680C1900C859B8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6527350C2968185C00C859B8 /* UserUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUsecase.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				65DF48962961E13C00AF6CDB /* TermsButton.swift */,
 				5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */,
 				65B4DE322972DC9200771920 /* CustomError.swift */,
+				651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */,
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -747,6 +750,7 @@
 				6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */,
 				653F17C42965701600949FF8 /* LoginRepository.swift in Sources */,
 				656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */,
+				651E718D297B989000D81E2F /* AutoAddPaddingButton.swift in Sources */,
 				65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */,
 				651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,

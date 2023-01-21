@@ -67,13 +67,31 @@ class MyTabSharedUIStackVIew: UIStackView {
         let titleLabel_1 = titleLabel(title: self.title1)
         let subtitleLabel_1 = subtitleLabel(title: self.subtitle1)
         let subview_1 = miniStackView(subviews: [titleLabel_1, subtitleLabel_1])
-        self.addSubview(subview_1)
+        subview_1.translatesAutoresizingMaskIntoConstraints = false
+        
+        let titleLabel_2 = titleLabel(title: self.title2 ?? "")
+        let subtitleLabel_2 = subtitleLabel(title: self.subtitle2 ?? "")
+        let subview_2 = miniStackView(subviews: [titleLabel_2, subtitleLabel_2])
+        subview_2.translatesAutoresizingMaskIntoConstraints = false
+        
+        let titleLabel_3 = titleLabel(title: self.title3 ?? "")
+        let subtitleLabel_3 = subtitleLabel(title: self.subtitle3 ?? "")
+        let subview_3 = miniStackView(subviews: [titleLabel_3, subtitleLabel_3])
+        subview_3.translatesAutoresizingMaskIntoConstraints = false
+        
+        let subviews = [subview_1, subview_2, subview_3]
+        for count in 1...setCount{
+            self.addArrangedSubview(subviews[count-1])
+        }
     }
     
     func setupMainView(){
-        self.backgroundColor = .red
+        self.backgroundColor = .white
         self.axis = .horizontal
         self.distribution = .equalSpacing
+        //self.spacing = 30
         self.alignment = .center
+        self.isLayoutMarginsRelativeArrangement = true
+        self.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 50, bottom: 0, trailing: 50)
     }
 }

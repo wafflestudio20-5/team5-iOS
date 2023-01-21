@@ -216,7 +216,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         NSLayoutConstraint.activate([
             self.divider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.divider.heightAnchor.constraint(equalToConstant: 20),
+            self.divider.heightAnchor.constraint(equalToConstant: 15),
             self.divider.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: self.view.frame.height/64),
         ])
     }
@@ -225,8 +225,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.add(self.myShoppingVC)
         self.add(self.myProfileVC)
         //TODO: y 값 조정하기
-        self.myShoppingVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
-        self.myProfileVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
+        self.myShoppingVC.view.frame = CGRect(x: 0, y: 270, width: self.view.frame.width, height: self.view.frame.height)
+        self.myProfileVC.view.frame = CGRect(x: 0, y: 270, width: self.view.frame.width, height: self.view.frame.height)
         self.myProfileVC.view.isHidden = true
     }
     
