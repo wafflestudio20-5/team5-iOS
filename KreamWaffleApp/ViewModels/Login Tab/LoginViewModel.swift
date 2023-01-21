@@ -17,8 +17,8 @@ enum LoginTextfieldType{
 ///only used in login, signup VCs, shares usecase with user info view model
 class LoginViewModel {
     
-    private let UserUseCase : UserUsecase
-    private let LoginUseCase : LoginUsecase
+    let UserUseCase : UserUsecase
+    let LoginUseCase : LoginUsecase
     
     let bag = DisposeBag()
     

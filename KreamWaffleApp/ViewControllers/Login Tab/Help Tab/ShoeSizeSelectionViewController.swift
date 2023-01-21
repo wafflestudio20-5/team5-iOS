@@ -13,16 +13,25 @@ import RxCocoa
 //for the half screen modal view 
 class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout {
     private let bag = DisposeBag()
+    let viewModel : SignUpViewModel?
     var sizeView : UICollectionView!
     private var layout = UICollectionViewFlowLayout()
     private var backButton = UIButton()
     private var titleLabel = UILabel()
     
     let shoeSizes = [220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290, 295, 300]
-
+    
+    init(viewModel: SignUpViewModel?){
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(forName: Notification.Name("didSelectShoeSize"), object: nil, queue: nil, using: didSelectShoeSize)
         self.view.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 250/255.0, alpha: 1.0)
         bind()
         self.view.addSubview(titleLabel)
@@ -31,9 +40,6 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
         configureCollectionView()
     }
     
-    @objc func didSelectShoeSize(_ notification: Notification){
-        self.dismiss(animated: true)
-    }
     
     private func bind(){
         self.sizeView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -51,6 +57,14 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
             //cell.layer.cornerRadius = 5
         }
         .disposed(by: bag)
+        
+        self.sizeView
+            .rx
+            .modelSelected(Int.self)
+            .subscribe(onNext: { model in
+                self.viewModel?.shoeSizeRelay.accept(model)
+                self.dismiss(animated: true)
+            }).disposed(by: bag)
     }
     
     private func configureCollectionView(){

@@ -11,7 +11,8 @@ import RxCocoa
 
 class SignUpViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
-    var viewModel : LoginViewModel
+    var viewModel : SignUpViewModel
+    let bag = DisposeBag()
     
     var backButton = UIButton()
     var titleLabel = UILabel()
@@ -26,7 +27,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     
     var signupButton = UIButton()
     
-    init(viewModel : LoginViewModel){
+    init(viewModel : SignUpViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -37,7 +38,6 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(forName: Notification.Name("didSelectShoeSize"), object: nil, queue: nil, using: didSelectShoeSize)
         self.view.backgroundColor = .white
         self.emailField = LoginTextfield(titleText: "이메일 주소 *", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: nil, defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
         self.passwordField = LoginTextfield(titleText: "비밀번호 *", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: nil, defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
@@ -45,19 +45,47 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.necessaryTerms = TermsButton(title: "[필수] 만 14세 이상이며 모두 동의합니다.", rightButtonImage: "plus", pressedRightButtonImage: "minus")
         self.additionalTerms = TermsButton(title: "[선택] 광고성 정보 수신에 모두 동의합니다.", rightButtonImage: "plus", pressedRightButtonImage: "minus")
         self.emailField?.textfield.becomeFirstResponder()
+        bindSignUpFields()
         addSubviews()
         configureSubviews()
         self.hideKeyboardWhenTappedAround()
     }
     
-    @objc func didSelectShoeSize(_ notification : Notification){
-        let size = notification.userInfo!["size"] as? Int ?? 0
-        //0 뜨면 에러임.
-        self.sizeField?.textfield.text = String(size)
-        self.sizeField?.textfield.textColor = .black
-        self.sizeSelected = true
-        allFieldValid()
+    func bindSignUpFields(){
+        self.emailField!.textfield.rx.text
+            .orEmpty
+            .bind(to: self.viewModel.emailTextRelay)
+            .disposed(by: bag)
+        
+        self.passwordField!.textfield.rx.text
+            .orEmpty
+            .bind(to: self.viewModel.pwTextRelay)
+            .disposed(by: bag)
+        
+        self.viewModel.shoeSizeRelay.subscribe { size in
+            print("[Log] SignupVC: The sleected size is ", size.element)
+            if (size.element != 0){
+            self.sizeField?.textfield.text = String(size.element ?? 0)
+            }else{
+            self.sizeField?.textfield.text = "사이즈를 선택하세요."
+            }
+        }.disposed(by: bag)
+        
+        self.viewModel.isValidSignUp()
+            .bind(to: self.signupButton.rx.isEnabled)
+            .disposed(by: bag)
+        
+        self.viewModel.isValidSignUp()
+            .map { $0 ? UIColor.black: UIColor.lightGray}
+            .bind(to: self.signupButton.rx.backgroundColor)
+            .disposed(by: bag)
+        
+        self.viewModel.isValidSignUp()
+            .map { $0 ? UIColor.white: UIColor.darkGray}
+            .bind(to: self.signupButton.rx.tintColor)
+            .disposed(by: bag)
     }
+    
     
     func addSubviews(){
         self.view.addSubview(backButton)
@@ -107,14 +135,14 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.emailField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.emailField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.emailField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
-        self.emailField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
+        //self.emailField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
         
         self.passwordField?.translatesAutoresizingMaskIntoConstraints = false
         self.passwordField?.topAnchor.constraint(equalTo: self.emailField!.bottomAnchor, constant: 30).isActive = true
         self.passwordField?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.passwordField?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.passwordField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
-        self.passwordField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
+        //self.passwordField?.textfield.addTarget(self, action: #selector(allFieldValid), for: .allEvents)
     }
     
     func configureShoeSizeField(){
@@ -132,7 +160,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.necessaryTerms?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.necessaryTerms?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.necessaryTerms?.heightAnchor.constraint(greaterThanOrEqualToConstant: 30).isActive = true
-        self.necessaryTerms?.checkButton.addTarget(self, action: #selector(allFieldValid), for: .touchUpInside)
+        //self.necessaryTerms?.checkButton.addTarget(self, action: #selector(allFieldValid), for: .touchUpInside)
         
         self.additionalTerms?.translatesAutoresizingMaskIntoConstraints = false
         self.additionalTerms?.topAnchor.constraint(equalTo: self.necessaryTerms!.bottomAnchor, constant: 15).isActive = true
@@ -153,24 +181,16 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.signupButton.titleLabel?.textColor = .white
         self.signupButton.layer.cornerRadius = 10
         self.signupButton.clipsToBounds = true
-        self.signupButton.addTarget(self, action: #selector(didTapSignup), for: .touchUpInside)
-    }
-    
-    @objc func allFieldValid(){
-        if (self.sizeSelected && ((self.emailField?.isValid()) != nil) && ((self.passwordField?.isValid()) != nil) && ((self.necessaryTerms?.checked) != false)){
-            self.signupButton.backgroundColor = .black
-            self.signupButton.setTitleColor(.white, for: .normal)
-        }else{
-            self.signupButton.backgroundColor = .systemGray
-        }
+        //self.signupButton.addTarget(self, action: #selector(didTapSignup), for: .touchUpInside)
     }
     
     @objc func didTapSignup(){
-        //TODO: size nil 에러 바꾸기
-        self.viewModel.registerAccount(email: (self.emailField?.textfield.text)!,
-                                       password: (self.passwordField?.textfield.text)!,
-                                       shoeSize: 220)
-        
+        self.viewModel.didTapSignup()
+        //self.viewModel.registerAccount(email: (self.emailField?.textfield.text)!,
+                                       //password: (self.passwordField?.textfield.text)!,
+                                       //shoeSize: 220)
+        //TODO: 여기 error 을 observable 로 해서 하기
+        /*
         if (self.viewModel.Error != .signupError){
         let loadingVC = LoadingViewController()
 
@@ -188,11 +208,11 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
             loadingVC.dismiss(animated: true)
             self.dismiss(animated: true)
         }
-    }
+    }*/
 }
     
     @objc func didTapSelectShoeSize(){
-        let vc = ShoeSizeSelectionViewController()
+        let vc = ShoeSizeSelectionViewController(viewModel: self.viewModel)
         //vc.view.backgroundColor = .systemYellow
         vc.modalPresentationStyle = .pageSheet
         if let sheet = vc.sheetPresentationController {

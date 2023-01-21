@@ -152,7 +152,8 @@ class LoginViewController: UIViewController {
     }
     
     @objc func didTapSignup(){
-        let signupVC = SignUpViewController(viewModel: self.viewModel)
+        let signUpVM = SignUpViewModel(usecase: self.viewModel.UserUseCase)
+        let signupVC = SignUpViewController(viewModel: signUpVM)
         signupVC.modalPresentationStyle = .fullScreen
         self.present(signupVC, animated: true)
     }

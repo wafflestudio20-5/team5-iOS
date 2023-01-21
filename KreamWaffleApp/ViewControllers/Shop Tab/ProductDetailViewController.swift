@@ -276,7 +276,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     @objc func didTapSelectShoeSize() {
         var productSizeList = [230, 235, 240]
         
-        let productSizeSelectionVC = ShoeSizeSelectionViewController()
+        let productSizeSelectionVC = ShoeSizeSelectionViewController(viewModel: nil)
         productSizeSelectionVC.modalPresentationStyle = .pageSheet
         
         if let sheet = productSizeSelectionVC.sheetPresentationController {

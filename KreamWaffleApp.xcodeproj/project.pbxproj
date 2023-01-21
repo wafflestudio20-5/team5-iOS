@@ -45,6 +45,7 @@
 		6527350F2968196200C859B8 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350E2968196200C859B8 /* UserInfoViewModel.swift */; };
 		653F17C42965701600949FF8 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653F17C32965701600949FF8 /* LoginRepository.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
+		65508A51297BB1D100C6431D /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65508A50297BB1D100C6431D /* SignUpViewModel.swift */; };
 		655A94CB296C6D4200F0184B /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655A94CA296C6D4200F0184B /* LoadingViewController.swift */; };
 		655A94CD296C6D4900F0184B /* CustomNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655A94CC296C6D4900F0184B /* CustomNotificationView.swift */; };
 		655A94CF296C73FB00F0184B /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655A94CE296C73FB00F0184B /* MyProfileViewController.swift */; };
@@ -147,6 +148,7 @@
 		653F17C229655F1F00949FF8 /* KreamWaffleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KreamWaffleApp.entitlements; sourceTree = "<group>"; };
 		653F17C32965701600949FF8 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		65508A50297BB1D100C6431D /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		655A94CA296C6D4200F0184B /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		655A94CC296C6D4900F0184B /* CustomNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotificationView.swift; sourceTree = "<group>"; };
 		655A94CE296C73FB00F0184B /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
@@ -293,6 +295,15 @@
 			path = "Data Objects";
 			sourceTree = "<group>";
 		};
+		65508A4F297BB1BB00C6431D /* Login Tab */ = {
+			isa = PBXGroup;
+			children = (
+				65781D022976C415000FC684 /* LoginViewModel.swift */,
+				65508A50297BB1D100C6431D /* SignUpViewModel.swift */,
+			);
+			path = "Login Tab";
+			sourceTree = "<group>";
+		};
 		655A94D0296C772900F0184B /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,12 +383,12 @@
 		9409BB6929587BB200107717 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				65508A4F297BB1BB00C6431D /* Login Tab */,
 				94155C52297A4E920092B561 /* Shop Tab */,
 				94CDFF922974730300C2095C /* HomeViewModel.swift */,
 				5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */,
 				6527350E2968196200C859B8 /* UserInfoViewModel.swift */,
 				5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */,
-				65781D022976C415000FC684 /* LoginViewModel.swift */,
 				5C6FBD66297A60C200B64FF0 /* UserListViewModel.swift */,
 			);
 			path = ViewModels;
@@ -732,6 +743,7 @@
 				655A94CD296C6D4900F0184B /* CustomNotificationView.swift in Sources */,
 				6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */,
 				655A94CB296C6D4200F0184B /* LoadingViewController.swift in Sources */,
+				65508A51297BB1D100C6431D /* SignUpViewModel.swift in Sources */,
 				5C6FBD452976A1ED00B64FF0 /* StyleDetailUsecase.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
