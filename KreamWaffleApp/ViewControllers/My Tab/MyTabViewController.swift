@@ -60,11 +60,30 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         }.disposed(by: bag)
     
         setUpSegmentedControl()
+        setUpCameraButton()
         setUpFixedViewLayout()
         setUpData()
         setupDivider()
         setupChildVC()
     }
+    
+    func setUpCameraButton(){
+        let cameraImage = UIImage(systemName: "camera.circle.fill")
+        let tintedCameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
+        let cameraButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(cameraButtonTapped))
+        cameraButton.image = tintedCameraImage
+        cameraButton.tintColor = .darkGray
+        self.navigationItem.rightBarButtonItem = cameraButton
+    }
+                                           
+    @objc func cameraButtonTapped(){
+        //TODO: customize 할 필요 있음.
+        let photoPickerVC = PhotoPickerViewController()
+        self.present(photoPickerVC, animated: true)
+        }
+                                           
+                                           
+                                           
     
     func setUpSegmentedControl() {
         let segmentedControl = BetterSegmentedControl(
