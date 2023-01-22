@@ -44,9 +44,10 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         self.viewModel.loginState.asObservable().subscribe { status in
+            self.loginState = status.element!
             if (status.element!){
                 print("[Log] Login VC: The login state is", status.element)
-                self.dismiss(animated: true)
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
             }
         }.disposed(by: bag)
         
@@ -106,8 +107,8 @@ class LoginViewController: UIViewController {
     
     @objc func popVC(){
         //TODO: set differently according to login state in VM --> 일단은 노티로.
-        NotificationCenter.default.post(name: Notification.Name("popLoginVC"), object: nil)
-        self.dismiss(animated: true)
+        //이게 아니라 root vc를 갈아끼워야하는 것 같음. 
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
     }
     
     //changes activation of login button
