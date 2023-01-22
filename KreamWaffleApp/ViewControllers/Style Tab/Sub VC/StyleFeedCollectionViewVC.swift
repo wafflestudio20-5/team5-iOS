@@ -131,7 +131,7 @@ extension StyleFeedCollectionViewVC: UIScrollViewDelegate  {
 }
 
 extension StyleFeedCollectionViewVC: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {        
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailViewRepository = StyleDetailRepository()
         let detailUsecase = StyleDetailUsecase(repository: detailViewRepository, stylePost: self.styleFeedViewModel.getStylePostAt(at: indexPath.row))
         
