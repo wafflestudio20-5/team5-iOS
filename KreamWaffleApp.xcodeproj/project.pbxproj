@@ -34,6 +34,7 @@
 		5C6FBD75297BCBB700B64FF0 /* UserProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD74297BCBB700B64FF0 /* UserProfileRepository.swift */; };
 		5C6FBD77297BCCF500B64FF0 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD76297BCCF500B64FF0 /* UserProfileViewController.swift */; };
 		5C6FBD79297C263200B64FF0 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD78297C263200B64FF0 /* Profile.swift */; };
+		5C6FBD7B297D132900B64FF0 /* UIViewController+pushUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD7A297D132800B64FF0 /* UIViewController+pushUserProfileVC.swift */; };
 		5CB810DB29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DA29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift */; };
 		5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */; };
 		5CB810DF29683D4E0021FDD6 /* StyleDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DE29683D4E0021FDD6 /* StyleDetailRepository.swift */; };
@@ -138,6 +139,7 @@
 		5C6FBD74297BCBB700B64FF0 /* UserProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRepository.swift; sourceTree = "<group>"; };
 		5C6FBD76297BCCF500B64FF0 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		5C6FBD78297C263200B64FF0 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		5C6FBD7A297D132800B64FF0 /* UIViewController+pushUserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+pushUserProfileVC.swift"; sourceTree = "<group>"; };
 		5CB810DA29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedCollectionViewVC.swift; sourceTree = "<group>"; };
 		5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabPostDetailViewController.swift; sourceTree = "<group>"; };
 		5CB810DE29683D4E0021FDD6 /* StyleDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleDetailRepository.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				65653F42295B8217002F250B /* Extensions.swift */,
 				5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */,
 				5C63455C296FE3DC00DA6D29 /* UIViewController+setUpBackButton.swift */,
+				5C6FBD7A297D132800B64FF0 /* UIViewController+pushUserProfileVC.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -733,6 +736,7 @@
 				5CB810DB29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift in Sources */,
 				9428AE4D295719A500DC7907 /* ShopTabViewController.swift in Sources */,
 				6527350F2968196200C859B8 /* UserInfoViewModel.swift in Sources */,
+				5C6FBD7B297D132900B64FF0 /* UIViewController+pushUserProfileVC.swift in Sources */,
 				65781D032976C415000FC684 /* LoginViewModel.swift in Sources */,
 				5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */,
 				5C6FBD582979778900B64FF0 /* FollowerUserListRepository.swift in Sources */,

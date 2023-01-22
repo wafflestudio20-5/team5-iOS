@@ -34,6 +34,7 @@ final class LikedUsersViewController: UIViewController {
     
     func setUpNavigationBar() {
         self.navigationItem.title = "공감"
+        self.setUpBackButton()
     }
     
     func setUpChildVC() {

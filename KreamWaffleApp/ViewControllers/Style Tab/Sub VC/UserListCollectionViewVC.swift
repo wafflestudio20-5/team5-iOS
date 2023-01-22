@@ -80,14 +80,10 @@ extension UserListCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
-//
-//        if let image = cell.posterImage.image {
-//            let newViewModel = DetailVM(movieUsecase: viewModel.movieUsecase, favoriteMovieUsecase: viewModel.favoriteMovieUsecase)
-//            newViewModel.selectPopularMovieByIndex(index: indexPath.row)
-//
-//            let movieInfoVC = MovieInfoVC(vm: newViewModel, image: image)
-//            self.navigationController?.pushViewController(movieInfoVC, animated: true)
+        let cell = collectionView.cellForItem(at: indexPath) as! UserListCollectionViewCell
+        
+        let user_id = cell.user_id!
+        self.pushUserProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
     }
     
     @objc func requestFollow(sender: FollowButton) {
