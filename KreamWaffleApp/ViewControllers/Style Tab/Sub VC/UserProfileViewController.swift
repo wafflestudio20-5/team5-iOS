@@ -20,7 +20,14 @@ final class UserProfileViewController: UIViewController {
     private let profileNameLabel = UILabel()
     private let userNameLabel = UILabel()
     private let introductionLabel = UILabel()
-    private let divider = UILabel()
+    private let postNumLabel = UILabel()
+    private let followerNumLabel = UILabel()
+    private let followingNumLabel = UILabel()
+    private let fixedPostNumLabel = UILabel()
+    private let fixedFollowerNumLabel = UILabel()
+    private let fixedFollowingNumLabel = UILabel()
+    private let mainDivider = UILabel()
+    private let subDivider = UILabel()
     private let followButton = FollowButton()
     
     private let disposeBag = DisposeBag()
@@ -43,7 +50,7 @@ final class UserProfileViewController: UIViewController {
         configureDesign()
         addSubviews()
         setUpFixedViewLayout()
-        setupDivider()
+        setupDividers()
         bindViews()
         requestProfile()
         setUpChildVC()
@@ -55,7 +62,8 @@ final class UserProfileViewController: UIViewController {
     }
     
     func addSubviews() {
-        self.view.addSubviews(fixedView, profileImageView, profileNameLabel, userNameLabel, introductionLabel, divider, followButton)
+        self.view.addSubviews(fixedView, profileImageView, profileNameLabel, userNameLabel, introductionLabel, mainDivider, followButton,
+        subDivider, postNumLabel, followerNumLabel, followingNumLabel, fixedPostNumLabel, fixedFollowerNumLabel, fixedFollowingNumLabel)
     }
     
     func setUpFixedViewLayout() {
@@ -135,6 +143,56 @@ final class UserProfileViewController: UIViewController {
             self.introductionLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
             self.introductionLabel.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor),
         ])
+        
+        let labelWidth = self.view.frame.size.width/3
+        let labelHeight: CGFloat = 20
+        
+        self.postNumLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        self.postNumLabel.textColor = .black
+        self.postNumLabel.lineBreakMode = .byTruncatingTail
+        self.postNumLabel.textAlignment = .center
+        self.postNumLabel.adjustsFontSizeToFitWidth = false
+        self.postNumLabel.numberOfLines = 1
+        
+        self.postNumLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.postNumLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.postNumLabel.widthAnchor.constraint(equalToConstant: labelWidth),
+            self.postNumLabel.topAnchor.constraint(equalTo: self.mainDivider.bottomAnchor, constant: 10),
+            self.postNumLabel.heightAnchor.constraint(equalToConstant: labelHeight)
+        ])
+        
+        self.followerNumLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        self.followerNumLabel.textColor = .black
+        self.followerNumLabel.lineBreakMode = .byTruncatingTail
+        self.followerNumLabel.textAlignment = .center
+        self.followerNumLabel.adjustsFontSizeToFitWidth = false
+        self.followerNumLabel.numberOfLines = 1
+        
+        self.followerNumLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.followerNumLabel.leadingAnchor.constraint(equalTo: self.postNumLabel.trailingAnchor),
+            self.followerNumLabel.widthAnchor.constraint(equalToConstant: labelWidth),
+            self.followerNumLabel.topAnchor.constraint(equalTo: self.postNumLabel.topAnchor),
+            self.followerNumLabel.heightAnchor.constraint(equalTo: self.postNumLabel.heightAnchor)
+        ])
+        
+        self.followingNumLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        self.followingNumLabel.textColor = .black
+        self.followingNumLabel.lineBreakMode = .byTruncatingTail
+        self.followingNumLabel.textAlignment = .center
+        self.followingNumLabel.adjustsFontSizeToFitWidth = false
+        self.followingNumLabel.numberOfLines = 1
+        
+        self.followingNumLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.followingNumLabel.leadingAnchor.constraint(equalTo: self.followerNumLabel.trailingAnchor),
+            self.followingNumLabel.widthAnchor.constraint(equalToConstant: labelWidth),
+            self.followingNumLabel.topAnchor.constraint(equalTo: self.postNumLabel.topAnchor),
+            self.followingNumLabel.heightAnchor.constraint(equalTo: self.postNumLabel.heightAnchor)
+        ])
+        
+        setUpFixedLabels() //중요하지 않은 라벨들. 내용 다 고정된.
     }
     
     
@@ -159,14 +217,23 @@ final class UserProfileViewController: UIViewController {
         self.followButton.addTarget(self, action: #selector(requestFollow(sender:)), for: .touchUpInside)
     }
     
-    func setupDivider(){
-        self.divider.backgroundColor = colors.lightGray
-        self.divider.translatesAutoresizingMaskIntoConstraints = false
+    func setupDividers(){
+        self.mainDivider.backgroundColor = colors.lightGray
+        self.mainDivider.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.divider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.divider.heightAnchor.constraint(equalToConstant: 20),
-            self.divider.topAnchor.constraint(equalTo: self.fixedView.bottomAnchor, constant: 10),
+            self.mainDivider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.mainDivider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.mainDivider.heightAnchor.constraint(equalToConstant: 20),
+            self.mainDivider.topAnchor.constraint(equalTo: self.fixedView.bottomAnchor, constant: 10),
+        ])
+        
+        self.subDivider.backgroundColor = colors.lightGray
+        self.subDivider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.subDivider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            self.subDivider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.subDivider.heightAnchor.constraint(equalToConstant: 1),
+            self.subDivider.topAnchor.constraint(equalTo: self.fixedPostNumLabel.bottomAnchor, constant: 10),
         ])
     }
     
@@ -209,6 +276,9 @@ final class UserProfileViewController: UIViewController {
         self.userNameLabel.text = profile.user_name
         self.introductionLabel.text = profile.introduction
         self.introductionLabel.sizeToFit()
+        self.postNumLabel.text = String(0) //나중에 API 수정되면 고치기
+        self.followerNumLabel.text = String(profile.num_followers)
+        self.followingNumLabel.text = String(profile.num_followings)
     }
     
     func setUpChildVC() {
@@ -220,8 +290,55 @@ final class UserProfileViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.userFeedCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
             self.userFeedCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            self.userFeedCollectionViewVC.view.topAnchor.constraint(equalTo: self.divider.bottomAnchor, constant: 0),
+            self.userFeedCollectionViewVC.view.topAnchor.constraint(equalTo: self.subDivider.bottomAnchor, constant: 0),
             self.userFeedCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+        ])
+    }
+    
+    func setUpFixedLabels() {
+        self.fixedPostNumLabel.font = UIFont.systemFont(ofSize: 14)
+        self.fixedPostNumLabel.textColor = .black
+        self.fixedPostNumLabel.lineBreakMode = .byTruncatingTail
+        self.fixedPostNumLabel.textAlignment = .center
+        self.fixedPostNumLabel.adjustsFontSizeToFitWidth = false
+        self.fixedPostNumLabel.numberOfLines = 1
+        self.fixedPostNumLabel.text = "게시물"
+        
+        self.fixedPostNumLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.fixedPostNumLabel.centerXAnchor.constraint(equalTo: self.postNumLabel.centerXAnchor),
+            self.fixedPostNumLabel.topAnchor.constraint(equalTo: self.postNumLabel.bottomAnchor),
+            self.fixedPostNumLabel.heightAnchor.constraint(equalTo: self.postNumLabel.heightAnchor)
+        ])
+        
+        self.fixedFollowerNumLabel.font = UIFont.systemFont(ofSize: 14)
+        self.fixedFollowerNumLabel.textColor = .black
+        self.fixedFollowerNumLabel.lineBreakMode = .byTruncatingTail
+        self.fixedFollowerNumLabel.textAlignment = .center
+        self.fixedFollowerNumLabel.adjustsFontSizeToFitWidth = false
+        self.fixedFollowerNumLabel.numberOfLines = 1
+        self.fixedFollowerNumLabel.text = "팔로워"
+        
+        self.fixedFollowerNumLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.fixedFollowerNumLabel.centerXAnchor.constraint(equalTo: self.followerNumLabel.centerXAnchor),
+            self.fixedFollowerNumLabel.topAnchor.constraint(equalTo: self.followerNumLabel.bottomAnchor),
+            self.fixedFollowerNumLabel.heightAnchor.constraint(equalTo: self.postNumLabel.heightAnchor)
+        ])
+        
+        self.fixedFollowingNumLabel.font = UIFont.systemFont(ofSize: 14)
+        self.fixedFollowingNumLabel.textColor = .black
+        self.fixedFollowingNumLabel.lineBreakMode = .byTruncatingTail
+        self.fixedFollowingNumLabel.textAlignment = .center
+        self.fixedFollowingNumLabel.adjustsFontSizeToFitWidth = false
+        self.fixedFollowingNumLabel.numberOfLines = 1
+        self.fixedFollowingNumLabel.text = "팔로잉"
+        
+        self.fixedFollowingNumLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.fixedFollowingNumLabel.centerXAnchor.constraint(equalTo: self.followingNumLabel.centerXAnchor),
+            self.fixedFollowingNumLabel.topAnchor.constraint(equalTo: self.followingNumLabel.bottomAnchor),
+            self.fixedFollowingNumLabel.heightAnchor.constraint(equalTo: self.postNumLabel.heightAnchor)
         ])
     }
 }
