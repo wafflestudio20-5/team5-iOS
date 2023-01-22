@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class LikedUsersViewController: UIViewController {
+final class LikedUserListViewController: UIViewController {
     private let userListCollectionViewVC: UserListCollectionViewVC
     private let userInfoViewModel: UserInfoViewModel
     

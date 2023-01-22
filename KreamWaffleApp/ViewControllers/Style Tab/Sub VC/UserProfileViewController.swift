@@ -169,6 +169,9 @@ final class UserProfileViewController: UIViewController {
         self.followerNumLabel.adjustsFontSizeToFitWidth = false
         self.followerNumLabel.numberOfLines = 1
         
+        self.followerNumLabel.isUserInteractionEnabled = true
+        self.followerNumLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followerNumLabelTapped)))
+        
         self.followerNumLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.followerNumLabel.leadingAnchor.constraint(equalTo: self.postNumLabel.trailingAnchor),
@@ -184,6 +187,9 @@ final class UserProfileViewController: UIViewController {
         self.followingNumLabel.adjustsFontSizeToFitWidth = false
         self.followingNumLabel.numberOfLines = 1
         
+        self.followingNumLabel.isUserInteractionEnabled = true
+        self.followingNumLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followingNumLabelTapped)))
+        
         self.followingNumLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.followingNumLabel.leadingAnchor.constraint(equalTo: self.followerNumLabel.trailingAnchor),
@@ -192,7 +198,7 @@ final class UserProfileViewController: UIViewController {
             self.followingNumLabel.heightAnchor.constraint(equalTo: self.postNumLabel.heightAnchor)
         ])
         
-        setUpFixedLabels() //중요하지 않은 라벨들. 내용 다 고정된.
+        setUpFixedLabelLayout() //중요하지 않은 라벨들. 내용 다 고정된.
     }
     
     
@@ -295,7 +301,7 @@ final class UserProfileViewController: UIViewController {
         ])
     }
     
-    func setUpFixedLabels() {
+    func setUpFixedLabelLayout() {
         self.fixedPostNumLabel.font = UIFont.systemFont(ofSize: 14)
         self.fixedPostNumLabel.textColor = .black
         self.fixedPostNumLabel.lineBreakMode = .byTruncatingTail
@@ -358,5 +364,15 @@ extension UserProfileViewController {
             sender.isFollowing = !sender.isFollowing
             sender.configureFollowButton()
         }
+    }
+    
+    @objc func followerNumLabelTapped() {
+        let followUserListViewController = FollowUserListViewController(userInfoViewModel: self.userInfoViewModel, selectedSegmentIdx: 0)
+        self.navigationController?.pushViewController(followUserListViewController, animated: false)
+    }
+    
+    @objc func followingNumLabelTapped() {
+        let followUserListViewController = FollowUserListViewController(userInfoViewModel: self.userInfoViewModel, selectedSegmentIdx: 1)
+        self.navigationController?.pushViewController(followUserListViewController, animated: false)
     }
 }

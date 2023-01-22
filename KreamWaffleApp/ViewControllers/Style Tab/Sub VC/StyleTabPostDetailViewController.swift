@@ -267,7 +267,7 @@ extension StyleTabPostDetailViewController { //button 관련 메서드들.
     }
     
     @objc func numLikesLabelTapped() {
-        self.navigationController?.pushViewController(LikedUsersViewController(userInfoViewModel: self.userInfoViewModel), animated: true)
+        self.navigationController?.pushViewController(LikedUserListViewController(userInfoViewModel: self.userInfoViewModel), animated: true)
     }
 
     @objc func idLabelTapped() {

@@ -17,7 +17,7 @@
 		5C6FBD452976A1ED00B64FF0 /* StyleDetailUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD442976A1ED00B64FF0 /* StyleDetailUsecase.swift */; };
 		5C6FBD4729796DB300B64FF0 /* NestedProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */; };
 		5C6FBD492979737C00B64FF0 /* UserListCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD482979737C00B64FF0 /* UserListCollectionViewVC.swift */; };
-		5C6FBD4B2979739100B64FF0 /* LikedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD4A2979739100B64FF0 /* LikedUsersViewController.swift */; };
+		5C6FBD4B2979739100B64FF0 /* LikedUserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD4A2979739100B64FF0 /* LikedUserListViewController.swift */; };
 		5C6FBD4F2979744E00B64FF0 /* UserListUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD4E2979744E00B64FF0 /* UserListUsecase.swift */; };
 		5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD502979745D00B64FF0 /* UserListRepositoryProtocol.swift */; };
 		5C6FBD542979774100B64FF0 /* LikedUserListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD532979774100B64FF0 /* LikedUserListRepository.swift */; };
@@ -35,6 +35,7 @@
 		5C6FBD77297BCCF500B64FF0 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD76297BCCF500B64FF0 /* UserProfileViewController.swift */; };
 		5C6FBD79297C263200B64FF0 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD78297C263200B64FF0 /* Profile.swift */; };
 		5C6FBD7B297D132900B64FF0 /* UIViewController+pushUserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD7A297D132800B64FF0 /* UIViewController+pushUserProfileVC.swift */; };
+		5C6FBD7D297D965A00B64FF0 /* FollowUserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD7C297D965A00B64FF0 /* FollowUserListViewController.swift */; };
 		5CB810DB29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DA29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift */; };
 		5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */; };
 		5CB810DF29683D4E0021FDD6 /* StyleDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810DE29683D4E0021FDD6 /* StyleDetailRepository.swift */; };
@@ -122,7 +123,7 @@
 		5C6FBD442976A1ED00B64FF0 /* StyleDetailUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleDetailUsecase.swift; sourceTree = "<group>"; };
 		5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedProfile.swift; sourceTree = "<group>"; };
 		5C6FBD482979737C00B64FF0 /* UserListCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListCollectionViewVC.swift; sourceTree = "<group>"; };
-		5C6FBD4A2979739100B64FF0 /* LikedUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedUsersViewController.swift; sourceTree = "<group>"; };
+		5C6FBD4A2979739100B64FF0 /* LikedUserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedUserListViewController.swift; sourceTree = "<group>"; };
 		5C6FBD4E2979744E00B64FF0 /* UserListUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListUsecase.swift; sourceTree = "<group>"; };
 		5C6FBD502979745D00B64FF0 /* UserListRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListRepositoryProtocol.swift; sourceTree = "<group>"; };
 		5C6FBD532979774100B64FF0 /* LikedUserListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedUserListRepository.swift; sourceTree = "<group>"; };
@@ -140,6 +141,7 @@
 		5C6FBD76297BCCF500B64FF0 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		5C6FBD78297C263200B64FF0 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		5C6FBD7A297D132800B64FF0 /* UIViewController+pushUserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+pushUserProfileVC.swift"; sourceTree = "<group>"; };
+		5C6FBD7C297D965A00B64FF0 /* FollowUserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowUserListViewController.swift; sourceTree = "<group>"; };
 		5CB810DA29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedCollectionViewVC.swift; sourceTree = "<group>"; };
 		5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleTabPostDetailViewController.swift; sourceTree = "<group>"; };
 		5CB810DE29683D4E0021FDD6 /* StyleDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleDetailRepository.swift; sourceTree = "<group>"; };
@@ -290,8 +292,9 @@
 				5CB810DA29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift */,
 				5CB810DC29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift */,
 				5C6FBD482979737C00B64FF0 /* UserListCollectionViewVC.swift */,
-				5C6FBD4A2979739100B64FF0 /* LikedUsersViewController.swift */,
+				5C6FBD4A2979739100B64FF0 /* LikedUserListViewController.swift */,
 				5C6FBD76297BCCF500B64FF0 /* UserProfileViewController.swift */,
+				5C6FBD7C297D965A00B64FF0 /* FollowUserListViewController.swift */,
 			);
 			path = "Sub VC";
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 				5C6FBD4729796DB300B64FF0 /* NestedProfile.swift in Sources */,
 				5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */,
 				5C6FBD5A2979826500B64FF0 /* UserListCollectionViewCell.swift in Sources */,
+				5C6FBD7D297D965A00B64FF0 /* FollowUserListViewController.swift in Sources */,
 				5C6FBD67297A60C200B64FF0 /* UserListViewModel.swift in Sources */,
 				5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */,
 				94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */,
@@ -754,7 +758,7 @@
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
 				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
-				5C6FBD4B2979739100B64FF0 /* LikedUsersViewController.swift in Sources */,
+				5C6FBD4B2979739100B64FF0 /* LikedUserListViewController.swift in Sources */,
 				5C6FBD69297A612C00B64FF0 /* FilterCollectionViewCell.swift in Sources */,
 				944A1142295D0DC000F8CDB7 /* Product.swift in Sources */,
 				655A94CF296C73FB00F0184B /* MyProfileViewController.swift in Sources */,
