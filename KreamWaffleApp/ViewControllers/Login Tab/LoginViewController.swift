@@ -115,22 +115,22 @@ class LoginViewController: UIViewController {
         self.viewModel.bindTextfield(textfield: self.emailfield!.textfield, LoginTextfieldType: .Email)
         self.viewModel.bindTextfield(textfield: self.passwordfield!.textfield, LoginTextfieldType: .Password)
         
-        self.viewModel.isValid
+        self.viewModel.isValid()
             .bind(to: self.loginButton.rx.isEnabled)
             .disposed(by: bag)
-        self.viewModel.isValid
+        self.viewModel.isValid()
             .map { $0 ? UIColor.black: UIColor.lightGray}
             .bind(to: self.loginButton.rx.backgroundColor)
             .disposed(by: bag)
-        self.viewModel.isValid
+        self.viewModel.isValid()
             .map { $0 ? UIColor.white: UIColor.darkGray}
             .bind(to: self.loginButton.rx.tintColor)
             .disposed(by: bag)
     }
     
     @objc func didTapLogin(){
-        self.viewModel.loginUserWithCustom(email: (self.emailfield?.textfield.text)!, password: (self.passwordfield?.textfield.text)!)
-        //error도 observe 해서 눌렀는데 에러면 에러 화면 뜨게 끔하기.
+        self.viewModel.loginUserWithCustom()
+        //TODO: error도 observe 해서 눌렀는데 에러면 에러 화면 뜨게 끔하기.
     }
     
     private func loginFailure(failureMessage: String){

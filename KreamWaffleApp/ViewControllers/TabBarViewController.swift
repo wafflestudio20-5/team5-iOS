@@ -37,7 +37,7 @@ class TabBarViewController: UITabBarController {
     
     @objc func changeIndex() {
         if let tabBarController = self.navigationController?.tabBarController  {
-            tabBarController.selectedIndex = 0
+            tabBarController.selectedIndex = 1
         }
     }
     

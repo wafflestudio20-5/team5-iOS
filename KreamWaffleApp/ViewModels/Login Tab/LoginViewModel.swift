@@ -14,11 +14,13 @@ enum LoginTextfieldType{
     case Password
 }
 
-///only used in login, signup VCs, shares usecase with user info view model
+///only used in Login VC. Returns if the textfields are valid, and sends request / gets info.
 class LoginViewModel {
     
     let UserUseCase : UserUsecase
-    let LoginUseCase : LoginUsecase
+    
+    let emailTextRelay = BehaviorRelay<String>(value: "")
+    let pwTextRelay = BehaviorRelay<String>(value: "")
     
     let bag = DisposeBag()
     
@@ -35,10 +37,9 @@ class LoginViewModel {
         }
     }
     
-    //bind this value to login button.
-    var isValid : Observable<Bool>{
-        get {
-            self.LoginUseCase.isValid()
+    func isValid() -> Observable<Bool> {
+        return Observable.combineLatest(emailTextRelay, pwTextRelay).map { email, password in
+            return self.isValidEmail(input: email) && self.isValidPassword(input: password)
         }
     }
     
@@ -47,27 +48,40 @@ class LoginViewModel {
         case .Email:
             textfield.rx.text
                 .orEmpty
-                .bind(to: LoginUseCase.emailTextRelay)
+                .bind(to: self.emailTextRelay)
                 .disposed(by: bag)
             
         case .Password:
             textfield.rx.text
                 .orEmpty
-                .bind(to: LoginUseCase.pwTextRelay)
+                .bind(to: self.pwTextRelay)
                 .disposed(by: bag)
         }
     }
     
-    init (UserUseCase : UserUsecase, LoginUseCase : LoginUsecase){
+    public func isValidPassword(input: String)->Bool{
+        let passwordRegex = "^(?=.*[a-z])(?=.*[$@$#!%*?&]).{8,}$"
+        let passwordPred = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
+        return passwordPred.evaluate(with: input)
+    }
+    
+    public func isValidEmail(input: String) -> Bool{
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: input)
+    }
+    
+    init (UserUseCase : UserUsecase){
         self.UserUseCase = UserUseCase
-        self.LoginUseCase = LoginUseCase
     }
     
     func loginUserWithSocial(token: String, socialType: Social){
         self.UserUseCase.socialLogin(socialToken: token, socialType: socialType)
     }
     
-    func loginUserWithCustom(email: String, password: String){
+    func loginUserWithCustom(){
+        let email = self.emailTextRelay.value
+        let password = self.pwTextRelay.value
         self.UserUseCase.customLogin(email: email, password: password)
     }
     

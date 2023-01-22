@@ -25,13 +25,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let homeViewModel = HomeViewModel()
         let loginRepository = LoginRepository()
         let UserUsecase = UserUsecase(dataRepository: loginRepository)
-        let LoginUsecase = LoginUsecase(repository: loginRepository)
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
         
         let styleViewModel = StyleFeedViewModel(usecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest"))
         let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
-        let loginViewModel = LoginViewModel(UserUseCase: UserUsecase, LoginUseCase: LoginUsecase)
+        let loginViewModel = LoginViewModel(UserUseCase: UserUsecase)
         loginViewModel.getSavedUser()
         
         let rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleViewModel: styleViewModel, userViewModel: userViewModel, loginViewModel: loginViewModel)

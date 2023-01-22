@@ -58,7 +58,6 @@
 		65653F43295B8217002F250B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F42295B8217002F250B /* Extensions.swift */; };
 		656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */; };
 		656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */; };
-		65781D012976C3D0000FC684 /* LoginUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65781D002976C3D0000FC684 /* LoginUsecase.swift */; };
 		65781D032976C415000FC684 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65781D022976C415000FC684 /* LoginViewModel.swift */; };
 		6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E22960B5E6007C741F /* SignUpViewController.swift */; };
 		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
@@ -161,7 +160,6 @@
 		65653F42295B8217002F250B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionViewController.swift; sourceTree = "<group>"; };
 		656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
-		65781D002976C3D0000FC684 /* LoginUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUsecase.swift; sourceTree = "<group>"; };
 		65781D022976C415000FC684 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6583C9E22960B5E6007C741F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
@@ -502,7 +500,6 @@
 				6527350C2968185C00C859B8 /* UserUsecase.swift */,
 				5C6FBD442976A1ED00B64FF0 /* StyleDetailUsecase.swift */,
 				5C6FBD4E2979744E00B64FF0 /* UserListUsecase.swift */,
-				65781D002976C3D0000FC684 /* LoginUsecase.swift */,
 			);
 			path = Usecases;
 			sourceTree = "<group>";
@@ -707,7 +704,6 @@
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
 				65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */,
-				65781D012976C3D0000FC684 /* LoginUsecase.swift in Sources */,
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */,

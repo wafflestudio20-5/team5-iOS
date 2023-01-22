@@ -41,10 +41,13 @@ class SignUpViewModel{
     }
     
     public func didTapSignup(){
-        Observable.combineLatest(emailTextRelay, pwTextRelay, shoeSizeRelay).map { email, password, size in
-            self.usecase.signUp(email: email, password: password, shoeSize: size)
-        }
+        let email = self.emailTextRelay.value
+        let password = self.pwTextRelay.value
+        let size = self.shoeSizeRelay.value
+        self.usecase.signUp(email: email, password: password, shoeSize: size)
+        //TODO: 이거를 바꾸어야함.
     }
+
 }
 
 
