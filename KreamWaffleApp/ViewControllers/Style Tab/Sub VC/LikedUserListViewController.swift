@@ -8,13 +8,16 @@
 import Foundation
 import UIKit
 
-final class LikedUsersViewController: UIViewController {
-    let userListCollectionViewVC: UserListCollectionViewVC
+final class LikedUserListViewController: UIViewController {
+    private let userListCollectionViewVC: UserListCollectionViewVC
+    private let userInfoViewModel: UserInfoViewModel
     
-    init() {
+    init(userInfoViewModel: UserInfoViewModel) {
+        self.userInfoViewModel = userInfoViewModel
+        
         let repository = LikedUserListRepository()
         let usecase = UserListUsecase(userListRepository: repository)
-        self.userListCollectionViewVC = UserListCollectionViewVC(userListViewModel: UserListViewModel(userListUsecase: usecase))
+        self.userListCollectionViewVC = UserListCollectionViewVC(userListViewModel: UserListViewModel(userListUsecase: usecase), userInfoViewModel: self.userInfoViewModel)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -31,6 +34,7 @@ final class LikedUsersViewController: UIViewController {
     
     func setUpNavigationBar() {
         self.navigationItem.title = "공감"
+        self.setUpBackButton()
     }
     
     func setUpChildVC() {

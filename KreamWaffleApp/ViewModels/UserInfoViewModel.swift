@@ -16,7 +16,7 @@ enum Social {
 ///used in all other VCs, shares use case with login view model
 final class UserInfoViewModel {
     
-    private let UserUseCase : UserUsecase
+    public let UserUseCase : UserUsecase
     
     var User : User? {
             get {
@@ -32,5 +32,17 @@ final class UserInfoViewModel {
     
     init (UserUseCase : UserUsecase){
         self.UserUseCase = UserUseCase
+    }
+    
+    func isLoggedIn() -> Bool {
+        return self.UserUseCase.loggedIn
+    }
+    
+    func isFollowing(user_id: Int) -> Bool {
+        return self.UserUseCase.isFollowing(user_id: user_id)
+    }
+    
+    func requestFollow(user_id: Int) {
+        self.UserUseCase.requestFollow(user_id: user_id)
     }
 }

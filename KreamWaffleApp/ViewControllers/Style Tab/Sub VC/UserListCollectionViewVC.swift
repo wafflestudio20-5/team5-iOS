@@ -12,11 +12,15 @@ import RxCocoa
 
 final class UserListCollectionViewVC: UIViewController {
     let userListViewModel: UserListViewModel
+    let userInfoViewModel: UserInfoViewModel
+    
     let collectionView: UICollectionView
     private let disposeBag = DisposeBag()
     
-    init(userListViewModel: UserListViewModel) {
+    init(userListViewModel: UserListViewModel, userInfoViewModel: UserInfoViewModel) {
         self.userListViewModel = userListViewModel
+        self.userInfoViewModel = userInfoViewModel
+        
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UserListCollectionViewLayout())
         super.init(nibName: nil, bundle: nil)
         collectionView.delegate = self
@@ -30,6 +34,10 @@ final class UserListCollectionViewVC: UIViewController {
         setUpCollectionView()
         bindCollectionView()
         requestInitialData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        refreshDataSource()
     }
     
     func setUpCollectionView() {
@@ -49,13 +57,20 @@ final class UserListCollectionViewVC: UIViewController {
 
         userListViewModel.userListDataSource
             .bind(to: collectionView.rx.items(cellIdentifier: "UserListCollectionViewCell", cellType: UserListCollectionViewCell.self)) { index, item, cell in
-                cell.configure(with: item)
+                cell.configure(with: item, isFollowing: self.userInfoViewModel.isFollowing(user_id: item.user_id))
+                cell.followButton.tag = item.user_id
+                cell.followButton.addTarget(self, action: #selector(self.requestFollow(sender:)), for: .touchUpInside)
+
             }
             .disposed(by: disposeBag)
     }
     
     func requestInitialData() {
         userListViewModel.requestUserListData(page: 1)
+    }
+    
+    func refreshDataSource() {
+        self.userListViewModel.requestUserListData(page: 1)
     }
 }
 
@@ -65,14 +80,27 @@ extension UserListCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let cell = collectionView.cellForItem(at: indexPath) as! MovieCollectionViewCell
-//
-//        if let image = cell.posterImage.image {
-//            let newViewModel = DetailVM(movieUsecase: viewModel.movieUsecase, favoriteMovieUsecase: viewModel.favoriteMovieUsecase)
-//            newViewModel.selectPopularMovieByIndex(index: indexPath.row)
-//
-//            let movieInfoVC = MovieInfoVC(vm: newViewModel, image: image)
-//            self.navigationController?.pushViewController(movieInfoVC, animated: true)
+        let cell = collectionView.cellForItem(at: indexPath) as! UserListCollectionViewCell
+        
+        let user_id = cell.user_id!
+        self.pushUserProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
     }
+    
+    @objc func requestFollow(sender: FollowButton) {
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            let loginRepository = LoginRepository()
+            let LoginUsecase = LoginUsecase(repository: loginRepository)
+            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoViewModel.UserUseCase, LoginUseCase: LoginUsecase)
+
+            let loginScreen = LoginViewController(viewModel: loginViewModel)
+            loginScreen.modalPresentationStyle = .fullScreen
+            self.present(loginScreen, animated: false)
+        } else {
+            self.userInfoViewModel.requestFollow(user_id: sender.tag)
+            sender.isFollowing = !sender.isFollowing
+            sender.configureFollowButton()
+        }
+    }
+    
 }
 
