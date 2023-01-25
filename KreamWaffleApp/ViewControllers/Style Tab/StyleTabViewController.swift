@@ -11,13 +11,15 @@ import RxCocoa
 import CHTCollectionViewWaterfallLayout
 
 class StyleTabViewController: UIViewController {
-    private let viewModel: StyleFeedViewModel
+    private let styleFeedViewModel: StyleFeedViewModel
+    private let userInfoViewModel: UserInfoViewModel
     private let disposeBag = DisposeBag()
-    private var styleTabCollectionViewVC: StyleTabCollectionViewVC
+    private var styleFeedCollectionViewVC: StyleFeedCollectionViewVC
     
-    init(viewModel: StyleFeedViewModel) {
-        self.viewModel = viewModel
-        styleTabCollectionViewVC = StyleTabCollectionViewVC(viewModel: self.viewModel)
+    init(styleFeedViewModel: StyleFeedViewModel, userInfoViewModel: UserInfoViewModel) {
+        self.styleFeedViewModel = styleFeedViewModel
+        self.userInfoViewModel = userInfoViewModel
+        styleFeedCollectionViewVC = StyleFeedCollectionViewVC(styleFeedViewModel: self.styleFeedViewModel, userInfoViewModel: self.userInfoViewModel)
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -57,16 +59,16 @@ class StyleTabViewController: UIViewController {
     }
     
     func setUpChildVC() {
-        self.view.addSubview(styleTabCollectionViewVC.view)
-        self.addChild(styleTabCollectionViewVC)
-        styleTabCollectionViewVC.didMove(toParent: self)
+        self.view.addSubview(styleFeedCollectionViewVC.view)
+        self.addChild(styleFeedCollectionViewVC)
+        styleFeedCollectionViewVC.didMove(toParent: self)
         
-        styleTabCollectionViewVC.view.translatesAutoresizingMaskIntoConstraints = false
+        styleFeedCollectionViewVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.styleTabCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            self.styleTabCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            self.styleTabCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            self.styleTabCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            self.styleFeedCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            self.styleFeedCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            self.styleFeedCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            self.styleFeedCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])
     }
     

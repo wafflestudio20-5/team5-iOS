@@ -15,7 +15,8 @@ final class StyleTabPostDetailViewController: UIViewController {
     private let spacing: CGFloat = 10
     private let likeAndCommentButtonSideLength: CGFloat = 50
     
-    private let viewModel: StyleTabDetailViewModel
+    private let styleTabDetailViewModel: StyleTabDetailViewModel
+    private let userInfoViewModel: UserInfoViewModel
     
     //main views
     private let scrollView = UIScrollView()
@@ -34,8 +35,10 @@ final class StyleTabPostDetailViewController: UIViewController {
     
     private var imageHeight = CGFloat()
     
-    init(viewModel: StyleTabDetailViewModel) {
-        self.viewModel = viewModel
+    init(styleTabDetailViewModel: StyleTabDetailViewModel, userInfoViewModel: UserInfoViewModel) {
+        self.styleTabDetailViewModel = styleTabDetailViewModel
+        self.userInfoViewModel = userInfoViewModel
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,7 +47,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
+        imageHeight = CGFloat(styleTabDetailViewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
         self.view.backgroundColor = .white
         addAllSubviews()
         setUpNavigationBar()
@@ -66,7 +69,8 @@ final class StyleTabPostDetailViewController: UIViewController {
     func setUpNavigationBar() {
         navigationController?.navigationBar.tintColor = .lightGray
         self.setUpBackButton()
-        navigationItem.title = "최신"
+        self.navigationItem.backButtonTitle = ""
+//        navigationItem.title = "최신"
     }
     
     func setUpScrollView() {
@@ -98,9 +102,13 @@ final class StyleTabPostDetailViewController: UIViewController {
         idLabel.font = UIFont.boldSystemFont(ofSize: 14)
         idLabel.textColor = .black
         idLabel.lineBreakMode = .byTruncatingTail
+        idLabel.adjustsFontSizeToFitWidth = false
         idLabel.numberOfLines = 1
         idLabel.textAlignment = .left
-        idLabel.adjustsFontSizeToFitWidth = false
+        
+        let idLabelTap = UITapGestureRecognizer(target: self, action: #selector(self.idLabelTapped))
+        self.idLabel.isUserInteractionEnabled = true
+        self.idLabel.addGestureRecognizer(idLabelTap)
         
         idLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -119,9 +127,9 @@ final class StyleTabPostDetailViewController: UIViewController {
         numLikesLabel.adjustsFontSizeToFitWidth = false
         numLikesLabel.numberOfLines = 1
         
-        let labelTap = UITapGestureRecognizer(target: self, action: #selector(self.numLikesLabelTapped))
+        let numLikesLabelTap = UITapGestureRecognizer(target: self, action: #selector(self.numLikesLabelTapped))
         self.numLikesLabel.isUserInteractionEnabled = true
-        self.numLikesLabel.addGestureRecognizer(labelTap)
+        self.numLikesLabel.addGestureRecognizer(numLikesLabelTap)
         
         numLikesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -221,7 +229,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func configureSlideShow() {
-        if (viewModel.getImageSources().count > 1) {
+        if (styleTabDetailViewModel.getImageSources().count > 1) {
             self.slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
             self.slideshow.contentScaleMode = UIViewContentMode.scaleAspectFit
             self.slideshow.circular = false
@@ -234,7 +242,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpSlideShowData() {
-        let imageSources = self.viewModel.getImageSources().map {
+        let imageSources = self.styleTabDetailViewModel.getImageSources().map {
             KingfisherSource(urlString: $0)!
         }
         self.slideshow.setImageInputs(imageSources)
@@ -244,10 +252,10 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpData() {
-        self.idLabel.text = self.viewModel.getUserId()
-        self.contentLabel.text = self.viewModel.getContent()
+        self.idLabel.text = self.styleTabDetailViewModel.getProfileName()
+        self.contentLabel.text = self.styleTabDetailViewModel.getContent()
         self.contentLabel.sizeToFit()
-        self.numLikesLabel.text = "공감 \(self.viewModel.getNumLikes())개"
+        self.numLikesLabel.text = "공감 \(self.styleTabDetailViewModel.getNumLikes())개"
         self.numLikesLabel.sizeToFit()
     }
 }
@@ -255,11 +263,16 @@ final class StyleTabPostDetailViewController: UIViewController {
 extension StyleTabPostDetailViewController { //button 관련 메서드들.
     @objc func slideShowTapped() {
         let fullScreenController = slideshow.presentFullScreenController(from: self)
-        fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .white, color: nil)
+        fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .medium, color: nil)
     }
     
     @objc func numLikesLabelTapped() {
-        self.navigationController?.pushViewController(LikedUsersViewController(), animated: true)
+        self.navigationController?.pushViewController(LikedUserListViewController(userInfoViewModel: self.userInfoViewModel), animated: true)
+    }
+
+    @objc func idLabelTapped() {
+        let user_id = self.styleTabDetailViewModel.getUserId()
+        self.pushUserProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
     }
     
     @objc func followButtonTapped() {

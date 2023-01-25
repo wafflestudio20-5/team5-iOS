@@ -33,7 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
         
-        let styleViewModel = StyleFeedViewModel(usecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest"))
+        let styleViewModel = StyleFeedViewModel(styleFeedUsecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest", user_id: nil))
         let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
         let loginViewModel = LoginViewModel(UserUseCase: UserUsecase)
         loginViewModel.getSavedUser()
@@ -55,6 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }.disposed(by: bag)
         
+        let rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel)
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
     }

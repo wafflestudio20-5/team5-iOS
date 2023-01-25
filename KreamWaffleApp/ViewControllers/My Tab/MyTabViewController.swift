@@ -38,8 +38,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
     let loginVM: LoginViewModel
     let fixedView = UIView()
     let profileImageView = UIImageView()
-    let nicknameLabel = UILabel()
-    let idLabel = UILabel()
+    let profileNameLabel = UILabel()
+    let userNameLabel = UILabel()
     let profileChangeButton = UIButton()
     let divider = UILabel()
     
@@ -210,38 +210,38 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
     }
     
     func setUpLabelLayout() {
-        self.view.addSubview(self.nicknameLabel)
+        self.view.addSubview(self.profileNameLabel)
 
-        self.nicknameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        self.nicknameLabel.textColor = .black
-        self.nicknameLabel.lineBreakMode = .byTruncatingTail
-        self.nicknameLabel.numberOfLines = 1
-        self.nicknameLabel.textAlignment = .left
-        self.nicknameLabel.adjustsFontSizeToFitWidth = false
+        self.profileNameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        self.profileNameLabel.textColor = .black
+        self.profileNameLabel.lineBreakMode = .byTruncatingTail
+        self.profileNameLabel.numberOfLines = 1
+        self.profileNameLabel.textAlignment = .left
+        self.profileNameLabel.adjustsFontSizeToFitWidth = false
         
-        self.nicknameLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.nicknameLabel.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 20),
-            self.nicknameLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
-            self.nicknameLabel.heightAnchor.constraint(equalToConstant: 20),
-            self.nicknameLabel.centerYAnchor.constraint(equalTo: self.fixedView.centerYAnchor, constant: -40),
+            self.profileNameLabel.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 20),
+            self.profileNameLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
+            self.profileNameLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.profileNameLabel.centerYAnchor.constraint(equalTo: self.fixedView.centerYAnchor, constant: -40),
         ])
         
-        self.view.addSubview(self.idLabel)
+        self.view.addSubview(self.userNameLabel)
 
-        self.idLabel.font = UIFont.boldSystemFont(ofSize: 14)
-        self.idLabel.textColor = .black
-        self.idLabel.lineBreakMode = .byTruncatingTail
-        self.idLabel.numberOfLines = 1
-        self.idLabel.textAlignment = .left
-        self.idLabel.adjustsFontSizeToFitWidth = false
+        self.userNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        self.userNameLabel.textColor = .black
+        self.userNameLabel.lineBreakMode = .byTruncatingTail
+        self.userNameLabel.numberOfLines = 1
+        self.userNameLabel.textAlignment = .left
+        self.userNameLabel.adjustsFontSizeToFitWidth = false
         
-        self.idLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.idLabel.leadingAnchor.constraint(equalTo: self.profileImageView.leadingAnchor),
-            self.idLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
-            self.idLabel.heightAnchor.constraint(equalToConstant: 20),
-            self.idLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 10),
+            self.userNameLabel.leadingAnchor.constraint(equalTo: self.profileImageView.leadingAnchor),
+            self.userNameLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
+            self.userNameLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.userNameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 10),
         ])
     }
     
@@ -258,20 +258,21 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
 
         self.profileChangeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.profileChangeButton.leadingAnchor.constraint(equalTo: self.nicknameLabel.leadingAnchor),
+            self.profileChangeButton.leadingAnchor.constraint(equalTo: self.profileNameLabel.leadingAnchor),
             self.profileChangeButton.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor, constant: -20),
             self.profileChangeButton.heightAnchor.constraint(equalToConstant: 24),
-            self.profileChangeButton.topAnchor.constraint(equalTo: self.nicknameLabel.bottomAnchor, constant: 10),
+            self.profileChangeButton.topAnchor.constraint(equalTo: self.profileNameLabel.bottomAnchor, constant: 10),
         ])
         self.profileChangeButton.addTarget(self, action: #selector(profileChangeButtonTapped), for: .touchUpInside)
     }
     
     func setUpData() {
         // 서버에서 받아온 user data를 뷰에 세팅하는 함수.
+        // 나중에 Rx로 바꿔야함.
         let url = URL(string: self.temporaryUserData.profileImageUrl)
         self.profileImageView.kf.setImage(with: url)
-        self.nicknameLabel.text = temporaryUserData.nickname
-        self.idLabel.text = self.userInfoVM.User?.parsed_email
+        self.profileNameLabel.text = temporaryUserData.nickname
+        self.userNameLabel.text = self.userInfoVM.User?.parsed_email
     }
     
     func setupDivider(){
@@ -283,6 +284,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
             self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.divider.heightAnchor.constraint(equalToConstant: 15),
             self.divider.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: self.view.frame.height/64),
+
         ])
     }
     

@@ -8,9 +8,35 @@
 import Foundation
 
 final class StyleDetailUsecase {
-    let repository: StyleDetailRepository
+    private let repository: StyleDetailRepository
+    private let stylePost: StylePost
     
-    init(repository: StyleDetailRepository) {
+    init(repository: StyleDetailRepository, stylePost: StylePost) {
         self.repository = repository
+        self.stylePost = stylePost
+    }
+    
+    func getUserId() -> Int {
+        return self.stylePost.created_by.user_id
+    }
+    
+    func getImageSources() -> [String] {
+        return self.stylePost.images
+    }
+    
+    func getProfileName() -> String {
+        return self.stylePost.created_by.profile_name
+    }
+    
+    func getNumLikes() -> Int {
+        return self.stylePost.num_likes
+    }
+    
+    func getContent() -> String {
+        return self.stylePost.content
+    }
+    
+    func getThumbnailImageRatio() -> Float {
+        return self.stylePost.image_ratio
     }
 }

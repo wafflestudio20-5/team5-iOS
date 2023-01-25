@@ -11,27 +11,27 @@ import RxSwift
 import RxCocoa
 
 final class StyleFeedViewModel {
-    private let usecase: StyleFeedUsecase
+    private let styleFeedUsecase: StyleFeedUsecase
     private let disposeBag = DisposeBag()
     
     var stylePostDataSource: Observable<[StylePost]> {
-        return usecase.stylePostRelay.asObservable()
+        return styleFeedUsecase.stylePostRelay.asObservable()
     }
         
-    init(usecase: StyleFeedUsecase) {
-        self.usecase = usecase
+    init(styleFeedUsecase: StyleFeedUsecase) {
+        self.styleFeedUsecase = styleFeedUsecase
     }
     
     func requestStylePostData(page: Int) {
-        self.usecase.requestStylePostData(page: page)
+        self.styleFeedUsecase.requestStylePostData(page: page)
     }
     
     func getStylePostAt(at index: Int) -> StylePost {
-        return self.usecase.stylePostList[index]
+        return self.styleFeedUsecase.stylePostList[index]
     }
     
     func getStylePostListCount() -> Int {
-        return self.usecase.stylePostList.count
+        return self.styleFeedUsecase.stylePostList.count
     }
 }
 

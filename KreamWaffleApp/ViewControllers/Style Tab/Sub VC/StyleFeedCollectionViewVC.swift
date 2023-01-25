@@ -10,13 +10,14 @@ import UIKit
 import CHTCollectionViewWaterfallLayout
 import RxSwift
 
-final class StyleTabCollectionViewVC : UIViewController{
+final class StyleFeedCollectionViewVC : UIViewController{
     /*  이 view model을 뭘 끼우느냐에 따라서
      *  1. STYLE탭 메인에서 보여주는 collection view
      *  2. 사용자별 프로필 페이지에서 피드를 보여주는 collection view
      */
     private let disposeBag = DisposeBag()
-    private let viewModel: StyleFeedViewModel
+    private let styleFeedViewModel: StyleFeedViewModel
+    private let userInfoViewModel: UserInfoViewModel
     
     private let collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
@@ -30,9 +31,10 @@ final class StyleTabCollectionViewVC : UIViewController{
         return collectionView
     }()
     
-    init(viewModel: StyleFeedViewModel) {
-        self.viewModel = viewModel
-
+    init(styleFeedViewModel: StyleFeedViewModel, userInfoViewModel: UserInfoViewModel) {
+        self.styleFeedViewModel = styleFeedViewModel
+        self.userInfoViewModel = userInfoViewModel
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -64,7 +66,7 @@ final class StyleTabCollectionViewVC : UIViewController{
     }
     
     func bindCollectionView() {
-        self.viewModel.stylePostDataSource
+        self.styleFeedViewModel.stylePostDataSource
                     .subscribe { [weak self] event in
                         switch event {
                         case .next:
@@ -79,18 +81,18 @@ final class StyleTabCollectionViewVC : UIViewController{
     }
     
     func requestInitialData() {
-        self.viewModel.requestStylePostData(page: 1)
+        self.styleFeedViewModel.requestStylePostData(page: 1)
     }
     
     func requestStylePostData(page: Int) {
-        self.viewModel.requestStylePostData(page: page)
+        self.styleFeedViewModel.requestStylePostData(page: page)
     }
 }
 
-extension StyleTabCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
+extension StyleFeedCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let targetImageRatio = CGFloat(viewModel.getStylePostAt(at: indexPath.row).thumbnailImageRatio)
+        let targetImageRatio = CGFloat(styleFeedViewModel.getStylePostAt(at: indexPath.row).image_ratio)
         
         let cellWidth: CGFloat = (view.bounds.width - 20)/2 //셀 가로 넓이
         let labelHeight: CGFloat = 20 // cell에서 label하나의 높이
@@ -99,19 +101,19 @@ extension StyleTabCollectionViewVC: CHTCollectionViewDelegateWaterfallLayout {
     }
 }
 
-extension StyleTabCollectionViewVC: UICollectionViewDataSource {
+extension StyleFeedCollectionViewVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StyleFeedCollectionViewCell.identifier, for: indexPath) as? StyleFeedCollectionViewCell else {
             return StyleFeedCollectionViewCell()
         }
         
-        cell.configure(with: self.viewModel.getStylePostAt(at: indexPath.row))
+        cell.configure(with: self.styleFeedViewModel.getStylePostAt(at: indexPath.row))
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.viewModel.getStylePostListCount()
+        return self.styleFeedViewModel.getStylePostListCount()
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -119,7 +121,7 @@ extension StyleTabCollectionViewVC: UICollectionViewDataSource {
     }
 }
 
-extension StyleTabCollectionViewVC: UIScrollViewDelegate  {
+extension StyleFeedCollectionViewVC: UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        let position = scrollView.contentOffset.y
 //        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
@@ -128,13 +130,13 @@ extension StyleTabCollectionViewVC: UIScrollViewDelegate  {
     }
 }
 
-extension StyleTabCollectionViewVC: UICollectionViewDelegate {
+extension StyleFeedCollectionViewVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailViewRepository = StyleDetailRepository()
-        let detailUsecase = StyleDetailUsecase(repository: detailViewRepository)
+        let detailUsecase = StyleDetailUsecase(repository: detailViewRepository, stylePost: self.styleFeedViewModel.getStylePostAt(at: indexPath.row))
         
-        let detailViewModel = StyleTabDetailViewModel(usecase: detailUsecase, stylePost: self.viewModel.getStylePostAt(at: indexPath.row))
-        let newDetailViewController = StyleTabPostDetailViewController(viewModel: detailViewModel)
+        let detailViewModel = StyleTabDetailViewModel(styleDetailUsecase: detailUsecase)
+        let newDetailViewController = StyleTabPostDetailViewController(styleTabDetailViewModel: detailViewModel, userInfoViewModel: self.userInfoViewModel)
         self.navigationController?.pushViewController(newDetailViewController, animated: true)
     }
 }

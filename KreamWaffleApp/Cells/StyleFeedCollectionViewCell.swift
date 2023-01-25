@@ -41,11 +41,11 @@ final class StyleFeedCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with stylePost: StylePost) {
-        self.idLabel.text = stylePost.userId
+        self.idLabel.text = stylePost.created_by.profile_name
         self.contentLabel.text = stylePost.content
-        self.numLikesLabel.text = "😊 \(stylePost.numLikes)"
+        self.numLikesLabel.text = "😊 \(stylePost.num_likes)"
         
-        let urlString = stylePost.imageSources[0]
+        let urlString = stylePost.images[0]
         guard let url = URL.init(string: urlString) else {
                 return
             }
