@@ -27,4 +27,9 @@ final class AddPostViewModel{
     func addPost(){
         //사진이랑 텍스트 보냄. 
     }
+    
+    func removePhoto(){
+        let count = postCountRelay.value
+        self.postCountRelay.accept((count-1))
+    }
 }

@@ -27,10 +27,8 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
     
     lazy var textView: UITextView = {
         let view = UITextView()
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.7).cgColor
-        view.textContainerInset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
-        view.font = .systemFont(ofSize: 18)
+        view.textContainerInset = UIEdgeInsets(top: 0, left: 10.0, bottom: 10, right: 10.0)
+        view.font = .systemFont(ofSize: 15)
         view.text = textViewPlaceHolder
         view.textColor = .lightGray
         view.delegate = self
@@ -42,14 +40,15 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setUpBackButton()
         self.view.backgroundColor = .white
         setupNavigationBar()
         bind()
         addSubviews()
         configureImageCollectionView()
         configureTextfield()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
-        view.addGestureRecognizer(tapGesture)
+        //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
+       //view.addGestureRecognizer(tapGesture)
     }
     
     @objc
@@ -102,6 +101,7 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
             .bind(to: self.addButton.rx.tintColor)
             .disposed(by: bag)
         
+    
         
         //binding collection view
         imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -113,23 +113,26 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
             .observe(on: MainScheduler.instance)
             .bind(to: imageCollectionView.rx.items(cellIdentifier: "PostPhotoCollectionViewCell", cellType: PostPhotoCollectionViewCell.self))
         { index, image, cell in
-            cell.setImage(image)
+            cell.setImage(image: image, viewModel: self.viewModel!)
             cell.layer.cornerRadius = 5
         }
         .disposed(by: bag)
+        
+        
     }
     
     private func configureImageCollectionView(){
         self.layout.scrollDirection = .horizontal
+        //self.layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         self.imageCollectionView.setCollectionViewLayout(layout, animated: true)
         self.imageCollectionView.showsHorizontalScrollIndicator = false
         self.imageCollectionView.backgroundColor = .clear
         self.imageCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        self.imageCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 90).isActive = true
-        self.imageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10).isActive = true
+        self.imageCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.imageCollectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         self.imageCollectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10).isActive = true
-        self.imageCollectionView.heightAnchor.constraint(equalToConstant: 90).isActive = true
-        self.imageCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 15)
+        self.imageCollectionView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        self.imageCollectionView.contentInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     }
     
     override func viewDidLayoutSubviews() {
@@ -141,8 +144,29 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
         self.textView.translatesAutoresizingMaskIntoConstraints = false
         self.textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         self.textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
-        self.textView.topAnchor.constraint(equalTo: self.imageCollectionView.bottomAnchor, constant: 10).isActive = true
-        self.textView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        self.textView.topAnchor.constraint(equalTo: self.imageCollectionView.bottomAnchor, constant: 20).isActive = true
+        self.textView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    }
+    
+    /*
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostPhotoCollectionViewCell", for: indexPath) as? PostPhotoCollectionViewCell else { return UICollectionViewCell() }
+        cell.deleteButton.tag = indexPath.row
+        cell.deleteButton.addTarget(self, action: #selector(deleteUser(sender:)), for: .touchUpInside)
+        return cell
+    }
+
+    @objc func deleteUser(sender:UIButton) {
+        print("[Log] NewPostVC: delete image")
+        let i = sender.tag
+        self.selectedImages.remove(at: i)
+        self.imageCollectionView.reloadData()
+    }*/
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.height
+        let cellWidth = (width - 30) / 3
+        return CGSize(width: 70, height: 70)
     }
 }
 

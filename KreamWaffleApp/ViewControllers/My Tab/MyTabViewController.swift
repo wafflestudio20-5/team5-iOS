@@ -8,6 +8,10 @@ import UIKit
 import BetterSegmentedControl
 import Kingfisher
 import RxSwift
+import AVFoundation
+import AVKit
+import Photos
+import YPImagePicker
 
 struct TemporaryUserData {
     let profileImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/440px-Waffles_with_Strawberries.jpg"
@@ -15,7 +19,18 @@ struct TemporaryUserData {
     let nickname = "크림맛와플"
 }
 
-class MyTabViewController: UIViewController, UITabBarControllerDelegate {
+class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImagePickerDelegate {
+    
+    
+    func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
+        //
+    }
+    
+    func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
+        return true
+    }
+    
+    var selectedItems = [YPMediaItem]()
     
     let bag = DisposeBag()
     
@@ -80,17 +95,61 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
                                            
     @objc func cameraButtonTapped(){
-        //TODO: customize 할 필요 있음.
-        let sample_1 = UIImage(named: "Kream") ?? UIImage()
-        let sample_2 = UIImage(named: "Kream") ?? UIImage()
-        let images = [sample_1, sample_2]
-        let newPostVM = AddPostViewModel()
-        let photoPickerVC = NewPostViewController(selectedImages: images, viewModel: newPostVM)
-        self.navigationController?.pushViewController(photoPickerVC, animated: true)
+        
+        var config = YPImagePickerConfiguration()
+        config.library.mediaType = .photoAndVideo
+        config.library.itemOverlayType = .grid
+        config.shouldSaveNewPicturesToAlbum = false
+        config.startOnScreen = .library
+        config.screens = [.library, .photo]
+        config.library.minWidthForItem = UIScreen.main.bounds.width * 0.8
+        config.video.libraryTimeLimit = 500.0
+        config.showsCrop = .rectangle(ratio: (16/9))
+        config.wordings.libraryTitle = "최근"
+        config.hidesStatusBar = false
+        config.hidesBottomBar = false
+        config.maxCameraZoomFactor = 2.0
+        config.library.maxNumberOfItems = 5
+        config.gallery.hidesRemoveButton = false
+        config.library.preselectedItems = selectedItems
+
+        //config.fonts.menuItemFont = UIFont.systemFont(ofSize: 22.0, weight: .semibold)
+        //config.fonts.pickerTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .black)
+        //config.fonts.rightBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .bold)
+        //config.fonts.navigationBarTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
+        //config.fonts.leftBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
+        let picker = YPImagePicker(configuration: config)
+
+        picker.imagePickerDelegate = self
+        picker.didFinishPicking { [weak picker] items, cancelled in
+
+            if cancelled {
+                print("Picker was canceled")
+                picker?.dismiss(animated: true, completion: nil)
+                return
+            }
+            _ = items.map { print("🧀 \($0)") }
+
+            self.selectedItems = items
+            if let firstItem = items.first {
+                switch firstItem {
+                case .photo(let photo):
+                    let sample_1 = photo.image.resize(targetSize:CGSize(width: 60, height: 60))
+                    let images = [sample_1]
+                    let newPostVM = AddPostViewModel()
+                    let postVC = NewPostViewController(selectedImages: images, viewModel: newPostVM)
+                    postVC.hidesBottomBarWhenPushed = true
+                    picker?.pushViewController(postVC, animated: true)
+                    //self.navigationController?.pushViewController(photoPickerVC, animated: true)
+                    
+                case .video(let video):
+                    print("Error: There shouldn't be video?")
+                }
+            }
         }
+    present(picker, animated: true, completion: nil)
+    }
                                            
-            
-    
     func setUpSegmentedControl() {
         let segmentedControl = BetterSegmentedControl(
             frame: CGRect(x: 0, y: 0, width: view.bounds.width/2 - 32.0, height: 30),

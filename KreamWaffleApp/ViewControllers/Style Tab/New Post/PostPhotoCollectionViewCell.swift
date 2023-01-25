@@ -10,6 +10,9 @@ import RxCocoa
 import RxSwift
 
 class PostPhotoCollectionViewCell: UICollectionViewCell {
+    
+    var viewModel : AddPostViewModel?
+    
     let imageView = UIImageView()
     let deleteButton = UIButton()
     
@@ -20,8 +23,9 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
         configureDesign()
     }
     
-    func setImage(_ image: UIImage){
+    func setImage(image: UIImage, viewModel: AddPostViewModel){
         self.imageView.image = image
+        self.viewModel = viewModel
     }
     
     override var reuseIdentifier: String {
@@ -44,10 +48,17 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.topAnchor.constraint(equalTo: self.imageView.topAnchor, constant: 5).isActive = true
         deleteButton.trailingAnchor.constraint(equalTo: self.imageView.trailingAnchor, constant: -5).isActive = true
-        deleteButton.widthAnchor.constraint(equalToConstant: 15).isActive = true
-        deleteButton.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        deleteButton.rx.tap
+            .bind{
+                print("tapped delete button")
+            }
     }
     
+    @objc func tappedDelete(){
+        print("tapped delete, connect to viewmodel")
+    }
     
     
     required init?(coder: NSCoder) {
