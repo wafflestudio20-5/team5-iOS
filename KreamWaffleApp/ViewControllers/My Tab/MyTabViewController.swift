@@ -283,7 +283,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
             self.divider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.divider.heightAnchor.constraint(equalToConstant: 15),
-            self.divider.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: self.view.frame.height/64),
+            self.divider.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor, constant: self.view.frame.height/64),
 
         ])
     }

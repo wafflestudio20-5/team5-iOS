@@ -352,9 +352,7 @@ final class UserProfileViewController: UIViewController {
 extension UserProfileViewController {
     @objc func requestFollow(sender: FollowButton) {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            let loginRepository = LoginRepository()
-            let LoginUsecase = LoginUsecase(repository: loginRepository)
-            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoViewModel.UserUseCase, LoginUseCase: LoginUsecase)
+            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoViewModel.UserUseCase)
 
             let loginScreen = LoginViewController(viewModel: loginViewModel)
             loginScreen.modalPresentationStyle = .fullScreen
