@@ -349,7 +349,6 @@
 				65B4DE322972DC9200771920 /* CustomError.swift */,
 				651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */,
 				5C6FBD6E297AD0BA00B64FF0 /* FollowButton.swift */,
-
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -539,7 +538,6 @@
 				6527350C2968185C00C859B8 /* UserUsecase.swift */,
 				5C6FBD442976A1ED00B64FF0 /* StyleDetailUsecase.swift */,
 				5C6FBD4E2979744E00B64FF0 /* UserListUsecase.swift */,
-				65781D002976C3D0000FC684 /* LoginUsecase.swift */,
 				5C6FBD72297BCBAC00B64FF0 /* UserProfileUsecase.swift */,
 			);
 			path = Usecases;
@@ -925,6 +923,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

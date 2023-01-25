@@ -39,7 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         loginViewModel.getSavedUser()
         self.loginVM = loginViewModel
         
-        self.rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleViewModel: styleViewModel, userViewModel: userViewModel, loginViewModel: loginViewModel)
+        self.rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel)
          
         //토글 되면 홈탭으로 돌아가야함.
         loginViewModel.loginState.asObservable().subscribe { status in
