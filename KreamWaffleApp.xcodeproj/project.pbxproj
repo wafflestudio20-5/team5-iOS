@@ -63,6 +63,9 @@
 		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
 		6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */; };
 		65B4DE332972DC9200771920 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B4DE322972DC9200771920 /* CustomError.swift */; };
+		65DC40B52980239700D14DBF /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC40B42980239700D14DBF /* NewPostViewController.swift */; };
+		65DC40B72980272100D14DBF /* PostPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC40B62980272100D14DBF /* PostPhotoCollectionViewCell.swift */; };
+		65DC40BC2980B0F300D14DBF /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */; };
 		65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */; };
 		65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48962961E13C00AF6CDB /* TermsButton.swift */; };
 		65F8FBAD29620F7600679E72 /* UserListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F8FBAC29620F7600679E72 /* UserListCollectionViewLayout.swift */; };
@@ -165,6 +168,9 @@
 		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
 		6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		65B4DE322972DC9200771920 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		65DC40B42980239700D14DBF /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
+		65DC40B62980272100D14DBF /* PostPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
 		65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizefield.swift; sourceTree = "<group>"; };
 		65DF48962961E13C00AF6CDB /* TermsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsButton.swift; sourceTree = "<group>"; };
 		65F8FBAC29620F7600679E72 /* UserListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -333,6 +339,7 @@
 			children = (
 				5CB810D929683B3B0021FDD6 /* Sub VC */,
 				9428AE4A2957197B00DC7907 /* StyleTabViewController.swift */,
+				65DC40BA2980275F00D14DBF /* New Post */,
 			);
 			path = "Style Tab";
 			sourceTree = "<group>";
@@ -378,6 +385,15 @@
 			path = "Login Tab";
 			sourceTree = "<group>";
 		};
+		65DC40BA2980275F00D14DBF /* New Post */ = {
+			isa = PBXGroup;
+			children = (
+				65DC40B62980272100D14DBF /* PostPhotoCollectionViewCell.swift */,
+				65DC40B42980239700D14DBF /* NewPostViewController.swift */,
+			);
+			path = "New Post";
+			sourceTree = "<group>";
+		};
 		9409BB6929587BB200107717 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -397,6 +413,7 @@
 			children = (
 				9428AE46295718E200DC7907 /* ShopViewModel.swift */,
 				94155C50297A4E720092B561 /* ShopTabDetailViewModel.swift */,
+				65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -713,6 +730,7 @@
 				9428AE4B2957197B00DC7907 /* StyleTabViewController.swift in Sources */,
 				94CDFF9029746FF100C2095C /* HomeTabShopCollectionViewVC.swift in Sources */,
 				948C66952958482E00561C59 /* MyTabViewController.swift in Sources */,
+				65DC40B72980272100D14DBF /* PostPhotoCollectionViewCell.swift in Sources */,
 				5C6FBD492979737C00B64FF0 /* UserListCollectionViewVC.swift in Sources */,
 				944A11572963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift in Sources */,
 				5CB810DD29683CEF0021FDD6 /* StyleTabPostDetailViewController.swift in Sources */,
@@ -745,6 +763,7 @@
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
 				65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */,
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,
+				65DC40BC2980B0F300D14DBF /* AddPostViewModel.swift in Sources */,
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
 				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
 				5C6FBD4B2979739100B64FF0 /* LikedUsersViewController.swift in Sources */,
@@ -772,6 +791,7 @@
 				6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */,
 				65F8FBB129620FCC00679E72 /* StylePost.swift in Sources */,
 				5C6FBD4F2979744E00B64FF0 /* UserListUsecase.swift in Sources */,
+				65DC40B52980239700D14DBF /* NewPostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

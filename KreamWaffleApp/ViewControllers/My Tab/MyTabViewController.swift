@@ -81,12 +81,15 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                                            
     @objc func cameraButtonTapped(){
         //TODO: customize 할 필요 있음.
-        let photoPickerVC = PhotoPickerViewController()
-        self.present(photoPickerVC, animated: true)
+        let sample_1 = UIImage(named: "Kream") ?? UIImage()
+        let sample_2 = UIImage(named: "Kream") ?? UIImage()
+        let images = [sample_1, sample_2]
+        let newPostVM = AddPostViewModel()
+        let photoPickerVC = NewPostViewController(selectedImages: images, viewModel: newPostVM)
+        self.navigationController?.pushViewController(photoPickerVC, animated: true)
         }
                                            
-                                           
-                                           
+            
     
     func setUpSegmentedControl() {
         let segmentedControl = BetterSegmentedControl(
