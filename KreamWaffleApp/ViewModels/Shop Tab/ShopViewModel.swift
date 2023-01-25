@@ -14,6 +14,7 @@ final class ShopViewModel {
     init(usecase: ShopUsecase) {
         self.usecase = usecase
         requestData()
+//        requestImmediateDeliveryData()
     }
     
     var shopDataSource: Observable<[ProductData]> {
@@ -23,17 +24,15 @@ final class ShopViewModel {
             }
     }
     
-//    var productImagesDataSource: Observable
-    
     var filterDataSource: Observable<[String]> {
         return self.usecase.filterCategories
     }
 }
 
 extension ShopViewModel {
+    // request all shopPosts
     func requestData() {
         self.usecase.loadShopPosts()
-        
     }
     
     func requestMoreData() {
@@ -42,6 +41,39 @@ extension ShopViewModel {
     
     func getProductAtIndex(index: Int) -> Product {
         return self.usecase.getProductAtIndex(index: index)
+    }
+}
+
+extension ShopViewModel {
+    // request immediate delivery shopPosts
+    func requestImmediateDeliveryData() {
+        self.usecase.loadImmediateDeliveryShopPosts()
+    }
+    
+    func requestMoreImmediateDeliveryData() {
+//        self.usecase.loadMoreImmediateDeliveryShopPosts()
+    }
+}
+
+extension ShopViewModel {
+    // request brand delivery shopPosts
+    func requestBrandDeliveryData() {
+        self.usecase.loadBrandDeliveryShopPosts()
+    }
+    
+    func requestMoreBrandDeliveryData() {
+//        self.usecase.loadMoreBrandDeliveryShopPosts()
+    }
+}
+
+extension ShopViewModel {
+    // request category shopPosts
+    func requestCategoryData(selectedCategory: String) {
+        self.usecase.loadCategoryShopPosts(selectedCategory: selectedCategory)
+    }
+    
+    func requestMoreCategoryData() {
+//        self.usecase.loadMoreCategoryShopPosts()
     }
 }
 
@@ -56,7 +88,6 @@ struct ProductData {
     let price: Int
     let total_wishes: Int
     let total_shares: Int
-//
     let imageSource: [ProductImage]
     
     init(product: Product) {
