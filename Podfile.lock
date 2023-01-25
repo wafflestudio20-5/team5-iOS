@@ -31,12 +31,17 @@ PODS:
     - Kingfisher (> 3.0)
   - Kingfisher (7.4.1)
   - naveridlogin-sdk-ios (4.1.5)
+  - PryntTrimmerView (4.0.2)
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
   - RxRelay (6.5.0):
     - RxSwift (= 6.5.0)
   - RxSwift (6.5.0)
+  - SteviaLayout (4.7.3)
+  - YPImagePicker (5.2.1):
+    - PryntTrimmerView (= 4.0.2)
+    - SteviaLayout (= 4.7.3)
 
 DEPENDENCIES:
   - Alamofire
@@ -50,6 +55,7 @@ DEPENDENCIES:
   - naveridlogin-sdk-ios
   - RxCocoa (= 6.5.0)
   - RxSwift (= 6.5.0)
+  - YPImagePicker
 
 SPEC REPOS:
   trunk:
@@ -64,9 +70,12 @@ SPEC REPOS:
     - ImageSlideshow
     - Kingfisher
     - naveridlogin-sdk-ios
+    - PryntTrimmerView
     - RxCocoa
     - RxRelay
     - RxSwift
+    - SteviaLayout
+    - YPImagePicker
 
 SPEC CHECKSUMS:
   Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
@@ -80,10 +89,13 @@ SPEC CHECKSUMS:
   ImageSlideshow: be305b54eaf2b2cfc7a7141c7c734605d44dc07d
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
+  PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  YPImagePicker: f36043210c10b0783034eb1947d6e06e31c461e4
 
-PODFILE CHECKSUM: 66b7e56fcfe1107b943c74dace49d4fd9811da1c
+PODFILE CHECKSUM: 876c504907bfeb61fa73034acc557ed293a5d210
 
 COCOAPODS: 1.11.3

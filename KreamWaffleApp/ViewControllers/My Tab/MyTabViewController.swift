@@ -8,6 +8,10 @@ import UIKit
 import BetterSegmentedControl
 import Kingfisher
 import RxSwift
+import AVFoundation
+import AVKit
+import Photos
+import YPImagePicker
 
 struct TemporaryUserData {
     let profileImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/440px-Waffles_with_Strawberries.jpg"
@@ -15,7 +19,18 @@ struct TemporaryUserData {
     let nickname = "크림맛와플"
 }
 
-class MyTabViewController: UIViewController, UITabBarControllerDelegate {
+class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImagePickerDelegate {
+    
+    
+    func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
+        //
+    }
+    
+    func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
+        return true
+    }
+    
+    var selectedItems = [YPMediaItem]()
     
     let bag = DisposeBag()
     
@@ -50,6 +65,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //root VM 갈아끼우기 
+        /*
         self.loginVM.loginState.asObservable().subscribe { status in
             print("[Log] MyTabVC: The login state is ", status.element)
             if (status.element! == false){
@@ -57,15 +75,81 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 loginScreen.modalPresentationStyle = .fullScreen
                 self.present(loginScreen, animated: false)
             }
-        }.disposed(by: bag)
+        }.disposed(by: bag)*/
     
         setUpSegmentedControl()
+        setUpCameraButton()
         setUpFixedViewLayout()
         setUpData()
         setupDivider()
         setupChildVC()
     }
     
+    func setUpCameraButton(){
+        let cameraImage = UIImage(systemName: "camera.circle.fill")
+        let tintedCameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
+        let cameraButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(cameraButtonTapped))
+        cameraButton.image = tintedCameraImage
+        cameraButton.tintColor = .darkGray
+        self.navigationItem.rightBarButtonItem = cameraButton
+    }
+                                           
+    @objc func cameraButtonTapped(){
+        
+        var config = YPImagePickerConfiguration()
+        config.library.mediaType = .photoAndVideo
+        config.library.itemOverlayType = .grid
+        config.shouldSaveNewPicturesToAlbum = false
+        config.startOnScreen = .library
+        config.screens = [.library, .photo]
+        config.library.minWidthForItem = UIScreen.main.bounds.width * 0.8
+        config.video.libraryTimeLimit = 500.0
+        config.showsCrop = .rectangle(ratio: (16/9))
+        config.wordings.libraryTitle = "최근"
+        config.hidesStatusBar = false
+        config.hidesBottomBar = false
+        config.maxCameraZoomFactor = 2.0
+        config.library.maxNumberOfItems = 5
+        config.gallery.hidesRemoveButton = false
+        config.library.preselectedItems = selectedItems
+
+        //config.fonts.menuItemFont = UIFont.systemFont(ofSize: 22.0, weight: .semibold)
+        //config.fonts.pickerTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .black)
+        //config.fonts.rightBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .bold)
+        //config.fonts.navigationBarTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
+        //config.fonts.leftBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
+        let picker = YPImagePicker(configuration: config)
+
+        picker.imagePickerDelegate = self
+        picker.didFinishPicking { [weak picker] items, cancelled in
+
+            if cancelled {
+                print("Picker was canceled")
+                picker?.dismiss(animated: true, completion: nil)
+                return
+            }
+            _ = items.map { print("🧀 \($0)") }
+
+            self.selectedItems = items
+            if let firstItem = items.first {
+                switch firstItem {
+                case .photo(let photo):
+                    let sample_1 = photo.image.resize(targetSize:CGSize(width: 60, height: 60))
+                    let images = [sample_1]
+                    let newPostVM = AddPostViewModel()
+                    let postVC = NewPostViewController(selectedImages: images, viewModel: newPostVM)
+                    postVC.hidesBottomBarWhenPushed = true
+                    picker?.pushViewController(postVC, animated: true)
+                    //self.navigationController?.pushViewController(photoPickerVC, animated: true)
+                    
+                case .video(let video):
+                    print("Error: There shouldn't be video?")
+                }
+            }
+        }
+    present(picker, animated: true, completion: nil)
+    }
+                                           
     func setUpSegmentedControl() {
         let segmentedControl = BetterSegmentedControl(
             frame: CGRect(x: 0, y: 0, width: view.bounds.width/2 - 32.0, height: 30),
@@ -198,8 +282,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         NSLayoutConstraint.activate([
             self.divider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.divider.heightAnchor.constraint(equalToConstant: 20),
-            self.divider.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor, constant: self.view.frame.height/64),
+            self.divider.heightAnchor.constraint(equalToConstant: 15),
+            self.divider.topAnchor.constraint(equalTo: self.idLabel.bottomAnchor, constant: self.view.frame.height/64),
+
         ])
     }
     
@@ -207,8 +292,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.add(self.myShoppingVC)
         self.add(self.myProfileVC)
         //TODO: y 값 조정하기
-        self.myShoppingVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
-        self.myProfileVC.view.frame = CGRect(x: 0, y: 300, width: self.view.frame.width, height: self.view.frame.height)
+        self.myShoppingVC.view.frame = CGRect(x: 0, y: 270, width: self.view.frame.width, height: self.view.frame.height)
+        self.myProfileVC.view.frame = CGRect(x: 0, y: 270, width: self.view.frame.width, height: self.view.frame.height)
         self.myProfileVC.view.isHidden = true
     }
     

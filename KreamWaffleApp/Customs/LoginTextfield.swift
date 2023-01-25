@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+//TODO: [refactoring] rxswift 로 고치기
 enum errorCondition{
     
     case password

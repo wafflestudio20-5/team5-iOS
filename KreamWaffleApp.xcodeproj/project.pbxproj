@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F87C5701E34DA511C4BCEF2 /* Pods_KreamWaffleApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 653EF15F5220C4755DA893B5 /* Pods_KreamWaffleApp.framework */; };
 		5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */; };
 		5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */; };
 		5C2F9CA8295D7B600021D437 /* StyleFeedUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */; };
@@ -45,12 +44,15 @@
 		5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E71842977CF1A00D81E2F /* OpeningViewController.swift */; };
+		651E718B297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */; };
+		651E718D297B989000D81E2F /* AutoAddPaddingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */; };
 		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
 		6527350B29680C1900C859B8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350A29680C1900C859B8 /* User.swift */; };
 		6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350C2968185C00C859B8 /* UserUsecase.swift */; };
 		6527350F2968196200C859B8 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350E2968196200C859B8 /* UserInfoViewModel.swift */; };
 		653F17C42965701600949FF8 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653F17C32965701600949FF8 /* LoginRepository.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
+		65508A51297BB1D100C6431D /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65508A50297BB1D100C6431D /* SignUpViewModel.swift */; };
 		655A94CB296C6D4200F0184B /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655A94CA296C6D4200F0184B /* LoadingViewController.swift */; };
 		655A94CD296C6D4900F0184B /* CustomNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655A94CC296C6D4900F0184B /* CustomNotificationView.swift */; };
 		655A94CF296C73FB00F0184B /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655A94CE296C73FB00F0184B /* MyProfileViewController.swift */; };
@@ -63,12 +65,14 @@
 		65653F43295B8217002F250B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65653F42295B8217002F250B /* Extensions.swift */; };
 		656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */; };
 		656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */; };
-		65781D012976C3D0000FC684 /* LoginUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65781D002976C3D0000FC684 /* LoginUsecase.swift */; };
 		65781D032976C415000FC684 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65781D022976C415000FC684 /* LoginViewModel.swift */; };
 		6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E22960B5E6007C741F /* SignUpViewController.swift */; };
 		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
 		6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */; };
 		65B4DE332972DC9200771920 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B4DE322972DC9200771920 /* CustomError.swift */; };
+		65DC40B52980239700D14DBF /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC40B42980239700D14DBF /* NewPostViewController.swift */; };
+		65DC40B72980272100D14DBF /* PostPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC40B62980272100D14DBF /* PostPhotoCollectionViewCell.swift */; };
+		65DC40BC2980B0F300D14DBF /* AddPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */; };
 		65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */; };
 		65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DF48962961E13C00AF6CDB /* TermsButton.swift */; };
 		65F8FBAD29620F7600679E72 /* UserListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F8FBAC29620F7600679E72 /* UserListCollectionViewLayout.swift */; };
@@ -97,6 +101,7 @@
 		94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */; };
 		94CDFF972974742400C2095C /* HomeTabBrandsCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF962974742400C2095C /* HomeTabBrandsCollectionViewVC.swift */; };
 		94CDFF9A297481E200C2095C /* HomeTabShopCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF99297481E200C2095C /* HomeTabShopCollectionViewCell.swift */; };
+		ABE63D2998EB2B32CA3E7701 /* Pods_KreamWaffleApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A86EFFB5A2B358FD17A9CCD4 /* Pods_KreamWaffleApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,7 +118,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		36F44038B01114113FA0D471 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+hideKeyboard.swift"; sourceTree = "<group>"; };
 		5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedViewModel.swift; sourceTree = "<group>"; };
 		5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedUsecase.swift; sourceTree = "<group>"; };
@@ -151,14 +155,16 @@
 		5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		651E71842977CF1A00D81E2F /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
+		651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabSharedUIStackVIew.swift; sourceTree = "<group>"; };
+		651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAddPaddingButton.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
 		6527350A29680C1900C859B8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6527350C2968185C00C859B8 /* UserUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUsecase.swift; sourceTree = "<group>"; };
 		6527350E2968196200C859B8 /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
-		653EF15F5220C4755DA893B5 /* Pods_KreamWaffleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KreamWaffleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		653F17C229655F1F00949FF8 /* KreamWaffleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KreamWaffleApp.entitlements; sourceTree = "<group>"; };
 		653F17C32965701600949FF8 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		65508A50297BB1D100C6431D /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		655A94CA296C6D4200F0184B /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		655A94CC296C6D4900F0184B /* CustomNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotificationView.swift; sourceTree = "<group>"; };
 		655A94CE296C73FB00F0184B /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
@@ -171,12 +177,14 @@
 		65653F42295B8217002F250B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionViewController.swift; sourceTree = "<group>"; };
 		656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
-		65781D002976C3D0000FC684 /* LoginUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUsecase.swift; sourceTree = "<group>"; };
 		65781D022976C415000FC684 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		6583C9E22960B5E6007C741F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
 		6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		65B4DE322972DC9200771920 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		65DC40B42980239700D14DBF /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
+		65DC40B62980272100D14DBF /* PostPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewModel.swift; sourceTree = "<group>"; };
 		65DF48932961D4D300AF6CDB /* ShoeSizefield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizefield.swift; sourceTree = "<group>"; };
 		65DF48962961E13C00AF6CDB /* TermsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsButton.swift; sourceTree = "<group>"; };
 		65F8FBAC29620F7600679E72 /* UserListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -207,7 +215,9 @@
 		94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabStyleCollectionViewVC.swift; sourceTree = "<group>"; };
 		94CDFF962974742400C2095C /* HomeTabBrandsCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBrandsCollectionViewVC.swift; sourceTree = "<group>"; };
 		94CDFF99297481E200C2095C /* HomeTabShopCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabShopCollectionViewCell.swift; sourceTree = "<group>"; };
-		D486120C9949A5BD887235D4 /* Pods-KreamWaffleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.release.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.release.xcconfig"; sourceTree = "<group>"; };
+		A86EFFB5A2B358FD17A9CCD4 /* Pods_KreamWaffleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KreamWaffleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDC87DBB94E63D74B3373CDA /* Pods-KreamWaffleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.release.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.release.xcconfig"; sourceTree = "<group>"; };
+		FDC742D7668DFB75921985C2 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,7 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F87C5701E34DA511C4BCEF2 /* Pods_KreamWaffleApp.framework in Frameworks */,
+				ABE63D2998EB2B32CA3E7701 /* Pods_KreamWaffleApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,11 +317,21 @@
 			path = "Data Objects";
 			sourceTree = "<group>";
 		};
+		65508A4F297BB1BB00C6431D /* Login Tab */ = {
+			isa = PBXGroup;
+			children = (
+				65781D022976C415000FC684 /* LoginViewModel.swift */,
+				65508A50297BB1D100C6431D /* SignUpViewModel.swift */,
+			);
+			path = "Login Tab";
+			sourceTree = "<group>";
+		};
 		655A94D0296C772900F0184B /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
 				65F8FBB5296211B800679E72 /* ProfileSubview.swift */,
 				65F8FBB7296211E000679E72 /* ProfileSubviewSubCell.swift */,
+				651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -327,7 +347,9 @@
 				65DF48962961E13C00AF6CDB /* TermsButton.swift */,
 				5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */,
 				65B4DE322972DC9200771920 /* CustomError.swift */,
+				651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */,
 				5C6FBD6E297AD0BA00B64FF0 /* FollowButton.swift */,
+
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -337,6 +359,7 @@
 			children = (
 				5CB810D929683B3B0021FDD6 /* Sub VC */,
 				9428AE4A2957197B00DC7907 /* StyleTabViewController.swift */,
+				65DC40BA2980275F00D14DBF /* New Post */,
 			);
 			path = "Style Tab";
 			sourceTree = "<group>";
@@ -382,15 +405,24 @@
 			path = "Login Tab";
 			sourceTree = "<group>";
 		};
+		65DC40BA2980275F00D14DBF /* New Post */ = {
+			isa = PBXGroup;
+			children = (
+				65DC40B62980272100D14DBF /* PostPhotoCollectionViewCell.swift */,
+				65DC40B42980239700D14DBF /* NewPostViewController.swift */,
+			);
+			path = "New Post";
+			sourceTree = "<group>";
+		};
 		9409BB6929587BB200107717 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				65508A4F297BB1BB00C6431D /* Login Tab */,
 				94155C52297A4E920092B561 /* Shop Tab */,
 				94CDFF922974730300C2095C /* HomeViewModel.swift */,
 				5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */,
 				6527350E2968196200C859B8 /* UserInfoViewModel.swift */,
 				5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */,
-				65781D022976C415000FC684 /* LoginViewModel.swift */,
 				5C6FBD66297A60C200B64FF0 /* UserListViewModel.swift */,
 				5C6FBD70297BCBA200B64FF0 /* UserProfileViewModel.swift */,
 			);
@@ -402,6 +434,7 @@
 			children = (
 				9428AE46295718E200DC7907 /* ShopViewModel.swift */,
 				94155C50297A4E720092B561 /* ShopTabDetailViewModel.swift */,
+				65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -431,7 +464,7 @@
 				9428AE2E2957170600DC7907 /* KreamWaffleApp */,
 				9428AE2D2957170600DC7907 /* Products */,
 				D11222DD1DD286E50EA59C49 /* Pods */,
-				A65094E6515FADF052EC47A6 /* Frameworks */,
+				B26C99598CD2E6C293CCAE6B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -546,10 +579,10 @@
 			path = "Home Tab";
 			sourceTree = "<group>";
 		};
-		A65094E6515FADF052EC47A6 /* Frameworks */ = {
+		B26C99598CD2E6C293CCAE6B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				653EF15F5220C4755DA893B5 /* Pods_KreamWaffleApp.framework */,
+				A86EFFB5A2B358FD17A9CCD4 /* Pods_KreamWaffleApp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -557,8 +590,8 @@
 		D11222DD1DD286E50EA59C49 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				36F44038B01114113FA0D471 /* Pods-KreamWaffleApp.debug.xcconfig */,
-				D486120C9949A5BD887235D4 /* Pods-KreamWaffleApp.release.xcconfig */,
+				FDC742D7668DFB75921985C2 /* Pods-KreamWaffleApp.debug.xcconfig */,
+				BDC87DBB94E63D74B3373CDA /* Pods-KreamWaffleApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -570,13 +603,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9428AE402957170E00DC7907 /* Build configuration list for PBXNativeTarget "KreamWaffleApp" */;
 			buildPhases = (
-				1277974AE544BA384D882E73 /* [CP] Check Pods Manifest.lock */,
+				97DE1D8ED509D95A19237E34 /* [CP] Check Pods Manifest.lock */,
 				9428AE282957170600DC7907 /* Sources */,
 				9428AE292957170600DC7907 /* Frameworks */,
 				9428AE2A2957170600DC7907 /* Resources */,
 				5C56D649296B0466002A8736 /* Embed Frameworks */,
-				701EAFCCDFD9586710BC6879 /* [CP] Embed Pods Frameworks */,
-				6CBC8CBC67DAC6F1FA8A2F9C /* [CP] Copy Pods Resources */,
+				D59DCF14DD76BCB91334F100 /* [CP] Embed Pods Frameworks */,
+				73B5B5CC12E0C314070E7295 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -632,7 +665,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1277974AE544BA384D882E73 /* [CP] Check Pods Manifest.lock */ = {
+		73B5B5CC12E0C314070E7295 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97DE1D8ED509D95A19237E34 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -654,24 +704,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6CBC8CBC67DAC6F1FA8A2F9C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		701EAFCCDFD9586710BC6879 /* [CP] Embed Pods Frameworks */ = {
+		D59DCF14DD76BCB91334F100 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -714,7 +747,6 @@
 				5C6FBD77297BCCF500B64FF0 /* UserProfileViewController.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
 				65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */,
-				65781D012976C3D0000FC684 /* LoginUsecase.swift in Sources */,
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */,
@@ -725,6 +757,7 @@
 				94CDFF9029746FF100C2095C /* HomeTabShopCollectionViewVC.swift in Sources */,
 				5C6FBD71297BCBA200B64FF0 /* UserProfileViewModel.swift in Sources */,
 				948C66952958482E00561C59 /* MyTabViewController.swift in Sources */,
+				65DC40B72980272100D14DBF /* PostPhotoCollectionViewCell.swift in Sources */,
 				5C6FBD492979737C00B64FF0 /* UserListCollectionViewVC.swift in Sources */,
 				944A11572963E46500F8CDB7 /* ShopFilterCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD79297C263200B64FF0 /* Profile.swift in Sources */,
@@ -735,6 +768,7 @@
 				944A114B295D6ADF00F8CDB7 /* ShopUsecase.swift in Sources */,
 				65F8FBB42962104E00679E72 /* StyleFeedCollectionViewCell.swift in Sources */,
 				5CB810E129683D6A0021FDD6 /* StyleTabDetailViewModel.swift in Sources */,
+				651E718B297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift in Sources */,
 				6527350B29680C1900C859B8 /* User.swift in Sources */,
 				94CDFF932974730300C2095C /* HomeViewModel.swift in Sources */,
 				5CB810DB29683B4B0021FDD6 /* StyleFeedCollectionViewVC.swift in Sources */,
@@ -751,11 +785,13 @@
 				655A94CD296C6D4900F0184B /* CustomNotificationView.swift in Sources */,
 				6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */,
 				655A94CB296C6D4200F0184B /* LoadingViewController.swift in Sources */,
+				65508A51297BB1D100C6431D /* SignUpViewModel.swift in Sources */,
 				5C6FBD452976A1ED00B64FF0 /* StyleDetailUsecase.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
 				65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */,
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,
+				65DC40BC2980B0F300D14DBF /* AddPostViewModel.swift in Sources */,
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
 				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
 				5C6FBD4B2979739100B64FF0 /* LikedUserListViewController.swift in Sources */,
@@ -771,6 +807,7 @@
 				5C6FBD6F297AD0BA00B64FF0 /* FollowButton.swift in Sources */,
 				653F17C42965701600949FF8 /* LoginRepository.swift in Sources */,
 				656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */,
+				651E718D297B989000D81E2F /* AutoAddPaddingButton.swift in Sources */,
 				65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */,
 				651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
@@ -784,6 +821,7 @@
 				6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */,
 				65F8FBB129620FCC00679E72 /* StylePost.swift in Sources */,
 				5C6FBD4F2979744E00B64FF0 /* UserListUsecase.swift in Sources */,
+				65DC40B52980239700D14DBF /* NewPostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,7 +945,7 @@
 		};
 		9428AE412957170E00DC7907 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 36F44038B01114113FA0D471 /* Pods-KreamWaffleApp.debug.xcconfig */;
+			baseConfigurationReference = FDC742D7668DFB75921985C2 /* Pods-KreamWaffleApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -938,7 +976,7 @@
 		};
 		9428AE422957170E00DC7907 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D486120C9949A5BD887235D4 /* Pods-KreamWaffleApp.release.xcconfig */;
+			baseConfigurationReference = BDC87DBB94E63D74B3373CDA /* Pods-KreamWaffleApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

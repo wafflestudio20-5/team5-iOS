@@ -5,13 +5,18 @@
 //  Created by 이선재 on 2022/12/24.
 //
 import UIKit
+import RxSwift
 import NaverThirdPartyLogin
 import GoogleSignIn
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    
+    let bag = DisposeBag()
+    
+    var rootVC : TabBarViewController?
+    var loginVM : LoginViewModel?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -25,19 +30,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let homeViewModel = HomeViewModel()
         let loginRepository = LoginRepository()
         let UserUsecase = UserUsecase(dataRepository: loginRepository)
-        let LoginUsecase = LoginUsecase(repository: loginRepository)
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
         
         let styleViewModel = StyleFeedViewModel(styleFeedUsecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest", user_id: nil))
         let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
-        let loginViewModel = LoginViewModel(UserUseCase: UserUsecase, LoginUseCase: LoginUsecase)
+        let loginViewModel = LoginViewModel(UserUseCase: UserUsecase)
         loginViewModel.getSavedUser()
+        self.loginVM = loginViewModel
+        
+        self.rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleViewModel: styleViewModel, userViewModel: userViewModel, loginViewModel: loginViewModel)
+         
+        //토글 되면 홈탭으로 돌아가야함.
+        loginViewModel.loginState.asObservable().subscribe { status in
+            
+            if (self.window?.rootViewController == self.rootVC){
+                if (self.rootVC?.selectedIndex == 1 || self.rootVC?.selectedIndex == 3){
+                    if (!status.element!){
+                        print("[Log] Scene Delegate: switching to login VC")
+                        self.changeToLoginVC()
+                    }else{
+                    }
+                }
+            }
+        }.disposed(by: bag)
         
         let rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel)
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
     }
+
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
       NaverThirdPartyLoginConnection
@@ -49,6 +71,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             GIDSignIn.sharedInstance()?.handle(URLContexts.first!.url)
         }
         
+    }
+    
+    func changeSelectedIndex(selectedIndex: Int){
+        self.rootVC?.selectedIndex = selectedIndex
+    }
+    
+    func changeToTabVC(animated: Bool = true){
+        self.rootVC?.selectedIndex = 0
+        self.window?.rootViewController = self.rootVC
+    }
+    
+    func changeToLoginVC(animated: Bool = true){
+        let loginVC = LoginViewController(viewModel: self.loginVM!)
+        self.window?.rootViewController = loginVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

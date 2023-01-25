@@ -44,9 +44,10 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         
         self.viewModel.loginState.asObservable().subscribe { status in
+            self.loginState = status.element!
             if (status.element!){
                 print("[Log] Login VC: The login state is", status.element)
-                self.dismiss(animated: true)
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
             }
         }.disposed(by: bag)
         
@@ -106,8 +107,8 @@ class LoginViewController: UIViewController {
     
     @objc func popVC(){
         //TODO: set differently according to login state in VM --> 일단은 노티로.
-        NotificationCenter.default.post(name: Notification.Name("popLoginVC"), object: nil)
-        self.dismiss(animated: true)
+        //이게 아니라 root vc를 갈아끼워야하는 것 같음. 
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
     }
     
     //changes activation of login button
@@ -115,22 +116,22 @@ class LoginViewController: UIViewController {
         self.viewModel.bindTextfield(textfield: self.emailfield!.textfield, LoginTextfieldType: .Email)
         self.viewModel.bindTextfield(textfield: self.passwordfield!.textfield, LoginTextfieldType: .Password)
         
-        self.viewModel.isValid
+        self.viewModel.isValid()
             .bind(to: self.loginButton.rx.isEnabled)
             .disposed(by: bag)
-        self.viewModel.isValid
+        self.viewModel.isValid()
             .map { $0 ? UIColor.black: UIColor.lightGray}
             .bind(to: self.loginButton.rx.backgroundColor)
             .disposed(by: bag)
-        self.viewModel.isValid
+        self.viewModel.isValid()
             .map { $0 ? UIColor.white: UIColor.darkGray}
             .bind(to: self.loginButton.rx.tintColor)
             .disposed(by: bag)
     }
     
     @objc func didTapLogin(){
-        self.viewModel.loginUserWithCustom(email: (self.emailfield?.textfield.text)!, password: (self.passwordfield?.textfield.text)!)
-        //error도 observe 해서 눌렀는데 에러면 에러 화면 뜨게 끔하기.
+        self.viewModel.loginUserWithCustom()
+        //TODO: error도 observe 해서 눌렀는데 에러면 에러 화면 뜨게 끔하기.
     }
     
     private func loginFailure(failureMessage: String){
@@ -152,7 +153,8 @@ class LoginViewController: UIViewController {
     }
     
     @objc func didTapSignup(){
-        let signupVC = SignUpViewController(viewModel: self.viewModel)
+        let signUpVM = SignUpViewModel(usecase: self.viewModel.UserUseCase)
+        let signupVC = SignUpViewController(viewModel: signUpVM)
         signupVC.modalPresentationStyle = .fullScreen
         self.present(signupVC, animated: true)
     }
