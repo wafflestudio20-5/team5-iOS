@@ -17,11 +17,23 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     var header = UIView()
     var searchBar = UISearchBar()
     
-    private let filterCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopFilterCollectionViewFlowLayout())
+    // delivery tag filter buttons
+    private let immediateDeliveryButton = UIButton()
+    private let brandDeliveryButton = UIButton()
+    
+    // collection views
+    private let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCategoryCollectionViewFlowLayout())
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCollectionViewFlowLayout())
     
     private let viewModel: ShopViewModel
     private let disposeBag = DisposeBag()
+    
+    // colors
+    static let deliveryButtonBorderColor: UIColor = UIColor(red: 0.8863, green: 0.8863, blue: 0.8863, alpha: 1.0)
+    static let brandDeliveryButtonSelectedColor: UIColor = ProductCollectionViewCell.brandDeliveryFontColor
+    
+    // delivery buttons variable
+    
     
     init(viewModel: ShopViewModel) {
         self.searchVC = SearchViewController()
@@ -38,8 +50,10 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         addSubviews()
         configureSubviews()
-        configureFilterCollectionView()
-        bindFilterCollectionView()
+        configureCategoryCollectionView()
+        
+        configureDeliveryFilterButtons()
+        bindCategoryCollectionView()
         setupCollectionView()
         bindCollectionView()
     }
@@ -76,27 +90,108 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14, weight: .medium)
     }
     
-    private func configureFilterCollectionView() {
-        // hide scroll bar
+    private func configureCategoryCollectionView() {
+        self.categoryCollectionView.showsHorizontalScrollIndicator = false
         
-        self.view.addSubview(self.filterCollectionView)
-        self.filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.categoryCollectionView)
+        self.categoryCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.filterCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.filterCollectionView.bottomAnchor.constraint(equalTo: self.filterCollectionView.topAnchor, constant: 50),
-            self.filterCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            self.filterCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
+            self.categoryCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.categoryCollectionView.bottomAnchor.constraint(equalTo: self.categoryCollectionView.topAnchor, constant: 50),
+            self.categoryCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            self.categoryCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -15)
         ])
     }
     
-    private func bindFilterCollectionView() {
-        self.filterCollectionView.register(FilterCollectionViewCell.self, forCellWithReuseIdentifier: "FilterCollectionViewCell")
+    private func configureDeliveryFilterButtons() {
+        // immediate delivery button
+        let attributedDeliveryString1 = NSMutableAttributedString(string: "빠른배송", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13.0)])
+        let deliveryTagImageAttachment = NSTextAttachment()
+        deliveryTagImageAttachment.image = UIImage(systemName: "bolt.fill")?.withTintColor(ProductCollectionViewCell.immediateDeliveryFontColor)
+        deliveryTagImageAttachment.bounds = CGRect(x: 0, y: 0, width: 13, height: 13)
+        let attributedDeliveryString2 = NSMutableAttributedString(attachment: deliveryTagImageAttachment)
+        attributedDeliveryString2.append(attributedDeliveryString1)
+        self.immediateDeliveryButton.setAttributedTitle(attributedDeliveryString2, for: .normal)
+
+        self.immediateDeliveryButton.addTarget(self, action: #selector(tappedImmediateDeliveryButton), for: .touchUpInside)
+        self.immediateDeliveryButton.setTitleColor(.black, for: .normal)
+        self.immediateDeliveryButton.contentHorizontalAlignment = .center
+        self.immediateDeliveryButton.contentVerticalAlignment = .center
+        self.immediateDeliveryButton.layer.borderColor = ShopTabViewController.deliveryButtonBorderColor.cgColor
+        self.immediateDeliveryButton.layer.borderWidth = 1
+        self.immediateDeliveryButton.layer.cornerRadius = 13.5
         
-        self.filterCollectionView.rx.setDelegate(self)
+        self.view.addSubview(self.immediateDeliveryButton)
+        self.immediateDeliveryButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.immediateDeliveryButton.heightAnchor.constraint(equalToConstant: 25),
+            self.immediateDeliveryButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.immediateDeliveryButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
+            self.immediateDeliveryButton.trailingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 90),
+            self.immediateDeliveryButton.topAnchor.constraint(equalTo: self.categoryCollectionView.bottomAnchor, constant: 4),
+        ])
+        
+        // brand delivery button
+        self.brandDeliveryButton.setTitle("브랜드배송", for: .normal)
+        self.brandDeliveryButton.addTarget(self, action: #selector(tappedBrandDeliveryButton), for: .touchUpInside)
+        self.brandDeliveryButton.setTitleColor(.black, for: .normal)
+        self.brandDeliveryButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        self.brandDeliveryButton.contentHorizontalAlignment = .center
+        self.brandDeliveryButton.layer.borderColor = ShopTabViewController.deliveryButtonBorderColor.cgColor
+        self.brandDeliveryButton.layer.borderWidth = 1
+        self.brandDeliveryButton.layer.cornerRadius = 13.5
+        
+        self.view.addSubview(self.brandDeliveryButton)
+        self.brandDeliveryButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.brandDeliveryButton.heightAnchor.constraint(equalToConstant: 25),
+            self.brandDeliveryButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            self.brandDeliveryButton.leadingAnchor.constraint(equalTo: self.immediateDeliveryButton.trailingAnchor, constant: 5),
+            self.brandDeliveryButton.trailingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 170),
+            self.brandDeliveryButton.topAnchor.constraint(equalTo: self.immediateDeliveryButton.topAnchor),
+        ])
+        
+        // configure colors based on selection
+//        self.immediateDeliveryButton.isSelected = true
+        updateDeliveryButtonConfiguration()
+    }
+    
+    private func updateDeliveryButtonConfiguration() {
+        if self.immediateDeliveryButton.isSelected == true {
+            self.immediateDeliveryButton.backgroundColor = UIColor(red: 0.898, green: 0.9882, blue: 0.9216, alpha: 1.0)
+            self.immediateDeliveryButton.setTitleColor(ProductCollectionViewCell.immediateDeliveryFontColor, for: .selected)
+            self.immediateDeliveryButton.layer.borderColor = UIColor.white.cgColor
+            
+            self.brandDeliveryButton.backgroundColor = .white
+            self.brandDeliveryButton.setTitleColor(.black, for: .normal)
+            self.brandDeliveryButton.layer.borderColor = ShopTabViewController.deliveryButtonBorderColor.cgColor
+        } else if self.brandDeliveryButton.isSelected == true {
+            self.immediateDeliveryButton.backgroundColor = .white
+            self.immediateDeliveryButton.setTitleColor(.black, for: .normal)
+            self.immediateDeliveryButton.layer.borderColor = ShopTabViewController.deliveryButtonBorderColor.cgColor
+            
+            self.brandDeliveryButton.backgroundColor = ProductCollectionViewCell.brandDeliveryFontColor
+            self.brandDeliveryButton.setTitleColor(.white, for: .normal)
+            self.brandDeliveryButton.layer.borderColor = UIColor.white.cgColor
+        } else {
+            self.immediateDeliveryButton.backgroundColor = .white
+            self.immediateDeliveryButton.setTitleColor(.black, for: .normal)
+            self.immediateDeliveryButton.layer.borderColor = ShopTabViewController.deliveryButtonBorderColor.cgColor
+            
+            self.brandDeliveryButton.backgroundColor = .white
+            self.brandDeliveryButton.setTitleColor(.black, for: .normal)
+            self.brandDeliveryButton.layer.borderColor = ShopTabViewController.deliveryButtonBorderColor.cgColor
+        }
+    }
+    
+    private func bindCategoryCollectionView() {
+        self.categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: "CategoryCollectionViewCell")
+        
+        self.categoryCollectionView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
         self.viewModel.filterDataSource
-            .bind(to: self.filterCollectionView.rx.items(cellIdentifier: "FilterCollectionViewCell", cellType: FilterCollectionViewCell.self)) { index, categoryName, cell in
+            .bind(to: self.categoryCollectionView.rx.items(cellIdentifier: "CategoryCollectionViewCell", cellType: CategoryCollectionViewCell.self)) { index, categoryName, cell in
                 cell.configure(categoryName: categoryName)
             }.disposed(by: self.disposeBag)
     }
@@ -105,7 +200,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.view.addSubview(collectionView)
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.collectionView.topAnchor.constraint(equalTo: self.filterCollectionView.bottomAnchor),
+            self.collectionView.topAnchor.constraint(equalTo: self.immediateDeliveryButton.bottomAnchor, constant: 7),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
@@ -159,17 +254,40 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
    
 }
 
-extension ShopTabViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var selectedProduct = self.viewModel.getProductAtIndex(index: indexPath.row)
-        let shopPostDetailViewModel = ShopTabDetailViewModel(shopPost: selectedProduct)
-        let productDetailVC = ProductDetailViewController(viewModel: shopPostDetailViewModel)
-        navigationController?.pushViewController(productDetailVC, animated: true)
+extension ShopTabViewController {
+    @objc func tappedImmediateDeliveryButton() {
+        self.immediateDeliveryButton.isSelected = true
+        self.brandDeliveryButton.isSelected = false
+        updateDeliveryButtonConfiguration()
+        self.viewModel.requestImmediateDeliveryData()
     }
     
-//    func collectionView(filterCollectionView collectionView: UICollection, didSelectItemAt indexPath: IndexPath) {
-//
-//    }
+    @objc func tappedBrandDeliveryButton() {
+        self.immediateDeliveryButton.isSelected = false
+        self.brandDeliveryButton.isSelected = true
+        updateDeliveryButtonConfiguration()
+        self.viewModel.requestBrandDeliveryData()
+    }
+}
+
+extension ShopTabViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == self.collectionView {
+            var selectedProduct = self.viewModel.getProductAtIndex(index: indexPath.row)
+            let shopPostDetailViewModel = ShopTabDetailViewModel(shopPost: selectedProduct)
+            let productDetailVC = ProductDetailViewController(viewModel: shopPostDetailViewModel)
+            navigationController?.pushViewController(productDetailVC, animated: true)
+        } else if collectionView == self.categoryCollectionView {
+//            var selectedCategory = self.viewModel.getCategoryAtIndex(index: indexPath.row)
+            
+            var selectedCategoryCell = collectionView.cellForItem(at: indexPath) as! CategoryCollectionViewCell
+            selectedCategoryCell.isSelected = !selectedCategoryCell.isSelected
+//            print(selectedCategoryCell.categoryLabel.text!)
+            self.viewModel.requestCategoryData(selectedCategory: selectedCategoryCell.categoryParameter)
+//            selectedCategoryCell.isSelected = true
+        }
+        
+    }
 }
 
 extension ShopTabViewController {

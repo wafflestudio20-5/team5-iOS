@@ -17,7 +17,7 @@ class ShopCollectionViewFlowLayout: UICollectionViewFlowLayout {
         self.scrollDirection = .vertical
        
         let cellWidth = (UIScreen.main.bounds.width - 15) / 2.0 // Subtract minimumInteritemSpacing and Inset
-        self.itemSize = CGSize(width: cellWidth, height: 310)
+        self.itemSize = CGSize(width: cellWidth, height: 320)
     }
     
     required init?(coder: NSCoder) {

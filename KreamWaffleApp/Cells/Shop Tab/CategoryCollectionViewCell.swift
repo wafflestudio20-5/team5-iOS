@@ -1,5 +1,5 @@
 //
-//  FilterCollectionViewCell.swift
+//  CategoryCollectionViewCell.swift
 //  KreamWaffleApp
 //
 //  Created by 이선재 on 2023/01/02.
@@ -7,13 +7,27 @@
 
 import UIKit
 
-class FilterCollectionViewCell: UICollectionViewCell {
+class CategoryCollectionViewCell: UICollectionViewCell {
     override var reuseIdentifier: String? {
-        return "FilterCollectionViewCell"
+        return "CategoryCollectionViewCell"
     }
     
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                self.contentView.backgroundColor = UIColor(red: 1, green: 0.949, blue: 0.949, alpha: 1.0)
+                self.categoryLabel.textColor = UIColor(red: 1, green: 0.098, blue: 0.098, alpha: 1.0)
+            } else {
+                self.contentView.backgroundColor = UIColor(red: 0.9373, green: 0.9373, blue: 0.9373, alpha: 1.0)
+                self.categoryLabel.textColor = .black
+                print("false")
+            }
+        }
+    }
+    static let categoryLabelText: [String: String] = ["shoes": "신발", "clothes": "의류", "fashion": "패션 잡화", "life": "라이프", "tech": "테크"]
+    var categoryParameter = String()
     let categoryLabel = UILabel()
-    let categoryFontSize: CGFloat = 14
+    let categoryFontSize: CGFloat = 13.5
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,13 +37,12 @@ class FilterCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(categoryName: String) {
-        self.categoryLabel.text = categoryName
-//        setupCategoryLabel()
+        self.categoryParameter = categoryName
+        self.categoryLabel.text = CategoryCollectionViewCell.categoryLabelText[categoryName]
     }
     
     private func applyDesign() {
-//        self.contentView.backgroundColor = colors.darkGray
-        self.contentView.backgroundColor = UIColor.lightGray
+        self.contentView.backgroundColor = UIColor(red: 0.9373, green: 0.9373, blue: 0.9373, alpha: 1.0)
         self.contentView.layer.cornerRadius = 10.0
         self.contentView.isOpaque = true
     }
