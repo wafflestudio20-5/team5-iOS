@@ -44,7 +44,7 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
         self.imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
         self.imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
 
-        self.imageView.addSubview(deleteButton)
+        self.contentView.addSubview(deleteButton)
         
         let xImage = UIImage(systemName: "x.circle.fill")
         deleteButton.setImage(xImage, for: .normal)
@@ -54,16 +54,7 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
         deleteButton.trailingAnchor.constraint(equalTo: self.imageView.trailingAnchor, constant: -5).isActive = true
         deleteButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         deleteButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        deleteButton.rx.tap
-            .bind{
-                print("tapped delete button")
-            }.disposed(by: disposeBag)
     }
-    
-    @objc func tappedDelete(){
-        self.addPostViewModel!.removePicture(at: self.tag)
-    }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

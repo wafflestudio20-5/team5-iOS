@@ -110,14 +110,13 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
         self.imageCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.imageCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.imageCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -50),
+            self.imageCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             self.imageCollectionView.topAnchor.constraint(equalTo: self.textView.bottomAnchor, constant: 10),
             self.imageCollectionView.heightAnchor.constraint(equalToConstant: 150),
         ])
     }
     
     private func bindUI() {
-        //binding to viewmodel
         self.textView.rx.text
             .orEmpty
             .bind(to: self.newPostViewModel.postTextRelay)
@@ -149,8 +148,9 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
 
         self.newPostViewModel.selectedImagesDataSource
             .bind(to: imageCollectionView.rx.items(cellIdentifier: "PostPhotoCollectionViewCell", cellType: PostPhotoCollectionViewCell.self)) { index, item, cell in
-                cell.tag = index
+                cell.deleteButton.tag = index
                 cell.setImage(image: item, addPostViewModel: self.newPostViewModel)
+                cell.deleteButton.addTarget(self, action: #selector(self.deleteButtonTapped(sender:)), for: .touchUpInside)
             }
             .disposed(by: disposeBag)
     }
@@ -159,27 +159,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
         super.viewDidLayoutSubviews()
         self.textView.layer.addBorder([.bottom], color: .lightGray, width: 1.0)
     }
-    
-    /*
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostPhotoCollectionViewCell", for: indexPath) as? PostPhotoCollectionViewCell else { return UICollectionViewCell() }
-        cell.deleteButton.tag = indexPath.row
-        cell.deleteButton.addTarget(self, action: #selector(deleteUser(sender:)), for: .touchUpInside)
-        return cell
-    }
-
-    @objc func deleteUser(sender:UIButton) {
-        print("[Log] NewPostVC: delete image")
-        let i = sender.tag
-        self.selectedImages.remove(at: i)
-        self.imageCollectionView.reloadData()
-    }*/
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = collectionView.bounds.height
-//        let cellWidth = (width - 30) / 3
-//        return CGSize(width: 70, height: 70)
-//    }
 }
 
 extension NewPostViewController: UITextViewDelegate {
@@ -208,6 +187,7 @@ extension NewPostViewController: UITextViewDelegate {
     }
 }
 
+//새로운 사진 추가 관련 함수
 extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     @objc func addPictureButtonTapped() {
         print("🆕 new picture")
@@ -231,9 +211,15 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
 }
 
-extension NewPostViewController { //포스팅 서버 업로드 관련 함수
+//버튼과 연결된 함수
+extension NewPostViewController {
     @objc func uploadPostButtonTapped() {
         print("✉️ upload post")
+    }
+    
+    @objc func deleteButtonTapped(sender: UIButton) {
+        print("❌ delete picture")
+        self.newPostViewModel.removePicture(at: sender.tag)
     }
 }
 
