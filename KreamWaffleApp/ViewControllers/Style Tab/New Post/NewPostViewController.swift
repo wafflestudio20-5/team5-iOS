@@ -11,7 +11,6 @@ import RxCocoa
 import PhotosUI
 
 class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
-    
     let newPostViewModel: NewPostViewModel
     let addButton = UIButton()
     let disposeBag = DisposeBag()
@@ -19,7 +18,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
     
     private var imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 10
@@ -126,7 +124,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
             .disposed(by: disposeBag)
         
         self.newPostViewModel.isValidPost()
-
             .bind(to: self.addButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
@@ -183,7 +180,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
 //        let cellWidth = (width - 30) / 3
 //        return CGSize(width: 70, height: 70)
 //    }
->>>>>>> f0867c7 (YPImagePicker 오류 겪는중)
 }
 
 extension NewPostViewController: UITextViewDelegate {
