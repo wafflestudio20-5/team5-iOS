@@ -12,21 +12,17 @@ import PhotosUI
 
 class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
     
-//    var imageCount = 0 {
-//        didSet {
-//            self.viewModel?.postCountRelay.accept(imageCount)
-//        }
-//    }
-    
     let newPostViewModel: NewPostViewModel
     let addButton = UIButton()
     let disposeBag = DisposeBag()
+    var cellHeight: CGFloat?
     
     private var imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 150
-        layout.minimumLineSpacing = 150
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 10
         layout.itemSize = CGSize(width: 150, height: 150)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -54,11 +50,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
     init(newPostViewModel : NewPostViewModel){
         self.newPostViewModel = newPostViewModel
         
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-
-        self.imageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-
         super.init(nibName: nil, bundle: nil)
         self.imageCollectionView.delegate = self
     }
@@ -77,8 +68,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
         configureImageCollectionView()
         bindUI()
         bindCollectionView()
-        //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
-       //view.addGestureRecognizer(tapGesture)
     }
     
     @objc private func didTapTextView(_ sender: Any) {
@@ -172,27 +161,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
         super.viewDidLayoutSubviews()
         self.textView.layer.addBorder([.bottom], color: .lightGray, width: 1.0)
     }
-    
-    /*
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostPhotoCollectionViewCell", for: indexPath) as? PostPhotoCollectionViewCell else { return UICollectionViewCell() }
-        cell.deleteButton.tag = indexPath.row
-        cell.deleteButton.addTarget(self, action: #selector(deleteUser(sender:)), for: .touchUpInside)
-        return cell
-    }
-
-    @objc func deleteUser(sender:UIButton) {
-        print("[Log] NewPostVC: delete image")
-        let i = sender.tag
-        self.selectedImages.remove(at: i)
-        self.imageCollectionView.reloadData()
-    }*/
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = collectionView.bounds.height
-//        let cellWidth = (width - 30) / 3
-//        return CGSize(width: 70, height: 70)
-//    }
 }
 
 extension NewPostViewController: UITextViewDelegate {
