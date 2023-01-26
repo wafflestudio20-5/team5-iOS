@@ -48,6 +48,120 @@ final class ShopRepository {
         }
     }
     
+    func requestImmediateDeliveryShopPostData(parameters: ShopPostRequestParameters) -> Single<[Product]> {
+        return Single.create { single in
+            let url = URL(string: "https://kream-waffle.cf/shop/productinfos/?delivery_tag=immediate&page=\(parameters.page)")
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "X-CSRFToken": "jbFr0YqXW1gRUCkvMe5fASSCsdzPJUpHt3eo5Goh71RUMn4fsCKdcuhGSZBUakes"
+            ]
+            
+            AF.request(url!, method: .get, parameters: parameters, headers: headers)
+                .responseDecodable(of: ShopPostModel.self) { [weak self] response in
+                    switch response.result {
+                    case .success(let result):
+                        let productInfoList = result.results
+                        
+                        for (var product) in productInfoList {
+                            // request brand_name
+                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
+                                product.brand_name = brandName!
+                            }
+                            
+                            // request productimages
+                            self?.requestProductImages(id: product.id) { (error, productImages) in
+                                product.imageSource = productImages!
+                            }
+                            
+                        }
+//                        print(productInfoList.count)
+                        single(.success(productInfoList))
+                    case .failure(let _):
+                        single(.success([]))
+                    }
+                }
+
+            return Disposables.create()
+        }
+    }
+    
+    func requestBrandDeliveryShopPostData(parameters: ShopPostRequestParameters) -> Single<[Product]> {
+        return Single.create { single in
+            let url = URL(string: "https://kream-waffle.cf/shop/productinfos/?delivery_tag=brand&page=\(parameters.page)")
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "X-CSRFToken": "jbFr0YqXW1gRUCkvMe5fASSCsdzPJUpHt3eo5Goh71RUMn4fsCKdcuhGSZBUakes"
+            ]
+            
+            AF.request(url!, method: .get, parameters: parameters, headers: headers)
+                .responseDecodable(of: ShopPostModel.self) { [weak self] response in
+                    switch response.result {
+                    case .success(let result):
+                        let productInfoList = result.results
+                        
+                        for (var product) in productInfoList {
+                            // request brand_name
+                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
+                                product.brand_name = brandName!
+                            }
+                            
+                            // request productimages
+                            self?.requestProductImages(id: product.id) { (error, productImages) in
+                                product.imageSource = productImages!
+                            }
+                            
+                        }
+//                        print(productInfoList.count)
+                        single(.success(productInfoList))
+                    case .failure(let _):
+                        single(.success([]))
+                    }
+                }
+
+            return Disposables.create()
+        }
+    }
+    
+    func requestCategoryShopPostData(parameters: ShopPostRequestParameters, category: String) -> Single<[Product]> {
+        return Single.create { single in
+            let url = URL(string: "https://kream-waffle.cf/shop/productinfos/?category=\(category)&page=\(parameters.page)")
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "X-CSRFToken": "jbFr0YqXW1gRUCkvMe5fASSCsdzPJUpHt3eo5Goh71RUMn4fsCKdcuhGSZBUakes"
+            ]
+            
+            AF.request(url!, method: .get, parameters: parameters, headers: headers)
+                .responseDecodable(of: ShopPostModel.self) { [weak self] response in
+                    switch response.result {
+                    case .success(let result):
+                        let productInfoList = result.results
+                        
+                        for (var product) in productInfoList {
+                            // request brand_name
+                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
+                                product.brand_name = brandName!
+                            }
+                            
+                            // request productimages
+                            self?.requestProductImages(id: product.id) { (error, productImages) in
+                                product.imageSource = productImages!
+                            }
+                            
+                        }
+//                        print(productInfoList.count)
+                        single(.success(productInfoList))
+                    case .failure(let _):
+                        single(.success([]))
+                    }
+                }
+
+            return Disposables.create()
+        }
+    }
+    
+}
+
+extension ShopRepository {
     func requestShopPostBrand(brandId: Int, completionHandler: @escaping (Error?, String?) -> Void ) {
             let url = URL(string: "https://kream-waffle.cf/shop/brands/\(brandId)/")
             let headers: HTTPHeaders = [

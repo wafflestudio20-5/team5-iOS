@@ -18,7 +18,7 @@ class Product: Codable {
     let price: Int
     let total_wishes: Int
     let total_shares: Int
-    var imageSource: [ProductImage]
+    var imageSource: [ProductImage] = [ProductImage(id: -1, url: "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png")]
 //    let transactionCount: Int
 //    let bookmarkCount: Int
 //    let relatedStyleCount: Int
@@ -42,7 +42,7 @@ class Product: Codable {
         total_wishes = try container.decodeIfPresent(Int.self, forKey: .total_wishes) ?? 0
         total_shares = try container.decodeIfPresent(Int.self, forKey: .total_shares) ?? 0
         
-        imageSource = []
+//        imageSource = []
         thumbnailImageRatio = 1
     }
     

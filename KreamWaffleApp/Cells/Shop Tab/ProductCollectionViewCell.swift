@@ -20,9 +20,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     let deliveryTagLabel = UILabel()
     let priceLabel = UILabel()
     let priceSubLabel = UILabel()
-//    let transactionCountLabel = UILabel()
-//    var transactionCount = Int()
-//    let bookmarkCountLabel = UILabel()
+
     var bookmarkCount = Int()
     let relatedStyleCountLabel = UILabel()
     var relatedStyleCount = Int()
@@ -36,10 +34,10 @@ class ProductCollectionViewCell: UICollectionViewCell {
     let h3FontSize: CGFloat = 11 // kor_nameLabel, priceSubLabel
     
     // colors
-    let mainFontColor: UIColor = .black
-    let subFontColor: UIColor = .darkGray
-    let immediateDeliveryFontColor: UIColor = UIColor(red: 0.051, green: 0.6588, blue: 0.3843, alpha: 1.0)
-    let brandDeliveryFontColor: UIColor = UIColor(red: 0.3412, green: 0.2235, blue: 0.8078, alpha: 1.0)
+    static let mainFontColor: UIColor = .black
+    static let subFontColor: UIColor = .darkGray
+    static let immediateDeliveryFontColor: UIColor = UIColor(red: 0.051, green: 0.6588, blue: 0.3843, alpha: 1.0)
+    static let brandDeliveryFontColor: UIColor = UIColor(red: 0.3412, green: 0.2235, blue: 0.8078, alpha: 1.0)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,17 +66,17 @@ class ProductCollectionViewCell: UICollectionViewCell {
             case "immediate":
                 attributedDeliveryString1 = NSMutableAttributedString(string: "빠른배송")
                 let deliveryTagImageAttachment = NSTextAttachment()
-                deliveryTagImageAttachment.image = UIImage(systemName: "bolt.fill")?.withTintColor(self.immediateDeliveryFontColor)
+                deliveryTagImageAttachment.image = UIImage(systemName: "bolt.fill")?.withTintColor(ProductCollectionViewCell.immediateDeliveryFontColor)
                 deliveryTagImageAttachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
                 let attributedDeliveryString2 = NSMutableAttributedString(attachment: deliveryTagImageAttachment)
                 attributedDeliveryString2.append(attributedDeliveryString1)
                 self.deliveryTagLabel.attributedText = attributedDeliveryString2
-                self.deliveryTagLabel.textColor = self.immediateDeliveryFontColor
+                self.deliveryTagLabel.textColor = ProductCollectionViewCell.immediateDeliveryFontColor
                 self.deliveryTagLabel.backgroundColor = UIColor(red: 0.898, green: 0.9882, blue: 0.9216, alpha: 1.0)
             case "brand":
     //            attributedDeliveryString1 = NSMutableAttributedString(string: "브랜드배송")
                 self.deliveryTagLabel.text = "브랜드배송"
-                self.deliveryTagLabel.textColor = self.brandDeliveryFontColor
+                self.deliveryTagLabel.textColor = ProductCollectionViewCell.brandDeliveryFontColor
                 self.deliveryTagLabel.backgroundColor = UIColor(red: 0.8902, green: 0.898, blue: 0.949, alpha: 1.0)
     //            self.deliveryTagLabel.sizeToFit()
             default:
@@ -120,7 +118,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
 //    private func setupTransactionCountLabel() {
 //        self.transactionCountLabel.font = UIFont.boldSystemFont(ofSize: 15)
-//        self.transactionCountLabel.textColor = self.mainFontColor
+//        self.transactionCountLabel.textColor = self.ProductCollectionViewCell.mainFontColor
 //        self.transactionCountLabel.lineBreakMode = .byWordWrapping
 //        self.transactionCountLabel.numberOfLines = 1
 //        self.transactionCountLabel.textAlignment = .left
@@ -139,7 +137,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
     private func setupBrandLabel() {
         self.brandLabel.font = UIFont.boldSystemFont(ofSize: self.h2FontSize)
-        self.brandLabel.textColor = self.mainFontColor
+        self.brandLabel.textColor = ProductCollectionViewCell.mainFontColor
         self.brandLabel.numberOfLines = 1
         self.brandLabel.lineBreakMode = .byTruncatingTail
 //        self.brandLabel.textAlignment = .left
@@ -152,14 +150,14 @@ class ProductCollectionViewCell: UICollectionViewCell {
             brandLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
             brandLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             brandLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            brandLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 5),
+            brandLabel.topAnchor.constraint(equalTo: self.imageView.bottomAnchor, constant: 7),
 //            brandLabel.bottomAnchor.constraint(equalTo: self.brandLabel.topAnchor, constant: 14)
         ])
     }
     
     private func setupeng_nameLabel() {
         self.eng_nameLabel.font = UIFont.systemFont(ofSize: self.h2FontSize)
-        self.eng_nameLabel.textColor = self.mainFontColor
+        self.eng_nameLabel.textColor = ProductCollectionViewCell.mainFontColor
         self.eng_nameLabel.numberOfLines = 2
         self.eng_nameLabel.lineBreakMode = .byTruncatingTail
 //        self.eng_nameLabel.textAlignment = .left
@@ -179,7 +177,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
     private func setupkor_nameLabel() {
         self.kor_nameLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
-        self.kor_nameLabel.textColor = self.subFontColor
+        self.kor_nameLabel.textColor = ProductCollectionViewCell.subFontColor
         self.kor_nameLabel.numberOfLines = 1
         self.kor_nameLabel.lineBreakMode = .byTruncatingTail
 //        self.kor_nameLabel.textAlignment = .left
@@ -217,7 +215,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
     private func setupPriceLabel() {
         self.priceLabel.font = UIFont.boldSystemFont(ofSize: self.h1FontSize)
-        self.priceLabel.textColor = self.mainFontColor
+        self.priceLabel.textColor = ProductCollectionViewCell.mainFontColor
         self.priceLabel.lineBreakMode = .byWordWrapping
         self.priceLabel.numberOfLines = 1
 //        self.priceLabel.textAlignment = .left
@@ -235,7 +233,7 @@ class ProductCollectionViewCell: UICollectionViewCell {
         
         self.priceSubLabel.text = "즉시 구매가"
         self.priceSubLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
-        self.priceSubLabel.textColor = self.subFontColor
+        self.priceSubLabel.textColor = ProductCollectionViewCell.subFontColor
         
         self.contentView.addSubview(self.priceSubLabel)
         self.priceSubLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -252,8 +250,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
         self.bookmarkButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
         self.bookmarkButton.setTitle("\(self.bookmarkCount)", for: .normal)
 //        self.bookmarkButton.addTarget(self, action: #selector(tappedBookmarkButton), for: .touchUpInside)
-        self.bookmarkButton.tintColor = self.subFontColor
-        self.bookmarkButton.setTitleColor(self.subFontColor, for: .normal)
+        self.bookmarkButton.tintColor = ProductCollectionViewCell.subFontColor
+        self.bookmarkButton.setTitleColor(ProductCollectionViewCell.subFontColor, for: .normal)
         self.bookmarkButton.titleLabel?.font = UIFont.systemFont(ofSize: self.h3FontSize)
         self.bookmarkButton.contentHorizontalAlignment = .left
         
@@ -273,8 +271,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
         self.relatedStyleButton.setImage(UIImage(systemName: "heart.text.square"), for: .normal)
         self.relatedStyleButton.setTitle("\(self.relatedStyleCount)", for: .normal)
 //        self.bookmarkButton.addTarget(self, action: #selector(tappedBookmarkButton), for: .touchUpInside)
-        self.relatedStyleButton.tintColor = self.subFontColor
-        self.relatedStyleButton.setTitleColor(self.subFontColor, for: .normal)
+        self.relatedStyleButton.tintColor = ProductCollectionViewCell.subFontColor
+        self.relatedStyleButton.setTitleColor(ProductCollectionViewCell.subFontColor, for: .normal)
         self.relatedStyleButton.titleLabel?.font = UIFont.systemFont(ofSize: self.h3FontSize)
         self.relatedStyleButton.contentHorizontalAlignment = .left
         

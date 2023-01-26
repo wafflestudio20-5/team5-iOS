@@ -1,5 +1,5 @@
 //
-//  ShopFilterCollectionViewFlowLayout.swift
+//  ShopCategoryCollectionViewFlowLayout.swift
 //  KreamWaffleApp
 //
 //  Created by 이선재 on 2023/01/02.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ShopFilterCollectionViewFlowLayout: UICollectionViewFlowLayout {
+class ShopCategoryCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override init() {
         super.init()
         
@@ -17,7 +17,8 @@ class ShopFilterCollectionViewFlowLayout: UICollectionViewFlowLayout {
         self.scrollDirection = .horizontal
        
         let cellWidth = 30 // Subtract minimumInteritemSpacing and Inset
-        self.itemSize = CGSize(width: 80, height: 40)
+//        self.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        self.itemSize = CGSize(width: 80, height: 35)
         
     }
     
