@@ -424,6 +424,7 @@
 				5CB810E029683D6A0021FDD6 /* StyleTabDetailViewModel.swift */,
 				5C6FBD66297A60C200B64FF0 /* UserListViewModel.swift */,
 				5C6FBD70297BCBA200B64FF0 /* UserProfileViewModel.swift */,
+				65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -433,7 +434,6 @@
 			children = (
 				9428AE46295718E200DC7907 /* ShopViewModel.swift */,
 				94155C50297A4E720092B561 /* ShopTabDetailViewModel.swift */,
-				65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";

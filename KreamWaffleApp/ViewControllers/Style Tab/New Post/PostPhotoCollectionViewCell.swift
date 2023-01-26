@@ -10,9 +10,7 @@ import RxCocoa
 import RxSwift
 
 class PostPhotoCollectionViewCell: UICollectionViewCell {
-    
-    var viewModel : AddPostViewModel?
-    
+    var addPostViewModel : AddPostViewModel?
     let imageView = UIImageView()
     let deleteButton = UIButton()
     
@@ -23,9 +21,9 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
         configureDesign()
     }
     
-    func setImage(image: UIImage, viewModel: AddPostViewModel){
+    func setImage(image: UIImage, addPostViewModel: AddPostViewModel){
         self.imageView.image = image
-        self.viewModel = viewModel
+        self.addPostViewModel = addPostViewModel
     }
     
     override var reuseIdentifier: String {
@@ -57,7 +55,7 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func tappedDelete(){
-        print("tapped delete, connect to viewmodel")
+        self.addPostViewModel!.removePhoto(at: self.tag)
     }
     
     

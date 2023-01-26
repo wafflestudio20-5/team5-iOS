@@ -19,16 +19,7 @@ struct TemporaryUserData {
     let nickname = "크림맛와플"
 }
 
-class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImagePickerDelegate {
-    
-    
-    func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
-        //
-    }
-    
-    func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
-        return true
-    }
+class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     var selectedItems = [YPMediaItem]()
     
@@ -84,71 +75,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
         setupDivider()
         setupChildVC()
     }
-    
-    func setUpCameraButton(){
-        let cameraImage = UIImage(systemName: "camera.circle.fill")
-        let tintedCameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
-        let cameraButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(cameraButtonTapped))
-        cameraButton.image = tintedCameraImage
-        cameraButton.tintColor = .darkGray
-        self.navigationItem.rightBarButtonItem = cameraButton
-    }
-                                           
-    @objc func cameraButtonTapped(){
-        
-        var config = YPImagePickerConfiguration()
-        config.library.mediaType = .photoAndVideo
-        config.library.itemOverlayType = .grid
-        config.shouldSaveNewPicturesToAlbum = false
-        config.startOnScreen = .library
-        config.screens = [.library, .photo]
-        config.library.minWidthForItem = UIScreen.main.bounds.width * 0.8
-        config.video.libraryTimeLimit = 500.0
-        config.showsCrop = .rectangle(ratio: (16/9))
-        config.wordings.libraryTitle = "최근"
-        config.hidesStatusBar = false
-        config.hidesBottomBar = false
-        config.maxCameraZoomFactor = 2.0
-        config.library.maxNumberOfItems = 5
-        config.gallery.hidesRemoveButton = false
-        config.library.preselectedItems = selectedItems
-
-        //config.fonts.menuItemFont = UIFont.systemFont(ofSize: 22.0, weight: .semibold)
-        //config.fonts.pickerTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .black)
-        //config.fonts.rightBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .bold)
-        //config.fonts.navigationBarTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
-        //config.fonts.leftBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
-        let picker = YPImagePicker(configuration: config)
-
-        picker.imagePickerDelegate = self
-        picker.didFinishPicking { [weak picker] items, cancelled in
-
-            if cancelled {
-                print("Picker was canceled")
-                picker?.dismiss(animated: true, completion: nil)
-                return
-            }
-            _ = items.map { print("🧀 \($0)") }
-
-            self.selectedItems = items
-            if let firstItem = items.first {
-                switch firstItem {
-                case .photo(let photo):
-                    let sample_1 = photo.image.resize(targetSize:CGSize(width: 60, height: 60))
-                    let images = [sample_1]
-                    let newPostVM = AddPostViewModel()
-                    let postVC = NewPostViewController(selectedImages: images, viewModel: newPostVM)
-                    postVC.hidesBottomBarWhenPushed = true
-                    picker?.pushViewController(postVC, animated: true)
-                    //self.navigationController?.pushViewController(photoPickerVC, animated: true)
-                    
-                case .video(let video):
-                    print("Error: There shouldn't be video?")
-                }
-            }
-        }
-    present(picker, animated: true, completion: nil)
-    }
                                            
     func setUpSegmentedControl() {
         let segmentedControl = BetterSegmentedControl(
@@ -172,6 +98,15 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
 
         segmentedControl.sizeToFit()
         navigationItem.titleView = segmentedControl
+    }
+    
+    func setUpCameraButton(){
+        let cameraImage = UIImage(systemName: "camera.circle.fill")
+        let tintedCameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
+        let cameraButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(cameraButtonTapped))
+        cameraButton.image = tintedCameraImage
+        cameraButton.tintColor = .darkGray
+        self.navigationItem.rightBarButtonItem = cameraButton
     }
     
     func setUpFixedViewLayout() {
@@ -322,3 +257,72 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
         self.loginVM.logout()
     }
 }
+
+
+extension MyTabViewController: YPImagePickerDelegate {
+    func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
+        //
+    }
+    
+    func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
+        return true
+    }
+}
+
+extension MyTabViewController {
+    @objc func cameraButtonTapped(){
+        var config = YPImagePickerConfiguration()
+        config.library.mediaType = .photo
+        config.library.itemOverlayType = .grid
+        config.shouldSaveNewPicturesToAlbum = false
+        config.startOnScreen = .library
+        config.screens = [.library, .photo]
+        config.library.minWidthForItem = UIScreen.main.bounds.width * 0.8
+        config.video.libraryTimeLimit = 500.0
+//        config.showsCrop = .rectangle(ratio: (16/9))
+        config.showsCrop = .none
+
+        config.wordings.libraryTitle = "최근"
+        config.hidesStatusBar = false
+        config.hidesBottomBar = false
+        config.maxCameraZoomFactor = 2.0
+        config.library.maxNumberOfItems = 5
+        config.gallery.hidesRemoveButton = false
+        config.library.preselectedItems = selectedItems
+
+        //config.fonts.menuItemFont = UIFont.systemFont(ofSize: 22.0, weight: .semibold)
+        //config.fonts.pickerTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .black)
+        //config.fonts.rightBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .bold)
+        //config.fonts.navigationBarTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
+        //config.fonts.leftBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
+        let picker = YPImagePicker(configuration: config)
+
+        picker.imagePickerDelegate = self
+        picker.didFinishPicking { [weak picker] items, cancelled in
+
+            if cancelled {
+                print("Picker was canceled")
+                picker?.dismiss(animated: true, completion: nil)
+                return
+            }
+            _ = items.map { print("🧀 \($0)") }
+
+            self.selectedItems = items
+            var selectedImages = [UIImage]()
+            for item in items {
+                switch item {
+                case.photo(let photo):
+                    selectedImages.append(photo.image)
+                case .video(_):
+                    print("Error: There shouldn't be video?")
+                }
+            }
+            let newPostVM = AddPostViewModel(selectedImages: selectedImages)
+            let postVC = NewPostViewController(addPostViewModel: newPostVM)
+            postVC.hidesBottomBarWhenPushed = true
+            picker?.pushViewController(postVC, animated: true)
+        }
+        present(picker, animated: true, completion: nil)
+    }
+}
+

@@ -9,21 +9,22 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class NewPostViewController: UIViewController, UIScrollViewDelegate {
+class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
     
     private let bag = DisposeBag()
     
-    var imageCount = 0 {
-        didSet {
-            self.viewModel?.postCountRelay.accept(imageCount)
-        }
-    }
+//    var imageCount = 0 {
+//        didSet {
+//            self.viewModel?.postCountRelay.accept(imageCount)
+//        }
+//    }
     
-    private var selectedImages : [UIImage]
-    var viewModel : AddPostViewModel?
+    let addPostViewModel: AddPostViewModel
     let addButton = UIButton()
+    let disposeBag = DisposeBag()
     
-    let textViewPlaceHolder = "#아이템과 #스타일을 자랑해보세요..."
+    private let imageCollectionView: UICollectionView
+//    private var layout = UICollectionViewFlowLayout()
     
     lazy var textView: UITextView = {
         let view = UITextView()
@@ -34,32 +35,40 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
         view.delegate = self
         return view
         }()
+    
+    let textViewPlaceHolder = "#아이템과 #스타일을 자랑해보세요..."
+    
+    init(addPostViewModel : AddPostViewModel){
+        self.addPostViewModel = addPostViewModel
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
 
-    private var imageCollectionView : UICollectionView!
-    private var layout = UICollectionViewFlowLayout()
+        self.imageCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+
+        super.init(nibName: nil, bundle: nil)
+        self.imageCollectionView.delegate = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpBackButton()
         self.view.backgroundColor = .white
         setupNavigationBar()
-        bind()
         addSubviews()
         configureImageCollectionView()
         configureTextfield()
+        bind()
         //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
        //view.addGestureRecognizer(tapGesture)
     }
     
-    @objc
-        private func didTapTextView(_ sender: Any) {
-            view.endEditing(true)
-        }
-
-    
-    func addSubviews(){
-        self.view.addSubview(imageCollectionView)
-        self.view.addSubview(textView)
+    @objc private func didTapTextView(_ sender: Any) {
+        view.endEditing(true)
     }
     
     //등록 버튼 rx 바인딩 해주기
@@ -72,59 +81,13 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
         self.navigationItem.title = "스타일 올리기"
     }
     
-    //should take photo and post view model
-    init(selectedImages : [UIImage], viewModel : AddPostViewModel){
-        self.selectedImages = selectedImages
-        self.viewModel = viewModel
-        self.imageCount = selectedImages.count
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func bind(){
-       
-        //binding to viewmodel
-        self.textView.rx.text
-            .orEmpty
-            .bind(to: self.viewModel!.postTextRelay)
-            .disposed(by: bag)
-        
-        self.viewModel?.isValid()
-            .bind(to: self.addButton.rx.isEnabled)
-            .disposed(by: bag)
-        
-        self.viewModel?.isValid()
-            .map { $0 ? UIColor.black: UIColor.lightGray}
-            .bind(to: self.addButton.rx.tintColor)
-            .disposed(by: bag)
-        
-    
-        
-        //binding collection view
-        imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        self.imageCollectionView.register(PostPhotoCollectionViewCell.self, forCellWithReuseIdentifier: "PostPhotoCollectionViewCell")
-        imageCollectionView.rx.setDelegate(self)
-            .disposed(by: bag)
-        let imageObservable = Observable.of(self.selectedImages)
-        imageObservable
-            .observe(on: MainScheduler.instance)
-            .bind(to: imageCollectionView.rx.items(cellIdentifier: "PostPhotoCollectionViewCell", cellType: PostPhotoCollectionViewCell.self))
-        { index, image, cell in
-            cell.setImage(image: image, viewModel: self.viewModel!)
-            cell.layer.cornerRadius = 5
-        }
-        .disposed(by: bag)
-        
-        
+    func addSubviews(){
+        self.view.addSubview(imageCollectionView)
+        self.view.addSubview(textView)
     }
     
     private func configureImageCollectionView(){
-        self.layout.scrollDirection = .horizontal
         //self.layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
-        self.imageCollectionView.setCollectionViewLayout(layout, animated: true)
         self.imageCollectionView.showsHorizontalScrollIndicator = false
         self.imageCollectionView.backgroundColor = .clear
         self.imageCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -135,17 +98,64 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
         self.imageCollectionView.contentInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.textView.layer.addBorder([.bottom], color: .lightGray, width: 1.0)
-    }
-    
     private func configureTextfield(){
         self.textView.translatesAutoresizingMaskIntoConstraints = false
         self.textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         self.textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
         self.textView.topAnchor.constraint(equalTo: self.imageCollectionView.bottomAnchor, constant: 20).isActive = true
         self.textView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    }
+    
+    private func bind() {
+        //binding to viewmodel
+        self.textView.rx.text
+            .orEmpty
+            .bind(to: self.addPostViewModel.postTextRelay)
+            .disposed(by: bag)
+        
+        self.addPostViewModel.isValid()
+            .bind(to: self.addButton.rx.isEnabled)
+            .disposed(by: bag)
+        
+        self.addPostViewModel.isValid()
+            .map { $0 ? UIColor.black: UIColor.lightGray}
+            .bind(to: self.addButton.rx.tintColor)
+            .disposed(by: bag)
+        
+    
+        
+        //binding collection view
+//        imageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        self.imageCollectionView.register(PostPhotoCollectionViewCell.self, forCellWithReuseIdentifier: "PostPhotoCollectionViewCell")
+//        imageCollectionView.rx.setDelegate(self)
+//            .disposed(by: bag)
+//        let imageObservable = Observable.of(self.selectedImages)
+//        imageObservable
+//            .observe(on: MainScheduler.instance)
+//            .bind(to: imageCollectionView.rx.items(cellIdentifier: "PostPhotoCollectionViewCell", cellType: PostPhotoCollectionViewCell.self))
+//        { index, image, cell in
+//            cell.setImage(image: image, viewModel: self.viewModel!)
+//            cell.layer.cornerRadius = 5
+//        }
+//        .disposed(by: bag)
+        
+
+        self.imageCollectionView.register(PostPhotoCollectionViewCell.self, forCellWithReuseIdentifier: "PostPhotoCollectionViewCell")
+
+        self.addPostViewModel.selectedImagesDataSource
+            .bind(to: imageCollectionView.rx.items(cellIdentifier: "PostPhotoCollectionViewCell", cellType: PostPhotoCollectionViewCell.self)) { index, item, cell in
+                cell.tag = index
+                cell.setImage(image: item, addPostViewModel: self.addPostViewModel)
+            }
+            .disposed(by: disposeBag)
+
+        
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.textView.layer.addBorder([.bottom], color: .lightGray, width: 1.0)
     }
     
     /*
@@ -163,11 +173,11 @@ class NewPostViewController: UIViewController, UIScrollViewDelegate {
         self.imageCollectionView.reloadData()
     }*/
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.height
-        let cellWidth = (width - 30) / 3
-        return CGSize(width: 70, height: 70)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let width = collectionView.bounds.height
+//        let cellWidth = (width - 30) / 3
+//        return CGSize(width: 70, height: 70)
+//    }
 }
 
 extension NewPostViewController: UITextViewDelegate {

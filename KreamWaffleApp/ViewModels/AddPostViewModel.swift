@@ -15,8 +15,20 @@ final class AddPostViewModel{
     
     let postCountRelay = BehaviorRelay<Int>(value: 0)
     let postTextRelay = BehaviorRelay<String>(value: "")
+    let selectedImagesDataSource = BehaviorRelay<[UIImage]>(value: [])
+    
+    var selectedImages = [UIImage]() {
+        didSet {
+            self.postCountRelay.accept(selectedImages.count)
+            self.selectedImagesDataSource.accept(selectedImages)
+        }
+    }
     
     let bag = DisposeBag()
+    
+    init(selectedImages: [UIImage]) {
+        self.selectedImages = selectedImages
+    }
     
     func isValid() -> Observable<Bool> {
         return Observable.combineLatest(postCountRelay, postTextRelay).map { count, text in
@@ -28,8 +40,7 @@ final class AddPostViewModel{
         //사진이랑 텍스트 보냄. 
     }
     
-    func removePhoto(){
-        let count = postCountRelay.value
-        self.postCountRelay.accept((count-1))
+    func removePhoto(at index: Int){
+        self.selectedImages.remove(at: index)
     }
 }
