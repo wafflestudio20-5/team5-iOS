@@ -12,6 +12,7 @@ import AVFoundation
 import AVKit
 import Photos
 import YPImagePicker
+import PhotosUI
 
 struct TemporaryUserData {
     let profileImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Waffles_with_Strawberries.jpg/440px-Waffles_with_Strawberries.jpg"
@@ -269,60 +270,10 @@ extension MyTabViewController: YPImagePickerDelegate {
     }
 }
 
-extension MyTabViewController {
+extension MyTabViewController{
     @objc func cameraButtonTapped(){
-        var config = YPImagePickerConfiguration()
-        config.library.mediaType = .photo
-        config.library.itemOverlayType = .grid
-        config.shouldSaveNewPicturesToAlbum = false
-        config.startOnScreen = .library
-        config.screens = [.library, .photo]
-        config.library.minWidthForItem = UIScreen.main.bounds.width * 0.8
-        config.video.libraryTimeLimit = 500.0
-//        config.showsCrop = .rectangle(ratio: (16/9))
-        config.showsCrop = .none
-
-        config.wordings.libraryTitle = "최근"
-        config.hidesStatusBar = false
-        config.hidesBottomBar = false
-        config.maxCameraZoomFactor = 2.0
-        config.library.maxNumberOfItems = 5
-        config.gallery.hidesRemoveButton = false
-        config.library.preselectedItems = selectedItems
-
-        //config.fonts.menuItemFont = UIFont.systemFont(ofSize: 22.0, weight: .semibold)
-        //config.fonts.pickerTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .black)
-        //config.fonts.rightBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .bold)
-        //config.fonts.navigationBarTitleFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
-        //config.fonts.leftBarButtonFont = UIFont.systemFont(ofSize: 22.0, weight: .heavy)
-        let picker = YPImagePicker(configuration: config)
-
-        picker.imagePickerDelegate = self
-        picker.didFinishPicking { [weak picker] items, cancelled in
-
-            if cancelled {
-                print("Picker was canceled")
-                picker?.dismiss(animated: true, completion: nil)
-                return
-            }
-            _ = items.map { print("🧀 \($0)") }
-
-            self.selectedItems = items
-            var selectedImages = [UIImage]()
-            for item in items {
-                switch item {
-                case.photo(let photo):
-                    selectedImages.append(photo.image)
-                case .video(_):
-                    print("Error: There shouldn't be video?")
-                }
-            }
-            let newPostVM = AddPostViewModel(selectedImages: selectedImages)
-            let postVC = NewPostViewController(addPostViewModel: newPostVM)
-            postVC.hidesBottomBarWhenPushed = true
-            picker?.pushViewController(postVC, animated: true)
-        }
-        present(picker, animated: true, completion: nil)
+        print("📮 글 작성 버튼 TAP")
+        pushNewPostVC()
     }
 }
 
