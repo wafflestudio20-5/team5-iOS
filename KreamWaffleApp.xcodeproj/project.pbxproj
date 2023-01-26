@@ -428,6 +428,7 @@
 				5C6FBD66297A60C200B64FF0 /* UserListViewModel.swift */,
 				5C6FBD70297BCBA200B64FF0 /* UserProfileViewModel.swift */,
 				5C6CE19B2982764100755334 /* NewPostViewModel.swift */,
+				65DC40BB2980B0F300D14DBF /* AddPostViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";

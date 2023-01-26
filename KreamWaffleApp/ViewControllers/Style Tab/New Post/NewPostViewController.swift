@@ -126,6 +126,7 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
             .disposed(by: disposeBag)
         
         self.newPostViewModel.isValidPost()
+
             .bind(to: self.addButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
@@ -161,6 +162,28 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
         super.viewDidLayoutSubviews()
         self.textView.layer.addBorder([.bottom], color: .lightGray, width: 1.0)
     }
+    
+    /*
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostPhotoCollectionViewCell", for: indexPath) as? PostPhotoCollectionViewCell else { return UICollectionViewCell() }
+        cell.deleteButton.tag = indexPath.row
+        cell.deleteButton.addTarget(self, action: #selector(deleteUser(sender:)), for: .touchUpInside)
+        return cell
+    }
+
+    @objc func deleteUser(sender:UIButton) {
+        print("[Log] NewPostVC: delete image")
+        let i = sender.tag
+        self.selectedImages.remove(at: i)
+        self.imageCollectionView.reloadData()
+    }*/
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let width = collectionView.bounds.height
+//        let cellWidth = (width - 30) / 3
+//        return CGSize(width: 70, height: 70)
+//    }
+>>>>>>> f0867c7 (YPImagePicker 오류 겪는중)
 }
 
 extension NewPostViewController: UITextViewDelegate {
