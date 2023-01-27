@@ -273,7 +273,15 @@ extension MyTabViewController: YPImagePickerDelegate {
 extension MyTabViewController{
     @objc func cameraButtonTapped(){
         print("📮 글 작성 버튼 TAP")
-        pushNewPostVC()
+        if (self.userInfoVM.isLoggedIn()) {
+            pushNewPostVC()
+        } else {
+            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoVM.UserUseCase)
+
+            let loginScreen = LoginViewController(viewModel: loginViewModel)
+            loginScreen.modalPresentationStyle = .fullScreen
+            self.present(loginScreen, animated: false)
+        }
     }
 }
 

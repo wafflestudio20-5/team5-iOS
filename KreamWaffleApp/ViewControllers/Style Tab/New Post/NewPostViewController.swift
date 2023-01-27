@@ -215,6 +215,12 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
 extension NewPostViewController {
     @objc func uploadPostButtonTapped() {
         print("✉️ upload post")
+        LoadingIndicator.showLoading()
+        
+        self.newPostViewModel.uploadPost(content: textView.text) {
+            LoadingIndicator.hideLoading()
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @objc func deleteButtonTapped(sender: UIButton) {

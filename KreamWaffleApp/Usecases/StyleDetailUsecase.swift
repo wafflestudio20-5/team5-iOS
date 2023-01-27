@@ -9,9 +9,9 @@ import Foundation
 
 final class StyleDetailUsecase {
     private let repository: StyleDetailRepository
-    private let stylePost: StylePost
+    private let stylePost: Post
     
-    init(repository: StyleDetailRepository, stylePost: StylePost) {
+    init(repository: StyleDetailRepository, stylePost: Post) {
         self.repository = repository
         self.stylePost = stylePost
     }
@@ -29,7 +29,7 @@ final class StyleDetailUsecase {
     }
     
     func getNumLikes() -> Int {
-        return self.stylePost.num_likes
+        return Int(self.stylePost.num_likes)!
     }
     
     func getContent() -> String {

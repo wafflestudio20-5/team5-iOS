@@ -41,8 +41,9 @@ final class NewPostViewModel {
         }
     }
     
-    func uploadPost(){
-        //사진이랑 텍스트 보냄.
+    func uploadPost(content: String, completion: @escaping () -> ()){
+        let ratio = selectedImages[0].size.height / selectedImages[0].size.width
+        self.newPostRepository.uploadPost(images: selectedImages, content: content, ratio: ratio, completion: completion)
     }
     
     func removePicture(at index: Int){

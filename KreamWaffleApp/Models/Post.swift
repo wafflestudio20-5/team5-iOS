@@ -8,15 +8,15 @@
 import Foundation
 import Kingfisher
 
-class StylePost: Codable {
+class Post: Codable {
     let id: Int
     let content: String
     let images: [String]
     let image_ratio: Float
     let created_by: NestedProfile
     let created_at: String
-    let num_comments: Int
-    let num_likes: Int
+    let num_comments: String
+    let num_likes: String
     
     init(
         id: Int,
@@ -25,8 +25,8 @@ class StylePost: Codable {
         image_ratio: Float,
         created_by: NestedProfile,
         created_at: String,
-        num_comments: Int,
-        num_likes: Int
+        num_comments: String,
+        num_likes: String
     ) {
         self.id = id
         self.content = content
