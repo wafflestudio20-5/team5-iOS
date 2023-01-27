@@ -95,8 +95,7 @@ extension UserListCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
             self.present(loginScreen, animated: false)
         } else {
             self.userInfoViewModel.requestFollow(user_id: sender.tag)
-            sender.isFollowing = !sender.isFollowing
-            sender.configureFollowButton()
+            sender.followButtonTapped()
         }
     }
     

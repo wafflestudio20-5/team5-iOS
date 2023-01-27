@@ -270,21 +270,21 @@ final class UserProfileViewController: UIViewController {
             self.followButton.isEnabled = false
         }
         
-        if let urlString = profile.image {
-            if let url = URL.init(string: urlString) {
-                let resource = ImageResource(downloadURL: url)
-                
-                KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
-                    switch result {
-                    case .success(let value):
-                        self.profileImageView.image = value.image
-                    case .failure(let error):
-                        print("Error: \(error)")
-                        //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
-                    }
+        let urlString = profile.image
+        if let url = URL.init(string: urlString) {
+            let resource = ImageResource(downloadURL: url)
+            
+            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    self.profileImageView.image = value.image
+                case .failure(let error):
+                    print("Error: \(error)")
+                    //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
                 }
             }
         }
+        
         
         self.profileNameLabel.text = profile.profile_name
         self.userNameLabel.text = profile.user_name

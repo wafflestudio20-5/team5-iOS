@@ -165,7 +165,7 @@ class LoginRepository {
     
     // ****** API 오기 전 테스트 ******
     func loadFollowingSet() -> Set<Int> {
-        return [1, 2, 3]
+        return [1, 2, 3, 8]
     }
     // ****** API 오기 전 테스트 ******
     

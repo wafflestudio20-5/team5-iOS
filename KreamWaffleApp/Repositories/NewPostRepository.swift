@@ -39,10 +39,12 @@ final class NewPostRepository {
              }
             
         }, to: newPostConstants.uri, method: .post, headers: newPostConstants.headers)
+        .validate()
         .responseData { response in
             switch response.result {
             case .success:
                 print("포스팅 업로드 완료")
+                debugPrint(response)
             case .failure:
                 print("포스팅 업로드 실패")
                 debugPrint(response)

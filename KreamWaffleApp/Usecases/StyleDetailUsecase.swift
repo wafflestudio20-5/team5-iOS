@@ -29,7 +29,7 @@ final class StyleDetailUsecase {
     }
     
     func getNumLikes() -> Int {
-        return Int(self.stylePost.num_likes)!
+        return Int(exactly: self.stylePost.num_likes)!
     }
     
     func getContent() -> String {

@@ -8,11 +8,15 @@
 import Foundation
 
 final class Profile: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case user_id, user_name, profile_name, introduction, image, num_followers, num_followings, following
+    }
+    
     let user_id: Int
     let user_name: String
     let profile_name: String
     let introduction: String
-    let image: String?
+    let image: String
     let num_followers: Int
     let num_followings: Int
     let following: String?
@@ -46,5 +50,18 @@ final class Profile: Codable {
         self.num_followers = 0
         self.num_followings = 0
         self.following = nil
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        user_id = try container.decodeIfPresent(Int.self, forKey: .user_id) ?? -1
+        user_name = try container.decodeIfPresent(String.self, forKey: .user_name) ?? "-"
+        profile_name = try container.decodeIfPresent(String.self, forKey: .profile_name) ?? "-"
+        introduction = try container.decodeIfPresent(String.self, forKey: .introduction) ?? "-"
+        image = try container.decodeIfPresent(String.self, forKey: .image) ?? ""
+        num_followers = try container.decodeIfPresent(Int.self, forKey: .num_followers) ?? 0
+        num_followings = try container.decodeIfPresent(Int.self, forKey: .num_followings) ?? 0
+        following = try container.decodeIfPresent(String?.self, forKey: .following) ?? nil
     }
 }
