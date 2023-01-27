@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import PhotosUI
+import Kingfisher
 
 class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
     let newPostViewModel: NewPostViewModel
@@ -215,12 +216,24 @@ extension NewPostViewController: UIImagePickerControllerDelegate, UINavigationCo
 extension NewPostViewController {
     @objc func uploadPostButtonTapped() {
         print("✉️ upload post")
+        
+        let completion = { [weak self] in
+            LoadingIndicator.hideLoading()
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        let onNetworkFailure = { [weak self] in
+            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                self?.navigationController?.popViewController(animated: true)
+            }
+            alert.addAction(okAction)
+            self?.present(alert, animated: false, completion: nil)
+        }
+        
         LoadingIndicator.showLoading()
         
-        self.newPostViewModel.uploadPost(content: textView.text) {
-            LoadingIndicator.hideLoading()
-            self.navigationController?.popViewController(animated: true)
-        }
+        self.newPostViewModel.uploadPost(content: textView.text, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
     @objc func deleteButtonTapped(sender: UIButton) {

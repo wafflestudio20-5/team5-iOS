@@ -25,18 +25,19 @@ final class UserProfileRepository {
         ]
     }
     
-    func requestProfile(user_id: Int) -> Single<Profile?> {
+    func requestProfile(user_id: Int, onNetworkFailure: @escaping ()->()) -> Single<Profile?> {
         return Single.create { single in
-//            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
-            AF.request(fetchUserConstants.uri + "8/", method: .get, headers: fetchUserConstants.headers)
+            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
+                .validate()
                 .responseDecodable(of: Profile.self) {response in
                     switch response.result {
                     case .success(let result):
+                        debugPrint(response)
                         single(.success(result))
                     case .failure:
                         debugPrint(response)
-                        print("유저 불러오기 실패")
                         single(.success(nil))
+                        onNetworkFailure()
                     }
                 }
             

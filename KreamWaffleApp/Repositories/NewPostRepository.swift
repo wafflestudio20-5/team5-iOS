@@ -19,7 +19,7 @@ final class NewPostRepository {
         ]
     }
     
-    func uploadPost(images: [UIImage], content: String, ratio: CGFloat, completion: @escaping ()->()) {
+    func uploadPost(images: [UIImage], content: String, ratio: CGFloat, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
         let parameters: [String: Any] = [
             "content": content,
             "image_ratio": Float(ratio)
@@ -48,6 +48,7 @@ final class NewPostRepository {
             case .failure:
                 print("포스팅 업로드 실패")
                 debugPrint(response)
+                onNetworkFailure()
             }
             
             completion()

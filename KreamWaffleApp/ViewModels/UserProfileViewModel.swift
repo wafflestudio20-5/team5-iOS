@@ -25,7 +25,7 @@ final class UserProfileViewModel {
         }
     }
     
-    func requestProfile() {
-        self.userProfileUsecase.requestProfile()
+    func requestProfile(onNetworkFailure: @escaping ()->()) {
+        self.userProfileUsecase.requestProfile(onNetworkFailure: onNetworkFailure)
     }
 }
