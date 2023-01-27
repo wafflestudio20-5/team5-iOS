@@ -12,7 +12,7 @@ final class Profile: Codable {
     let user_name: String
     let profile_name: String
     let introduction: String
-    let image: String
+    let image: String?
     let num_followers: Int
     let num_followings: Int
     let following: String?
@@ -22,7 +22,7 @@ final class Profile: Codable {
         user_name: String,
         profile_name: String,
         introduction: String,
-        image: String,
+        image: String?,
         num_followers: String,
         num_followings: String,
         following: String
@@ -31,7 +31,7 @@ final class Profile: Codable {
         self.user_name = user_name
         self.profile_name = profile_name
         self.introduction = introduction
-        self.image = image
+        self.image = image ?? ""
         self.num_followers = Int(num_followers)!
         self.num_followings = Int(num_followings)!
         self.following = following

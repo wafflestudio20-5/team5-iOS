@@ -28,7 +28,7 @@ final class UserProfileRepository {
     func requestProfile(user_id: Int) -> Single<Profile?> {
         return Single.create { single in
 //            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
-            AF.request(fetchUserConstants.uri + "7/", method: .get, headers: fetchUserConstants.headers)
+            AF.request(fetchUserConstants.uri + "8/", method: .get, headers: fetchUserConstants.headers)
                 .responseDecodable(of: Profile.self) {response in
                     switch response.result {
                     case .success(let result):
