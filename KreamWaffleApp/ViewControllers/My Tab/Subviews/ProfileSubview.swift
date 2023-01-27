@@ -52,7 +52,7 @@ class ProfileSubview : UIView {
     
     func setUpContentViewLayout() {
         self.addSubview(self.contentView)
-        self.contentView.backgroundColor = .white
+        self.contentView.backgroundColor = colors.lightGray
         self.contentView.setupCornerRadius(10)
 
         self.contentView.translatesAutoresizingMaskIntoConstraints = false

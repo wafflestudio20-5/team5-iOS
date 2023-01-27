@@ -27,13 +27,16 @@ class MyShoppingViewController: UIViewController {
         self.subView1?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.subView1?.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.subView1?.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
+        self.subView1?.backgroundColor = colors.lightGray
+       
         
         self.subView2?.translatesAutoresizingMaskIntoConstraints = false
         self.subView2?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.subView2?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
         self.subView2?.topAnchor.constraint(equalTo: self.subView1!.bottomAnchor, constant: self.view.frame.height/64).isActive = true
         self.subView2?.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        self.subView2?.backgroundColor = colors.lightGray
+       
     }
     
 }
