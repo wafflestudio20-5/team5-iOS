@@ -15,7 +15,7 @@ final class Profile: Codable {
     let image: String
     let num_followers: Int
     let num_followings: Int
-    let following: String
+    let following: String?
     
     init(
         user_id: String,
@@ -45,6 +45,6 @@ final class Profile: Codable {
         self.image = ""
         self.num_followers = 0
         self.num_followings = 0
-        self.following = "false"
+        self.following = nil
     }
 }

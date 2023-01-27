@@ -16,6 +16,7 @@
 		5C6CE19C2982764100755334 /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE19B2982764100755334 /* NewPostViewModel.swift */; };
 		5C6CE19E2982768F00755334 /* NewPostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE19D2982768F00755334 /* NewPostRepository.swift */; };
 		5C6CE1A02983A9D100755334 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE19F2983A9D100755334 /* LoadingIndicator.swift */; };
+		5C6CE1A22983D55B00755334 /* Comment+Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE1A12983D55B00755334 /* Comment+Reply.swift */; };
 		5C6FBD452976A1ED00B64FF0 /* StyleDetailUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD442976A1ED00B64FF0 /* StyleDetailUsecase.swift */; };
 		5C6FBD4729796DB300B64FF0 /* NestedProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */; };
 		5C6FBD492979737C00B64FF0 /* UserListCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD482979737C00B64FF0 /* UserListCollectionViewVC.swift */; };
@@ -129,6 +130,7 @@
 		5C6CE19B2982764100755334 /* NewPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewModel.swift; sourceTree = "<group>"; };
 		5C6CE19D2982768F00755334 /* NewPostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostRepository.swift; sourceTree = "<group>"; };
 		5C6CE19F2983A9D100755334 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
+		5C6CE1A12983D55B00755334 /* Comment+Reply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Reply.swift"; sourceTree = "<group>"; };
 		5C6FBD442976A1ED00B64FF0 /* StyleDetailUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleDetailUsecase.swift; sourceTree = "<group>"; };
 		5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedProfile.swift; sourceTree = "<group>"; };
 		5C6FBD482979737C00B64FF0 /* UserListCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListCollectionViewVC.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				65F8FBB029620FCC00679E72 /* Post.swift */,
 				5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */,
 				5C6FBD78297C263200B64FF0 /* Profile.swift */,
+				5C6CE1A12983D55B00755334 /* Comment+Reply.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -756,6 +759,7 @@
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */,
 				5CB810DF29683D4E0021FDD6 /* StyleDetailRepository.swift in Sources */,
+				5C6CE1A22983D55B00755334 /* Comment+Reply.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,
 				9428AE4B2957197B00DC7907 /* StyleTabViewController.swift in Sources */,

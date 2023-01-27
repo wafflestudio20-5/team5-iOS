@@ -47,12 +47,12 @@ final class UserProfileViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        requestProfile()
         configureDesign()
         addSubviews()
         setUpFixedViewLayout()
         setupDividers()
         bindViews()
-        requestProfile()
         setUpChildVC()
     }
     
@@ -259,22 +259,32 @@ final class UserProfileViewController: UIViewController {
         self.userProfileViewModel.requestProfile()
     }
     
-    func setUpData(with profile: Profile) {
+    func setUpData(with fetchedProfile: Profile?) {
+        var profile: Profile
+        
+        if fetchedProfile != nil {
+            profile = fetchedProfile!
+            self.followButton.isEnabled = true
+        } else {
+            profile = Profile()
+            self.followButton.isEnabled = false
+        }
+        
         let urlString = profile.image
-        guard let url = URL.init(string: urlString) else {
-                return
-            }
-        let resource = ImageResource(downloadURL: url)
+        if let url = URL.init(string: urlString) {
+            let resource = ImageResource(downloadURL: url)
 
-        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
-            switch result {
-            case .success(let value):
-                self.profileImageView.image = value.image
-            case .failure(let error):
-                print("Error: \(error)")
-                //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
+            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    self.profileImageView.image = value.image
+                case .failure(let error):
+                    print("Error: \(error)")
+                    //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
+                }
             }
         }
+        
         self.profileNameLabel.text = profile.profile_name
         self.userNameLabel.text = profile.user_name
         self.introductionLabel.text = profile.introduction
@@ -358,8 +368,7 @@ extension UserProfileViewController {
             self.present(loginScreen, animated: false)
         } else {
             self.userInfoViewModel.requestFollow(user_id: sender.tag)
-            sender.isFollowing = !sender.isFollowing
-            sender.configureFollowButton()
+            sender.followButtonTapped()
         }
     }
     

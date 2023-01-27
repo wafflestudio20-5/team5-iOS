@@ -16,12 +16,10 @@ final class UserProfileUsecase {
     
     private var userProfile: Profile? {
         didSet {
-            if let profile = userProfile {
-                userProfileRelay.accept(profile)
-            }
+            userProfileRelay.accept(userProfile)
         }
     }
-    var userProfileRelay: BehaviorRelay<Profile> = .init(value: Profile())
+    var userProfileRelay: BehaviorRelay<Profile?> = .init(value: nil)
     
     
     init(userProfileRepository: UserProfileRepository, user_id: Int) {
@@ -37,11 +35,11 @@ final class UserProfileUsecase {
                     if let fetchedProfile = fetchedProfile {
                         self?.userProfile = fetchedProfile
                     } else {
-                        self?.userProfile = Profile()
+                        self?.userProfile = nil
                     }
                 },
                 onFailure: { _ in
-                    self.userProfile = Profile()
+                    self.userProfile = nil
                 }
             )
             .disposed(by: disposeBag)

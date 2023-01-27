@@ -19,7 +19,7 @@ final class UserProfileViewModel {
         return self.userProfileUsecase.user_id
     }
     
-    var userProfileDataSource: Observable<Profile> {
+    var userProfileDataSource: Observable<Profile?> {
         get {
             return self.userProfileUsecase.userProfileRelay.asObservable()
         }
