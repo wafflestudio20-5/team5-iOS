@@ -13,17 +13,34 @@
 
 
 import Foundation
+import RxSwift
+import Alamofire
 
 final class UserProfileRepository {
-    func requestProfile(user_id: Int) -> Profile {
-        return self.testProfile
+    private struct fetchUserConstants {
+        static let uri = "https://kream-waffle.cf/styles/profiles/"
+        static let headers : HTTPHeaders = [
+            "accept": "application/json",
+            "X-CSRFToken" : "X-CSRFToken: JcSG5AkuWdO396362gJih3LlQdl0pFy6CL5iRIIx3ESZTdjgXo6oSqgyK3ughVBn"
+        ]
     }
     
-    private let testProfile = Profile(user_id: 1,
-                                      user_name: "swift_user_name",
-                                      profile_name: "swift_profile_name",
-                                      introduction: "아주아주 긴 상태메시지 이아러ㅣ나어리나어리ㅏㄴ어리낭러ㅣㄴ아러ㅣ낭러ㅣ낭러니아러니아러ㅣ나어리나어리나어리나어리낭러ㅣ낭러ㅣ낭러ㅣㅏㄴ어리나어리ㅏㄴ어리나어리낭러ㅣㅏ얾;ㅣㄴ아ㅓㄹ;ㅁ니ㅏ얼;ㅣㅁ나얼;니마얼;ㅣㅁ나얼;ㅣㄴㅁ어리;ㄴㅁㅇ",
-                                      image: "https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/23-swift-512.png",
-                                      num_followers: 100,
-                                      num_followings: 1000)
+    func requestProfile(user_id: Int) -> Single<Profile?> {
+        return Single.create { single in
+//            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
+            AF.request(fetchUserConstants.uri + "7/", method: .get, headers: fetchUserConstants.headers)
+                .responseDecodable(of: Profile.self) {response in
+                    switch response.result {
+                    case .success(let result):
+                        single(.success(result))
+                    case .failure:
+                        debugPrint(response)
+                        print("유저 불러오기 실패")
+                        single(.success(nil))
+                    }
+                }
+            
+            return Disposables.create()
+        }
+    }
 }

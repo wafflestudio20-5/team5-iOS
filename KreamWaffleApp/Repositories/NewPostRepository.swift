@@ -10,7 +10,7 @@ import Alamofire
 import RxSwift
 
 final class NewPostRepository {
-    struct newPostConstants {
+    private struct newPostConstants {
         static let uri = "https://kream-waffle.cf/styles/posts/"
         static let headers : HTTPHeaders = [
             "accept": "application/json",

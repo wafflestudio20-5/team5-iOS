@@ -7,10 +7,12 @@
 
 import Foundation
 import RxCocoa
+import RxSwift
 
 final class UserProfileUsecase {
     private let userProfileRepository: UserProfileRepository
     let user_id: Int
+    let disposeBag = DisposeBag()
     
     private var userProfile: Profile? {
         didSet {
@@ -28,6 +30,20 @@ final class UserProfileUsecase {
     }
     
     func requestProfile() {
-        self.userProfile = self.userProfileRepository.requestProfile(user_id: self.user_id)
+        self.userProfileRepository
+            .requestProfile(user_id: self.user_id)
+            .subscribe(
+                onSuccess: { [weak self] fetchedProfile in
+                    if let fetchedProfile = fetchedProfile {
+                        self?.userProfile = fetchedProfile
+                    } else {
+                        self?.userProfile = Profile()
+                    }
+                },
+                onFailure: { _ in
+                    self.userProfile = Profile()
+                }
+            )
+            .disposed(by: disposeBag)
     }
 }

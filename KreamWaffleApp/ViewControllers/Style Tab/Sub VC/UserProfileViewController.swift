@@ -205,13 +205,10 @@ final class UserProfileViewController: UIViewController {
     func setUpButtonLayout() {
         self.followButton.titleLabel!.font = .systemFont(ofSize: 14.0, weight: .semibold)
         self.followButton.tag = userProfileViewModel.getUserId()
-        if (self.userInfoViewModel.isLoggedIn() && self.userInfoViewModel.isFollowing(user_id: self.followButton.tag)) {
-            self.followButton.isFollowing = true
-        }
-        self.followButton.configureFollowButton()
         self.followButton.layer.cornerRadius = 7.5
         self.followButton.layer.borderWidth = 1
         self.followButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.followButton.configureFollowButton()
 
         self.followButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -285,6 +282,8 @@ final class UserProfileViewController: UIViewController {
         self.postNumLabel.text = String(0) //나중에 API 수정되면 고치기
         self.followerNumLabel.text = String(profile.num_followers)
         self.followingNumLabel.text = String(profile.num_followings)
+        self.followButton.isFollowing = profile.following == "true" ? true : false
+        self.followButton.configureFollowButton()
     }
     
     func setUpChildVC() {
