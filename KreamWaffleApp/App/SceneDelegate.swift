@@ -16,7 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let bag = DisposeBag()
     
     var rootVC : TabBarViewController?
-    var loginVM : LoginViewModel?
+    var loginVC : LoginViewController?
+   
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -37,25 +38,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
         let loginViewModel = LoginViewModel(UserUseCase: UserUsecase)
         loginViewModel.getSavedUser()
-        self.loginVM = loginViewModel
+        let LoginVC = LoginViewController(viewModel: loginViewModel)
+        self.loginVC = LoginVC
         
         self.rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel)
-         
-        //토글 되면 홈탭으로 돌아가야함.
-        loginViewModel.loginState.asObservable().subscribe { status in
-            
-            if (self.window?.rootViewController == self.rootVC){
-                if (self.rootVC?.selectedIndex == 1 || self.rootVC?.selectedIndex == 3){
-                    if (!status.element!){
-                        print("[Log] Scene Delegate: switching to login VC")
-                        self.changeToLoginVC()
-                    }else{
-                    }
-                }
-            }
-        }.disposed(by: bag)
-        
-        let rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel)
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
     }
@@ -83,8 +69,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func changeToLoginVC(animated: Bool = true){
-        let loginVC = LoginViewController(viewModel: self.loginVM!)
-        self.window?.rootViewController = loginVC
+        self.window?.rootViewController = self.loginVC
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
