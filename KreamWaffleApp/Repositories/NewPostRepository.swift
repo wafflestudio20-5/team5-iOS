@@ -32,11 +32,11 @@ final class NewPostRepository {
                 multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
             }
             
-            let imagePngDataList = images.map { $0.pngData() }
+            let imageJpegDataList = images.map { $0.jpegData(compressionQuality: 1) }
             
-            for (index, imagePngData) in imagePngDataList.enumerated() {
-                if let imagePngData = imagePngData {
-                    multipartFormData.append(imagePngData, withName: "image", fileName: "\(index).jpg", mimeType: "image/jpg")
+            for (index, imageJpegData) in imageJpegDataList.enumerated() {
+                if let imageJpegData = imageJpegData {
+                    multipartFormData.append(imageJpegData, withName: "image", fileName: "\(index).jpg", mimeType: "image/jpg")
                 }
              }
             
