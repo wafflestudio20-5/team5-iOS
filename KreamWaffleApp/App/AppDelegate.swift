@@ -27,14 +27,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         // 네이버 아이디로 로그인하기 설정
         // 애플리케이션을 등록할 때 입력한 URL Scheme
-        instance?.serviceUrlScheme = "naverlogin"
+        instance?.serviceUrlScheme = "naverlogin" //TODO: 파일에 저장했는데 왜 안되지
         // 애플리케이션 등록 후 발급받은 클라이언트 아이디
         instance?.consumerKey = "JYOXwPjau1XNGI6gnhpz"
         // 애플리케이션 등록 후 발급받은 클라이언트 시크릿
         instance?.consumerSecret = "q9NIM1RykO"
         // 애플리케이션 이름
         instance?.appName = "Kream"
-        
         
         //google
         GIDSignIn.sharedInstance()?.clientID = "806966291001-oqdbe0bq0la26ao89h4t4imqnci2f27e.apps.googleusercontent.com"
@@ -58,12 +57,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         let naverHandled = NaverThirdPartyLoginConnection.getSharedInstance()?.application(app, open: url, options: options)
         let googlehandled = GIDSignIn.sharedInstance()?.handle(url) ?? false
+        /*
         if (googlehandled || (naverHandled != nil)){
            return true
          }else {
              return false
-         }
-    
+         }*/
+        return true
+       
       }
 
 

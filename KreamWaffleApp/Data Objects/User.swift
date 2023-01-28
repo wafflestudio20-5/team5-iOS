@@ -13,6 +13,14 @@ struct User : Codable {
     var shoeSize: Int
     var phoneNumber: String
     
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        shoeSize = (try? values.decode(Int.self, forKey: .shoeSize)) ?? 0 //if shoe size is 0 --> nil 값이랑 같음.
+        phoneNumber = (try? values.decode(String.self, forKey: .phoneNumber)) ?? ""
+        id = (try? values.decode(Int.self, forKey: .id)) ?? 0
+        email = (try? values.decode(String.self, forKey: .email)) ?? ""
+    }
+    
     private enum CodingKeys: String, CodingKey {
         case id = "id"
         case email = "email"
@@ -30,7 +38,7 @@ struct UserResponse: Codable {
     let accessToken : String
     let refreshToken : String
     var user: User
-    let exists: Bool?
+    let exists: Bool
     
     private enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
