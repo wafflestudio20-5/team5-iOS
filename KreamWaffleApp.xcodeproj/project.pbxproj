@@ -52,6 +52,7 @@
 		6527350F2968196200C859B8 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350E2968196200C859B8 /* UserInfoViewModel.swift */; };
 		6537F71029837B3500FC58E8 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6537F70F29837B3500FC58E8 /* EditProfileViewController.swift */; };
 		6537F71229837CAF00FC58E8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6537F71129837CAF00FC58E8 /* SettingsViewController.swift */; };
+		6537F7152985BF1A00FC58E8 /* SubEditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6537F7142985BF1A00FC58E8 /* SubEditProfileViewController.swift */; };
 		653F17C42965701600949FF8 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653F17C32965701600949FF8 /* LoginRepository.swift */; };
 		654D9692295BFC4900B93EE0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D9691295BFC4900B93EE0 /* Constants.swift */; };
 		65508A51297BB1D100C6431D /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65508A50297BB1D100C6431D /* SignUpViewModel.swift */; };
@@ -165,6 +166,7 @@
 		6527350E2968196200C859B8 /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
 		6537F70F29837B3500FC58E8 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		6537F71129837CAF00FC58E8 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		6537F7142985BF1A00FC58E8 /* SubEditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubEditProfileViewController.swift; sourceTree = "<group>"; };
 		653F17C229655F1F00949FF8 /* KreamWaffleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KreamWaffleApp.entitlements; sourceTree = "<group>"; };
 		653F17C32965701600949FF8 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		654D9691295BFC4900B93EE0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -250,11 +252,11 @@
 		5C2F9CA2295D77350021D437 /* My Tab */ = {
 			isa = PBXGroup;
 			children = (
+				6537F7132985BEFF00FC58E8 /* Edit Profile VC */,
 				655A94D0296C772900F0184B /* Subviews */,
 				948C66942958482E00561C59 /* MyTabViewController.swift */,
 				65F8FBB92962125200679E72 /* MyShoppingViewController.swift */,
 				655A94CE296C73FB00F0184B /* MyProfileViewController.swift */,
-				6537F70F29837B3500FC58E8 /* EditProfileViewController.swift */,
 				6537F71129837CAF00FC58E8 /* SettingsViewController.swift */,
 			);
 			path = "My Tab";
@@ -321,6 +323,15 @@
 				6527350A29680C1900C859B8 /* User.swift */,
 			);
 			path = "Data Objects";
+			sourceTree = "<group>";
+		};
+		6537F7132985BEFF00FC58E8 /* Edit Profile VC */ = {
+			isa = PBXGroup;
+			children = (
+				6537F70F29837B3500FC58E8 /* EditProfileViewController.swift */,
+				6537F7142985BF1A00FC58E8 /* SubEditProfileViewController.swift */,
+			);
+			path = "Edit Profile VC";
 			sourceTree = "<group>";
 		};
 		65508A4F297BB1BB00C6431D /* Login Tab */ = {
@@ -790,6 +801,7 @@
 				6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */,
 				655A94CB296C6D4200F0184B /* LoadingViewController.swift in Sources */,
 				65508A51297BB1D100C6431D /* SignUpViewModel.swift in Sources */,
+				6537F7152985BF1A00FC58E8 /* SubEditProfileViewController.swift in Sources */,
 				5C6FBD452976A1ED00B64FF0 /* StyleDetailUsecase.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,

@@ -15,6 +15,7 @@ final class UserUsecase {
     var error : LoginError
     var user : User?
     var userResponse : UserResponse?
+    var userProfile : Profile?
     
     var followingSet: Set<Int> = []
     
@@ -97,6 +98,10 @@ final class UserUsecase {
                 self.loggedIn = false
             }
         }
+    }
+    
+    func getUserProfile(){
+        
     }
     
     ///logging out deletes saved/current user and initializes parameters.
