@@ -9,37 +9,37 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-final class UserProfileUsecase {
-    private let userProfileRepository: UserProfileRepository
+final class ProfileUsecase {
+    private let profileRepository: ProfileRepository
     let user_id: Int
     let disposeBag = DisposeBag()
     
-    private var userProfile: Profile? {
+    private var profile: Profile? {
         didSet {
-            userProfileRelay.accept(userProfile)
+            profileRelay.accept(profile)
         }
     }
-    var userProfileRelay: BehaviorRelay<Profile?> = .init(value: nil)
+    var profileRelay: BehaviorRelay<Profile?> = .init(value: nil)
     
     
-    init(userProfileRepository: UserProfileRepository, user_id: Int) {
-        self.userProfileRepository = userProfileRepository
+    init(profileRepository: ProfileRepository, user_id: Int) {
+        self.profileRepository = profileRepository
         self.user_id = user_id
     }
     
     func requestProfile(onNetworkFailure: @escaping ()->()) {
-        self.userProfileRepository
+        self.profileRepository
             .requestProfile(user_id: self.user_id, onNetworkFailure: onNetworkFailure)
             .subscribe(
                 onSuccess: { [weak self] fetchedProfile in
                     if let fetchedProfile = fetchedProfile {
-                        self?.userProfile = fetchedProfile
+                        self?.profile = fetchedProfile
                     } else {
-                        self?.userProfile = nil
+                        self?.profile = nil
                     }
                 },
                 onFailure: { _ in
-                    self.userProfile = nil
+                    self.profile = nil
                 }
             )
             .disposed(by: disposeBag)

@@ -10,15 +10,15 @@ import UIKit
 
 extension UIViewController {
     func pushUserProfileVC(user_id: Int, userInfoViewModel: UserInfoViewModel) {        
-        let userProfileUsecase = UserProfileUsecase(userProfileRepository: UserProfileRepository(), user_id: user_id)
-        let userProfileViewModel = UserProfileViewModel(userProfileUsecase: userProfileUsecase)
+        let profileUsecase = ProfileUsecase(profileRepository: ProfileRepository(), user_id: user_id)
+        let profileViewModel = ProfileViewModel(profileUsecase: profileUsecase)
         
         let styleFeedUsecase = StyleFeedUsecase(repository: StyleFeedRepository(), type: "default", user_id: user_id)
         let styleFeedViewModel = StyleFeedViewModel(styleFeedUsecase: styleFeedUsecase)
         
-        let userProfileViewController = UserProfileViewController(userInfoViewModel: userInfoViewModel, userProfileViewModel: userProfileViewModel, styleFeedViewModel: styleFeedViewModel)
+        let profileViewController = ProfileViewController(userInfoViewModel: userInfoViewModel, profileViewModel: profileViewModel, styleFeedViewModel: styleFeedViewModel)
         
-        self.navigationController?.pushViewController(userProfileViewController, animated: true)
+        self.navigationController?.pushViewController(profileViewController, animated: true)
     }
     
     func pushNewPostVC(userInfoViewModel: UserInfoViewModel) {

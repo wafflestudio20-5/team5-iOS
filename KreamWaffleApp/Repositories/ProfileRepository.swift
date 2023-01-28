@@ -16,7 +16,7 @@ import Foundation
 import RxSwift
 import Alamofire
 
-final class UserProfileRepository {
+final class ProfileRepository {
     private struct fetchUserConstants {
         static let uri = "https://kream-waffle.cf/styles/profiles/"
         static let headers : HTTPHeaders = [
