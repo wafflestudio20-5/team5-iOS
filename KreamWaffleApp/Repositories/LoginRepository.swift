@@ -76,6 +76,7 @@ class LoginRepository {
                     print("LoginRepository: User is", results.user)
                     completion(.success(results))
                 }catch{
+                    print(error)
                     completion(.failure(.unknownError))
                 }
                 
@@ -114,6 +115,9 @@ class LoginRepository {
                     completion(.success(results))
                 }catch{
                     completion(.failure(.unknownError))
+                    let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                    print(String(describing: json))
+                    print("[Log] LoginRepo: Error is \(error)")
                 }
                 
             case .failure(let error):

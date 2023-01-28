@@ -111,7 +111,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
     
     @objc
     func settingButtonTapped(){
-        let settingsVC = SettingsViewController(viewModel: self.userInfoVM)
+        let settingsVC = SettingsViewController(viewModel: self.loginVM)
         settingsVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsVC, animated: true)
     }
