@@ -21,11 +21,11 @@ extension UIViewController {
         self.navigationController?.pushViewController(userProfileViewController, animated: true)
     }
     
-    func pushNewPostVC() {
+    func pushNewPostVC(userInfoViewModel: UserInfoViewModel) {
         setUpBackButton()
         let newPostRepository = NewPostRepository()
         let newPostViewModel = NewPostViewModel(newPostRepository: newPostRepository)
-        let newPostVC = NewPostViewController(newPostViewModel: newPostViewModel)
+        let newPostVC = NewPostViewController(newPostViewModel: newPostViewModel, userInfoViewModel: userInfoViewModel)
         
         self.navigationController?.pushViewController(newPostVC, animated: true)
     }

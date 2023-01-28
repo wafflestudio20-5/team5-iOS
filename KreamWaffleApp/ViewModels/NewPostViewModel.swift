@@ -41,9 +41,9 @@ final class NewPostViewModel {
         }
     }
     
-    func uploadPost(content: String, completion: @escaping () -> (), onNetworkFailure: @escaping () -> ()){
+    func uploadPost(token: String, content: String, completion: @escaping () -> (), onNetworkFailure: @escaping () -> ()){
         let ratio = selectedImages[0].size.height / selectedImages[0].size.width
-        self.newPostRepository.uploadPost(images: selectedImages, content: content, ratio: ratio, completion: completion, onNetworkFailure: onNetworkFailure)
+        self.newPostRepository.uploadPost(token: token, images: selectedImages, content: content, ratio: ratio, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
     func removePicture(at index: Int){

@@ -12,14 +12,16 @@ import RxSwift
 final class NewPostRepository {
     private struct newPostConstants {
         static let uri = "https://kream-waffle.cf/styles/posts/"
-        static let headers : HTTPHeaders = [
-            "accept": "application/json",
-            "Content-Type": "multipart/form-data",
-            "X-CSRFToken" : "8PETTeWfYwMXkUYbfqP3qzefmUit9Byj1oRvFmki5XQT41elayc91WJsgKrJ1RBA"
-        ]
+        
     }
     
-    func uploadPost(images: [UIImage], content: String, ratio: CGFloat, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+    func uploadPost(token: String, images: [UIImage], content: String, ratio: CGFloat, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        let headers : HTTPHeaders = [
+            "Authorization": "Bearer \(token)" ,
+            "accept": "application/json",
+            "Content-Type": "multipart/form-data",
+        ]
+        
         let parameters: [String: Any] = [
             "content": content,
             "image_ratio": Float(ratio)
@@ -34,11 +36,11 @@ final class NewPostRepository {
             
             for (index, imagePngData) in imagePngDataList.enumerated() {
                 if let imagePngData = imagePngData {
-                    multipartFormData.append(imagePngData, withName: "image", fileName: "test.jpg", mimeType: "image/jpg")
+                    multipartFormData.append(imagePngData, withName: "image", fileName: "\(index).jpg", mimeType: "image/jpg")
                 }
              }
             
-        }, to: newPostConstants.uri, method: .post, headers: newPostConstants.headers)
+        }, to: newPostConstants.uri, method: .post, headers: headers)
         .validate()
         .responseData { response in
             switch response.result {

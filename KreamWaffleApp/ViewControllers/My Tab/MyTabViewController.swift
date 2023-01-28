@@ -274,7 +274,7 @@ extension MyTabViewController{
     @objc func cameraButtonTapped(){
         print("📮 글 작성 버튼 TAP")
         if (self.userInfoVM.isLoggedIn()) {
-            pushNewPostVC()
+            pushNewPostVC(userInfoViewModel: self.userInfoVM)
         } else {
             let loginViewModel = LoginViewModel(UserUseCase: self.userInfoVM.UserUseCase)
 

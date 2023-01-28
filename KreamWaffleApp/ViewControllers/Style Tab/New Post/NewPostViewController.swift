@@ -13,6 +13,7 @@ import Kingfisher
 
 class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
     let newPostViewModel: NewPostViewModel
+    let userInfoViewModel: UserInfoViewModel
     let addButton = UIButton()
     let disposeBag = DisposeBag()
     var cellHeight: CGFloat?
@@ -46,8 +47,9 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
     
     let textViewPlaceHolder = "#아이템과 #스타일을 자랑해보세요..."
     
-    init(newPostViewModel : NewPostViewModel){
+    init(newPostViewModel : NewPostViewModel, userInfoViewModel: UserInfoViewModel){
         self.newPostViewModel = newPostViewModel
+        self.userInfoViewModel = userInfoViewModel
         
         super.init(nibName: nil, bundle: nil)
         self.imageCollectionView.delegate = self
@@ -233,7 +235,7 @@ extension NewPostViewController {
         
         LoadingIndicator.showLoading()
         
-        self.newPostViewModel.uploadPost(content: textView.text, completion: completion, onNetworkFailure: onNetworkFailure)
+        self.newPostViewModel.uploadPost(token: self.userInfoViewModel.UserReponse!.accessToken, content: textView.text, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
     @objc func deleteButtonTapped(sender: UIButton) {

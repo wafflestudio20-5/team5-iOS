@@ -21,13 +21,14 @@ final class UserProfileRepository {
         static let uri = "https://kream-waffle.cf/styles/profiles/"
         static let headers : HTTPHeaders = [
             "accept": "application/json",
-            "X-CSRFToken" : "X-CSRFToken: JcSG5AkuWdO396362gJih3LlQdl0pFy6CL5iRIIx3ESZTdjgXo6oSqgyK3ughVBn"
         ]
     }
     
     func requestProfile(user_id: Int, onNetworkFailure: @escaping ()->()) -> Single<Profile?> {
         return Single.create { single in
-            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
+//            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
+            AF.request(fetchUserConstants.uri + "7/", method: .get, headers: fetchUserConstants.headers)
+
                 .validate()
                 .responseDecodable(of: Profile.self) {response in
                     switch response.result {
