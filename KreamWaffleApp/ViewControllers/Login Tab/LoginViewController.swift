@@ -42,6 +42,7 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.NaverLoginInstance!.delegate = self
         
         self.viewModel.loginState.asObservable().subscribe { status in
             self.loginState = status.element!
@@ -171,8 +172,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginWithNaver(){
-        NaverLoginInstance?.delegate = self
-        NaverLoginInstance?.requestThirdPartyLogin()
+        self.NaverLoginInstance!.requestThirdPartyLogin()
     }
     
     @objc func loginSuccess(){
@@ -243,7 +243,7 @@ extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
   
   // 접근 토큰 갱신
   func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-    
+      NaverLoginInstance?.accessToken
   }
   
   // 로그아웃 할 경우 호출(토큰 삭제)
