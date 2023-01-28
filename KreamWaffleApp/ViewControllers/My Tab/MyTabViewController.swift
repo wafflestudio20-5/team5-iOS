@@ -62,6 +62,14 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func viewWillAppear(_ animated : Bool) {
+        self.loginVM.loginState.asObservable().subscribe { status in
+            if (status.element! == false){
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,20 +86,34 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
         }.disposed(by: bag)*/
     
         setUpSegmentedControl()
-        setUpCameraButton()
+        setUpTabBarButton()
         setUpFixedViewLayout()
         setUpData()
         setupDivider()
         setupChildVC()
     }
     
-    func setUpCameraButton(){
+    func setUpTabBarButton(){
         let cameraImage = UIImage(systemName: "camera.circle.fill")
         let tintedCameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
         let cameraButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(cameraButtonTapped))
         cameraButton.image = tintedCameraImage
         cameraButton.tintColor = .darkGray
         self.navigationItem.rightBarButtonItem = cameraButton
+        
+        let gearImage = UIImage(systemName: "gearshape")
+        let tintedGearImage = gearImage?.withRenderingMode(.alwaysTemplate)
+        let gearButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(settingButtonTapped))
+        gearButton.image = tintedGearImage
+        gearButton.tintColor = .darkGray
+        self.navigationItem.leftBarButtonItem = gearButton
+    }
+    
+    @objc
+    func settingButtonTapped(){
+        let settingsVC = SettingsViewController(viewModel: self.loginVM)
+        settingsVC.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(settingsVC, animated: true)
     }
                                            
     @objc func cameraButtonTapped(){
@@ -249,12 +271,12 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
     func setUpButtonLayout() {
         self.view.addSubview(self.profileChangeButton)
         
-        self.profileChangeButton.setTitle("로그아웃", for: .normal)
+        self.profileChangeButton.setTitle("프로필 관리", for: .normal)
         self.profileChangeButton.titleLabel!.font = .systemFont(ofSize: 14.0, weight: .semibold)
         self.profileChangeButton.setTitleColor(.black, for: .normal)
         self.profileChangeButton.layer.cornerRadius = 7.5
         self.profileChangeButton.layer.borderWidth = 1
-        self.profileChangeButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.profileChangeButton.layer.borderColor = colors.lightGray.cgColor
 
         self.profileChangeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -314,11 +336,10 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate, YPImage
         }
     }
     
-    //임시적으로 로그아웃
-    @objc func profileChangeButtonTapped() {
-        print("로그아웃 누름")
-        //API에서 로그아웃 관련 서비스를 구현하지 않은 관계로 우선은 user default 이용
-        //user default 에서 사용자 삭제 후 login VC 올림 --> 이건 위에 해줌.
-        self.loginVM.logout()
+    @objc
+    func profileChangeButtonTapped() {
+        let profileChangeVC = EditProfileViewController(viewModel: self.userInfoVM)
+        profileChangeVC.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(profileChangeVC, animated: true)
     }
 }

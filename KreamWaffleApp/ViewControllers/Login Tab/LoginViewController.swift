@@ -42,11 +42,12 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.NaverLoginInstance!.delegate = self
         
         self.viewModel.loginState.asObservable().subscribe { status in
             self.loginState = status.element!
-            if (status.element!){
-                print("[Log] Login VC: The login state is", status.element)
+            print("[Log] Login VC: The login state is", status.element)
+            if (status.element! == true){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
             }
         }.disposed(by: bag)
@@ -171,8 +172,7 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginWithNaver(){
-        NaverLoginInstance?.delegate = self
-        NaverLoginInstance?.requestThirdPartyLogin()
+        self.NaverLoginInstance!.requestThirdPartyLogin()
     }
     
     @objc func loginSuccess(){
@@ -243,7 +243,7 @@ extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
   
   // 접근 토큰 갱신
   func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
-    
+      NaverLoginInstance?.accessToken
   }
   
   // 로그아웃 할 경우 호출(토큰 삭제)
@@ -263,7 +263,7 @@ extension LoginViewController: GIDSignInDelegate {
                if (error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
                    print("[Log] LoginVC: The user has not signed in before or they have since signed out.")
                } else {
-                   print("[Log] LoginVC: \(error)")
+                   print("[Log] LoginVC: Google login error is \(error)")
                }
                return
            }
@@ -271,7 +271,7 @@ extension LoginViewController: GIDSignInDelegate {
            // 사용자 정보 가져오기
         if let accessToken = GIDSignIn.sharedInstance().currentUser.authentication.accessToken {
             self.viewModel.loginUserWithSocial(token: accessToken, socialType: .Google)
-            print("[Log] LoginVC: ", accessToken)
+            print("[Log] LoginVC: Access token to Google login is ", accessToken)
         }
     }
 }
