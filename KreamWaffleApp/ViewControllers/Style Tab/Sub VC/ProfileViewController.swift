@@ -369,9 +369,8 @@ final class ProfileViewController: UIViewController {
 extension ProfileViewController {
     @objc func requestFollow(sender: FollowButton) {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoViewModel.UserUseCase)
+            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
 
-            let loginScreen = LoginViewController(viewModel: loginViewModel)
             loginScreen.modalPresentationStyle = .fullScreen
             self.present(loginScreen, animated: false)
         } else {

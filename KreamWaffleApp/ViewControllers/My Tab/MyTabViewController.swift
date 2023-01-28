@@ -112,10 +112,10 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         if (self.userInfoVM.isLoggedIn()) {
             pushNewPostVC(userInfoViewModel: self.userInfoVM)
         } else {
-            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoVM.UserUseCase)
+            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
 
-            let loginScreen = LoginViewController(viewModel: loginViewModel)
             loginScreen.modalPresentationStyle = .fullScreen
+            self.present(loginScreen, animated: false)
             self.present(loginScreen, animated: false)
         }
     }
