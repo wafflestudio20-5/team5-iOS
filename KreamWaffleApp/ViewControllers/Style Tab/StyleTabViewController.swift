@@ -66,8 +66,8 @@ class StyleTabViewController: UIViewController {
         
         styleFeedCollectionViewVC.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.styleFeedCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            self.styleFeedCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            self.styleFeedCollectionViewVC.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
+            self.styleFeedCollectionViewVC.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
             self.styleFeedCollectionViewVC.view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
             self.styleFeedCollectionViewVC.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
         ])

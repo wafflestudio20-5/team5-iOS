@@ -112,8 +112,8 @@ final class UserUsecase {
     }
     
     func requestFollow(user_id: Int) {
-        self.repository.requestFollow(user_id: user_id)
-        if (self.followingSet.contains(user_id)) {
+        self.repository.requestFollow(user_id: user_id) //서버와의 통신
+        if (self.followingSet.contains(user_id)) { //앱 내부적으로 팔로잉 여부 관리
             self.followingSet.remove(user_id)
             print(self.followingSet)
         } else {
