@@ -18,6 +18,7 @@ final class StyleFeedUsecase {
     
     private let type: String
     private let user_id: Int?
+    private var cursor: String?
     
     var stylePostList = [Post]() {
         didSet {
@@ -29,39 +30,29 @@ final class StyleFeedUsecase {
         self.repository = repository
         self.type = type
         self.user_id = user_id
-//        requestStylePostData(page: 1)
     }
     
-    func requestStylePostData(page: Int) {
-        // ******* For Testing *********
-        if (page == 1) {
-            setTestData()
-        } else {
-            setTestData(page: page)
-        }
-        // ******* For Testing *********
+    func requestInitialFeed(token: String?, completion: @escaping () -> ()) {
+        self.cursor = nil
+        requestNextFeed(token: token, completion: completion)
     }
     
-    // ******* For Testing *********
-    // API 세팅 후에는 얘가 API call로 데이터 load 하는 함수가 될 것. StyleFeedRepository에서 데이터 받아오는.
-    func setTestData() {
-        self.stylePostList = [
-            Post(id: 1, content: "아더에러 ✨", images: [
-                "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMTQ2/MDAxNjcwODIwODk1NjEw.nf2jbxLWZCgGzECgQeMPHE7ezHjcuSIUu2q9PeMOAiIg.WVRRPpwBA7VVfWmfdMlpqOORYPUm91ORfmjjSk3AIc0g.JPEG/p_ff64de1147824dec9712c634e93cf993.jpeg?type=l", "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMjQ0/MDAxNjcwODIwODk2MjQz.scgGqUEmzUIAUxe9xy6qMpbiMnZcva325JUohoIsIa0g.Aztf7mK85JfAJT1UZg8S-BhTjJzAJhM8MNz72TnAoM0g.JPEG/p_fa2aedd66c6b4f77b48f9939540879d0.jpeg?type=l_webp"
-            ], image_ratio: 4/3, created_by: NestedProfile(user_id: 1, user_name: "Hi", profile_name: "mangocheezz", image:" https://i.pinimg.com/originals/8f/50/63/8f50630ae0e1775196e4c270c573ce67.png", following: "true"), created_at: "20230120", num_comments: "5", num_likes: "5"),
-        ]
+    func requestNextFeed(token: String?, completion: @escaping () -> ()) {
+        self.repository
+            .requestPostResponseData(type: self.type, token: token, cursor: nil, user_id: user_id, completion: completion)
+            .subscribe { event in
+                switch event {
+                case .success(let postResponse):
+                    self.cursor = postResponse.next
+                    self.stylePostList += postResponse.results
+                case .failure(let error):
+                    self.cursor = nil
+                    self.stylePostList.removeAll()
+                    print(error)
+                }
+                
+            }
+            .disposed(by: disposeBag)
     }
-    
-    func setTestData(page: Int) {
-        let newData = [
-            Post(id: 1, content: "아더에러 ✨", images: [
-                "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMTQ2/MDAxNjcwODIwODk1NjEw.nf2jbxLWZCgGzECgQeMPHE7ezHjcuSIUu2q9PeMOAiIg.WVRRPpwBA7VVfWmfdMlpqOORYPUm91ORfmjjSk3AIc0g.JPEG/p_ff64de1147824dec9712c634e93cf993.jpeg?type=l", "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMjQ0/MDAxNjcwODIwODk2MjQz.scgGqUEmzUIAUxe9xy6qMpbiMnZcva325JUohoIsIa0g.Aztf7mK85JfAJT1UZg8S-BhTjJzAJhM8MNz72TnAoM0g.JPEG/p_fa2aedd66c6b4f77b48f9939540879d0.jpeg?type=l_webp"
-            ], image_ratio: 4/3, created_by: NestedProfile(user_id: 1, user_name: "Hi", profile_name: "mangocheezz", image:" https://i.pinimg.com/originals/8f/50/63/8f50630ae0e1775196e4c270c573ce67.png", following: "true"), created_at: "20230120", num_comments: "5", num_likes: "5")
-        ]
-        
-        self.stylePostList.append(contentsOf: newData)
-    }
-    // ******* For Testing *********
-
 }
 

@@ -39,7 +39,18 @@ class NestedProfile : Codable {
         user_name = try container.decodeIfPresent(String.self, forKey: .user_name) ?? ""
         profile_name = try container.decodeIfPresent(String.self, forKey: .profile_name) ?? ""
         image = try container.decodeIfPresent(String.self, forKey: .image) ?? nil
-        following = try container.decodeIfPresent(String.self, forKey: .following) ?? nil
+        do {
+            let strFollowing = try container.decodeIfPresent(String.self, forKey: .following) ?? nil
+            self.following = strFollowing
+        } catch {
+            do {
+                let boolFollowing: Bool = try container.decodeIfPresent(Bool.self, forKey: .following) ?? false
+                self.following = boolFollowing ? "true" : "false"
+            } catch {
+                self.following = "false"
+                print(error)
+            }
+        }
     }
     
     init() {

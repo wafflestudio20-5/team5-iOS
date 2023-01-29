@@ -273,7 +273,7 @@ extension StyleTabPostDetailViewController { //button 관련 메서드들.
 
     @objc func idLabelTapped() {
         let user_id = self.styleTabDetailViewModel.getUserId()
-        self.pushUserProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
+        self.pushProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
     }
     
     @objc func followButtonTapped() {

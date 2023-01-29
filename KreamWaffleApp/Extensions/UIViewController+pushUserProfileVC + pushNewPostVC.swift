@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension UIViewController {
+extension UIViewController {    
     func pushProfileVC(user_id: Int, userInfoViewModel: UserInfoViewModel) {        
         let profileUsecase = ProfileUsecase(profileRepository: ProfileRepository(), user_id: user_id)
         let profileViewModel = ProfileViewModel(profileUsecase: profileUsecase)

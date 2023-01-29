@@ -47,7 +47,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
         super.viewDidLoad()
         setUpCollectionView()
         bindCollectionView()
-        requestInitialData()
+        requestInitialFeed()
     }
     
     func setUpCollectionView() {
@@ -81,12 +81,15 @@ final class StyleFeedCollectionViewVC : UIViewController{
                     .disposed(by: disposeBag)
     }
     
-    func requestInitialData() {
-        self.styleFeedViewModel.requestStylePostData(page: 1)
+    
+    func requestInitialFeed() {
+        let token: String? = self.userInfoViewModel.UserReponse?.accessToken
+        self.styleFeedViewModel.requestInitialFeed(token: token)
     }
     
-    func requestStylePostData(page: Int) {
-        self.styleFeedViewModel.requestStylePostData(page: page)
+    func requestNextFeed() {
+        let token: String? = self.userInfoViewModel.UserReponse?.accessToken
+        self.styleFeedViewModel.requestNextFeed(token: token)
     }
 }
 
@@ -124,10 +127,11 @@ extension StyleFeedCollectionViewVC: UICollectionViewDataSource {
 
 extension StyleFeedCollectionViewVC: UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let position = scrollView.contentOffset.y
-//        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-//            self.viewModel.requestStylePostData(page: 2)
-//        }
+        let position = scrollView.contentOffset.y
+        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+            let token: String? = self.userInfoViewModel.UserReponse?.accessToken
+            self.styleFeedViewModel.requestNextFeed(token: token)
+        }
     }
 }
 

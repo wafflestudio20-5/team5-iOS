@@ -84,7 +84,7 @@ extension UserListCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
         let cell = collectionView.cellForItem(at: indexPath) as! UserListCollectionViewCell
         
         let user_id = cell.user_id!
-        self.pushUserProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
+        self.pushProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
     }
     
     @objc func requestFollow(sender: FollowButton) {
