@@ -14,7 +14,7 @@ final class StyleFeedViewModel {
     private let styleFeedUsecase: StyleFeedUsecase
     private let disposeBag = DisposeBag()
     
-    var stylePostDataSource: Observable<[StylePost]> {
+    var stylePostDataSource: Observable<[Post]> {
         return styleFeedUsecase.stylePostRelay.asObservable()
     }
         
@@ -26,7 +26,7 @@ final class StyleFeedViewModel {
         self.styleFeedUsecase.requestStylePostData(page: page)
     }
     
-    func getStylePostAt(at index: Int) -> StylePost {
+    func getStylePostAt(at index: Int) -> Post {
         return self.styleFeedUsecase.stylePostList[index]
     }
     

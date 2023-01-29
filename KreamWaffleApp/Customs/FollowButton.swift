@@ -10,9 +10,13 @@ import UIKit
 
 final class FollowButton: UIButton {
     var isFollowing = false
-
+    
+    func followButtonTapped() {
+        isFollowing = !isFollowing
+        configureFollowButton()
+    }
     func configureFollowButton() {
-        if (self.isFollowing) {
+        if (isFollowing) {
             self.setTitle("팔로잉", for: .normal)
             self.layer.borderWidth = 1
             self.backgroundColor = .white

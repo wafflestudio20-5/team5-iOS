@@ -18,6 +18,7 @@ target 'KreamWaffleApp' do
     pod 'ImageSlideshow', '~> 1.9.2'
     pod 'GoogleSignIn', '~> 5.0.2'
     pod 'YPImagePicker'
+    pod 'SnapKit'
     use_frameworks!
 
 

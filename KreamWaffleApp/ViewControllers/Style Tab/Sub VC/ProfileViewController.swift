@@ -10,9 +10,9 @@ import UIKit
 import RxSwift
 import Kingfisher
 
-final class UserProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController {
     private let userInfoViewModel: UserInfoViewModel
-    private let userProfileViewModel: UserProfileViewModel
+    private let profileViewModel: ProfileViewModel
     private let styleFeedViewModel: StyleFeedViewModel
     
     private let fixedView = UIView()
@@ -34,9 +34,9 @@ final class UserProfileViewController: UIViewController {
     
     private lazy var userFeedCollectionViewVC = StyleFeedCollectionViewVC(styleFeedViewModel: styleFeedViewModel, userInfoViewModel: userInfoViewModel)
     
-    init(userInfoViewModel: UserInfoViewModel, userProfileViewModel: UserProfileViewModel, styleFeedViewModel: StyleFeedViewModel) {
+    init(userInfoViewModel: UserInfoViewModel, profileViewModel: ProfileViewModel, styleFeedViewModel: StyleFeedViewModel) {
         self.userInfoViewModel = userInfoViewModel
-        self.userProfileViewModel = userProfileViewModel
+        self.profileViewModel = profileViewModel
         self.styleFeedViewModel = styleFeedViewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -47,12 +47,12 @@ final class UserProfileViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        requestProfile()
         configureDesign()
         addSubviews()
         setUpFixedViewLayout()
         setupDividers()
         bindViews()
-        requestProfile()
         setUpChildVC()
     }
     
@@ -204,14 +204,11 @@ final class UserProfileViewController: UIViewController {
     
     func setUpButtonLayout() {
         self.followButton.titleLabel!.font = .systemFont(ofSize: 14.0, weight: .semibold)
-        self.followButton.tag = userProfileViewModel.getUserId()
-        if (self.userInfoViewModel.isLoggedIn() && self.userInfoViewModel.isFollowing(user_id: self.followButton.tag)) {
-            self.followButton.isFollowing = true
-        }
-        self.followButton.configureFollowButton()
+        self.followButton.tag = profileViewModel.getUserId()
         self.followButton.layer.cornerRadius = 7.5
         self.followButton.layer.borderWidth = 1
         self.followButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.followButton.configureFollowButton()
 
         self.followButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -244,7 +241,7 @@ final class UserProfileViewController: UIViewController {
     }
     
     func bindViews() {
-        self.userProfileViewModel.userProfileDataSource.subscribe { [weak self] event in
+        self.profileViewModel.userProfileDataSource.subscribe { [weak self] event in
             switch event {
             case .next:
                 if let profile = event.element {
@@ -259,25 +256,43 @@ final class UserProfileViewController: UIViewController {
     }
     
     func requestProfile() {
-        self.userProfileViewModel.requestProfile()
+        self.profileViewModel.requestProfile { [weak self] in
+            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                self?.navigationController?.popViewController(animated: true)
+            }
+            alert.addAction(okAction)
+            self?.present(alert, animated: false, completion: nil)
+        }
     }
     
-    func setUpData(with profile: Profile) {
+    func setUpData(with fetchedProfile: Profile?) {
+        var profile: Profile
+        
+        if fetchedProfile != nil {
+            profile = fetchedProfile!
+            self.followButton.isEnabled = true
+        } else {
+            profile = Profile()
+            self.followButton.isEnabled = false
+        }
+        
         let urlString = profile.image
-        guard let url = URL.init(string: urlString) else {
-                return
-            }
-        let resource = ImageResource(downloadURL: url)
-
-        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
-            switch result {
-            case .success(let value):
-                self.profileImageView.image = value.image
-            case .failure(let error):
-                print("Error: \(error)")
-                //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
+        if let url = URL.init(string: urlString) {
+            let resource = ImageResource(downloadURL: url)
+            
+            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    self.profileImageView.image = value.image
+                case .failure(let error):
+                    print("Error: \(error)")
+                    //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
+                }
             }
         }
+        
+        
         self.profileNameLabel.text = profile.profile_name
         self.userNameLabel.text = profile.user_name
         self.introductionLabel.text = profile.introduction
@@ -285,6 +300,8 @@ final class UserProfileViewController: UIViewController {
         self.postNumLabel.text = String(0) //나중에 API 수정되면 고치기
         self.followerNumLabel.text = String(profile.num_followers)
         self.followingNumLabel.text = String(profile.num_followings)
+        self.followButton.isFollowing = profile.following == "true" ? true : false
+        self.followButton.configureFollowButton()
     }
     
     func setUpChildVC() {
@@ -349,18 +366,16 @@ final class UserProfileViewController: UIViewController {
     }
 }
 
-extension UserProfileViewController {
+extension ProfileViewController {
     @objc func requestFollow(sender: FollowButton) {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoViewModel.UserUseCase)
+            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
 
-            let loginScreen = LoginViewController(viewModel: loginViewModel)
             loginScreen.modalPresentationStyle = .fullScreen
             self.present(loginScreen, animated: false)
         } else {
             self.userInfoViewModel.requestFollow(user_id: sender.tag)
-            sender.isFollowing = !sender.isFollowing
-            sender.configureFollowButton()
+            sender.followButtonTapped()
         }
     }
     

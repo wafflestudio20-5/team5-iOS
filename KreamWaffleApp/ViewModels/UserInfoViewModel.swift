@@ -16,7 +16,7 @@ enum Social {
 ///used in all other VCs, shares use case with login view model
 final class UserInfoViewModel {
     
-    public let UserUseCase : UserUsecase
+    private let UserUseCase : UserUsecase
     
     var User : User? {
             get {
