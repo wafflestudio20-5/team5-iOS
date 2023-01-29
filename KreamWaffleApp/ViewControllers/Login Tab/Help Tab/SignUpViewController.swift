@@ -16,8 +16,8 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     
     var backButton = UIButton()
     var titleLabel = UILabel()
-    var emailField : LoginTextfield?
-    var passwordField : LoginTextfield?
+    var emailField : CustomTextfield?
+    var passwordField : CustomTextfield?
     
     var sizeField : ShoeSizefield?
     var sizeSelected = false
@@ -39,8 +39,8 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.emailField = LoginTextfield(titleText: "이메일 주소 *", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: nil, defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
-        self.passwordField = LoginTextfield(titleText: "비밀번호 *", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: nil, defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
+        self.emailField = CustomTextfield(titleText: "이메일 주소 *", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: nil, defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
+        self.passwordField = CustomTextfield(titleText: "비밀번호 *", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: nil, defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
         self.sizeField = ShoeSizefield(selectedSize: nil)
         self.necessaryTerms = TermsButton(title: "[필수] 만 14세 이상이며 모두 동의합니다.", rightButtonImage: "plus", pressedRightButtonImage: "minus")
         self.additionalTerms = TermsButton(title: "[선택] 광고성 정보 수신에 모두 동의합니다.", rightButtonImage: "plus", pressedRightButtonImage: "minus")

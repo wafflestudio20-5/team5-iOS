@@ -46,7 +46,7 @@
 		651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E71842977CF1A00D81E2F /* OpeningViewController.swift */; };
 		651E718B297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */; };
 		651E718D297B989000D81E2F /* AutoAddPaddingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */; };
-		6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* LoginTextfield.swift */; };
+		6520AEAB295EB9D0002D549D /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* CustomTextfield.swift */; };
 		6527350B29680C1900C859B8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350A29680C1900C859B8 /* User.swift */; };
 		6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350C2968185C00C859B8 /* UserUsecase.swift */; };
 		6527350F2968196200C859B8 /* UserInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6527350E2968196200C859B8 /* UserInfoViewModel.swift */; };
@@ -160,7 +160,7 @@
 		651E71842977CF1A00D81E2F /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabSharedUIStackVIew.swift; sourceTree = "<group>"; };
 		651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAddPaddingButton.swift; sourceTree = "<group>"; };
-		6520AEAA295EB9CF002D549D /* LoginTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextfield.swift; sourceTree = "<group>"; };
+		6520AEAA295EB9CF002D549D /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
 		6527350A29680C1900C859B8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6527350C2968185C00C859B8 /* UserUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUsecase.swift; sourceTree = "<group>"; };
 		6527350E2968196200C859B8 /* UserInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewModel.swift; sourceTree = "<group>"; };
@@ -356,7 +356,7 @@
 		65653F33295B5AF2002F250B /* Customs */ = {
 			isa = PBXGroup;
 			children = (
-				6520AEAA295EB9CF002D549D /* LoginTextfield.swift */,
+				6520AEAA295EB9CF002D549D /* CustomTextfield.swift */,
 				65653F34295B5B01002F250B /* CustomSegmentedControl.swift */,
 				65653F36295B5B25002F250B /* colors.swift */,
 				654D9691295BFC4900B93EE0 /* Constants.swift */,
@@ -836,7 +836,7 @@
 				944A1145295D16ED00F8CDB7 /* ShopCollectionViewFlowLayout.swift in Sources */,
 				654D9692295BFC4900B93EE0 /* Constants.swift in Sources */,
 				65F8FBBA2962125200679E72 /* MyShoppingViewController.swift in Sources */,
-				6520AEAB295EB9D0002D549D /* LoginTextfield.swift in Sources */,
+				6520AEAB295EB9D0002D549D /* CustomTextfield.swift in Sources */,
 				65F8FBB129620FCC00679E72 /* StylePost.swift in Sources */,
 				5C6FBD4F2979744E00B64FF0 /* UserListUsecase.swift in Sources */,
 				65DC40B52980239700D14DBF /* NewPostViewController.swift in Sources */,
