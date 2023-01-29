@@ -26,9 +26,7 @@ final class ProfileRepository {
     
     func requestProfile(user_id: Int, onNetworkFailure: @escaping ()->()) -> Single<Profile> {
         return Single.create { single in
-//            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
-            AF.request(fetchUserConstants.uri + "7/", method: .get, headers: fetchUserConstants.headers)
-
+            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
                 .validate()
                 .responseDecodable(of: Profile.self) {response in
                     switch response.result {

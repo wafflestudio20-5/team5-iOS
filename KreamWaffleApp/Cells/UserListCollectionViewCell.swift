@@ -51,17 +51,17 @@ class UserListCollectionViewCell: UICollectionViewCell {
         
         let urlString = nestedProfile.image
         guard let url = URL.init(string: urlString!) else {
-                return
-            }
+            self.profileImageView.image = UIImage(systemName: "person")
+            return
+        }
         let resource = ImageResource(downloadURL: url)
 
         KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
             switch result {
             case .success(let value):
                 self.profileImageView.image = value.image
-            case .failure(let error):
-                print("Error: \(error)")
-                //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
+            case .failure(_):
+                self.profileImageView.image = UIImage(systemName: "person")
             }
         }
     }
