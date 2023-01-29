@@ -31,6 +31,7 @@ final class UserListCollectionViewVC: UIViewController {
     }
     
     override func viewDidLoad() {
+        self.view.backgroundColor = .white
         setUpCollectionView()
         bindCollectionView()
         requestInitialData()
