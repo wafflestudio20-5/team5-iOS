@@ -19,6 +19,7 @@ final class FollowButton: UIButton {
     
     func configure(following: String?) {
         if let isFollowing = following {
+            self.isHidden = false
             if isFollowing == "login required" {
                 self.followButtonStatus = .isDeactivated
             } else if isFollowing == "true" {

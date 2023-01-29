@@ -57,6 +57,10 @@ final class ProfileViewController: UIViewController {
         setUpChildVC()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        requestProfile()
+    }
+    
     func configureDesign() {
         self.view.backgroundColor = .white
         self.setUpBackButton()

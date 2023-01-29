@@ -62,6 +62,16 @@ final class Profile: Codable {
         image = try container.decodeIfPresent(String.self, forKey: .image) ?? ""
         num_followers = try container.decodeIfPresent(Int.self, forKey: .num_followers) ?? 0
         num_followings = try container.decodeIfPresent(Int.self, forKey: .num_followings) ?? 0
-        following = try container.decodeIfPresent(String?.self, forKey: .following) ?? nil
-    }
+        do {
+            let strFollowing = try container.decodeIfPresent(String.self, forKey: .following)
+            self.following = strFollowing
+        } catch {
+            do {
+                let boolFollowing: Bool = try container.decodeIfPresent(Bool.self, forKey: .following) ?? false
+                self.following = boolFollowing ? "true" : "false"
+            } catch {
+                self.following = "false"
+                print(error)
+            }
+        }    }
 }
