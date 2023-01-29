@@ -48,7 +48,7 @@ final class StyleFeedUsecase {
         self.stylePostList = [
             Post(id: 1, content: "아더에러 ✨", images: [
                 "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMTQ2/MDAxNjcwODIwODk1NjEw.nf2jbxLWZCgGzECgQeMPHE7ezHjcuSIUu2q9PeMOAiIg.WVRRPpwBA7VVfWmfdMlpqOORYPUm91ORfmjjSk3AIc0g.JPEG/p_ff64de1147824dec9712c634e93cf993.jpeg?type=l", "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMjQ0/MDAxNjcwODIwODk2MjQz.scgGqUEmzUIAUxe9xy6qMpbiMnZcva325JUohoIsIa0g.Aztf7mK85JfAJT1UZg8S-BhTjJzAJhM8MNz72TnAoM0g.JPEG/p_fa2aedd66c6b4f77b48f9939540879d0.jpeg?type=l_webp"
-            ], image_ratio: 4/3, created_by: NestedProfile(user_id: 1, user_name: "Hi", profile_name: "mangocheezz", image:" https://i.pinimg.com/originals/8f/50/63/8f50630ae0e1775196e4c270c573ce67.png"), created_at: "20230120", num_comments: "5", num_likes: "5"),
+            ], image_ratio: 4/3, created_by: NestedProfile(user_id: 1, user_name: "Hi", profile_name: "mangocheezz", image:" https://i.pinimg.com/originals/8f/50/63/8f50630ae0e1775196e4c270c573ce67.png", following: "true"), created_at: "20230120", num_comments: "5", num_likes: "5"),
         ]
     }
     
@@ -56,7 +56,7 @@ final class StyleFeedUsecase {
         let newData = [
             Post(id: 1, content: "아더에러 ✨", images: [
                 "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMTQ2/MDAxNjcwODIwODk1NjEw.nf2jbxLWZCgGzECgQeMPHE7ezHjcuSIUu2q9PeMOAiIg.WVRRPpwBA7VVfWmfdMlpqOORYPUm91ORfmjjSk3AIc0g.JPEG/p_ff64de1147824dec9712c634e93cf993.jpeg?type=l", "https://kream-phinf.pstatic.net/MjAyMjEyMTJfMjQ0/MDAxNjcwODIwODk2MjQz.scgGqUEmzUIAUxe9xy6qMpbiMnZcva325JUohoIsIa0g.Aztf7mK85JfAJT1UZg8S-BhTjJzAJhM8MNz72TnAoM0g.JPEG/p_fa2aedd66c6b4f77b48f9939540879d0.jpeg?type=l_webp"
-            ], image_ratio: 4/3, created_by: NestedProfile(user_id: 1, user_name: "Hi", profile_name: "mangocheezz", image:" https://i.pinimg.com/originals/8f/50/63/8f50630ae0e1775196e4c270c573ce67.png"), created_at: "20230120", num_comments: "5", num_likes: "5")
+            ], image_ratio: 4/3, created_by: NestedProfile(user_id: 1, user_name: "Hi", profile_name: "mangocheezz", image:" https://i.pinimg.com/originals/8f/50/63/8f50630ae0e1775196e4c270c573ce67.png", following: "true"), created_at: "20230120", num_comments: "5", num_likes: "5")
         ]
         
         self.stylePostList.append(contentsOf: newData)
