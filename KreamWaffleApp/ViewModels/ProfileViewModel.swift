@@ -25,7 +25,7 @@ final class ProfileViewModel {
         }
     }
     
-    func requestProfile(onNetworkFailure: @escaping ()->()) {
-        self.profileUsecase.requestProfile(onNetworkFailure: onNetworkFailure)
+    func requestProfile(token: String?, onNetworkFailure: @escaping ()->()) {
+        self.profileUsecase.requestProfile(token: token, onNetworkFailure: onNetworkFailure)
     }
 }

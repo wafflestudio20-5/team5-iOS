@@ -19,14 +19,18 @@ import Alamofire
 final class ProfileRepository {
     private struct fetchUserConstants {
         static let uri = "https://kream-waffle.cf/styles/profiles/"
-        static let headers : HTTPHeaders = [
-            "accept": "application/json",
-        ]
     }
     
-    func requestProfile(user_id: Int, onNetworkFailure: @escaping ()->()) -> Single<Profile> {
+    func requestProfile(user_id: Int, token: String?, onNetworkFailure: @escaping ()->()) -> Single<Profile> {
+        var headers : HTTPHeaders = [
+            "accept": "application/json",
+        ]
+        if let token = token {
+            headers.add(name: "Authorization", value: "Bearer \(token)")
+        }
+        
         return Single.create { single in
-            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
+            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: headers)
                 .validate()
                 .responseDecodable(of: Profile.self) {response in
                     switch response.result {

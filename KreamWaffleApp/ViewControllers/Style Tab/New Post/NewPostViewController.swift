@@ -240,7 +240,7 @@ extension NewPostViewController {
         
         LoadingIndicator.showLoading()
         
-        self.newPostViewModel.uploadPost(token: self.userInfoViewModel.UserReponse!.accessToken, content: textView.text, completion: completion, onNetworkFailure: onNetworkFailure)
+        self.newPostViewModel.uploadPost(token: self.userInfoViewModel.UserResponse!.accessToken, content: textView.text, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
     @objc func deleteButtonTapped(sender: UIButton) {

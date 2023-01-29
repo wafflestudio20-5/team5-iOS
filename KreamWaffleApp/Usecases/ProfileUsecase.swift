@@ -29,9 +29,9 @@ final class ProfileUsecase {
         self.user_id = user_id
     }
     
-    func requestProfile(onNetworkFailure: @escaping ()->()) {
+    func requestProfile(token: String?, onNetworkFailure: @escaping ()->()) {
         self.profileRepository
-            .requestProfile(user_id: self.user_id, onNetworkFailure: onNetworkFailure)
+            .requestProfile(user_id: self.user_id, token: token, onNetworkFailure: onNetworkFailure)
             .subscribe(
                 onSuccess: { [weak self] fetchedProfile in
                     self?.profile = fetchedProfile

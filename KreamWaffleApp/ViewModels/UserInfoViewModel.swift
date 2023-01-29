@@ -24,7 +24,7 @@ final class UserInfoViewModel {
             }
         }
     
-    var UserReponse: UserResponse? {
+    var UserResponse: UserResponse? {
         get {
             self.UserUseCase.userResponse
         }
