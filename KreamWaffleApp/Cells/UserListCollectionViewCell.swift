@@ -42,9 +42,10 @@ class UserListCollectionViewCell: UICollectionViewCell {
         self.profileImageView.image = nil
     }
     
-    func configure(with nestedProfile: NestedProfile, isFollowing: Bool) {
+    func configure(with nestedProfile: NestedProfile) {
+        self.followButton.configure(following: nestedProfile.following)
+        
         self.user_id = nestedProfile.user_id
-        self.followButton.isFollowing = isFollowing
         self.profileNameLabel.text = nestedProfile.profile_name
         self.userNameLabel.text = nestedProfile.user_name
         
@@ -63,8 +64,6 @@ class UserListCollectionViewCell: UICollectionViewCell {
                 //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
             }
         }
-        
-        followButton.configureFollowButton()
     }
     
     func setUpLayout() {

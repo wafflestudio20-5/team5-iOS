@@ -39,4 +39,8 @@ final class StyleDetailUsecase {
     func getThumbnailImageRatio() -> Float {
         return self.stylePost.image_ratio
     }
+    
+    func getIsFollowing() -> String? {
+        return self.stylePost.created_by.following
+    }
 }

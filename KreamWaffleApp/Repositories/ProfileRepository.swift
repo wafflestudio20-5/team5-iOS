@@ -24,7 +24,7 @@ final class ProfileRepository {
         ]
     }
     
-    func requestProfile(user_id: Int, onNetworkFailure: @escaping ()->()) -> Single<Profile?> {
+    func requestProfile(user_id: Int, onNetworkFailure: @escaping ()->()) -> Single<Profile> {
         return Single.create { single in
 //            AF.request(fetchUserConstants.uri + "\(user_id)/", method: .get, headers: fetchUserConstants.headers)
             AF.request(fetchUserConstants.uri + "7/", method: .get, headers: fetchUserConstants.headers)
@@ -37,7 +37,6 @@ final class ProfileRepository {
                         single(.success(result))
                     case .failure:
                         debugPrint(response)
-                        single(.success(nil))
                         onNetworkFailure()
                     }
                 }

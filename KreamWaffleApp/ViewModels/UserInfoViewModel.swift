@@ -38,10 +38,6 @@ final class UserInfoViewModel {
         return self.UserUseCase.loggedIn
     }
     
-    func isFollowing(user_id: Int) -> Bool {
-        return self.UserUseCase.isFollowing(user_id: user_id)
-    }
-    
     func requestFollow(user_id: Int) {
         self.UserUseCase.requestFollow(user_id: user_id)
     }

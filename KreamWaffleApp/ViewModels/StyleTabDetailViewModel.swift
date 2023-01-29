@@ -37,4 +37,8 @@ final class StyleTabDetailViewModel {
     func getThumbnailImageRatio() -> Float {
         return self.styleDetailUsecase.getThumbnailImageRatio()
     }
+    
+    func getIsFollowing() -> String? {
+        return self.styleDetailUsecase.getIsFollowing()
+    }
 }

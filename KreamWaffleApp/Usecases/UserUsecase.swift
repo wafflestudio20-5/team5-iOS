@@ -15,19 +15,11 @@ final class UserUsecase {
     var error : LoginError
     var user : User?
     var userResponse : UserResponse?
-    
-    var followingSet: Set<Int> = []
-    
+        
     ///toggle when logged in
     var loggedIn : Bool {
         didSet {
             loginState.accept(loggedIn)
-            
-            if (loggedIn) {
-                self.followingSet = self.repository.loadFollowingSet()
-            } else { // 로그아웃되면 followingSet 초기화.
-                followingSet.removeAll(keepingCapacity: false)
-            }
             
             print("[Log] User usecase: logged in changed to", loggedIn)
         }
@@ -107,18 +99,7 @@ final class UserUsecase {
         self.loggedIn = false
     }
     
-    func isFollowing(user_id: Int) -> Bool {
-        return followingSet.contains(user_id)
-    }
-    
     func requestFollow(user_id: Int) {
         self.repository.requestFollow(user_id: user_id) //서버와의 통신
-        if (self.followingSet.contains(user_id)) { //앱 내부적으로 팔로잉 여부 관리
-            self.followingSet.remove(user_id)
-            print(self.followingSet)
-        } else {
-            self.followingSet.insert(user_id)
-            print(self.followingSet)
-        }
     }
 }

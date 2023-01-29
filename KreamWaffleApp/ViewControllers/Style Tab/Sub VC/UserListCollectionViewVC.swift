@@ -58,7 +58,7 @@ final class UserListCollectionViewVC: UIViewController {
 
         userListViewModel.userListDataSource
             .bind(to: collectionView.rx.items(cellIdentifier: "UserListCollectionViewCell", cellType: UserListCollectionViewCell.self)) { index, item, cell in
-                cell.configure(with: item, isFollowing: self.userInfoViewModel.isFollowing(user_id: item.user_id))
+                cell.configure(with: item)
                 cell.followButton.tag = item.user_id
                 cell.followButton.addTarget(self, action: #selector(self.requestFollow(sender:)), for: .touchUpInside)
 

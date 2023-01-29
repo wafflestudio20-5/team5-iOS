@@ -209,7 +209,6 @@ final class ProfileViewController: UIViewController {
         self.followButton.layer.cornerRadius = 7.5
         self.followButton.layer.borderWidth = 1
         self.followButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.followButton.configureFollowButton()
 
         self.followButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -267,18 +266,10 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    func setUpData(with fetchedProfile: Profile?) {
-        var profile: Profile
+    func setUpData(with fetchedProfile: Profile) {
+        self.followButton.configure(following: fetchedProfile.following)
         
-        if fetchedProfile != nil {
-            profile = fetchedProfile!
-            self.followButton.isEnabled = true
-        } else {
-            profile = Profile()
-            self.followButton.isEnabled = false
-        }
-        
-        let urlString = profile.image
+        let urlString = fetchedProfile.image
         if let url = URL.init(string: urlString) {
             let resource = ImageResource(downloadURL: url)
             
@@ -294,15 +285,13 @@ final class ProfileViewController: UIViewController {
         }
         
         
-        self.profileNameLabel.text = profile.profile_name
-        self.userNameLabel.text = profile.user_name
-        self.introductionLabel.text = profile.introduction
+        self.profileNameLabel.text = fetchedProfile.profile_name
+        self.userNameLabel.text = fetchedProfile.user_name
+        self.introductionLabel.text = fetchedProfile.introduction
         self.introductionLabel.sizeToFit()
         self.postNumLabel.text = String(0) //나중에 API 수정되면 고치기
-        self.followerNumLabel.text = String(profile.num_followers)
-        self.followingNumLabel.text = String(profile.num_followings)
-        self.followButton.isFollowing = profile.following == "true" ? true : false
-        self.followButton.configureFollowButton()
+        self.followerNumLabel.text = String(fetchedProfile.num_followers)
+        self.followingNumLabel.text = String(fetchedProfile.num_followings)
     }
     
     func setUpChildVC() {

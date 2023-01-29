@@ -159,7 +159,6 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpButtonLayout() {
-        followButton.configureFollowButton()
         followButton.backgroundColor = .black
         followButton.titleLabel!.font = .systemFont(ofSize: 14.0, weight: .semibold)
         followButton.setTitleColor(.white, for: .normal)
@@ -252,8 +251,8 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpData() {
-        self.followButton.isFollowing = self.userInfoViewModel.isFollowing(user_id: self.styleTabDetailViewModel.getUserId())
-        self.followButton.configureFollowButton()
+        self.followButton.configure(following: self.styleTabDetailViewModel.getIsFollowing())
+        
         self.idLabel.text = self.styleTabDetailViewModel.getProfileName()
         self.contentLabel.text = self.styleTabDetailViewModel.getContent()
         self.contentLabel.sizeToFit()

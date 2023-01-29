@@ -170,14 +170,8 @@ class LoginRepository {
         }
     }
     
-    
-    // ****** API 오기 전 테스트 ******
-    func loadFollowingSet() -> Set<Int> {
-        return [1, 2, 3, 8]
-    }
-    // ****** API 오기 전 테스트 ******
-    
     func requestFollow(user_id: Int) {
+        //request follow using user_id
         
     }
 }
