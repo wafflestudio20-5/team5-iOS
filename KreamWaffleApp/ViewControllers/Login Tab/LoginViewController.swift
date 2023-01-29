@@ -110,7 +110,6 @@ class LoginViewController: UIViewController {
         //TODO: set differently according to login state in VM --> 일단은 노티로.
         //이게 아니라 root vc를 갈아끼워야하는 것 같음.
         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
-        self.dismiss(animated: false)
     }
     
     //changes activation of login button
