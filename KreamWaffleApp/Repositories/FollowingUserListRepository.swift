@@ -12,12 +12,14 @@ final class FollowingUserListRepository: UserListRepositoryProtocol {
         NestedProfile(user_id: 1,
                       user_name: "first_following",
                       profile_name: "first_following_profile_name",
-                      image: "https://developer.apple.com/swift/images/swift-og.png"
+                      image: "https://developer.apple.com/swift/images/swift-og.png",
+                      following: "true"
         ),
         NestedProfile(user_id: 2,
                       user_name: "second_following",
                       profile_name: "second_following_profile_name",
-                      image: "https://logos-world.net/wp-content/uploads/2021/10/Python-Symbol.png"
+                      image: "https://logos-world.net/wp-content/uploads/2021/10/Python-Symbol.png",
+                      following: "true"
         )
     ]
     
