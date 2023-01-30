@@ -96,7 +96,7 @@ class LoginViewModel {
     }
     
     func checkAccessToken(){
-        self.UserUseCase.checksAccessToken()
+        self.UserUseCase.checkAccessToken()
     }
     
     

@@ -54,7 +54,7 @@ final class UserUsecase {
         //TODO: 나중에는 only get user response
         if let savedUserResponse = repository.getUserResponse(){
             self.userResponse = savedUserResponse
-            self.checksAccessToken()
+            self.checkAccessToken()
         }else{
             print("no saved user reponse")
         }
@@ -124,7 +124,7 @@ final class UserUsecase {
         }
     }
     
-    func checksAccessToken(){
+    func checkAccessToken(){
         repository.checkIfValidToken { [weak self] (result) in
             guard let self = self else { return }
             switch result {
