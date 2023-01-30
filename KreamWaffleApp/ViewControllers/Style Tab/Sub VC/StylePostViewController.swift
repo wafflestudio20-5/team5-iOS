@@ -79,14 +79,18 @@ final class StylePostViewController: UIViewController {
     }
     
     private func refreshData() {
-        let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-        self.stylePostViewModel.requestPost(token: token) { [weak self] in
-            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                self?.navigationController?.popViewController(animated: true)
+        Task {
+            await self.userInfoViewModel.checkAccessToken()
+            let token = self.userInfoViewModel.UserResponse?.accessToken
+            
+            self.stylePostViewModel.requestPost(token: token) { [weak self] in
+                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                alert.addAction(okAction)
+                self?.present(alert, animated: false, completion: nil)
             }
-            alert.addAction(okAction)
-            self?.present(alert, animated: false, completion: nil)
         }
     }
     
@@ -379,17 +383,23 @@ extension StylePostViewController { //button 관련 메서드들.
         if (!self.userInfoViewModel.isLoggedIn()) {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
-            self.userInfoViewModel.requestFollow(user_id: self.writerUserId) { [weak self] in
-                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self?.navigationController?.popViewController(animated: true)
+            Task {
+                await self.userInfoViewModel.checkAccessToken()
+                if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                    self.userInfoViewModel.requestFollow(token: token, user_id: self.writerUserId) { [weak self] in
+                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(okAction)
+                        self?.present(alert, animated: false, completion: nil)
+                    }
+                    
+                    self.followButton.followButtonTapped()
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 }
-                alert.addAction(okAction)
-                self?.present(alert, animated: false, completion: nil)
-            
             }
-            
-            self.followButton.followButtonTapped()
         }
     }
     
@@ -397,18 +407,24 @@ extension StylePostViewController { //button 관련 메서드들.
         if (!self.userInfoViewModel.isLoggedIn()) {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
-            let token: String = self.userInfoViewModel.UserResponse!.accessToken
-            
-            self.stylePostViewModel.likeButtonTapped(token: token) {[weak self] in
-                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self?.navigationController?.popViewController(animated: true)
+            Task {
+                await self.userInfoViewModel.checkAccessToken()
+                if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                    self.stylePostViewModel.likeButtonTapped(token: token) {[weak self] in
+                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(okAction)
+                        self?.present(alert, animated: false, completion: nil)
+                        
+                    }
+                    self.isLiked = !self.isLiked
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 }
-                alert.addAction(okAction)
-                self?.present(alert, animated: false, completion: nil)
-                
             }
-            self.isLiked = !self.isLiked
+            
         }
     }
     

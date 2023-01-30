@@ -90,7 +90,8 @@ class LoginRepository {
                     let results : UserResponse = try JSONDecoder().decode(UserResponse.self, from: data!)
                     self.saveUser(user: results.user)
                     self.saveUserResponse(userResponse: results)
-                    print("LoginRepository: User is", results.user)
+                    print("[LoginRepository]: User is", results.user)
+                    print("[LoginRepository]: User token is", results.accessToken)
                     completion(.success(results))
                 }catch{
                     print(error)
@@ -187,13 +188,20 @@ class LoginRepository {
     
     ///checks if current access token is valid. If valid, returns true. If not, returns invalidAccessTokenError
     func checkIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()){
-        let URLString = "\(baseAPIURL)/token/verify"
+        let URLString = "\(baseAPIURL)/token/verify/"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
             print("url error")
             completion(.failure(.urlError))
             return
         }
-        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
+            .validate()
+            .response{ response in
+            //***
+            print("\n================checkIfValidToken================\n")
+            debugPrint(response)
+            //***
+            
             switch response.result {
             case .success:
                 completion(.success(true))
@@ -209,13 +217,21 @@ class LoginRepository {
 
     ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
     func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()){
-        let URLString = "\(baseAPIURL)/token/refresh"
+        let URLString = "\(baseAPIURL)/token/refresh/"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
             print("url error")
             completion(.failure(.urlError))
             return
         }
-        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
+            .validate()
+            .response { response in
+            
+            //***
+            print("\n================getNewToken================\n")
+            debugPrint(response)
+            //***
+            
             switch response.result {
             case .success(let data):
                 do{

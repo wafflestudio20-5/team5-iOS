@@ -38,7 +38,11 @@ final class UserInfoViewModel {
         return self.UserUseCase.loggedIn
     }
     
-    func requestFollow(user_id: Int, onNetworkFailure: @escaping () -> ()) {
-        self.UserUseCase.requestFollow(user_id: user_id, onNetworkFailure: onNetworkFailure)
+    func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
+        self.UserUseCase.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
+    }
+    
+    func checkAccessToken() async {
+        await self.UserUseCase.checkAccessToken()
     }
 }

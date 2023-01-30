@@ -33,13 +33,15 @@ final class StyleFeedRepository {
             AF.request(finalUrl!, method: .get, headers: headers)
                 .validate()
                 .responseDecodable(of: PostResponse.self) { response in
+                    //*****
+                    print("\n=================== style feed ======================\n")
+                    debugPrint(response)
+                    //*****
                     
                     switch response.result {
                     case .success(let result):
-                        debugPrint(response)
                         single(.success(result))
                     case .failure(let error):
-                        debugPrint(response)
                         single(.failure(error))
                     }
                     

@@ -19,6 +19,8 @@ final class StyleFeedCollectionViewVC : UIViewController{
     private let styleFeedViewModel: StyleFeedViewModel
     private let userInfoViewModel: UserInfoViewModel
     
+    private let collectionViewRefreshControl = UIRefreshControl()
+    
     private let collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
         layout.itemRenderDirection = .leftToRight
@@ -81,15 +83,31 @@ final class StyleFeedCollectionViewVC : UIViewController{
                     .disposed(by: disposeBag)
     }
     
+    private func setUpRefreshControl() {
+        self.collectionViewRefreshControl.addTarget(self, action: #selector(refreshFunction), for: .valueChanged)
+        self.collectionView.refreshControl = self.collectionViewRefreshControl
+    }
+    
+    @objc func refreshFunction() {
+        requestInitialFeed()
+        self.collectionViewRefreshControl.endRefreshing()
+    }
+    
     
     func requestInitialFeed() {
-        let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-        self.styleFeedViewModel.requestInitialFeed(token: token)
+        Task {
+            await self.userInfoViewModel.checkAccessToken()
+            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+            self.styleFeedViewModel.requestInitialFeed(token: token)
+        }
     }
     
     func requestNextFeed() {
-        let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-        self.styleFeedViewModel.requestNextFeed(token: token)
+        Task {
+            await self.userInfoViewModel.checkAccessToken()
+            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+            self.styleFeedViewModel.requestNextFeed(token: token)
+        }
     }
 }
 
@@ -127,11 +145,14 @@ extension StyleFeedCollectionViewVC: UICollectionViewDataSource {
 
 extension StyleFeedCollectionViewVC: UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-            self.styleFeedViewModel.requestNextFeed(token: token)
-        }
+//        let position = scrollView.contentOffset.y
+//        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+//            Task {
+//                await self.userInfoViewModel.checkAccessToken()
+//                let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+//                self.styleFeedViewModel.requestNextFeed(token: token)
+//            }
+//        }
     }
 }
 

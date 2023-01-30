@@ -52,11 +52,13 @@ final class UserUsecase {
         }
         
         //TODO: 나중에는 only get user response
-        if let savedUserResponse = repository.getUserResponse(){
-            self.userResponse = savedUserResponse
-            self.checkAccessToken()
-        }else{
-            print("no saved user reponse")
+        Task {
+            if let savedUserResponse = repository.getUserResponse(){
+                self.userResponse = savedUserResponse
+                await self.checkAccessToken()
+            }else{
+                print("no saved user reponse")
+            }
         }
     }
     
@@ -108,13 +110,14 @@ final class UserUsecase {
     }
     
     //MARK: - checks/requests token
-    private func requestsNewAccessToken(){
+    private func requestsNewAccessToken() async {
         repository.getNewToken { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let response):
                 self.replaceAccessToken(newToken: response.accessToken)
                 print("[Log] Userusecase: refresh token is still valid")
+                print("newtoken: \(response.accessToken)")
             case .failure(let error):
                 self.error = error as LoginError
                 if (error == .invalidRefreshTokenError){
@@ -124,7 +127,8 @@ final class UserUsecase {
         }
     }
     
-    func checkAccessToken(){
+    func checkAccessToken() async {
+        print("token before checkIfValidToken: \(self.userResponse?.accessToken)")
         repository.checkIfValidToken { [weak self] (result) in
             guard let self = self else { return }
             switch result {
@@ -132,7 +136,9 @@ final class UserUsecase {
                 print("[Log] UserUsecase: access token is still valid")
             case .failure(let error):
                 self.error = error as LoginError
-                self.requestsNewAccessToken()
+                Task {
+                    await self.requestsNewAccessToken()
+                }
             }
         }
     }
@@ -154,7 +160,7 @@ final class UserUsecase {
         self.loggedIn = false
     }
     
-    func requestFollow(user_id: Int, onNetworkFailure: @escaping () -> ()) {
-        self.repository.requestFollow(token: self.userResponse!.accessToken, user_id: user_id, onNetworkFailure: onNetworkFailure) //서버와의 통신
+    func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
+        self.repository.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
     }
 }
