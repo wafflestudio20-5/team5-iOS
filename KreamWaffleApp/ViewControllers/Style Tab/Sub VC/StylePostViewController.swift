@@ -371,7 +371,11 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func numLikesLabelTapped() {
-        self.navigationController?.pushViewController(LikedUserListViewController(userInfoViewModel: self.userInfoViewModel), animated: true)
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            self.navigationController?.pushViewController(LikedUserListViewController(id: self.stylePostViewModel.getPostId(), userInfoViewModel: self.userInfoViewModel), animated: true)
+        }
     }
 
     @objc func idLabelTapped() {

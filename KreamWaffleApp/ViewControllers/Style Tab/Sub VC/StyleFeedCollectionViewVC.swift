@@ -49,6 +49,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
         super.viewDidLoad()
         setUpCollectionView()
         bindCollectionView()
+        setUpRefreshControl()
         requestInitialFeed()
     }
     

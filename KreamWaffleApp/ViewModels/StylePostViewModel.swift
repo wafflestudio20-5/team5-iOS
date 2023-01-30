@@ -31,6 +31,10 @@ final class StylePostViewModel {
         return self.stylePostUsecase.getUserId()
     }
     
+    func getPostId() -> Int {
+        return self.stylePostUsecase.getPostId()
+    }
+    
     func requestPost(token: String?, onNetworkFailure: @escaping ()->()) {
         self.stylePostUsecase.requestPost(token: token, onNetworkFailure: onNetworkFailure)
     }

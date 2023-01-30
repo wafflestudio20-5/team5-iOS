@@ -12,12 +12,12 @@ final class LikedUserListViewController: UIViewController {
     private let userListCollectionViewVC: UserListCollectionViewVC
     private let userInfoViewModel: UserInfoViewModel
     
-    init(userInfoViewModel: UserInfoViewModel) {
+    init(id: Int, userInfoViewModel: UserInfoViewModel) {
         self.userInfoViewModel = userInfoViewModel
         
         let repository = LikedUserListRepository()
         let usecase = UserListUsecase(userListRepository: repository)
-        self.userListCollectionViewVC = UserListCollectionViewVC(userListViewModel: UserListViewModel(userListUsecase: usecase), userInfoViewModel: self.userInfoViewModel)
+        self.userListCollectionViewVC = UserListCollectionViewVC(id: id, userListViewModel: UserListViewModel(userListUsecase: usecase), userInfoViewModel: self.userInfoViewModel)
         
         super.init(nibName: nil, bundle: nil)
     }

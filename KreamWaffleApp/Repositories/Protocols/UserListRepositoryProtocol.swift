@@ -13,6 +13,5 @@ import RxSwift
 
 
 protocol UserListRepositoryProtocol {
-    func userListApiRequest(page: Int, completion: (Error?, [NestedProfile]?) -> Void) -> (Void)
-    func followRequest(user_id: String) -> (Void)
+    func requestUserListData(id: Int, token: String, cursor: String?, completion: @escaping ()->()) -> Single<UserListResponse>
 }

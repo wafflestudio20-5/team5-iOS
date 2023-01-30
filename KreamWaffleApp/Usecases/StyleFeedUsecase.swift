@@ -33,6 +33,7 @@ final class StyleFeedUsecase {
     }
     
     func requestInitialFeed(token: String?, completion: @escaping () -> ()) {
+        self.stylePostList.removeAll()
         self.cursor = nil
         requestNextFeed(token: token, completion: completion)
     }

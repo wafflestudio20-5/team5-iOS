@@ -15,6 +15,7 @@ final class UserListUsecase {
     
     private let disposeBag = DisposeBag()
     let userListRelay: BehaviorRelay<[NestedProfile]> = .init(value: [])
+    private var cursor: String?
     
     var userList = [NestedProfile]() {
         didSet {
@@ -26,10 +27,26 @@ final class UserListUsecase {
         self.userListRepository = userListRepository
     }
     
-    func requestUserListData(page: Int) {
-        self.userListRepository.userListApiRequest(page: page) { [weak self] (error, result) in
-            guard let self = self else { return }
-            self.userList = result!
-        }
+    func requestInitialUserList(id: Int, token: String, completion: @escaping () -> ()) {
+        userList.removeAll()
+        self.cursor = nil
+        requestNextUserList(id: id, token: token, completion: completion)
+    }
+    
+    func requestNextUserList(id: Int, token: String, completion: @escaping () -> ()) {
+        self.userListRepository
+            .requestUserListData(id: id, token: token, cursor: self.cursor, completion: completion)
+            .subscribe { event in
+                switch event {
+                case .success(let userListResponse):
+                    self.cursor = userListResponse.next
+                    self.userList += userListResponse.results
+                case .failure(let error):
+                    self.cursor = nil
+                    self.userList.removeAll()
+                    print(error)
+                }
+            }
+            .disposed(by: disposeBag)
     }
 }

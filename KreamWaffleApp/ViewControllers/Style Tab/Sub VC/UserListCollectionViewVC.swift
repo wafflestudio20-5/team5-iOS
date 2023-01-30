@@ -15,11 +15,13 @@ final class UserListCollectionViewVC: UIViewController {
     let userInfoViewModel: UserInfoViewModel
     
     let collectionView: UICollectionView
+    private let id: Int
     private let disposeBag = DisposeBag()
     
-    init(userListViewModel: UserListViewModel, userInfoViewModel: UserInfoViewModel) {
+    init(id: Int, userListViewModel: UserListViewModel, userInfoViewModel: UserInfoViewModel) {
         self.userListViewModel = userListViewModel
         self.userInfoViewModel = userInfoViewModel
+        self.id = id
         
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UserListCollectionViewLayout())
         super.init(nibName: nil, bundle: nil)
@@ -34,11 +36,11 @@ final class UserListCollectionViewVC: UIViewController {
         self.view.backgroundColor = .white
         setUpCollectionView()
         bindCollectionView()
-        requestInitialData()
+//        requestInitialData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        refreshDataSource()
+        requestInitialData()
     }
     
     func setUpCollectionView() {
@@ -67,11 +69,26 @@ final class UserListCollectionViewVC: UIViewController {
     }
     
     func requestInitialData() {
-        userListViewModel.requestUserListData(page: 1)
+        Task {
+            await self.userInfoViewModel.checkAccessToken()
+            if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                self.userListViewModel.requestInitialUserList(id: self.id, token: token)
+            } else {
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+            }
+        }
+        
     }
     
-    func refreshDataSource() {
-        self.userListViewModel.requestUserListData(page: 1)
+    func requestNextData() {
+        Task {
+            await self.userInfoViewModel.checkAccessToken()
+            if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                self.userListViewModel.requestNextUserList(id: self.id, token: token)
+            } else {
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+            }
+        }
     }
 }
 

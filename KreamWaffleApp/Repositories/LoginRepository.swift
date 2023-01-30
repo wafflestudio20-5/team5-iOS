@@ -216,7 +216,7 @@ class LoginRepository {
     }
 
     ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
-    func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()){
+    func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()) async {
         let URLString = "\(baseAPIURL)/token/refresh/"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
             print("url error")

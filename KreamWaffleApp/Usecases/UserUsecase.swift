@@ -110,18 +110,20 @@ final class UserUsecase {
     }
     
     //MARK: - checks/requests token
-    private func requestsNewAccessToken() async {
-        repository.getNewToken { [weak self] (result) in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                self.replaceAccessToken(newToken: response.accessToken)
-                print("[Log] Userusecase: refresh token is still valid")
-                print("newtoken: \(response.accessToken)")
-            case .failure(let error):
-                self.error = error as LoginError
-                if (error == .invalidRefreshTokenError){
-                    self.logout()
+    private func requestNewAccessToken() async {
+        Task {
+            await repository.getNewToken { [weak self] (result) in
+                guard let self = self else { return }
+                switch result {
+                case .success(let response):
+                    self.replaceAccessToken(newToken: response.accessToken)
+                    print("[Log] Userusecase: refresh token is still valid")
+                    print("newtoken: \(response.accessToken)")
+                case .failure(let error):
+                    self.error = error as LoginError
+                    if (error == .invalidRefreshTokenError){
+                        self.logout()
+                    }
                 }
             }
         }
@@ -135,9 +137,9 @@ final class UserUsecase {
             case .success:
                 print("[Log] UserUsecase: access token is still valid")
             case .failure(let error):
-                self.error = error as LoginError
                 Task {
-                    await self.requestsNewAccessToken()
+                    await self.requestNewAccessToken()
+                    self.error = error as LoginError
                 }
             }
         }
