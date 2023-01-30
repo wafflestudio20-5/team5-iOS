@@ -19,6 +19,8 @@ final class StyleFeedCollectionViewVC : UIViewController{
     private let styleFeedViewModel: StyleFeedViewModel
     private let userInfoViewModel: UserInfoViewModel
     
+    private let collectionViewRefreshControl = UIRefreshControl()
+    
     private let collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
         layout.itemRenderDirection = .leftToRight
@@ -47,7 +49,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
         super.viewDidLoad()
         setUpCollectionView()
         bindCollectionView()
-        requestInitialData()
+        requestInitialFeed()
     }
     
     func setUpCollectionView() {
@@ -81,12 +83,31 @@ final class StyleFeedCollectionViewVC : UIViewController{
                     .disposed(by: disposeBag)
     }
     
-    func requestInitialData() {
-        self.styleFeedViewModel.requestStylePostData(page: 1)
+    private func setUpRefreshControl() {
+        self.collectionViewRefreshControl.addTarget(self, action: #selector(refreshFunction), for: .valueChanged)
+        self.collectionView.refreshControl = self.collectionViewRefreshControl
     }
     
-    func requestStylePostData(page: Int) {
-        self.styleFeedViewModel.requestStylePostData(page: page)
+    @objc func refreshFunction() {
+        requestInitialFeed()
+        self.collectionViewRefreshControl.endRefreshing()
+    }
+    
+    
+    func requestInitialFeed() {
+        Task {
+            await self.userInfoViewModel.checkAccessToken()
+            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+            self.styleFeedViewModel.requestInitialFeed(token: token)
+        }
+    }
+    
+    func requestNextFeed() {
+        Task {
+            await self.userInfoViewModel.checkAccessToken()
+            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+            self.styleFeedViewModel.requestNextFeed(token: token)
+        }
     }
 }
 
@@ -126,18 +147,22 @@ extension StyleFeedCollectionViewVC: UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        let position = scrollView.contentOffset.y
 //        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-//            self.viewModel.requestStylePostData(page: 2)
+//            Task {
+//                await self.userInfoViewModel.checkAccessToken()
+//                let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+//                self.styleFeedViewModel.requestNextFeed(token: token)
+//            }
 //        }
     }
 }
 
 extension StyleFeedCollectionViewVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewRepository = StyleDetailRepository()
-        let detailUsecase = StyleDetailUsecase(repository: detailViewRepository, stylePost: self.styleFeedViewModel.getStylePostAt(at: indexPath.row))
+        let stylePostRepository = StylePostRepository()
+        let stylePostUsecase = StylePostUsecase(stylePostRepository: stylePostRepository, postId: self.styleFeedViewModel.getStylePostAt(at: indexPath.row).id)
         
-        let detailViewModel = StyleTabDetailViewModel(styleDetailUsecase: detailUsecase)
-        let newDetailViewController = StyleTabPostDetailViewController(styleTabDetailViewModel: detailViewModel, userInfoViewModel: self.userInfoViewModel)
-        self.navigationController?.pushViewController(newDetailViewController, animated: true)
+        let stylePostViewModel = StylePostViewModel(stylePostUsecase: stylePostUsecase)
+        let newPostViewController = StylePostViewController(stylePostViewModel: stylePostViewModel, userInfoViewModel: self.userInfoViewModel)
+        self.navigationController?.pushViewController(newPostViewController, animated: true)
     }
 }

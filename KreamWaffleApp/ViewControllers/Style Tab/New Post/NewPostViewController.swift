@@ -126,12 +126,17 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
             .disposed(by: disposeBag)
         
         self.newPostViewModel.isValidPost()
-            .bind(to: self.addButton.rx.isEnabled)
-            .disposed(by: disposeBag)
-        
-        self.newPostViewModel.isValidPost()
-            .map { $0 ? UIColor.black: UIColor.lightGray}
-            .bind(to: self.addButton.rx.tintColor)
+            .subscribe(
+                onNext: { isValidPost in
+                    if isValidPost {
+                        self.navigationItem.rightBarButtonItems![0].isEnabled = true
+                        self.navigationItem.rightBarButtonItems![0].tintColor = UIColor.black
+                    } else {
+                        self.navigationItem.rightBarButtonItems![0].isEnabled = false
+                        self.navigationItem.rightBarButtonItems![0].tintColor = UIColor.lightGray
+                    }
+                }
+                )
             .disposed(by: disposeBag)
         
         self.newPostViewModel.postCountRelay
@@ -235,7 +240,7 @@ extension NewPostViewController {
         
         LoadingIndicator.showLoading()
         
-        self.newPostViewModel.uploadPost(token: self.userInfoViewModel.UserReponse!.accessToken, content: textView.text, completion: completion, onNetworkFailure: onNetworkFailure)
+        self.newPostViewModel.uploadPost(token: self.userInfoViewModel.UserResponse!.accessToken, content: textView.text, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
     @objc func deleteButtonTapped(sender: UIButton) {

@@ -90,7 +90,8 @@ class LoginRepository {
                     let results : UserResponse = try JSONDecoder().decode(UserResponse.self, from: data!)
                     self.saveUser(user: results.user)
                     self.saveUserResponse(userResponse: results)
-                    print("LoginRepository: User is", results.user)
+                    print("[LoginRepository]: User is", results.user)
+                    print("[LoginRepository]: User token is", results.accessToken)
                     completion(.success(results))
                 }catch{
                     print(error)
@@ -187,13 +188,20 @@ class LoginRepository {
     
     ///checks if current access token is valid. If valid, returns true. If not, returns invalidAccessTokenError
     func checkIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()){
-        let URLString = "\(baseAPIURL)/token/verify"
+        let URLString = "\(baseAPIURL)/token/verify/"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
             print("url error")
             completion(.failure(.urlError))
             return
         }
-        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
+            .validate()
+            .response{ response in
+            //***
+            print("\n================checkIfValidToken================\n")
+            debugPrint(response)
+            //***
+            
             switch response.result {
             case .success:
                 completion(.success(true))
@@ -209,13 +217,21 @@ class LoginRepository {
 
     ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
     func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()){
-        let URLString = "\(baseAPIURL)/token/refresh"
+        let URLString = "\(baseAPIURL)/token/refresh/"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
             print("url error")
             completion(.failure(.urlError))
             return
         }
-        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
+            .validate()
+            .response { response in
+            
+            //***
+            print("\n================getNewToken================\n")
+            debugPrint(response)
+            //***
+            
             switch response.result {
             case .success(let data):
                 do{
@@ -235,16 +251,25 @@ class LoginRepository {
     }
     
 
-    
-    
-    
-    // ****** API 오기 전 테스트 ******
-    func loadFollowingSet() -> Set<Int> {
-        return [1, 2, 3, 8]
-    }
-    // ****** API 오기 전 테스트 ******
-    
-    func requestFollow(user_id: Int) {
+    func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping ()->()) {
+        //request follow using user_id
+        let urlStr = "https://kream-waffle.cf/styles/profiles/\(user_id)/follow/"
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
         
+        AF.request(urlStr, method: .patch, headers: headers)
+            .validate()
+            .responseString { response in
+                switch response.result {
+                case .success:
+                    debugPrint(response)
+                    return
+                case .failure:
+                    debugPrint(response)
+                    onNetworkFailure()
+                }
+            }
     }
 }

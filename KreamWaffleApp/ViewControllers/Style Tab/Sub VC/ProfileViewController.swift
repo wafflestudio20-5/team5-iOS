@@ -47,13 +47,18 @@ final class ProfileViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        requestProfile()
+        self.view.backgroundColor = .white
+//        requestProfile()
         configureDesign()
         addSubviews()
         setUpFixedViewLayout()
         setupDividers()
         bindViews()
         setUpChildVC()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        requestProfile()
     }
     
     func configureDesign() {
@@ -208,7 +213,6 @@ final class ProfileViewController: UIViewController {
         self.followButton.layer.cornerRadius = 7.5
         self.followButton.layer.borderWidth = 1
         self.followButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.followButton.configureFollowButton()
 
         self.followButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -256,7 +260,8 @@ final class ProfileViewController: UIViewController {
     }
     
     func requestProfile() {
-        self.profileViewModel.requestProfile { [weak self] in
+        let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+        self.profileViewModel.requestProfile(token: token) { [weak self] in
             let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
             let okAction = UIAlertAction(title: "OK", style: .default) { _ in
                 self?.navigationController?.popViewController(animated: true)
@@ -266,18 +271,10 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    func setUpData(with fetchedProfile: Profile?) {
-        var profile: Profile
+    func setUpData(with fetchedProfile: Profile) {
+        self.followButton.configure(following: fetchedProfile.following)
         
-        if fetchedProfile != nil {
-            profile = fetchedProfile!
-            self.followButton.isEnabled = true
-        } else {
-            profile = Profile()
-            self.followButton.isEnabled = false
-        }
-        
-        let urlString = profile.image
+        let urlString = fetchedProfile.image
         if let url = URL.init(string: urlString) {
             let resource = ImageResource(downloadURL: url)
             
@@ -285,23 +282,22 @@ final class ProfileViewController: UIViewController {
                 switch result {
                 case .success(let value):
                     self.profileImageView.image = value.image
-                case .failure(let error):
-                    print("Error: \(error)")
-                    //나중에는 여기 뭔가 이미지를 가져오는 과정에서 에러가 발생했다는 표시가 되는 이미지 넣자.
+                case .failure(_):
+                    self.profileImageView.image = UIImage(systemName: "person")
                 }
             }
+        } else {
+            self.profileImageView.image = UIImage(systemName: "person")
         }
         
         
-        self.profileNameLabel.text = profile.profile_name
-        self.userNameLabel.text = profile.user_name
-        self.introductionLabel.text = profile.introduction
+        self.profileNameLabel.text = fetchedProfile.profile_name
+        self.userNameLabel.text = fetchedProfile.user_name
+        self.introductionLabel.text = fetchedProfile.introduction
         self.introductionLabel.sizeToFit()
         self.postNumLabel.text = String(0) //나중에 API 수정되면 고치기
-        self.followerNumLabel.text = String(profile.num_followers)
-        self.followingNumLabel.text = String(profile.num_followings)
-        self.followButton.isFollowing = profile.following == "true" ? true : false
-        self.followButton.configureFollowButton()
+        self.followerNumLabel.text = String(fetchedProfile.num_followers)
+        self.followingNumLabel.text = String(fetchedProfile.num_followings)
     }
     
     func setUpChildVC() {
@@ -369,13 +365,26 @@ final class ProfileViewController: UIViewController {
 extension ProfileViewController {
     @objc func requestFollow(sender: FollowButton) {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
-
-            loginScreen.modalPresentationStyle = .fullScreen
-            self.present(loginScreen, animated: false)
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
-            self.userInfoViewModel.requestFollow(user_id: sender.tag)
-            sender.followButtonTapped()
+            Task {
+                await self.userInfoViewModel.checkAccessToken()
+                if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                    self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag)  { [weak self] in
+                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(okAction)
+                        self?.present(alert, animated: false, completion: nil)
+                        
+                    }
+                    
+                    sender.followButtonTapped()
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
+            }
         }
     }
     

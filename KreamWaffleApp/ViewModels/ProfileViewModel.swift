@@ -19,13 +19,13 @@ final class ProfileViewModel {
         return self.profileUsecase.user_id
     }
     
-    var userProfileDataSource: Observable<Profile?> {
+    var userProfileDataSource: Observable<Profile> {
         get {
             return self.profileUsecase.profileRelay.asObservable()
         }
     }
     
-    func requestProfile(onNetworkFailure: @escaping ()->()) {
-        self.profileUsecase.requestProfile(onNetworkFailure: onNetworkFailure)
+    func requestProfile(token: String?, onNetworkFailure: @escaping ()->()) {
+        self.profileUsecase.requestProfile(token: token, onNetworkFailure: onNetworkFailure)
     }
 }

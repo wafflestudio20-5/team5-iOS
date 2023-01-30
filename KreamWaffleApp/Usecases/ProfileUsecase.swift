@@ -16,10 +16,12 @@ final class ProfileUsecase {
     
     private var profile: Profile? {
         didSet {
-            profileRelay.accept(profile)
+            if let profile = profile {
+                profileRelay.accept(profile)
+            }
         }
     }
-    var profileRelay: BehaviorRelay<Profile?> = .init(value: nil)
+    var profileRelay: BehaviorRelay<Profile> = .init(value: Profile())
     
     
     init(profileRepository: ProfileRepository, user_id: Int) {
@@ -27,16 +29,12 @@ final class ProfileUsecase {
         self.user_id = user_id
     }
     
-    func requestProfile(onNetworkFailure: @escaping ()->()) {
+    func requestProfile(token: String?, onNetworkFailure: @escaping ()->()) {
         self.profileRepository
-            .requestProfile(user_id: self.user_id, onNetworkFailure: onNetworkFailure)
+            .requestProfile(user_id: self.user_id, token: token, onNetworkFailure: onNetworkFailure)
             .subscribe(
                 onSuccess: { [weak self] fetchedProfile in
-                    if let fetchedProfile = fetchedProfile {
-                        self?.profile = fetchedProfile
-                    } else {
-                        self?.profile = nil
-                    }
+                    self?.profile = fetchedProfile
                 },
                 onFailure: { _ in
                     self.profile = nil

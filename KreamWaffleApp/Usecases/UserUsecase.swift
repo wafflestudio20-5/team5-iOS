@@ -15,20 +15,11 @@ final class UserUsecase {
     
     var user : User?
     var userResponse : UserResponse?
-    var userProfile : Profile?
-    
-    var followingSet: Set<Int> = []
     
     ///toggle when logged in
     var loggedIn : Bool {
         didSet {
             loginState.accept(loggedIn)
-            if (loggedIn) {
-                self.followingSet = self.repository.loadFollowingSet()
-            } else { // 로그아웃되면 followingSet 초기화.
-                followingSet.removeAll(keepingCapacity: false)
-            }
-            
             print("[Log] User usecase: logged in changed to", loggedIn)
         }
     }
@@ -61,11 +52,13 @@ final class UserUsecase {
         }
         
         //TODO: 나중에는 only get user response
-        if let savedUserResponse = repository.getUserResponse(){
-            self.userResponse = savedUserResponse
-            self.checksAccessToken()
-        }else{
-            print("no saved user reponse")
+        Task {
+            if let savedUserResponse = repository.getUserResponse(){
+                self.userResponse = savedUserResponse
+                await self.checkAccessToken()
+            }else{
+                print("no saved user reponse")
+            }
         }
     }
     
@@ -117,13 +110,14 @@ final class UserUsecase {
     }
     
     //MARK: - checks/requests token
-    private func requestsNewAccessToken(){
+    private func requestsNewAccessToken() async {
         repository.getNewToken { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(let response):
                 self.replaceAccessToken(newToken: response.accessToken)
                 print("[Log] Userusecase: refresh token is still valid")
+                print("newtoken: \(response.accessToken)")
             case .failure(let error):
                 self.error = error as LoginError
                 if (error == .invalidRefreshTokenError){
@@ -133,7 +127,8 @@ final class UserUsecase {
         }
     }
     
-    func checksAccessToken(){
+    func checkAccessToken() async {
+        print("token before checkIfValidToken: \(self.userResponse?.accessToken)")
         repository.checkIfValidToken { [weak self] (result) in
             guard let self = self else { return }
             switch result {
@@ -141,7 +136,9 @@ final class UserUsecase {
                 print("[Log] UserUsecase: access token is still valid")
             case .failure(let error):
                 self.error = error as LoginError
-                self.requestsNewAccessToken()
+                Task {
+                    await self.requestsNewAccessToken()
+                }
             }
         }
     }
@@ -163,18 +160,7 @@ final class UserUsecase {
         self.loggedIn = false
     }
     
-    func isFollowing(user_id: Int) -> Bool {
-        return followingSet.contains(user_id)
-    }
-    
-    func requestFollow(user_id: Int) {
-        self.repository.requestFollow(user_id: user_id) //서버와의 통신
-        if (self.followingSet.contains(user_id)) { //앱 내부적으로 팔로잉 여부 관리
-            self.followingSet.remove(user_id)
-            print(self.followingSet)
-        } else {
-            self.followingSet.insert(user_id)
-            print(self.followingSet)
-        }
+    func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
+        self.repository.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
     }
 }

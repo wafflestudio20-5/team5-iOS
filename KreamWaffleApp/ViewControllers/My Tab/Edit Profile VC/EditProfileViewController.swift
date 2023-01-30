@@ -10,7 +10,7 @@ import UIKit
 class EditProfileViewController: UIViewController {
     
     //임시 profile data --> view model 로 맵핑해주는걸로 고치기
-    let data = Profile(user_id: 1, user_name: "gracekim027", profile_name: "feifh9", introduction: "", image: "sample", num_followers: 0, num_followings: 0)
+    let data = Profile(user_id: 1, user_name: "gracekim027", profile_name: "feifh9", introduction: "", image: "sample", num_followers: 0, num_followings: 0, following: "true")
     
 
     var viewModel : UserInfoViewModel?

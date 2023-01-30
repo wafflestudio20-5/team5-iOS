@@ -24,7 +24,7 @@ final class UserInfoViewModel {
             }
         }
     
-    var UserReponse: UserResponse? {
+    var UserResponse: UserResponse? {
         get {
             self.UserUseCase.userResponse
         }
@@ -38,11 +38,11 @@ final class UserInfoViewModel {
         return self.UserUseCase.loggedIn
     }
     
-    func isFollowing(user_id: Int) -> Bool {
-        return self.UserUseCase.isFollowing(user_id: user_id)
+    func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
+        self.UserUseCase.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
     }
     
-    func requestFollow(user_id: Int) {
-        self.UserUseCase.requestFollow(user_id: user_id)
+    func checkAccessToken() async {
+        await self.UserUseCase.checkAccessToken()
     }
 }

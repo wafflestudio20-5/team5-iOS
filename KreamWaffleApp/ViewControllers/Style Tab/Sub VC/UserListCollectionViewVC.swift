@@ -31,6 +31,7 @@ final class UserListCollectionViewVC: UIViewController {
     }
     
     override func viewDidLoad() {
+        self.view.backgroundColor = .white
         setUpCollectionView()
         bindCollectionView()
         requestInitialData()
@@ -57,7 +58,7 @@ final class UserListCollectionViewVC: UIViewController {
 
         userListViewModel.userListDataSource
             .bind(to: collectionView.rx.items(cellIdentifier: "UserListCollectionViewCell", cellType: UserListCollectionViewCell.self)) { index, item, cell in
-                cell.configure(with: item, isFollowing: self.userInfoViewModel.isFollowing(user_id: item.user_id))
+                cell.configure(with: item)
                 cell.followButton.tag = item.user_id
                 cell.followButton.addTarget(self, action: #selector(self.requestFollow(sender:)), for: .touchUpInside)
 
@@ -83,18 +84,33 @@ extension UserListCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
         let cell = collectionView.cellForItem(at: indexPath) as! UserListCollectionViewCell
         
         let user_id = cell.user_id!
-        self.pushUserProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
+        self.pushProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
     }
     
     @objc func requestFollow(sender: FollowButton) {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
-
-            loginScreen.modalPresentationStyle = .fullScreen
-            self.present(loginScreen, animated: false)
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
-            self.userInfoViewModel.requestFollow(user_id: sender.tag)
-            sender.followButtonTapped()
+            Task {
+                await self.userInfoViewModel.checkAccessToken()
+                if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                    self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag) { [weak self] in
+                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(okAction)
+                        self?.present(alert, animated: false, completion: nil)
+                    }
+                    
+                
+                    sender.followButtonTapped()
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
+            }
+            
+            
         }
     }
     
