@@ -27,6 +27,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
         layout.minimumInteritemSpacing = 3
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
+        collectionView.backgroundColor = .white
         collectionView.register(StyleFeedCollectionViewCell.self, forCellWithReuseIdentifier: StyleFeedCollectionViewCell.identifier)
         return collectionView
     }()

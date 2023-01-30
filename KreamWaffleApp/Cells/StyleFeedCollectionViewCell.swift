@@ -40,7 +40,7 @@ final class StyleFeedCollectionViewCell: UICollectionViewCell {
         setUpLayout()
     }
     
-    func configure(with stylePost: StylePost) {
+    func configure(with stylePost: Post) {
         self.idLabel.text = stylePost.created_by.profile_name
         self.contentLabel.text = stylePost.content
         self.numLikesLabel.text = "😊 \(stylePost.num_likes)"

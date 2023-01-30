@@ -10,11 +10,16 @@ import RxCocoa
 import RxSwift
 
 class PostPhotoCollectionViewCell: UICollectionViewCell {
+    private var addPostViewModel : NewPostViewModel?
+    private var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 10
+        return imageView
+    }()
     
-    var viewModel : AddPostViewModel?
-    
-    let imageView = UIImageView()
     let deleteButton = UIButton()
+    private let disposeBag = DisposeBag()
     
     override init(frame:CGRect){
         super.init(frame: .zero)
@@ -23,9 +28,9 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
         configureDesign()
     }
     
-    func setImage(image: UIImage, viewModel: AddPostViewModel){
+    func setImage(image: UIImage, addPostViewModel: NewPostViewModel){
         self.imageView.image = image
-        self.viewModel = viewModel
+        self.addPostViewModel = addPostViewModel
     }
     
     override var reuseIdentifier: String {
@@ -33,15 +38,14 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func configureDesign(){
-        self.imageView.layer.cornerRadius = 10
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
-        self.imageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor).isActive = true
         self.imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-        self.imageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        self.imageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
+        self.imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        self.imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+
+        self.contentView.addSubview(deleteButton)
         
-        self.imageView.addSubview(deleteButton)
         let xImage = UIImage(systemName: "x.circle.fill")
         deleteButton.setImage(xImage, for: .normal)
         deleteButton.setImageTintColor(.lightGray)
@@ -50,16 +54,7 @@ class PostPhotoCollectionViewCell: UICollectionViewCell {
         deleteButton.trailingAnchor.constraint(equalTo: self.imageView.trailingAnchor, constant: -5).isActive = true
         deleteButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         deleteButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        deleteButton.rx.tap
-            .bind{
-                print("tapped delete button")
-            }
     }
-    
-    @objc func tappedDelete(){
-        print("tapped delete, connect to viewmodel")
-    }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

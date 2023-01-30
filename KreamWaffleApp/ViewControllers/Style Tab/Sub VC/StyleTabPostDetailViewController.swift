@@ -29,7 +29,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     private let numLikesLabel = UILabel()
     
     //buttons
-    private let followButton = UIButton()
+    private let followButton = FollowButton()
     private let likeButton = UIButton()
     private let commentButton = UIButton()
     
@@ -76,8 +76,8 @@ final class StyleTabPostDetailViewController: UIViewController {
     func setUpScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
@@ -157,9 +157,7 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpButtonLayout() {
-        // **팔로우 상태에 따라 다르게. 나중에 수정해야함.
-        followButton.setTitle("팔로우", for: .normal)
-        // **************************************
+        followButton.configureFollowButton()
         followButton.backgroundColor = .black
         followButton.titleLabel!.font = .systemFont(ofSize: 14.0, weight: .semibold)
         followButton.setTitleColor(.white, for: .normal)
@@ -252,6 +250,8 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     func setUpData() {
+        self.followButton.isFollowing = self.userInfoViewModel.isFollowing(user_id: self.styleTabDetailViewModel.getUserId())
+        self.followButton.configureFollowButton()
         self.idLabel.text = self.styleTabDetailViewModel.getProfileName()
         self.contentLabel.text = self.styleTabDetailViewModel.getContent()
         self.contentLabel.sizeToFit()

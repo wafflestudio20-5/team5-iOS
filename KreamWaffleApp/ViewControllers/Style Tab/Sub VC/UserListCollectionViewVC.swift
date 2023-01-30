@@ -88,15 +88,13 @@ extension UserListCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
     
     @objc func requestFollow(sender: FollowButton) {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            let loginViewModel = LoginViewModel(UserUseCase: self.userInfoViewModel.UserUseCase)
+            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
 
-            let loginScreen = LoginViewController(viewModel: loginViewModel)
             loginScreen.modalPresentationStyle = .fullScreen
             self.present(loginScreen, animated: false)
         } else {
             self.userInfoViewModel.requestFollow(user_id: sender.tag)
-            sender.isFollowing = !sender.isFollowing
-            sender.configureFollowButton()
+            sender.followButtonTapped()
         }
     }
     
