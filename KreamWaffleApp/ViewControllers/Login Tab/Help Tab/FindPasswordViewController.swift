@@ -12,14 +12,14 @@ class FindPasswordViewController: UIViewController {
     //TODO: Error --> 일치하는 사용자 정보가 없을때는 "일치하는 사용자 정보가 없습니다" 알람이 뜨고 textfield 다시 respond.
     
     var titleLabel = UIView()
-    var emailField : LoginTextfield!
+    var emailField : CustomTextfield!
     var descriptionField = UILabel()
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.emailField = LoginTextfield(titleText: "이메일 주소", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: "예) kream@kream.co.kr", defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
+        self.emailField = CustomTextfield(titleText: "이메일 주소", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: "예) kream@kream.co.kr", defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
         addSubviews()
         configureTitle()
         configureBody()

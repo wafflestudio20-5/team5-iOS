@@ -71,6 +71,8 @@ class LoginViewModel {
         return emailPred.evaluate(with: input)
     }
     
+    
+    
     init (UserUseCase : UserUsecase){
         self.UserUseCase = UserUseCase
     }
@@ -92,6 +94,11 @@ class LoginViewModel {
     func registerAccount(email: String, password: String, shoeSize: Int){
         self.UserUseCase.signUp(email: email, password: password, shoeSize: shoeSize)
     }
+    
+    func checkAccessToken(){
+        self.UserUseCase.checksAccessToken()
+    }
+    
     
     func logout(){
         self.UserUseCase.logout()

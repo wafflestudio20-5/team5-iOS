@@ -66,17 +66,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //root VM 갈아끼우기 
-        /*
-        self.loginVM.loginState.asObservable().subscribe { status in
-            print("[Log] MyTabVC: The login state is ", status.element)
-            if (status.element! == false){
-                let loginScreen = LoginViewController(viewModel: self.loginVM)
-                loginScreen.modalPresentationStyle = .fullScreen
-                self.present(loginScreen, animated: false)
-            }
-        }.disposed(by: bag)*/
-    
         setUpSegmentedControl()
         setUpTabBarButton()
         setUpFixedViewLayout()

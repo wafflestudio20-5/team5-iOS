@@ -38,6 +38,10 @@ class LoginRepository {
         userDefaults.set(try? PropertyListEncoder().encode(user), forKey: "savedUser")
     }
     
+    func saveUserResponse(userResponse: UserResponse){
+        userDefaults.set(try? PropertyListEncoder().encode(userResponse), forKey: "savedUserResponse")
+    }
+    
     ///get saved user if there is one
     func getUser()->User?{
     if let storedObject: Data = UserDefaults.standard.object(forKey: "savedUser") as? Data {
@@ -46,9 +50,17 @@ class LoginRepository {
     return nil
     }
     
+    func getUserResponse()->UserResponse?{
+    if let storedObject: Data = UserDefaults.standard.object(forKey: "savedUserResponse") as? Data {
+                    return try? PropertyListDecoder().decode(UserResponse.self, from: storedObject)
+        }
+    return nil
+    }
+    
     ///remove saved user when logging out
     func logOutUser(){
         userDefaults.removeObject(forKey: "savedUser")
+        userDefaults.removeObject(forKey: "savedUserResponse")
         //GIDSignIn.sharedInstance()?.signOut()
         //NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
     }
@@ -77,6 +89,7 @@ class LoginRepository {
                 do{
                     let results : UserResponse = try JSONDecoder().decode(UserResponse.self, from: data!)
                     self.saveUser(user: results.user)
+                    self.saveUserResponse(userResponse: results)
                     print("LoginRepository: User is", results.user)
                     completion(.success(results))
                 }catch{
@@ -115,7 +128,9 @@ class LoginRepository {
                 do{
                     let results : UserResponse = try JSONDecoder().decode(UserResponse.self, from: data!)
                     self.saveUser(user: results.user)
+                    self.saveUserResponse(userResponse: results)
                     print("[Log] Login Repository: Logeed in with ", socialType, results.user)
+                    print(results.refreshToken)
                     completion(.success(results))
                 }catch{
                     completion(.failure(.unknownError))
@@ -170,10 +185,59 @@ class LoginRepository {
         }
     }
     
+    ///checks if current access token is valid. If valid, returns true. If not, returns invalidAccessTokenError
+    func checkIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()){
+        let URLString = "\(baseAPIURL)/token/verify"
+        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+            print("url error")
+            completion(.failure(.urlError))
+            return
+        }
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+            switch response.result {
+            case .success:
+                completion(.success(true))
+            case .failure(let error):
+               if (error.responseCode == 400){
+                    completion(.failure(.invalidAccessTokenError))
+                }else{
+                    completion(.failure(.unknownError))
+                }
+            }
+        }
+    }
+
+    ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
+    func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()){
+        let URLString = "\(baseAPIURL)/token/refresh"
+        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+            print("url error")
+            completion(.failure(.urlError))
+            return
+        }
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+            switch response.result {
+            case .success(let data):
+                do{
+                    let newTokenResponse : NewTokenResponse = try JSONDecoder().decode(NewTokenResponse.self, from: data!)
+                    completion(.success(newTokenResponse))
+                }catch{
+                    completion(.failure(.unknownError))
+                }
+            case .failure(let error):
+               if (error.responseCode == 401){
+                    completion(.failure(.invalidRefreshTokenError))
+                }else{
+                    completion(.failure(.unknownError))
+                }
+            }
+        }
+    }
+    
+
     func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping ()->()) {
         //request follow using user_id
         let urlStr = "https://kream-waffle.cf/styles/profiles/\(user_id)/follow/"
-        
         let headers: HTTPHeaders = [
             "accept": "application/json",
             "Authorization": "Bearer \(token)"

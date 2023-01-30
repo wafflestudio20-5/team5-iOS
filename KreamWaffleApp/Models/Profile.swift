@@ -22,22 +22,22 @@ final class Profile: Codable {
     let following: String?
     
     init(
-        user_id: String,
+        user_id: Int,
         user_name: String,
         profile_name: String,
         introduction: String,
         image: String?,
-        num_followers: String,
-        num_followings: String,
+        num_followers: Int,
+        num_followings: Int,
         following: String
     ) {
-        self.user_id = Int(user_id)!
+        self.user_id = user_id
         self.user_name = user_name
         self.profile_name = profile_name
         self.introduction = introduction
         self.image = image ?? ""
-        self.num_followers = Int(num_followers)!
-        self.num_followings = Int(num_followings)!
+        self.num_followers = num_followers
+        self.num_followings = num_followings
         self.following = following
     }
     

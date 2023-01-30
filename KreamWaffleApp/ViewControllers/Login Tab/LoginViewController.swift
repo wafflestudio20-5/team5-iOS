@@ -25,11 +25,11 @@ class LoginViewController: UIViewController {
     private var logoImage = UIImageView()
     
     //email field
-    private var emailfield : LoginTextfield?
+    private var emailfield : CustomTextfield?
     private var emailValid = false
     
     //password field
-    private var passwordfield: LoginTextfield?
+    private var passwordfield: CustomTextfield?
     private var passwordValid = false
     
     //login field
@@ -58,8 +58,8 @@ class LoginViewController: UIViewController {
         GIDSignIn.sharedInstance()?.delegate = self
         
         self.view.backgroundColor = .white
-        emailfield = LoginTextfield(titleText: "이메일 주소", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: "예) kream@kream.co.kr", defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
-        passwordfield = LoginTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: "", defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
+        emailfield = CustomTextfield(titleText: "이메일 주소", errorText: "올바른 이메일을 입력해주세요.", errorCondition: .email, placeholderText: "예) kream@kream.co.kr", defaultButtonImage: "xmark.circle.fill", pressedButtonImage: "xmark.circle.fill")
+        passwordfield = CustomTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수문자를 조합해서 입력해주세요. (8-16자)", errorCondition: .password, placeholderText: "", defaultButtonImage: "eye.slash", pressedButtonImage: "eye")
         
         addSubviews()
         configureSubviews()
