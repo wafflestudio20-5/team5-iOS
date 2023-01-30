@@ -21,6 +21,8 @@ final class StylePostViewController: UIViewController {
     private let userInfoViewModel: UserInfoViewModel
     
     private let disposeBag = DisposeBag()
+    private let scrollViewRefreshControl = UIRefreshControl()
+    
     private var isLiked: Bool = false {
         didSet {
             if (isLiked) {
@@ -67,10 +69,15 @@ final class StylePostViewController: UIViewController {
         setUpScrollView()
         setUpLabelLayout()
         setUpButtonLayout()
+        setUpRefreshControl()
         bindUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        refreshData()
+    }
+    
+    private func refreshData() {
         let token: String? = self.userInfoViewModel.UserResponse?.accessToken
         self.stylePostViewModel.requestPost(token: token) { [weak self] in
             let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
@@ -79,7 +86,6 @@ final class StylePostViewController: UIViewController {
             }
             alert.addAction(okAction)
             self?.present(alert, animated: false, completion: nil)
-            
         }
     }
     
@@ -248,6 +254,11 @@ final class StylePostViewController: UIViewController {
         ])
     }
     
+    private func setUpRefreshControl() {
+        self.scrollViewRefreshControl.addTarget(self, action: #selector(refreshFunction), for: .valueChanged)
+        self.scrollView.refreshControl = self.scrollViewRefreshControl
+    }
+    
     private func bindUI() {
         self.stylePostViewModel.stylePostDataSource.subscribe { [weak self] event in
             switch event {
@@ -342,6 +353,11 @@ extension StylePostViewController { //button 관련 메서드들.
     @objc func slideShowTapped() {
         let fullScreenController = slideshow.presentFullScreenController(from: self)
         fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .medium, color: nil)
+    }
+    
+    @objc func refreshFunction() {
+        refreshData()
+        self.scrollViewRefreshControl.endRefreshing()
     }
     
     @objc func numLikesLabelTapped() {
