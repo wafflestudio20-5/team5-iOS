@@ -69,6 +69,7 @@
 		656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */; };
 		656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */; };
 		65781D032976C415000FC684 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65781D022976C415000FC684 /* LoginViewModel.swift */; };
+		657E61CC2987C08600CA196D /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E61CB2987C08600CA196D /* Token.swift */; };
 		6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E22960B5E6007C741F /* SignUpViewController.swift */; };
 		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
 		6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */; };
@@ -184,6 +185,7 @@
 		656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionViewController.swift; sourceTree = "<group>"; };
 		656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeSizeSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		65781D022976C415000FC684 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		657E61CB2987C08600CA196D /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		6583C9E22960B5E6007C741F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
 		6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 			isa = PBXGroup;
 			children = (
 				6527350A29680C1900C859B8 /* User.swift */,
+				657E61CB2987C08600CA196D /* Token.swift */,
 			);
 			path = "Data Objects";
 			sourceTree = "<group>";
@@ -814,6 +817,7 @@
 				5C6FBD69297A612C00B64FF0 /* CategoryCollectionViewCell.swift in Sources */,
 				944A1142295D0DC000F8CDB7 /* Product.swift in Sources */,
 				655A94CF296C73FB00F0184B /* MyProfileViewController.swift in Sources */,
+				657E61CC2987C08600CA196D /* Token.swift in Sources */,
 				5C6FBD75297BCBB700B64FF0 /* UserProfileRepository.swift in Sources */,
 				6537F71229837CAF00FC58E8 /* SettingsViewController.swift in Sources */,
 				94155C51297A4E720092B561 /* ShopTabDetailViewModel.swift in Sources */,

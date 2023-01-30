@@ -35,10 +35,10 @@ struct User : Codable {
 }
 
 struct UserResponse: Codable {
-    let accessToken : String
-    let refreshToken : String
+    var accessToken : String
+    var refreshToken : String
     var user: User
-    let exists: Bool
+    var exists: Bool
     
     private enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
