@@ -15,14 +15,14 @@ class NestedProfile : Codable {
     let user_id: Int
     let user_name: String
     let profile_name: String
-    let image: String?
+    let image: String
     let following: String?
     
     init(
         user_id: Int,
         user_name: String,
         profile_name: String,
-        image: String?,
+        image: String,
         following: String?
     ) {
         self.user_id = user_id
@@ -38,10 +38,9 @@ class NestedProfile : Codable {
         user_id = try container.decodeIfPresent(Int.self, forKey: .user_id) ?? -1
         user_name = try container.decodeIfPresent(String.self, forKey: .user_name) ?? ""
         profile_name = try container.decodeIfPresent(String.self, forKey: .profile_name) ?? ""
-        image = try container.decodeIfPresent(String.self, forKey: .image) ?? nil
+        image = try container.decodeIfPresent(String.self, forKey: .image) ?? ""
         do {
-            let strFollowing = try container.decodeIfPresent(String.self, forKey: .following)
-            self.following = strFollowing
+            self.following = try container.decodeIfPresent(String.self, forKey: .following) ?? nil
         } catch {
             do {
                 let boolFollowing: Bool = try container.decodeIfPresent(Bool.self, forKey: .following) ?? false
@@ -57,7 +56,7 @@ class NestedProfile : Codable {
         self.user_id = 0
         self.user_name = ""
         self.profile_name = ""
-        self.image = nil
-        self.following = nil
+        self.image = ""
+        self.following = "false"
     }
 }

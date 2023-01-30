@@ -8,35 +8,49 @@
 import Foundation
 import UIKit
 import ImageSlideshow
+import RxSwift
+import Kingfisher
 
-final class StyleTabPostDetailViewController: UIViewController {
+final class StylePostViewController: UIViewController {
     
     private let idLabelHeight: CGFloat = 20
     private let spacing: CGFloat = 10
     private let likeAndCommentButtonSideLength: CGFloat = 50
     
-    private let styleTabDetailViewModel: StyleTabDetailViewModel
+    private let stylePostViewModel: StylePostViewModel
     private let userInfoViewModel: UserInfoViewModel
+    
+    private let disposeBag = DisposeBag()
+    private var isLiked: Bool = false {
+        didSet {
+            if (isLiked) {
+                likeButton.setImage(UIImage(systemName: "heart.circle"), for: .normal)
+            } else {
+                likeButton.setImage(UIImage(systemName: "face.smiling"), for: .normal)
+            }
+        }
+    }
     
     //main views
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let slideshow = ImageSlideshow()
     
-    //labels
-    private let idLabel = UILabel()
+    //기타 view
+    private let userNameLabel = UILabel()
     private let contentLabel = UILabel()
     private let numLikesLabel = UILabel()
+    private let profileImageView = UIImageView()
     
     //buttons
     private let followButton = FollowButton()
     private let likeButton = UIButton()
     private let commentButton = UIButton()
     
-    private var imageHeight = CGFloat()
+//    private var imageHeight = CGFloat()
     
-    init(styleTabDetailViewModel: StyleTabDetailViewModel, userInfoViewModel: UserInfoViewModel) {
-        self.styleTabDetailViewModel = styleTabDetailViewModel
+    init(stylePostViewModel: StylePostViewModel, userInfoViewModel: UserInfoViewModel) {
+        self.stylePostViewModel = stylePostViewModel
         self.userInfoViewModel = userInfoViewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -47,33 +61,42 @@ final class StyleTabPostDetailViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        imageHeight = CGFloat(styleTabDetailViewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
         self.view.backgroundColor = .white
         addAllSubviews()
         setUpNavigationBar()
         setUpScrollView()
         setUpLabelLayout()
         setUpButtonLayout()
-        setUpSlideShowLayout()
-        configureSlideShow()
-        setUpSlideShowData()
-        setUpData()
+        bindUI()
     }
     
-    func addAllSubviews() {
+    override func viewWillAppear(_ animated: Bool) {
+        let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+        self.stylePostViewModel.requestPost(token: token) { [weak self] in
+            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                self?.navigationController?.popViewController(animated: true)
+            }
+            alert.addAction(okAction)
+            self?.present(alert, animated: false, completion: nil)
+            
+        }
+    }
+    
+    private func addAllSubviews() {
         view.addSubviews(scrollView, self.followButton)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(idLabel, numLikesLabel, contentLabel, likeButton, commentButton, self.slideshow)
+        contentView.addSubviews(profileImageView, userNameLabel, numLikesLabel, contentLabel, likeButton, commentButton, self.slideshow)
     }
     
-    func setUpNavigationBar() {
+    private func setUpNavigationBar() {
         navigationController?.navigationBar.tintColor = .lightGray
         self.setUpBackButton()
         self.navigationItem.backButtonTitle = ""
 //        navigationItem.title = "최신"
     }
     
-    func setUpScrollView() {
+    private func setUpScrollView() {
         scrollView.backgroundColor = .white
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -100,24 +123,36 @@ final class StyleTabPostDetailViewController: UIViewController {
         scrollView.showsVerticalScrollIndicator = false
     }
     
-    func setUpLabelLayout() {
-        idLabel.font = UIFont.boldSystemFont(ofSize: 14)
-        idLabel.textColor = .black
-        idLabel.lineBreakMode = .byTruncatingTail
-        idLabel.adjustsFontSizeToFitWidth = false
-        idLabel.numberOfLines = 1
-        idLabel.textAlignment = .left
-        
-        let idLabelTap = UITapGestureRecognizer(target: self, action: #selector(self.idLabelTapped))
-        self.idLabel.isUserInteractionEnabled = true
-        self.idLabel.addGestureRecognizer(idLabelTap)
-        
-        idLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func setUpLabelLayout() {
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.contentMode = .scaleAspectFit
+        profileImageView.layer.cornerRadius = idLabelHeight/2
+        profileImageView.clipsToBounds = true
+        profileImageView.tintColor = .black
         NSLayoutConstraint.activate([
-            idLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            idLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            idLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            idLabel.heightAnchor.constraint(
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            profileImageView.widthAnchor.constraint(equalToConstant: idLabelHeight),
+            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            profileImageView.heightAnchor.constraint(equalToConstant: idLabelHeight),
+        ])
+        
+        userNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        userNameLabel.textColor = .black
+        userNameLabel.lineBreakMode = .byTruncatingTail
+        userNameLabel.adjustsFontSizeToFitWidth = false
+        userNameLabel.numberOfLines = 1
+        userNameLabel.textAlignment = .left
+        
+        let userNameLabelTap = UITapGestureRecognizer(target: self, action: #selector(self.idLabelTapped))
+        self.userNameLabel.isUserInteractionEnabled = true
+        self.userNameLabel.addGestureRecognizer(userNameLabelTap)
+        
+        userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            userNameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
+            userNameLabel.widthAnchor.constraint(equalToConstant: 100),
+            userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            userNameLabel.heightAnchor.constraint(
                 equalToConstant: idLabelHeight
             ),
         ])
@@ -158,7 +193,7 @@ final class StyleTabPostDetailViewController: UIViewController {
         
     }
     
-    func setUpButtonLayout() {
+    private func setUpButtonLayout() {
         followButton.backgroundColor = .black
         followButton.titleLabel!.font = .systemFont(ofSize: 14.0, weight: .semibold)
         followButton.setTitleColor(.white, for: .normal)
@@ -170,7 +205,7 @@ final class StyleTabPostDetailViewController: UIViewController {
             followButton.widthAnchor.constraint(equalToConstant: 60),
             followButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             followButton.heightAnchor.constraint(equalToConstant: idLabelHeight * 1.5),
-            followButton.centerYAnchor.constraint(equalTo: idLabel.centerYAnchor)
+            followButton.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor)
         ])
         
         
@@ -187,8 +222,8 @@ final class StyleTabPostDetailViewController: UIViewController {
                 equalToConstant: likeAndCommentButtonSideLength
             ),
             likeButton.topAnchor.constraint(
-                equalTo: idLabel.bottomAnchor,
-                constant: spacing + imageHeight + spacing
+                equalTo: slideshow.bottomAnchor,
+                constant: spacing
             ),
             likeButton.heightAnchor.constraint(
                 equalToConstant: likeAndCommentButtonSideLength
@@ -213,22 +248,43 @@ final class StyleTabPostDetailViewController: UIViewController {
         ])
     }
     
-    func setUpSlideShowLayout() {
+    private func bindUI() {
+        self.stylePostViewModel.stylePostDataSource.subscribe { [weak self] event in
+            switch event {
+            case .next:
+                if let post = event.element {
+                    if let post = post {
+                        self?.setUpSlideShowLayout()
+                        self?.configureSlideShow()
+                        self?.setUpSlideShowData(with: post.images)
+                        self?.setUpData(with: post)
+                    }
+                }
+            case .completed:
+                break
+            case .error:
+                break
+            }
+        }.disposed(by: disposeBag)
+    }
+    
+    private func setUpSlideShowLayout() {
+        let imageHeight = CGFloat(stylePostViewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
         slideshow.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.slideshow.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
             self.slideshow.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             self.slideshow.topAnchor.constraint(
-                equalTo: self.idLabel.bottomAnchor,
+                equalTo: self.userNameLabel.bottomAnchor,
                 constant: spacing
             ),
             self.slideshow.heightAnchor.constraint(equalToConstant: imageHeight),
         ])
     }
     
-    func configureSlideShow() {
-        if (styleTabDetailViewModel.getImageSources().count > 1) {
+    private func configureSlideShow() {
+        if (stylePostViewModel.getImageSourcesCount() > 1) {
             self.slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
             self.slideshow.contentScaleMode = UIViewContentMode.scaleAspectFit
             self.slideshow.circular = false
@@ -240,28 +296,49 @@ final class StyleTabPostDetailViewController: UIViewController {
         }
     }
     
-    func setUpSlideShowData() {
-        let imageSources = self.styleTabDetailViewModel.getImageSources().map {
+    private func setUpSlideShowData(with imageSourceUrls: [String]) {
+        let imageSources = imageSourceUrls.map {
             KingfisherSource(urlString: $0)!
         }
         self.slideshow.setImageInputs(imageSources)
         
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(StyleTabPostDetailViewController.slideShowTapped))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(StylePostViewController.slideShowTapped))
         slideshow.addGestureRecognizer(recognizer)
     }
     
-    func setUpData() {
-        self.followButton.configure(following: self.styleTabDetailViewModel.getIsFollowing())
+    private func setUpData(with post: Post) {
+        self.followButton.configure(following: post.created_by.following)
         
-        self.idLabel.text = self.styleTabDetailViewModel.getProfileName()
-        self.contentLabel.text = self.styleTabDetailViewModel.getContent()
+        self.userNameLabel.text = post.created_by.user_name
+        self.contentLabel.text = post.content
         self.contentLabel.sizeToFit()
-        self.numLikesLabel.text = "공감 \(self.styleTabDetailViewModel.getNumLikes())개"
+        self.numLikesLabel.text = "공감 \(post.num_likes)개"
         self.numLikesLabel.sizeToFit()
+        
+        if post.liked == "true" {
+            likeButton.setImage(UIImage(systemName: "heart.circle"), for: .normal)
+        }
+        
+        let urlString = post.created_by.image
+        guard let url = URL.init(string: urlString) else {
+            self.profileImageView.image = UIImage(systemName: "person")
+            return
+        }
+        let resource = ImageResource(downloadURL: url)
+        
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+            switch result {
+            case .success(let value):
+                self.profileImageView.image = value.image
+            case .failure(_):
+                self.profileImageView.image = UIImage(systemName: "person")
+            }
+        }
+        
     }
 }
 
-extension StyleTabPostDetailViewController { //button 관련 메서드들.
+extension StylePostViewController { //button 관련 메서드들.
     @objc func slideShowTapped() {
         let fullScreenController = slideshow.presentFullScreenController(from: self)
         fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .medium, color: nil)
@@ -272,7 +349,7 @@ extension StyleTabPostDetailViewController { //button 관련 메서드들.
     }
 
     @objc func idLabelTapped() {
-        let user_id = self.styleTabDetailViewModel.getUserId()
+        let user_id = self.stylePostViewModel.getUserId()
         self.pushProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
     }
     
@@ -281,7 +358,22 @@ extension StyleTabPostDetailViewController { //button 관련 메서드들.
     }
     
     @objc func likeButtonTapped() {
-        print("like button")
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            let token: String = self.userInfoViewModel.UserResponse!.accessToken
+            
+            self.stylePostViewModel.likeButtonTapped(token: token) {[weak self] in
+                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                alert.addAction(okAction)
+                self?.present(alert, animated: false, completion: nil)
+                
+            }
+            self.isLiked = !self.isLiked
+        }
     }
     
     @objc func commentButtonTapped() {

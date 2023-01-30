@@ -50,7 +50,7 @@ class UserListCollectionViewCell: UICollectionViewCell {
         self.userNameLabel.text = nestedProfile.user_name
         
         let urlString = nestedProfile.image
-        guard let url = URL.init(string: urlString!) else {
+        guard let url = URL.init(string: urlString) else {
             self.profileImageView.image = UIImage(systemName: "person")
             return
         }

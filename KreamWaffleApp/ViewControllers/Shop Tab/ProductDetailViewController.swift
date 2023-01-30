@@ -121,7 +121,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         }
         self.slideshow.setImageInputs(imageSources)
         
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(StyleTabPostDetailViewController.slideShowTapped))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(StylePostViewController.slideShowTapped))
         slideshow.addGestureRecognizer(recognizer)
     }
     
