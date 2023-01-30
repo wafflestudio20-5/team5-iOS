@@ -8,12 +8,14 @@
 import Foundation
 import UIKit
 
-//TODO: [refactoring] rxswift 로 고치기
+//TODO: [refactoring] rxswift 로 고치기 --> 이걸 어디서 해야하는걸까.
 enum errorCondition{
     
     case password
     case email
     case phoneNumber
+    case profileName
+    case none
     
     public func isValidPassword(input: String)->Bool{
         let passwordRegex = "^(?=.*[a-z])(?=.*[$@$#!%*?&]).{8,}$"
@@ -27,12 +29,18 @@ enum errorCondition{
         return emailPred.evaluate(with: input)
     }
     
+    public func isValidProfileName(input: String) -> Bool{
+        let profileRegEx = "^(?=.*[a-z])(?=.*[_.]).{4,25}$"
+        let profilePred = NSPredicate(format: "SELF MATCHES %@", profileRegEx)
+        return profilePred.evaluate(with: input)
+    }
+    
     public func isValidPhoneNumber(inpput: String)->Bool{
         return true;
     }
 }
 
-class LoginTextfield : UIView {
+class CustomTextfield : UIView {
     
     var titleText: String
     var errorText: String
@@ -40,11 +48,13 @@ class LoginTextfield : UIView {
     var placeholderText : String?
     var defaultButtonImage: String?
     var pressedButtonImage : String?
+    var maxCount: Int?
     
     var titleLabel = UILabel()
     var textfield = UITextField() 
     var bottomLine = UILabel()
     var warningLine = UILabel()
+    var countLabel = UILabel()
     var button = UIButton()
     
     init(titleText: String, errorText: String, errorCondition: errorCondition, placeholderText: String?, defaultButtonImage: String?, pressedButtonImage: String?){
@@ -154,6 +164,10 @@ class LoginTextfield : UIView {
             self.button.tintColor = .clear
             buttonWidth = 25
             buttonHeight = 25
+        case .profileName:
+            print("")
+        case .none:
+            print("")
         }
         self.button.widthAnchor.constraint(equalToConstant: buttonWidth).isActive = true
         self.button.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
@@ -166,6 +180,10 @@ class LoginTextfield : UIView {
             self.button.addTarget(self, action: #selector(didTapEmptyTextField), for: .touchUpInside)
         case .phoneNumber:
             self.button.addTarget(self, action: #selector(didTapEmptyTextField), for: .touchUpInside)
+        case .profileName:
+            print("")
+        case .none:
+            print("")
         }
     }
     
@@ -223,6 +241,18 @@ class LoginTextfield : UIView {
             //TODO
             self.bottomLine.backgroundColor = .black
             
+        case .profileName:
+            if(!errorCondition.isValidProfileName(input: self.textfield.text ?? "")){
+                self.titleLabel.textColor = colors.errorRed
+                self.warningLine.textColor = colors.errorRed
+                self.titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+            }else{
+                self.titleLabel.textColor = .black
+                self.warningLine.textColor = .clear
+            }
+        case .none:
+            self.titleLabel.textColor = .black
+            self.warningLine.textColor = .clear
         }
     }
     
@@ -246,7 +276,28 @@ class LoginTextfield : UIView {
             return errorCondition.isValidPassword(input: self.textfield.text ?? "")
         case .phoneNumber:
             return errorCondition.isValidPhoneNumber(inpput: self.textfield.text ?? "")
+        case .profileName:
+            return errorCondition.isValidProfileName(input: self.textfield.text ?? "")
+        case .none:
+            return true
         }
+    }
+    
+    func setupTextCounter(maxCount: Int){
+        self.addSubview(self.countLabel)
+        self.maxCount = maxCount
+        let currentText = self.textfield.text
+        self.countLabel.text = "\(currentText?.count ?? 0)/\(maxCount)"
+        self.countLabel.textColor = .darkGray
+        self.countLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        self.countLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.countLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.countLabel.topAnchor.constraint(equalTo: self.bottomLine.bottomAnchor, constant: 4).isActive = true
+    }
+    
+    func editTextCounter(text: String){
+        let count = text.count
+        self.countLabel.text = "\(count)/\(maxCount!)"
     }
 }
 
