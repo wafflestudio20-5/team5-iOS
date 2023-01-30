@@ -43,7 +43,7 @@ final class StylePostRepository {
     func requestLike(token: String, postId: Int, onNetworkFailure: @escaping () -> ()) {
         let urlStr = self.baseUrl + "\(postId)/like/"
         
-        var headers: HTTPHeaders = [
+        let headers: HTTPHeaders = [
             "accept": "application/json",
             "Authorization": "Bearer \(token)"
         ]

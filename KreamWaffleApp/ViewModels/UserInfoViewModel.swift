@@ -38,7 +38,7 @@ final class UserInfoViewModel {
         return self.UserUseCase.loggedIn
     }
     
-    func requestFollow(user_id: Int) {
-        self.UserUseCase.requestFollow(user_id: user_id)
+    func requestFollow(user_id: Int, onNetworkFailure: @escaping () -> ()) {
+        self.UserUseCase.requestFollow(user_id: user_id, onNetworkFailure: onNetworkFailure)
     }
 }

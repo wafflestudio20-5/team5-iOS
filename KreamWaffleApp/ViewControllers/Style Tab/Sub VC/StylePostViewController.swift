@@ -32,6 +32,7 @@ final class StylePostViewController: UIViewController {
             }
         }
     }
+    private var writerUserId: Int = 0
     
     //main views
     private let scrollView = UIScrollView()
@@ -326,8 +327,13 @@ final class StylePostViewController: UIViewController {
         self.numLikesLabel.text = "공감 \(post.num_likes)개"
         self.numLikesLabel.sizeToFit()
         
+        self.writerUserId = post.created_by.user_id
+        self.followButton.configure(following: post.created_by.following)
+        
         if post.liked == "true" {
-            likeButton.setImage(UIImage(systemName: "heart.circle"), for: .normal)
+            self.isLiked = true
+        } else {
+            self.isLiked = false
         }
         
         let urlString = post.created_by.image
@@ -370,7 +376,21 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func followButtonTapped() {
-        print("follow button")
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            self.userInfoViewModel.requestFollow(user_id: self.writerUserId) { [weak self] in
+                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                alert.addAction(okAction)
+                self?.present(alert, animated: false, completion: nil)
+            
+            }
+            
+            self.followButton.followButtonTapped()
+        }
     }
     
     @objc func likeButtonTapped() {

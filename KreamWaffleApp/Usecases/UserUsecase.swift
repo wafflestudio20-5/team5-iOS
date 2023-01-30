@@ -99,7 +99,7 @@ final class UserUsecase {
         self.loggedIn = false
     }
     
-    func requestFollow(user_id: Int) {
-        self.repository.requestFollow(user_id: user_id) //서버와의 통신
+    func requestFollow(user_id: Int, onNetworkFailure: @escaping () -> ()) {
+        self.repository.requestFollow(token: self.userResponse!.accessToken, user_id: user_id, onNetworkFailure: onNetworkFailure) //서버와의 통신
     }
 }

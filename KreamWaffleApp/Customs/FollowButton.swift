@@ -35,7 +35,7 @@ final class FollowButton: UIButton {
         }
     }
     
-    var isFollowing = false {
+    private var isFollowing = false {
         didSet {
             configureFollowButton()
         }

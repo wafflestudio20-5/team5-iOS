@@ -170,8 +170,26 @@ class LoginRepository {
         }
     }
     
-    func requestFollow(user_id: Int) {
+    func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping ()->()) {
         //request follow using user_id
+        let urlStr = "https://kream-waffle.cf/styles/profiles/\(user_id)/follow/"
         
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+        
+        AF.request(urlStr, method: .patch, headers: headers)
+            .validate()
+            .responseString { response in
+                switch response.result {
+                case .success:
+                    debugPrint(response)
+                    return
+                case .failure:
+                    debugPrint(response)
+                    onNetworkFailure()
+                }
+            }
     }
 }
