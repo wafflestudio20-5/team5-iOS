@@ -116,9 +116,9 @@ final class UserUsecase {
                 guard let self = self else { return }
                 switch result {
                 case .success(let response):
-                    self.replaceAccessToken(newToken: response.accessToken)
                     print("[Log] Userusecase: refresh token is still valid")
-                    print("newtoken: \(response.accessToken)")
+                    print("[Log] newtoken: \(response.accessToken)")
+                    self.replaceAccessToken(newToken: response.accessToken)
                 case .failure(let error):
                     self.error = error as LoginError
                     if (error == .invalidRefreshTokenError){
@@ -129,6 +129,7 @@ final class UserUsecase {
         }
     }
     
+    //현재 토큰이 유효하다면 true, 아니면 false
     func checkAccessToken() async -> Bool{
         Task {
             await repository.checkIfValidToken { [weak self] (result) in
@@ -144,7 +145,9 @@ final class UserUsecase {
                 }
             }
         }
-        return self.loggedIn
+        
+        //checkIfValidToken 실행 후에도 userResponse가 삭제되지 않았으면 현재 토큰이 유효하다고 할 수 있음.
+        return self.userResponse != nil
     }
     
     private func replaceAccessToken(newToken: String){
