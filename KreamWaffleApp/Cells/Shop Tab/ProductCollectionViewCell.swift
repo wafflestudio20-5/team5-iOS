@@ -109,8 +109,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
         self.imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.imageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-            self.imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 50),
-            self.imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -50),
+            self.imageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            self.imageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
             self.imageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
             self.imageView.bottomAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 150)
         ])
