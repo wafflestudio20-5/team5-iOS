@@ -29,13 +29,8 @@ final class UserListUsecase {
     
     func requestInitialUserList(id: Int, token: String, completion: @escaping () -> ()) {
         userList.removeAll()
-        self.cursor = nil
-        requestNextUserList(id: id, token: token, completion: completion)
-    }
-    
-    func requestNextUserList(id: Int, token: String, completion: @escaping () -> ()) {
         self.userListRepository
-            .requestUserListData(id: id, token: token, cursor: self.cursor, completion: completion)
+            .requestInitialUserListData(token: token, id: id, completion: completion)
             .subscribe { event in
                 switch event {
                 case .success(let userListResponse):
@@ -48,5 +43,25 @@ final class UserListUsecase {
                 }
             }
             .disposed(by: disposeBag)
+    }
+    
+    func requestNextUserList(id: Int, token: String, completion: @escaping () -> ()) {
+        if let cursor = self.cursor {
+            self.userListRepository
+                .requestNextUserListData(token: token, cursor: cursor, completion: completion)
+                .subscribe { event in
+                    switch event {
+                    case .success(let userListResponse):
+                        self.cursor = userListResponse.next
+                        self.userList += userListResponse.results
+                    case .failure(let error):
+                        self.cursor = nil
+                        self.userList.removeAll()
+                        print(error)
+                    }
+                }
+                .disposed(by: disposeBag)
+        }
+        
     }
 }

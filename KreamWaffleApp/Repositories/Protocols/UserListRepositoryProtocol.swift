@@ -13,5 +13,6 @@ import RxSwift
 
 
 protocol UserListRepositoryProtocol {
-    func requestUserListData(id: Int, token: String, cursor: String?, completion: @escaping ()->()) -> Single<UserListResponse>
+    func requestNextUserListData(token: String, cursor: String, completion: @escaping ()->()) -> Single<UserListResponse>
+    func requestInitialUserListData(token: String, id: Int, completion: @escaping ()->()) -> Single<UserListResponse>
 }
