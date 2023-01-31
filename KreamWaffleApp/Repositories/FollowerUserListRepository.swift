@@ -15,7 +15,7 @@ final class FollowerUserListRepository: UserListRepositoryProtocol {
 
     func requestUserListData(id: Int, token: String, cursor: String?, completion: @escaping () -> ()) -> Single<UserListResponse> {
         return Single.create { single in
-            var urlStr = self.baseUrl + "/\(id)/followers/"
+            var urlStr = self.baseUrl + "\(id)/followers/"
             if let cursor = cursor {
                 urlStr += "?cursor=\(cursor)"
             }
@@ -29,6 +29,8 @@ final class FollowerUserListRepository: UserListRepositoryProtocol {
             AF.request(finalUrl!, method: .get, headers: headers)
                 .validate()
                 .responseDecodable(of: UserListResponseWithFromAtPrefix.self) { response in
+                    print("\n================follower for user \(id)================\n")
+                    debugPrint(response)
                     switch response.result {
                     case .success(let result):
                         single(.success(UserListResponse(next: result.next, previous: result.previous, results: result.results.map { $0.nestedProfile })))

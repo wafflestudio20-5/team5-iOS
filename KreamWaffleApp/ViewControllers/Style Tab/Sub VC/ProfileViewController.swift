@@ -368,19 +368,23 @@ extension ProfileViewController {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
             Task {
-                await self.userInfoViewModel.checkAccessToken()
-                if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                    self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag)  { [weak self] in
-                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if (isValidToken) {
+                    if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                        self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag)  { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
+                            
                         }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
                         
+                        sender.followButtonTapped()
+                    } else {
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                     }
-                    
-                    sender.followButtonTapped()
                 } else {
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 }
@@ -389,12 +393,36 @@ extension ProfileViewController {
     }
     
     @objc func followerNumLabelTapped() {
-        let followUserListViewController = FollowUserListViewController(userInfoViewModel: self.userInfoViewModel, selectedSegmentIdx: 0)
-        self.navigationController?.pushViewController(followUserListViewController, animated: false)
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if (isValidToken) {
+                    let followUserListViewController = FollowUserListViewController(id: profileViewModel.getUserId(), userInfoViewModel: self.userInfoViewModel, selectedSegmentIdx: 0)
+                    self.navigationController?.pushViewController(followUserListViewController, animated: false)
+                }
+                else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
+            }
+        }
     }
     
     @objc func followingNumLabelTapped() {
-        let followUserListViewController = FollowUserListViewController(userInfoViewModel: self.userInfoViewModel, selectedSegmentIdx: 1)
-        self.navigationController?.pushViewController(followUserListViewController, animated: false)
+        
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if (isValidToken) {
+                    let followUserListViewController = FollowUserListViewController(id: profileViewModel.getUserId(), userInfoViewModel: self.userInfoViewModel, selectedSegmentIdx: 1)
+                    self.navigationController?.pushViewController(followUserListViewController, animated: false)
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
+            }
+        }
     }
 }

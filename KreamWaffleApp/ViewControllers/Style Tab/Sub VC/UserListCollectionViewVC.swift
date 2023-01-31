@@ -18,12 +18,15 @@ final class UserListCollectionViewVC: UIViewController {
     private let id: Int
     private let disposeBag = DisposeBag()
     
+    private let collectionViewRefreshControl = UIRefreshControl()
+    
     init(id: Int, userListViewModel: UserListViewModel, userInfoViewModel: UserInfoViewModel) {
         self.userListViewModel = userListViewModel
         self.userInfoViewModel = userInfoViewModel
         self.id = id
         
         collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UserListCollectionViewLayout())
+        collectionView.backgroundColor = .white
         super.init(nibName: nil, bundle: nil)
         collectionView.delegate = self
     }
@@ -36,7 +39,7 @@ final class UserListCollectionViewVC: UIViewController {
         self.view.backgroundColor = .white
         setUpCollectionView()
         bindCollectionView()
-//        requestInitialData()
+        setUpRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,11 +71,20 @@ final class UserListCollectionViewVC: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    private func setUpRefreshControl() {
+        self.collectionViewRefreshControl.addTarget(self, action: #selector(refreshFunction), for: .valueChanged)
+        self.collectionView.refreshControl = self.collectionViewRefreshControl
+    }
+    
     func requestInitialData() {
         Task {
-            await self.userInfoViewModel.checkAccessToken()
-            if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                self.userListViewModel.requestInitialUserList(id: self.id, token: token)
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if isValidToken {
+                if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                    self.userListViewModel.requestInitialUserList(id: self.id, token: token)
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
             } else {
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }
@@ -82,9 +94,13 @@ final class UserListCollectionViewVC: UIViewController {
     
     func requestNextData() {
         Task {
-            await self.userInfoViewModel.checkAccessToken()
-            if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                self.userListViewModel.requestNextUserList(id: self.id, token: token)
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if isValidToken {
+                if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                    self.userListViewModel.requestNextUserList(id: self.id, token: token)
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
             } else {
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }
@@ -109,26 +125,32 @@ extension UserListCollectionViewVC : UIScrollViewDelegate, UICollectionViewDeleg
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
             Task {
-                await self.userInfoViewModel.checkAccessToken()
-                if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                    self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag) { [weak self] in
-                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if isValidToken {
+                    if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                        self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag) { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
                         }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
+                        
+                        sender.followButtonTapped()
+                    } else {
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                     }
-                    
-                
-                    sender.followButtonTapped()
                 } else {
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 }
             }
-            
-            
         }
+    }
+    
+    @objc func refreshFunction() {
+        requestInitialData()
+        self.collectionViewRefreshControl.endRefreshing()
     }
     
 }

@@ -17,19 +17,17 @@ class FollowUserListViewController:UIViewController {
     
     private let selectedSegmentIdx: Int
     
-    init(userInfoViewModel: UserInfoViewModel, selectedSegmentIdx: Int) {
+    init(id: Int, userInfoViewModel: UserInfoViewModel, selectedSegmentIdx: Int) {
         self.selectedSegmentIdx = selectedSegmentIdx
         
         self.userInfoViewModel = userInfoViewModel
         
-        //********** 수정! 의존성 주입 **********
         let followerUserListRepository = FollowerUserListRepository()
         let followingUserListRepository = FollowingUserListRepository()
         let followerUserListUsecase = UserListUsecase(userListRepository: followerUserListRepository)
         let followingUserListUsecase = UserListUsecase(userListRepository: followingUserListRepository)
-        self.followerUserListCollectionViewVC = UserListCollectionViewVC(id: 0, userListViewModel: UserListViewModel(userListUsecase: followerUserListUsecase), userInfoViewModel: self.userInfoViewModel)
-        self.followingUserListCollectionViewVC = UserListCollectionViewVC(id: 0, userListViewModel: UserListViewModel(userListUsecase: followingUserListUsecase), userInfoViewModel: self.userInfoViewModel)
-        //********** 수정! 의존성 주입 **********
+        self.followerUserListCollectionViewVC = UserListCollectionViewVC(id: id, userListViewModel: UserListViewModel(userListUsecase: followerUserListUsecase), userInfoViewModel: self.userInfoViewModel)
+        self.followingUserListCollectionViewVC = UserListCollectionViewVC(id: id, userListViewModel: UserListViewModel(userListUsecase: followingUserListUsecase), userInfoViewModel: self.userInfoViewModel)
         
         super.init(nibName: nil, bundle: nil)
     }

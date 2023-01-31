@@ -187,7 +187,7 @@ class LoginRepository {
     }
     
     ///checks if current access token is valid. If valid, returns true. If not, returns invalidAccessTokenError
-    func checkIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()){
+    func checkIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()) async {
         let URLString = "\(baseAPIURL)/token/verify/"
         guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
             print("url error")
