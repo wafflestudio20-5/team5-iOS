@@ -189,30 +189,31 @@ class LoginRepository {
     ///checks if current access token is valid. If valid, returns true. If not, returns invalidAccessTokenError
     func checkIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()) async {
         let URLString = "\(baseAPIURL)/token/verify/"
-        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
-            print("url error")
-            completion(.failure(.urlError))
-            return
-        }
-        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
-            .validate()
-            .response{ response in
-            //***
-            print("\n================checkIfValidToken================\n")
-            debugPrint(response)
-            //***
-            
-            switch response.result {
-            case .success:
-                completion(.success(true))
-            case .failure(let error):
-               if (error.responseCode == 400){
-                    completion(.failure(.invalidAccessTokenError))
-                }else{
-                    completion(.failure(.unknownError))
-                }
-            }
-        }
+               guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                   completion(.failure(.urlError))
+                   return
+               }
+               
+               var request = URLRequest(url: url)
+               request.httpMethod = HTTPMethod.post.rawValue
+               request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+               request.httpBody = "{}".data(using: .utf8)!
+               
+               AF.request(request).response { (response) in
+                   print("\n================checkIfValidToken================\n")
+                   debugPrint(response)
+                   switch response.result {
+                   case .success:
+                       completion(.success(true))
+                   case .failure(let error):
+                      if (error.responseCode == 400){
+                           completion(.failure(.invalidAccessTokenError))
+                       }else{
+                           completion(.failure(.unknownError))
+                       }
+                   }
+               }
     }
 
     ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
