@@ -14,7 +14,6 @@ final class ShopViewModel {
     init(usecase: ShopUsecase) {
         self.usecase = usecase
         requestData()
-//        requestImmediateDeliveryData()
     }
     
     var shopDataSource: Observable<[ProductData]> {
@@ -26,6 +25,18 @@ final class ShopViewModel {
     
     var filterDataSource: Observable<[String]> {
         return self.usecase.filterCategories
+    }
+    
+    var filterItemDataSource: Observable<[ShopFilterItem]> {
+        return self.usecase.shopFilterItems
+    }
+    
+    var brandFilterItemListDataSource: Observable<[Brand]> {
+        return self.usecase.brandFilterItemList
+    }
+    
+    var priceFilterItemListDataSource: Observable<[String]> {
+        return self.usecase.priceFilterItemList
     }
 }
 
@@ -42,6 +53,12 @@ extension ShopViewModel {
     func getProductAtIndex(index: Int) -> Product {
         return self.usecase.getProductAtIndex(index: index)
     }
+    
+    func getFilterItemAtIndex(index: Int) -> ShopFilterItem {
+        return self.usecase.getFilterItemAtIndex(index: index)
+    }
+    
+
 }
 
 extension ShopViewModel {
@@ -74,6 +91,24 @@ extension ShopViewModel {
     
     func requestMoreCategoryData() {
 //        self.usecase.loadMoreCategoryShopPosts()
+    }
+}
+
+extension ShopViewModel {
+    // request brand shopPosts
+    func requestBrandShopPostsData(selectedBrand: Int) {
+        self.usecase.loadBrandShopPosts(selectedBrand: selectedBrand)
+    }
+    
+    func requestMoreBrandShopPostsData() {
+//        self.usecase.loadMoreBrandShopPosts()
+    }
+}
+
+extension ShopViewModel {
+    // request brands
+    func requestBrandData() {
+        self.usecase.loadBrands()
     }
 }
 

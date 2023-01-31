@@ -15,9 +15,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     private let contentView = UIView()
     private let slideshow = ImageSlideshow()
     
-    
-//    let imageView = UIImageView() // change to collectionView layer
-//    let imagesCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ProductDetailImagesCollectionViewFlowLayout())
     let brandLabel = UILabel()
     let eng_nameLabel = UILabel()
     let kor_nameLabel = UILabel()
@@ -51,6 +48,12 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         super.init(nibName: nil, bundle: nil)
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        addSubviews()
+    }
+    
     override func loadView() {
         self.view = UIView()
         configure()
@@ -66,6 +69,11 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
 //        setupSizeButton()
         
         setupPriceLabel()
+    }
+    
+    private func addSubviews() {
+//        self.view.addSubview(scrollView)
+//        self.scrollView.addSubview(cate)
     }
 
     
@@ -91,14 +99,14 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         setUpSlideshowData()
         
         self.view.addSubview(self.slideshow)
-        print("run")
         slideshow.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.slideshow.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             self.slideshow.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             self.slideshow.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.slideshow.heightAnchor.constraint(equalToConstant: imageHeight),
+            self.slideshow.heightAnchor.constraint(equalToConstant: 400),
+//            self.slideshow.heightAnchor.constraint(equalToConstant: imageHeight),
         ])
     }
     
@@ -121,7 +129,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         }
         self.slideshow.setImageInputs(imageSources)
         
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(StylePostViewController.slideShowTapped))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(slideShowTapped))
         slideshow.addGestureRecognizer(recognizer)
     }
     
@@ -273,6 +281,11 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         ])
     }
     
+    @objc func slideShowTapped() {
+        let fullScreenController = slideshow.presentFullScreenController(from: self)
+        fullScreenController.slideshow.activityIndicator = DefaultActivityIndicator(style: .medium, color: nil)
+    }
+    
     @objc func didTapSelectShoeSize() {
         var productSizeList = [230, 235, 240]
         
@@ -298,11 +311,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.present(productSizeSelectionVC, animated: true, completion: nil)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
