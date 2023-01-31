@@ -18,7 +18,9 @@ final class StyleFeedUsecase {
     
     private let type: String
     private let user_id: Int?
+    
     private var cursor: String?
+    private let initialCursor: String
     
     var stylePostList = [Post]() {
         didSet {
@@ -30,30 +32,37 @@ final class StyleFeedUsecase {
         self.repository = repository
         self.type = type
         self.user_id = user_id
+        self.cursor = "https://kream-waffle.cf/styles/posts/?type=\(type)"
+        if let user_id = user_id {
+            self.cursor! += "&user_id=\(user_id)"
+        }
+        self.initialCursor = self.cursor!
     }
     
     func requestInitialFeed(token: String?, completion: @escaping () -> ()) {
         self.stylePostList.removeAll()
-        self.cursor = nil
+        self.cursor = initialCursor
         requestNextFeed(token: token, completion: completion)
     }
     
     func requestNextFeed(token: String?, completion: @escaping () -> ()) {
-        self.repository
-            .requestPostResponseData(type: self.type, token: token, cursor: nil, user_id: user_id, completion: completion)
-            .subscribe { event in
-                switch event {
-                case .success(let postResponse):
-                    self.cursor = postResponse.next
-                    self.stylePostList += postResponse.results
-                case .failure(let error):
-                    self.cursor = nil
-                    self.stylePostList.removeAll()
-                    print(error)
+        if let cursor = self.cursor {
+            self.repository
+                .requestPostResponseData(token: token, cursor: cursor, completion: completion)
+                .subscribe { event in
+                    switch event {
+                    case .success(let postResponse):
+                        self.cursor = postResponse.next
+                        self.stylePostList += postResponse.results
+                    case .failure(let error):
+                        self.cursor = nil
+                        self.stylePostList.removeAll()
+                        print(error)
+                    }
+                    
                 }
-                
-            }
-            .disposed(by: disposeBag)
+                .disposed(by: disposeBag)
+        }
     }
 }
 

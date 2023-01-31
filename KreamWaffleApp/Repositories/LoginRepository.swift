@@ -201,8 +201,8 @@ class LoginRepository {
                request.httpBody = "{}".data(using: .utf8)!
                
                AF.request(request).response { (response) in
-                   print("\n================checkIfValidToken================\n")
-                   debugPrint(response)
+//                   print("\n================checkIfValidToken================\n")
+//                   debugPrint(response)
                    switch response.result {
                    case .success:
                        completion(.success(true))
@@ -229,8 +229,8 @@ class LoginRepository {
             .response { response in
             
             //***
-            print("\n================getNewToken================\n")
-            debugPrint(response)
+//            print("\n================getNewToken================\n")
+//            debugPrint(response)
             //***
             
             switch response.result {
