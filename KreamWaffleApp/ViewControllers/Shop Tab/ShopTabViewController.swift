@@ -17,12 +17,16 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     var header = UIView()
     var searchBar = UISearchBar()
     
+    // category filtering
+    private let categoryFilterButton = UIButton()
+    private let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCategoryCollectionViewFlowLayout())
+
+    
     // delivery tag filter buttons
     private let immediateDeliveryButton = UIButton()
     private let brandDeliveryButton = UIButton()
     
     // collection views
-    private let categoryCollectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCategoryCollectionViewFlowLayout())
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCollectionViewFlowLayout())
     
     private let viewModel: ShopViewModel
@@ -45,11 +49,14 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+  
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         addSubviews()
         configureSubviews()
+        configureCategoryFilterButton()
         configureCategoryCollectionView()
         
         configureDeliveryFilterButtons()
@@ -90,15 +97,38 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14, weight: .medium)
     }
     
+    private func configureCategoryFilterButton() {
+        self.categoryFilterButton.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
+        self.categoryFilterButton.addTarget(self, action: #selector(tappedCategoryFilterButton), for: .touchUpInside)
+        self.categoryFilterButton.contentHorizontalAlignment = .center
+        self.categoryFilterButton.tintColor = CategoryCollectionViewCell.unselectedTextColor
+        self.categoryFilterButton.backgroundColor = CategoryCollectionViewCell.unselectedBgColor
+        self.categoryFilterButton.layer.borderColor = CategoryCollectionViewCell.unselectedBgColor.cgColor
+        self.categoryFilterButton.layer.borderWidth = 1
+        self.categoryFilterButton.layer.cornerRadius = 9.5
+        
+        self.view.addSubview(self.categoryFilterButton)
+        self.categoryFilterButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.categoryFilterButton.heightAnchor.constraint(equalToConstant: 35),
+            self.categoryFilterButton.widthAnchor.constraint(equalToConstant: 45),
+            self.categoryFilterButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.categoryFilterButton.bottomAnchor.constraint(equalTo: self.categoryFilterButton.topAnchor, constant: 50),
+            self.categoryFilterButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+//            self.categoryFilterButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 55)
+        ])
+    }
+    
     private func configureCategoryCollectionView() {
         self.categoryCollectionView.showsHorizontalScrollIndicator = false
+        self.categoryCollectionView.backgroundColor = .white
         
         self.view.addSubview(self.categoryCollectionView)
         self.categoryCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.categoryCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            self.categoryCollectionView.bottomAnchor.constraint(equalTo: self.categoryCollectionView.topAnchor, constant: 50),
-            self.categoryCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            self.categoryCollectionView.bottomAnchor.constraint(equalTo: self.categoryFilterButton.bottomAnchor),
+            self.categoryCollectionView.leadingAnchor.constraint(equalTo: self.categoryFilterButton.trailingAnchor, constant: 10),
             self.categoryCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -15)
         ])
     }
@@ -128,7 +158,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
             self.immediateDeliveryButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             self.immediateDeliveryButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
             self.immediateDeliveryButton.trailingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 90),
-            self.immediateDeliveryButton.topAnchor.constraint(equalTo: self.categoryCollectionView.bottomAnchor, constant: 4),
+            self.immediateDeliveryButton.topAnchor.constraint(equalTo: self.categoryCollectionView.bottomAnchor, constant: 7),
         ])
         
         // brand delivery button
@@ -198,6 +228,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupCollectionView() {
         self.view.addSubview(collectionView)
+        self.collectionView.backgroundColor = .white
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.collectionView.topAnchor.constraint(equalTo: self.immediateDeliveryButton.bottomAnchor, constant: 7),
@@ -254,7 +285,17 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
    
 }
 
+
 extension ShopTabViewController {
+    // category filter button
+    @objc func tappedCategoryFilterButton() {
+//        print("tapped category filter button")
+//        let shopFilterViewController = ShopFilterViewController()
+        let shopFilterViewController = UINavigationController(rootViewController: ShopFilterViewController(viewModel: self.viewModel))
+        self.present(shopFilterViewController, animated: true)
+    }
+    
+    // delivery buttons
     @objc func tappedImmediateDeliveryButton() {
         self.immediateDeliveryButton.isSelected = true
         self.brandDeliveryButton.isSelected = false

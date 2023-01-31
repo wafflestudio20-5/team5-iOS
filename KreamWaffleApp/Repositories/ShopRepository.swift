@@ -24,21 +24,28 @@ final class ShopRepository {
                     switch response.result {
                     case .success(let result):
                         let productInfoList = result.results
-//                        var productBrand: Strin
                         
+                        let group = DispatchGroup()
                         for (var product) in productInfoList {
                             // request brand_name
+                            group.enter()
                             self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
                                 product.brand_name = brandName!
+                                group.leave()
                             }
                             
                             // request productimages
+                            group.enter()
                             self?.requestProductImages(id: product.id) { (error, productImages) in
                                 product.imageSource = productImages!
+                                group.leave()
                             }
-                            
                         }
-                        single(.success(productInfoList))
+                        
+                        group.notify(queue: .main) {
+                            single(.success(productInfoList))
+                        }
+                        
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -61,21 +68,29 @@ final class ShopRepository {
                     switch response.result {
                     case .success(let result):
                         let productInfoList = result.results
-                        
+                    
+                        let group = DispatchGroup()
                         for (var product) in productInfoList {
                             // request brand_name
+                            group.enter()
                             self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
                                 product.brand_name = brandName!
+                                group.leave()
                             }
                             
                             // request productimages
+                            group.enter()
                             self?.requestProductImages(id: product.id) { (error, productImages) in
                                 product.imageSource = productImages!
+                                group.leave()
                             }
                             
                         }
-//                        print(productInfoList.count)
-                        single(.success(productInfoList))
+                    
+                        group.notify(queue: .main) {
+                            single(.success(productInfoList))
+                        }
+                        
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -99,20 +114,27 @@ final class ShopRepository {
                     case .success(let result):
                         let productInfoList = result.results
                         
+                        let group = DispatchGroup()
                         for (var product) in productInfoList {
                             // request brand_name
+                            group.enter()
                             self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
                                 product.brand_name = brandName!
+                                group.leave()
                             }
                             
                             // request productimages
+                            group.enter()
                             self?.requestProductImages(id: product.id) { (error, productImages) in
                                 product.imageSource = productImages!
+                                group.leave()
                             }
                             
                         }
-//                        print(productInfoList.count)
-                        single(.success(productInfoList))
+                        
+                        group.notify(queue: .main) {
+                            single(.success(productInfoList))
+                        }
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -136,20 +158,27 @@ final class ShopRepository {
                     case .success(let result):
                         let productInfoList = result.results
                         
+                        let group = DispatchGroup()
                         for (var product) in productInfoList {
                             // request brand_name
+                            group.enter()
                             self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
                                 product.brand_name = brandName!
+                                group.leave()
                             }
                             
                             // request productimages
+                            group.enter()
                             self?.requestProductImages(id: product.id) { (error, productImages) in
                                 product.imageSource = productImages!
+                                group.leave()
                             }
                             
                         }
-//                        print(productInfoList.count)
-                        single(.success(productInfoList))
+                        
+                        group.notify(queue: .main) {
+                            single(.success(productInfoList))
+                        }
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -159,6 +188,49 @@ final class ShopRepository {
         }
     }
     
+    func requestBrandShopPostData(parameters: ShopPostRequestParameters, brandId: Int) -> Single<[Product]> {
+        return Single.create { single in
+            let url = URL(string: "https://kream-waffle.cf/shop/productinfos/?brand_id=\(brandId)&page=\(parameters.page)")
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "X-CSRFToken": "jbFr0YqXW1gRUCkvMe5fASSCsdzPJUpHt3eo5Goh71RUMn4fsCKdcuhGSZBUakes"
+            ]
+            
+            AF.request(url!, method: .get, parameters: parameters, headers: headers)
+                .responseDecodable(of: ShopPostModel.self) { [weak self] response in
+                    switch response.result {
+                    case .success(let result):
+                        let productInfoList = result.results
+                        
+                        let group = DispatchGroup()
+                        for (var product) in productInfoList {
+                            // request brand_name
+                            group.enter()
+                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
+                                product.brand_name = brandName!
+                                group.leave()
+                            }
+                            
+                            // request productimages
+                            group.enter()
+                            self?.requestProductImages(id: product.id) { (error, productImages) in
+                                product.imageSource = productImages!
+                                group.leave()
+                            }
+                            
+                        }
+                        
+                        group.notify(queue: .main) {
+                            single(.success(productInfoList))
+                        }
+                    case .failure(let _):
+                        single(.success([]))
+                    }
+                }
+
+            return Disposables.create()
+        }
+    }
 }
 
 extension ShopRepository {
@@ -192,11 +264,37 @@ extension ShopRepository {
             .responseDecodable(of: ProductImagesModel.self) { response in
                 switch response.result {
                 case .success(let result):
+                    
                     completionHandler(nil, result.images)
                 case .failure(let error):
                     print("failed to request product images")
                     completionHandler(error, [])
                 }
             }
+    }
+}
+
+extension ShopRepository {
+    func requestBrandsData(parameters: ShopPostRequestParameters) -> Single<[Brand]> {
+        return Single.create { single in
+            let url = URL(string: "https://kream-waffle.cf/shop/brands/?page=\(parameters.page)")
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "X-CSRFToken": "khgrTJ6oipGptgRNvzLdttD77dOPSSksu9PoYr4Itphsl1BxbXqb552bxZQUji9d"
+            ]
+            
+            AF.request(url!, method: .get, parameters: parameters, headers: headers)
+                .responseDecodable(of: ShopBrandsModel.self) { [weak self] response in
+                    switch response.result {
+                    case .success(let result):
+                        let brandsList = result.results
+                        single(.success(brandsList))
+                    case .failure(let _):
+                        single(.success([]))
+                    }
+                }
+
+            return Disposables.create()
+        }
     }
 }

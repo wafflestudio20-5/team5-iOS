@@ -47,12 +47,55 @@ final class ShopUsecase {
         self.productImagesRelay.accept(productImagesList)
     }
     
-    // filters
+    // filter categories
     private let filterCategoriesSubject: BehaviorRelay<[String]> = .init(value: ["shoes", "clothes", "fashion", "life", "tech"])
     
     var filterCategories: Observable<[String]> {
         return self.filterCategoriesSubject.asObservable()
     }
+    
+    // filter items
+    let priceList = ["10만원 이하", "10만원 - 30만원 이하", "30만원 - 50만원 이하", "50만원 이상"]
+    let filterItemBrand = ShopFilterItem(header: "브랜드", selection: "모든 브랜드", items: [])
+    let filterItemPrice = ShopFilterItem(header: "가격", selection: "모든 가격", items: [])
+    private let shopFilterItemsSubject: BehaviorRelay<[ShopFilterItem]> = .init(value: [
+        ShopFilterItem(header: "브랜드", selection: "모든 브랜드", items: []),
+        ShopFilterItem(header: "가격", selection: "모든 가격", items: [])
+    ])
+    var shopFilterItems: Observable<[ShopFilterItem]> {
+        return self.shopFilterItemsSubject.asObservable()
+    }
+    
+    var shopFilterItemList: Observable<[String]> {
+        return self.pricesRelay.asObservable()
+    } // edit
+    
+    // brands
+    var brandsRelay = BehaviorRelay<[Brand]>(value: [])
+    var brandFilterItemList: Observable<[Brand]> {
+        return self.brandsRelay.asObservable()
+    }
+//    var brandsObservable: Observable<[Brand]> {
+//        return self.brandsRelay.asObservable()
+//    }
+    
+    var brandsList = [Brand]() {
+        didSet {
+            self.getBrandsObserver()
+        }
+    }
+    func getBrandsObserver() {
+        self.brandsRelay.accept(brandsList)
+    }
+    
+    // prices
+    var pricesRelay = BehaviorRelay<[String]>(value: ["10만원 이하", "10만원 - 30만원 이하", "30만원 - 50만원 이하", "50만원 이상"])
+    var priceFilterItemList: Observable<[String]> {
+        return self.pricesRelay.asObservable()
+    }
+//    var pricesObservable: Observable<[String]> {
+//        return self.pricesRelay.asObservable()
+//    }
     
     init(repository: ShopRepository) {
         self.repository = repository
@@ -73,9 +116,6 @@ extension ShopUsecase {
             .requestShopPostData(parameters: parameters)
             .subscribe(onSuccess: { [self] fetchedProductInfos in
                 self.productInfoList = fetchedProductInfos
-                for product in self.productInfoList {
-                    print(product.brand_name)
-                }
             },
             onFailure: { _ in
                 self.productInfoList = []
@@ -90,7 +130,6 @@ extension ShopUsecase {
         paginating = true
         
         self.page += 1
-        print("requested productinfo page \(self.page)")
         
         let parameters = ShopPostRequestParameters(page: self.page)
         self.repository
@@ -99,9 +138,6 @@ extension ShopUsecase {
                 var prevProductInfos = self.shopRelay.value
                 prevProductInfos.append(contentsOf: fetchedProductInfos)
                 self.productInfoList = prevProductInfos
-                for product in self.productInfoList {
-                    print(product.brand_name)
-                }
             },
             onFailure: { _ in
                 self.productInfoList = []
@@ -170,8 +206,45 @@ extension ShopUsecase {
 }
 
 extension ShopUsecase {
-    // get functions
+    func loadBrandShopPosts(selectedBrand: Int) {
+        let parameters = ShopPostRequestParameters(page: 1)
+        self.repository
+            .requestBrandShopPostData(parameters: parameters, brandId: selectedBrand)
+            .subscribe(onSuccess: { [self] fetchedProductInfos in
+                self.productInfoList = fetchedProductInfos
+            },
+            onFailure: { _ in
+                self.productInfoList = []
+            })
+            .disposed(by: self.disposeBag)
+    }
     
+    func loadMoreBrandShopPosts() {
+        
+    }
+}
+
+extension ShopUsecase {
+    func loadBrands() {
+        let parameters = ShopPostRequestParameters(page: 1)
+        self.repository
+            .requestBrandsData(parameters: parameters)
+            .subscribe(onSuccess: { [self] fetchedBrands in
+                self.brandsList = fetchedBrands
+            },
+            onFailure: { _ in
+                self.brandsList = []
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func loadMoreBrands() {
+        
+    }
+}
+
+extension ShopUsecase {
+    // get functions
     func getProductAtIndex(index: Int) -> Product {
         return self.productInfoList[index]
     }
@@ -179,4 +252,16 @@ extension ShopUsecase {
     func getProductImageUrlAt(id: Int) -> String {
         return self.productImagesList[id]
     }
+    
+    func getFilterItemAtIndex(index: Int) -> ShopFilterItem {
+        return self.filterItemPrice
+    }
+    
+//    func getFilterItemListDataSource(index: Int) -> Observable<[String]> {
+//        if index == 0 {
+//            return self.brandsObservable
+//        } else if index == 1 {
+//            return self.pricesObservable
+//        }
+//    }
 }

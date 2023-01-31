@@ -12,6 +12,11 @@ struct ShopPostModel: Decodable {
     var results: [Product]
 }
 
+struct ShopBrandsModel: Decodable {
+    var count: Int
+    var results: [Brand]
+}
+
 struct ShopBrandModel: Decodable {
     var id: Int
     var name: String
