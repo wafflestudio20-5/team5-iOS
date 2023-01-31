@@ -15,12 +15,11 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             if isSelected {
-                self.contentView.backgroundColor = UIColor(red: 1, green: 0.949, blue: 0.949, alpha: 1.0)
-                self.categoryLabel.textColor = UIColor(red: 1, green: 0.098, blue: 0.098, alpha: 1.0)
+                self.contentView.backgroundColor = CategoryCollectionViewCell.selectedBgColor
+                self.categoryLabel.textColor = CategoryCollectionViewCell.selectedTextColor
             } else {
-                self.contentView.backgroundColor = UIColor(red: 0.9373, green: 0.9373, blue: 0.9373, alpha: 1.0)
-                self.categoryLabel.textColor = .black
-                print("false")
+                self.contentView.backgroundColor = CategoryCollectionViewCell.unselectedBgColor
+                self.categoryLabel.textColor = CategoryCollectionViewCell.unselectedTextColor
             }
         }
     }
@@ -28,6 +27,12 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     var categoryParameter = String()
     let categoryLabel = UILabel()
     let categoryFontSize: CGFloat = 13.5
+    
+    // colors
+    static let unselectedTextColor = UIColor.black
+    static let unselectedBgColor = UIColor(red: 0.9373, green: 0.9373, blue: 0.9373, alpha: 1.0)
+    static let selectedTextColor = UIColor(red: 1, green: 0.098, blue: 0.098, alpha: 1.0)
+    static let selectedBgColor = UIColor(red: 1, green: 0.949, blue: 0.949, alpha: 1.0)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

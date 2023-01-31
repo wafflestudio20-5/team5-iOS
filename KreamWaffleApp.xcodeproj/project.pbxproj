@@ -105,6 +105,13 @@
 		944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A114C295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift */; };
 		944A11572963E46500F8CDB7 /* ShopCategoryCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A11562963E46500F8CDB7 /* ShopCategoryCollectionViewFlowLayout.swift */; };
 		948C66952958482E00561C59 /* MyTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948C66942958482E00561C59 /* MyTabViewController.swift */; };
+		94A394EE2988FBF2002AFE4A /* ShopFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394ED2988FBF2002AFE4A /* ShopFilterViewModel.swift */; };
+		94A394F12988FC27002AFE4A /* ShopFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394F02988FC27002AFE4A /* ShopFilterViewController.swift */; };
+		94A394F32988FC3D002AFE4A /* ShopFilterDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394F22988FC3D002AFE4A /* ShopFilterDetailViewController.swift */; };
+		94A394F52988FC8D002AFE4A /* ShopFilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394F42988FC8D002AFE4A /* ShopFilterTableViewCell.swift */; };
+		94A394F72988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394F62988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift */; };
+		94A394F92988FCC8002AFE4A /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394F82988FCC8002AFE4A /* Brand.swift */; };
+		94A394FB2988FCE4002AFE4A /* ShopFilterItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394FA2988FCE4002AFE4A /* ShopFilterItem.swift */; };
 		94CDFF9029746FF100C2095C /* HomeTabShopCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF8F29746FF100C2095C /* HomeTabShopCollectionViewVC.swift */; };
 		94CDFF932974730300C2095C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF922974730300C2095C /* HomeViewModel.swift */; };
 		94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */; };
@@ -228,6 +235,13 @@
 		944A114C295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopPostRequestParameters.swift; sourceTree = "<group>"; };
 		944A11562963E46500F8CDB7 /* ShopCategoryCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopCategoryCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		948C66942958482E00561C59 /* MyTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabViewController.swift; sourceTree = "<group>"; };
+		94A394ED2988FBF2002AFE4A /* ShopFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterViewModel.swift; sourceTree = "<group>"; };
+		94A394F02988FC27002AFE4A /* ShopFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterViewController.swift; sourceTree = "<group>"; };
+		94A394F22988FC3D002AFE4A /* ShopFilterDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterDetailViewController.swift; sourceTree = "<group>"; };
+		94A394F42988FC8D002AFE4A /* ShopFilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterTableViewCell.swift; sourceTree = "<group>"; };
+		94A394F62988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterDetailTableViewCell.swift; sourceTree = "<group>"; };
+		94A394F82988FCC8002AFE4A /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
+		94A394FA2988FCE4002AFE4A /* ShopFilterItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterItem.swift; sourceTree = "<group>"; };
 		94CDFF8F29746FF100C2095C /* HomeTabShopCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabShopCollectionViewVC.swift; sourceTree = "<group>"; };
 		94CDFF922974730300C2095C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabStyleCollectionViewVC.swift; sourceTree = "<group>"; };
@@ -414,6 +428,7 @@
 		65653F44295B8408002F250B /* Sub VC */ = {
 			isa = PBXGroup;
 			children = (
+				94A394EF2988FC14002AFE4A /* Filter VC */,
 				65653F3C295B7601002F250B /* KeywordCollectionViewCell.swift */,
 				65653F40295B8148002F250B /* ShopMainViewController.swift */,
 				65653F3E295B7BDF002F250B /* SearchTableViewCell.swift */,
@@ -472,6 +487,7 @@
 			children = (
 				9428AE46295718E200DC7907 /* ShopViewModel.swift */,
 				94155C50297A4E720092B561 /* ShopTabDetailViewModel.swift */,
+				94A394ED2988FBF2002AFE4A /* ShopFilterViewModel.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -482,6 +498,8 @@
 				944A114C295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift */,
 				944A1141295D0DBF00F8CDB7 /* Product.swift */,
 				5C6FBD6C297A618900B64FF0 /* ShopPostModel.swift */,
+				94A394F82988FCC8002AFE4A /* Brand.swift */,
+				94A394FA2988FCE4002AFE4A /* ShopFilterItem.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -491,6 +509,8 @@
 			children = (
 				5C6FBD68297A612C00B64FF0 /* CategoryCollectionViewCell.swift */,
 				5C6FBD6A297A613700B64FF0 /* ProductCollectionViewCell.swift */,
+				94A394F42988FC8D002AFE4A /* ShopFilterTableViewCell.swift */,
+				94A394F62988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -597,6 +617,15 @@
 				9409BB6729587B8400107717 /* TabBarViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		94A394EF2988FC14002AFE4A /* Filter VC */ = {
+			isa = PBXGroup;
+			children = (
+				94A394F02988FC27002AFE4A /* ShopFilterViewController.swift */,
+				94A394F22988FC3D002AFE4A /* ShopFilterDetailViewController.swift */,
+			);
+			path = "Filter VC";
 			sourceTree = "<group>";
 		};
 		94CDFF8E29746FBF00C2095C /* Sub VC */ = {
@@ -771,7 +800,9 @@
 				5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */,
 				5C6FBD5A2979826500B64FF0 /* UserListCollectionViewCell.swift in Sources */,
 				5C6FBD7D297D965A00B64FF0 /* FollowUserListViewController.swift in Sources */,
+				94A394F92988FCC8002AFE4A /* Brand.swift in Sources */,
 				5C6FBD67297A60C200B64FF0 /* UserListViewModel.swift in Sources */,
+				94A394F72988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift in Sources */,
 				5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */,
 				94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */,
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
@@ -819,6 +850,7 @@
 				5C6FBD562979776A00B64FF0 /* FollowingUserListRepository.swift in Sources */,
 				655A94CD296C6D4900F0184B /* CustomNotificationView.swift in Sources */,
 				6527350D2968185C00C859B8 /* UserUsecase.swift in Sources */,
+				94A394FB2988FCE4002AFE4A /* ShopFilterItem.swift in Sources */,
 				655A94CB296C6D4200F0184B /* LoadingViewController.swift in Sources */,
 				65508A51297BB1D100C6431D /* SignUpViewModel.swift in Sources */,
 				5C6FBD452976A1ED00B64FF0 /* StylePostUsecase.swift in Sources */,
@@ -828,6 +860,7 @@
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
 				65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */,
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,
+				94A394F52988FC8D002AFE4A /* ShopFilterTableViewCell.swift in Sources */,
 				9409BB6829587B8400107717 /* TabBarViewController.swift in Sources */,
 				656F1A57296136B00052B148 /* ShoeSizeSelectionViewController.swift in Sources */,
 				5C6FBD4B2979739100B64FF0 /* LikedUserListViewController.swift in Sources */,
@@ -847,9 +880,12 @@
 				653F17C42965701600949FF8 /* LoginRepository.swift in Sources */,
 				656F1A59296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift in Sources */,
 				651E718D297B989000D81E2F /* AutoAddPaddingButton.swift in Sources */,
+				94A394F12988FC27002AFE4A /* ShopFilterViewController.swift in Sources */,
+				94A394EE2988FBF2002AFE4A /* ShopFilterViewModel.swift in Sources */,
 				65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */,
 				651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
+				94A394F32988FC3D002AFE4A /* ShopFilterDetailViewController.swift in Sources */,
 				6537F71029837B3500FC58E8 /* EditProfileViewController.swift in Sources */,
 				5C2F9CA8295D7B600021D437 /* StyleFeedUsecase.swift in Sources */,
 				94CDFF972974742400C2095C /* HomeTabBrandsCollectionViewVC.swift in Sources */,
