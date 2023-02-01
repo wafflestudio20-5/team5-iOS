@@ -6,17 +6,25 @@
 //
 
 import Foundation
-
-enum CommentUsecaseType {
-    case postComment
-    case productComment
-}
+import RxSwift
+import RxCocoa
 
 final class CommentUsecase {
     private let commentRepository: CommentRepositoryProtocol
     private var cursor: String?
     
-    init(commentRepository: CommentRepositoryProtocol, type: CommentUsecaseType) {
-        self.commentRepository = commentRepository
+    let commentRelay: BehaviorRelay<[Comment]> = .init(value: [])
+    
+    var commentList = [Comment]() {
+        didSet {
+            self.commentRelay.accept(self.commentList)
+        }
     }
+    
+    init(commentRepository: CommentRepositoryProtocol) {
+        self.commentRepository = commentRepository
+        
+    }
+    
+    
 }

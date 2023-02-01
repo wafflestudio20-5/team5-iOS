@@ -27,6 +27,7 @@ final class CommentViewController: UIViewController {
 //
 //        return collectionView
 //    }()
+    private let commentViewModel: CommentViewModel
     
     private let collectionViewRefreshControl = UIRefreshControl()
     private let enterCommentView = UIView()
@@ -56,9 +57,19 @@ final class CommentViewController: UIViewController {
     }()
     
     private let disposeBag = DisposeBag()
-
+    
+    init(commentViewModel: CommentViewModel) {
+        self.commentViewModel = commentViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
         self.view.backgroundColor = .white
         addSubviews()
         configureDelegate()
@@ -131,7 +142,15 @@ final class CommentViewController: UIViewController {
 //    }
     
     func bindUI() {
-        self.
+        self.enterCommentTextView.rx.text
+            .orEmpty
+            .bind(to: self.commentViewModel.postTextRelay)
+            .disposed(by: disposeBag)
+        
+        self.commentViewModel.postTextRelay
+            .map { $0.isEmpty || $0 == self.textViewPlaceHolder }
+            .bind(to: sendCommentButton.rx.isHidden)
+            .disposed(by: disposeBag)
     }
 }
 

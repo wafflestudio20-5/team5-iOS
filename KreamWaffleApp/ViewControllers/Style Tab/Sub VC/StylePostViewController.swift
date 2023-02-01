@@ -75,6 +75,9 @@ final class StylePostViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.hidesBottomBarWhenPushed = false;
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.backgroundColor = .white
         refreshData()
     }
     
@@ -449,7 +452,12 @@ extension StylePostViewController { //button 관련 메서드들.
                 if isValidToken {
                     if let token = self.userInfoViewModel.UserResponse?.accessToken {
                         self.hidesBottomBarWhenPushed = true;
-                        self.navigationController?.pushViewController(CommentViewController(), animated: true)
+                        
+                        
+                        let commentRepository = StyleCommentRepository()
+                        let commentUsecase = CommentUsecase(commentRepository: commentRepository)
+                        let commentViewModel = CommentViewModel(commentUsecase: commentUsecase)
+                        self.navigationController?.pushViewController(CommentViewController(commentViewModel: commentViewModel), animated: true)
                     } else {
                         (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                     }
