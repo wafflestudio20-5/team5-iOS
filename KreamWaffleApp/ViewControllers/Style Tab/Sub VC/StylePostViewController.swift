@@ -224,8 +224,8 @@ final class StylePostViewController: UIViewController {
         likeButton.setImage(UIImage(systemName: "face.smiling"), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
-
         likeButton.tintColor = .black
+        likeButton.backgroundColor = .white
         
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
