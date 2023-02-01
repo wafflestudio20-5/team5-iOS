@@ -371,7 +371,7 @@ extension ProfileViewController {
                 let isValidToken = await self.userInfoViewModel.checkAccessToken()
                 if (isValidToken) {
                     if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                        self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag)  { [weak self] in
+                        self.userInfoViewModel.requestFollow(token: token, user_id: sender.tag) { [weak self] in
                             let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
                             let okAction = UIAlertAction(title: "OK", style: .default) { _ in
                                 self?.navigationController?.popViewController(animated: true)

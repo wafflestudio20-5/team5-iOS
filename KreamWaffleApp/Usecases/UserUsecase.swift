@@ -11,11 +11,12 @@ import RxRelay
 final class UserUsecase {
     
     private let repository : LoginRepository
-    private let profileRepository : UserProfileRepository
+    private let profileRepository : ProfileRepository
     private let disposeBag = DisposeBag()
     
     var user : User?
     var userResponse : UserResponse?
+    
     var userProfile : Profile?
     
     ///toggle when logged in
@@ -34,13 +35,14 @@ final class UserUsecase {
     
     ///VC should observe login state and toggle logged in
     let loginState = BehaviorRelay<Bool>(value: false)
+    
     let errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
-    init(dataRepository : LoginRepository, profileRepository: UserProfileRepository){
+    init(dataRepository : LoginRepository, profileRepository: ProfileRepository){
         self.repository = dataRepository
+        self.profileRepository = profileRepository
         self.error = .noError
         self.loggedIn = false
-        self.profileRepository = profileRepository
     }
     
     //MARK: related to log in, log out, sign up
@@ -102,16 +104,16 @@ final class UserUsecase {
         repository.registerAccount(with: email, password: password, shoe_size: shoeSize) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
-            case .success(_):
-                print("[Log] User usecase: Register success")
-            case .failure(_):
-                self.error = .signupError
+            case .success(let response):
+                print("register success")
+            case .failure(let error):
+                self.error = error as LoginError
                 self.loggedIn = false
             }
         }
     }
     
-
+    //MARK: - checks/requests token
     private func requestNewAccessToken() async {
         Task {
             await repository.getNewToken { [weak self] (result) in
@@ -123,9 +125,10 @@ final class UserUsecase {
                     self.replaceAccessToken(newToken: response.accessToken)
                 case .failure(let error):
                     self.error = error as LoginError
+                    /*
                     if (error == .invalidRefreshTokenError){
                         self.logout()
-                    }
+                    }*/
                 }
             }
         }
@@ -139,6 +142,7 @@ final class UserUsecase {
                 switch result {
                 case .success:
                     print("[Log] UserUsecase: access token is still valid")
+                    print("[Log] UserUsecase: that valid token is: \(self.userResponse!.accessToken)")
                 case .failure(let error):
                     Task {
                         await self.requestNewAccessToken()
@@ -152,44 +156,38 @@ final class UserUsecase {
         return self.userResponse != nil
     }
     
-    //MARK: user profile related
-    func requestProfile(onNetworkFailure: @escaping ()->()) {
-        
-        self.profileRepository
-            .requestProfile(user_id: self.user!.id, token: self.userResponse!.accessToken, onNetworkFailure: onNetworkFailure)
-            .subscribe(
-                onSuccess: { [weak self] fetchedProfile in
-                    self?.userProfile = fetchedProfile
-                },
-                onFailure: { _ in
-                    self.error = .signupError
-                }
-            )
-            .disposed(by: disposeBag)
-        
-        /*
-        self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
-            guard let self = self else {return}
-            switch result {
-            case .success(let profile):
-                self.userProfile = profile
-            case .failure(let error):
-                //error 처리하기
-                print("profile fetch erro")
-            }
-        }*/
-    }
-    
-    
     private func replaceAccessToken(newToken: String){
         self.userResponse?.accessToken = newToken
     }
     
     
-    func getUserProfile(){
-        
-    }
-    
+    //MARK: user profile related
+    func requestProfile(onNetworkFailure: @escaping ()->()) {
+            
+            self.profileRepository
+                .requestProfile(user_id: self.user!.id, token: self.userResponse!.accessToken, onNetworkFailure: onNetworkFailure)
+                .subscribe(
+                    onSuccess: { [weak self] fetchedProfile in
+                        self?.userProfile = fetchedProfile
+                    },
+                    onFailure: { _ in
+                        self.error = .signupError
+                    }
+                )
+                .disposed(by: disposeBag)
+            
+            /*
+            self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
+                guard let self = self else {return}
+                switch result {
+                case .success(let profile):
+                    self.userProfile = profile
+                case .failure(let error):
+                    //error 처리하기
+                    print("profile fetch erro")
+                }
+            }*/
+        }
     ///logging out deletes saved/current user and initializes parameters.
     func logout(){
         repository.logOutUser()

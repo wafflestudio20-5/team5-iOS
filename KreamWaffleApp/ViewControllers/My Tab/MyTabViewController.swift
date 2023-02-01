@@ -60,11 +60,11 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
-            print("여기여기여기 \(status.element)")
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }else{
-                print("[Log] MyTabVC: user Profile not loaded.")
+                self.userProfileVM.requestUserProfile { [weak self] in
+                    print("Profile Loading 실패")
                 }
             }
         }.disposed(by: disposeBag)

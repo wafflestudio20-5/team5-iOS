@@ -36,21 +36,32 @@ class EditProfileTableViewCell: UITableViewCell {
         self.setupDesign()
     }
    
-    func addData(editCase: editCase, userProfile: Profile){
+    func addData(editCase: editCase, userProfile: Profile?, user: User?){
         switch (editCase){
         case .profileName:
             self.titleLabel.text = "프로필 이름"
-            self.currentTextLabel.text = userProfile.profile_name
+            self.currentTextLabel.text = userProfile?.profile_name
         case .userName:
             self.titleLabel.text = "이름"
-            self.currentTextLabel.text = userProfile.user_name
+            self.currentTextLabel.text = userProfile?.user_name
         case .introduction:
             self.titleLabel.text = "소개"
-            if (userProfile.introduction == ""){
+            if (userProfile?.introduction == ""){
             self.currentTextLabel.text = "나를 소개하세요"
             }else{
-            self.currentTextLabel.text = userProfile.introduction
+                self.currentTextLabel.text = userProfile?.introduction
             }
+        case .password:
+            self.titleLabel.text = "비밀번호"
+            self.currentTextLabel.text = "**********"
+            
+        case .email:
+            self.titleLabel.text = "이메일 아이디"
+            self.currentTextLabel.text = user?.email
+            
+        case .shoeSize:
+            self.titleLabel.text = "신발 사이즈"
+            self.currentTextLabel.text = "\(user?.shoeSize)"
         }
     }
     
@@ -105,6 +116,11 @@ class EditProfileTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    
+    //some fields are not changeable
+    func removeButton(){
+        self.editButton.removeFromSuperview()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
