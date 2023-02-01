@@ -193,7 +193,7 @@ final class StylePostViewController: UIViewController {
         contentLabel.lineBreakStrategy = .hangulWordPriority
         contentLabel.textAlignment = .left
         contentLabel.adjustsFontSizeToFitWidth = false
-        contentLabel.numberOfLines = Int.max
+        contentLabel.numberOfLines = 0
         
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -333,7 +333,6 @@ final class StylePostViewController: UIViewController {
         self.numLikesLabel.sizeToFit()
         
         self.writerUserId = post.created_by.user_id
-        self.followButton.configure(following: post.created_by.following)
         
         if post.liked == "true" {
             self.isLiked = true

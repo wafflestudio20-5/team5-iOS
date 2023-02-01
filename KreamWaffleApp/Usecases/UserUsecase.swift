@@ -137,6 +137,7 @@ final class UserUsecase {
                 switch result {
                 case .success:
                     print("[Log] UserUsecase: access token is still valid")
+                    print("[Log] UserUsecase: that valid token is: \(self.userResponse!.accessToken)")
                 case .failure(let error):
                     Task {
                         await self.requestNewAccessToken()

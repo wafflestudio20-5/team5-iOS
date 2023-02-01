@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+enum CommentUsecaseType {
+    case postComment
+    case productComment
+}
+
+final class CommentUsecase {
+    private let commentRepository: CommentRepositoryProtocol
+    private var cursor: String?
+    
+    init(commentRepository: CommentRepositoryProtocol, type: CommentUsecaseType) {
+        self.commentRepository = commentRepository
+    }
+}

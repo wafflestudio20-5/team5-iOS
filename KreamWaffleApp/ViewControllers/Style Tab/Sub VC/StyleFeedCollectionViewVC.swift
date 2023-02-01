@@ -97,17 +97,21 @@ final class StyleFeedCollectionViewVC : UIViewController{
     
     func requestInitialFeed() {
         Task {
-            await self.userInfoViewModel.checkAccessToken()
-            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-            self.styleFeedViewModel.requestInitialFeed(token: token)
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if isValidToken {
+                let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+                self.styleFeedViewModel.requestInitialFeed(token: token)
+            }
         }
     }
     
     func requestNextFeed() {
         Task {
-            await self.userInfoViewModel.checkAccessToken()
-            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-            self.styleFeedViewModel.requestNextFeed(token: token)
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if isValidToken {
+                let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+                self.styleFeedViewModel.requestNextFeed(token: token)
+            }
         }
     }
 }

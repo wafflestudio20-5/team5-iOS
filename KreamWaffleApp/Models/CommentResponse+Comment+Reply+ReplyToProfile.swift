@@ -6,6 +6,7 @@
 //
 
 import Foundation
+//style 탭과 shop 탭의 comment, reply를 전반적으로 담당하는 모델
 
 final class CommentResponse: Decodable {
     private enum CodingKeys: String, CodingKey {
