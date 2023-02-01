@@ -177,9 +177,9 @@ final class CommentViewController: UIViewController {
             let isValidToken = await self.userInfoViewModel.checkAccessToken()
             if isValidToken {
                 let token = self.userInfoViewModel.UserResponse?.accessToken
-                self.commentViewModel.requestInitialFeed(token: token)
+                self.commentViewModel.requestInitialData(token: token!)
             } else {
-                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                let alert = UIAlertController(title: "실패", message: "다시 로그인해주세요.", preferredStyle: UIAlertController.Style.alert)
                 let okAction = UIAlertAction(title: "OK", style: .default) { _ in
                     self.navigationController?.popViewController(animated: true)
                 }
@@ -254,9 +254,9 @@ extension CommentViewController: UIScrollViewDelegate  {
                 let isValidToken = await self.userInfoViewModel.checkAccessToken()
                 if isValidToken {
                     let token = self.userInfoViewModel.UserResponse?.accessToken
-                    self.commentViewModel.requestNextFeed(token: token)
+                    self.commentViewModel.requestNextData(token: token!)
                 } else {
-                    let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let alert = UIAlertController(title: "실패", message: "다시 로그인해주세요.", preferredStyle: UIAlertController.Style.alert)
                     let okAction = UIAlertAction(title: "OK", style: .default) { _ in
                         self.navigationController?.popViewController(animated: true)
                     }

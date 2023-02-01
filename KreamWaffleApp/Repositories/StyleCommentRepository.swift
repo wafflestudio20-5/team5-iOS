@@ -10,7 +10,7 @@ import RxSwift
 import Alamofire
 
 final class StyleCommentRepository: CommentRepositoryProtocol {
-    private let baseUrl = "https://kream-waffle.cf/posts/"
+    private let baseUrl = "https://kream-waffle.cf/styles/posts/"
 
     func requestInitialCommentData(token: String, id: Int, completion: @escaping () -> ()) -> Single<CommentResponse> {
         return Single.create { single in
@@ -25,6 +25,7 @@ final class StyleCommentRepository: CommentRepositoryProtocol {
                 .validate()
                 .responseDecodable(of: CommentResponse.self) { response in
                     //**********
+                    print("\n=============== style comment 최초 불러오기 ===============\n")
                     debugPrint(response)
                     //**********
                     
@@ -54,6 +55,7 @@ final class StyleCommentRepository: CommentRepositoryProtocol {
                 .validate()
                 .responseDecodable(of: CommentResponse.self) { response in
                     //**********
+                    print("\n=============== style comment 이어서 불러오기 ===============\n")
                     debugPrint(response)
                     //**********
                     

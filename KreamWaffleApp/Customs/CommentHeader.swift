@@ -14,7 +14,7 @@ final class CommentHeader: UICollectionReusableView {
     private let font2: CGFloat = 13;
     
     private let profileImageView = UIImageView()
-    private let userNameLabel = UILabel()
+    private let profileNameLabel = UILabel()
     private let contentLabel = UILabel()
     let replyButton = UIButton()
     
@@ -35,7 +35,7 @@ final class CommentHeader: UICollectionReusableView {
     }
     
     func configure(with comment: Comment) {
-        self.userNameLabel.text = comment.created_by.user_name
+        self.profileNameLabel.text = comment.created_by.user_name
         self.contentLabel.text = comment.content
         
         contentLabel.sizeToFit()
@@ -60,14 +60,14 @@ final class CommentHeader: UICollectionReusableView {
     
     private func addSubviews() {
         self.addSubview(profileImageView)
-        self.addSubview(userNameLabel)
+        self.addSubview(profileNameLabel)
         self.addSubview(contentLabel)
         self.addSubview(replyButton)
     }
     
     private func setUpLayout() {
         setUpProfileImageView()
-        setUpUserNameLabel()
+        setUpProfileNameLabel()
         setUpContentLabel()
         setUpReplyButton()
     }
@@ -88,19 +88,19 @@ final class CommentHeader: UICollectionReusableView {
         profileImageView.clipsToBounds = true
     }
     
-    private func setUpUserNameLabel() {
-        self.userNameLabel.font = UIFont.boldSystemFont(ofSize: self.font1)
-        self.userNameLabel.textColor = .black
-        self.userNameLabel.numberOfLines = 1
-        self.userNameLabel.textAlignment = .left
-        self.userNameLabel.adjustsFontSizeToFitWidth = false
+    private func setUpProfileNameLabel() {
+        self.profileNameLabel.font = UIFont.boldSystemFont(ofSize: self.font1)
+        self.profileNameLabel.textColor = .black
+        self.profileNameLabel.numberOfLines = 1
+        self.profileNameLabel.textAlignment = .left
+        self.profileNameLabel.adjustsFontSizeToFitWidth = false
         
-        self.userNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.userNameLabel.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 7),
-            self.userNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5),
-            self.userNameLabel.topAnchor.constraint(equalTo: self.profileImageView.topAnchor),
-            self.userNameLabel.heightAnchor.constraint(equalToConstant: 20),
+            self.profileNameLabel.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 7),
+            self.profileNameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.5),
+            self.profileNameLabel.topAnchor.constraint(equalTo: self.profileImageView.topAnchor),
+            self.profileNameLabel.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
     
@@ -116,7 +116,7 @@ final class CommentHeader: UICollectionReusableView {
         NSLayoutConstraint.activate([
             contentLabel.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 7),
             contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
-            contentLabel.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor),
+            contentLabel.topAnchor.constraint(equalTo: self.profileNameLabel.bottomAnchor),
             contentLabel.bottomAnchor.constraint(equalTo: self.replyButton.topAnchor)
         ])
     }

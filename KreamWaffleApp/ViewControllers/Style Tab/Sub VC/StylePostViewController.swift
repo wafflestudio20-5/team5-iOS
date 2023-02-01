@@ -452,7 +452,7 @@ extension StylePostViewController { //button 관련 메서드들.
             let commentRepository = StyleCommentRepository()
             let commentUsecase = CommentUsecase(commentRepository: commentRepository)
             let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.stylePostViewModel.getPostId())
-            self.navigationController?.pushViewController(CommentViewController(commentViewModel: commentViewModel), animated: true)
+            self.navigationController?.pushViewController(CommentViewController(userInfoViewModel: self.userInfoViewModel, commentViewModel: commentViewModel), animated: true)
         }
     }
 }
