@@ -85,7 +85,7 @@ final class ReplyToProfile: Decodable {
     }
     
     init() {
-        self.user_id = "-1"
+        self.user_id = -1
         self.profile_name = ""
     }
 }

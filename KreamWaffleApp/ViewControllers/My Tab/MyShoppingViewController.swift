@@ -11,8 +11,13 @@ class MyShoppingViewController: UIViewController {
     
     init(userInfoVM: UserInfoViewModel) {
         self.userInfoVM = userInfoVM
+        super.init()
     }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     var sampleData1 = subviewData(total_title: "구매 내역", set_1: titleNumberSet(title: "전체", number: 0), set_2: titleNumberSet(title: "입찰 중", number: 0), set_3: titleNumberSet(title: "진행 중", number: 0), set_4: titleNumberSet(title: "종료", number: 0))
     
     var sampleData2 = subviewData(total_title: "판매 내역", set_1: titleNumberSet(title: "전체", number: 0), set_2: titleNumberSet(title: "입찰 중", number: 0), set_3: titleNumberSet(title: "진행 중", number: 0), set_4: titleNumberSet(title: "종료", number: 0))

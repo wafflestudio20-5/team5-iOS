@@ -16,6 +16,7 @@ class MyProfileViewController: UIViewController {
     
     init(userInfoVM: UserInfoViewModel) {
         self.userInfoVM = userInfoVM
+        super.init()
     }
     
     required init?(coder: NSCoder) {
