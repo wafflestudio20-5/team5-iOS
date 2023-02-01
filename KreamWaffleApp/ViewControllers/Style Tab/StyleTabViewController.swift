@@ -44,21 +44,13 @@ class StyleTabViewController: UIViewController {
     }
     
     func setUpButtons() {
-        //configure search button
-        let searchImage = UIImage(systemName: "magnifyingglass")
-        let tintedSearchImage = searchImage?.withRenderingMode(.alwaysTemplate)
-        let searchButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(searchButtonTapped))
-        searchButton.image = tintedSearchImage
-        searchButton.tintColor = .black
-        navigationItem.leftBarButtonItem = searchButton
-        
         //configure camera button
         let cameraImage = UIImage(systemName: "camera.circle.fill")
         let tintedCameraImage = cameraImage?.withRenderingMode(.alwaysTemplate)
-        let cameraButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(cameraButtonTapped))
+        let cameraButton = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(cameraButtonTapped))
         cameraButton.image = tintedCameraImage
-        cameraButton.tintColor = .lightGray
-        navigationItem.rightBarButtonItem = cameraButton
+        cameraButton.tintColor = .darkGray
+        self.navigationItem.rightBarButtonItem = cameraButton
     }
     
     func setUpChildVC() {
@@ -76,14 +68,14 @@ class StyleTabViewController: UIViewController {
     }
     
     @objc func cameraButtonTapped() {
+        if (self.userInfoViewModel.isLoggedIn()) {
+            pushNewPostVC(userInfoViewModel: self.userInfoViewModel)
+        } else {
+            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
+
+            loginScreen.modalPresentationStyle = .fullScreen
+            self.present(loginScreen, animated: false)
+        }
         
-            //TODO: set differently according to login state in VM --> 일단은 노티로.
-            //이게 아니라 root vc를 갈아끼워야하는 것 같음.
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
-        
-    }
-    
-    @objc func searchButtonTapped() {
-        print("search button tapped")
     }
 }

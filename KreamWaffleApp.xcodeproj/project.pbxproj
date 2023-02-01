@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		467682F954ED69A475DC9876 /* Pods_KreamWaffleApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F052148EFB50AEB9BB9D2B3 /* Pods_KreamWaffleApp.framework */; };
+		5C2882B829884A340063C0C1 /* UserListResponse + NestedProfileWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882B729884A340063C0C1 /* UserListResponse + NestedProfileWrapper.swift */; };
 		5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */; };
 		5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */; };
 		5C2F9CA8295D7B600021D437 /* StyleFeedUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */; };
@@ -17,7 +18,7 @@
 		5C6CE19C2982764100755334 /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE19B2982764100755334 /* NewPostViewModel.swift */; };
 		5C6CE19E2982768F00755334 /* NewPostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE19D2982768F00755334 /* NewPostRepository.swift */; };
 		5C6CE1A02983A9D100755334 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE19F2983A9D100755334 /* LoadingIndicator.swift */; };
-		5C6CE1A22983D55B00755334 /* Comment+Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE1A12983D55B00755334 /* Comment+Reply.swift */; };
+		5C6CE1A22983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6CE1A12983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift */; };
 		5C6FBD452976A1ED00B64FF0 /* StylePostUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD442976A1ED00B64FF0 /* StylePostUsecase.swift */; };
 		5C6FBD4729796DB300B64FF0 /* NestedProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */; };
 		5C6FBD492979737C00B64FF0 /* UserListCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C6FBD482979737C00B64FF0 /* UserListCollectionViewVC.swift */; };
@@ -136,6 +137,7 @@
 /* Begin PBXFileReference section */
 		23A38361E3714122EA170A02 /* Pods-KreamWaffleApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.release.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.release.xcconfig"; sourceTree = "<group>"; };
 		4F052148EFB50AEB9BB9D2B3 /* Pods_KreamWaffleApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KreamWaffleApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C2882B729884A340063C0C1 /* UserListResponse + NestedProfileWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserListResponse + NestedProfileWrapper.swift"; sourceTree = "<group>"; };
 		5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+hideKeyboard.swift"; sourceTree = "<group>"; };
 		5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedViewModel.swift; sourceTree = "<group>"; };
 		5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedUsecase.swift; sourceTree = "<group>"; };
@@ -145,7 +147,7 @@
 		5C6CE19B2982764100755334 /* NewPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewModel.swift; sourceTree = "<group>"; };
 		5C6CE19D2982768F00755334 /* NewPostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostRepository.swift; sourceTree = "<group>"; };
 		5C6CE19F2983A9D100755334 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
-		5C6CE1A12983D55B00755334 /* Comment+Reply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Reply.swift"; sourceTree = "<group>"; };
+		5C6CE1A12983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentResponse+Comment+Reply+ReplyToProfile.swift"; sourceTree = "<group>"; };
 		5C6FBD442976A1ED00B64FF0 /* StylePostUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePostUsecase.swift; sourceTree = "<group>"; };
 		5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NestedProfile.swift; sourceTree = "<group>"; };
 		5C6FBD482979737C00B64FF0 /* UserListCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListCollectionViewVC.swift; sourceTree = "<group>"; };
@@ -565,7 +567,8 @@
 				65F8FBB029620FCC00679E72 /* Post + PostResponse.swift */,
 				5C6FBD4629796DB300B64FF0 /* NestedProfile.swift */,
 				5C6FBD78297C263200B64FF0 /* Profile.swift */,
-				5C6CE1A12983D55B00755334 /* Comment+Reply.swift */,
+				5C6CE1A12983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift */,
+				5C2882B729884A340063C0C1 /* UserListResponse + NestedProfileWrapper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -818,7 +821,7 @@
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */,
 				5CB810DF29683D4E0021FDD6 /* StylePostRepository.swift in Sources */,
-				5C6CE1A22983D55B00755334 /* Comment+Reply.swift in Sources */,
+				5C6CE1A22983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,
 				65653F41295B8148002F250B /* ShopMainViewController.swift in Sources */,
 				9428AE4B2957197B00DC7907 /* StyleTabViewController.swift in Sources */,
@@ -847,6 +850,7 @@
 				5C6FBD7B297D132900B64FF0 /* UIViewController+pushUserProfileVC + pushNewPostVC.swift in Sources */,
 				65781D032976C415000FC684 /* LoginViewModel.swift in Sources */,
 				5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */,
+				5C2882B829884A340063C0C1 /* UserListResponse + NestedProfileWrapper.swift in Sources */,
 				5C6FBD582979778900B64FF0 /* FollowerUserListRepository.swift in Sources */,
 				65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */,
 				65653F3A295B73C9002F250B /* SearchViewController.swift in Sources */,

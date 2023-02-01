@@ -17,7 +17,7 @@ class FollowUserListViewController:UIViewController {
     
     private let selectedSegmentIdx: Int
     
-    init(userInfoViewModel: UserInfoViewModel, selectedSegmentIdx: Int) {
+    init(id: Int, userInfoViewModel: UserInfoViewModel, selectedSegmentIdx: Int) {
         self.selectedSegmentIdx = selectedSegmentIdx
         
         self.userInfoViewModel = userInfoViewModel
@@ -26,8 +26,8 @@ class FollowUserListViewController:UIViewController {
         let followingUserListRepository = FollowingUserListRepository()
         let followerUserListUsecase = UserListUsecase(userListRepository: followerUserListRepository)
         let followingUserListUsecase = UserListUsecase(userListRepository: followingUserListRepository)
-        self.followerUserListCollectionViewVC = UserListCollectionViewVC(userListViewModel: UserListViewModel(userListUsecase: followerUserListUsecase), userInfoViewModel: self.userInfoViewModel)
-        self.followingUserListCollectionViewVC = UserListCollectionViewVC(userListViewModel: UserListViewModel(userListUsecase: followingUserListUsecase), userInfoViewModel: self.userInfoViewModel)
+        self.followerUserListCollectionViewVC = UserListCollectionViewVC(id: id, userListViewModel: UserListViewModel(userListUsecase: followerUserListUsecase), userInfoViewModel: self.userInfoViewModel)
+        self.followingUserListCollectionViewVC = UserListCollectionViewVC(id: id, userListViewModel: UserListViewModel(userListUsecase: followingUserListUsecase), userInfoViewModel: self.userInfoViewModel)
         
         super.init(nibName: nil, bundle: nil)
     }

@@ -15,6 +15,7 @@ final class UserListUsecase {
     
     private let disposeBag = DisposeBag()
     let userListRelay: BehaviorRelay<[NestedProfile]> = .init(value: [])
+    private var cursor: String?
     
     var userList = [NestedProfile]() {
         didSet {
@@ -26,10 +27,41 @@ final class UserListUsecase {
         self.userListRepository = userListRepository
     }
     
-    func requestUserListData(page: Int) {
-        self.userListRepository.userListApiRequest(page: page) { [weak self] (error, result) in
-            guard let self = self else { return }
-            self.userList = result!
+    func requestInitialUserList(id: Int, token: String, completion: @escaping () -> ()) {
+        userList.removeAll()
+        self.userListRepository
+            .requestInitialUserListData(token: token, id: id, completion: completion)
+            .subscribe { event in
+                switch event {
+                case .success(let userListResponse):
+                    self.cursor = userListResponse.next
+                    self.userList += userListResponse.results
+                case .failure(let error):
+                    self.cursor = nil
+                    self.userList.removeAll()
+                    print(error)
+                }
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func requestNextUserList(id: Int, token: String, completion: @escaping () -> ()) {
+        if let cursor = self.cursor {
+            self.userListRepository
+                .requestNextUserListData(token: token, cursor: cursor, completion: completion)
+                .subscribe { event in
+                    switch event {
+                    case .success(let userListResponse):
+                        self.cursor = userListResponse.next
+                        self.userList += userListResponse.results
+                    case .failure(let error):
+                        self.cursor = nil
+                        self.userList.removeAll()
+                        print(error)
+                    }
+                }
+                .disposed(by: disposeBag)
         }
+        
     }
 }

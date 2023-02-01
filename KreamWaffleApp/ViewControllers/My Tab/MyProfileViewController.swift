@@ -11,11 +11,16 @@ import AVKit
 import Photos
 import YPImagePicker
 
-class MyProfileViewController: UIViewController, YPImagePickerDelegate {
+class MyProfileViewController: UIViewController {
+    private let userInfoVM: UserInfoViewModel
     
+    init(userInfoVM: UserInfoViewModel) {
+        self.userInfoVM = userInfoVM
+        super.init(nibName: nil, bundle: nil)
+    }
     
-    func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
-        //
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
@@ -98,6 +103,13 @@ class MyProfileViewController: UIViewController, YPImagePickerDelegate {
     }()
     
     @objc func cameraButtonTapped(){
-        print("camera button tapped")
+        if (self.userInfoVM.isLoggedIn()) {
+            pushNewPostVC(userInfoViewModel: self.userInfoVM)
+        } else {
+            let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
+
+            loginScreen.modalPresentationStyle = .fullScreen
+            self.present(loginScreen, animated: false)
+        }
     }
 }

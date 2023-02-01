@@ -49,6 +49,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
         super.viewDidLoad()
         setUpCollectionView()
         bindCollectionView()
+        setUpRefreshControl()
         requestInitialFeed()
     }
     
@@ -145,14 +146,16 @@ extension StyleFeedCollectionViewVC: UICollectionViewDataSource {
 
 extension StyleFeedCollectionViewVC: UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let position = scrollView.contentOffset.y
-//        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-//            Task {
-//                await self.userInfoViewModel.checkAccessToken()
-//                let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-//                self.styleFeedViewModel.requestNextFeed(token: token)
-//            }
-//        }
+        let position = scrollView.contentOffset.y
+        if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if isValidToken {
+                    let token = self.userInfoViewModel.UserResponse?.accessToken
+                    self.styleFeedViewModel.requestNextFeed(token: token)
+                }
+            }
+        }
     }
 }
 
