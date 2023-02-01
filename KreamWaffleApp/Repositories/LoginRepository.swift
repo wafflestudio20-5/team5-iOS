@@ -257,7 +257,7 @@ class LoginRepository {
         //request follow using user_id
         let urlStr = "https://kream-waffle.cf/styles/profiles/\(user_id)/follow/"
         let headers: HTTPHeaders = [
-            "accept": "application/json",
+            "Content-Type": "application/json",
             "Authorization": "Bearer \(token)"
         ]
         
@@ -273,5 +273,38 @@ class LoginRepository {
                     onNetworkFailure()
                 }
             }
+    }
+    
+    
+    //MARK: removing user, changing password
+    func changePassword(token: String, newPassword: String, completion: @escaping (Result<Bool,LoginError>) -> ()){
+        let URLString = "\(baseAPIURL)/password/change/"
+        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+            print("url error")
+            completion(.failure(.urlError))
+            return
+        }
+        
+        let headers : HTTPHeaders = [
+            "Content-Type": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+        
+        let parameters = [
+            "new_password1": newPassword,
+            "new_password2": newPassword
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers)
+            .validate()
+            .response { response in
+            switch response.result {
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(.unknownError))
+                print(error)
+            }
+        }
     }
 }

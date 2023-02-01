@@ -41,7 +41,7 @@ class SettingsViewController: UIViewController {
         self.logoutButton.setTitle("로그인 정보", for: .normal)
         self.logoutButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         self.logoutButton.contentVerticalAlignment = UIControl.ContentVerticalAlignment.top
-        self.logoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        self.logoutButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         self.logoutButton.backgroundColor = .white
         self.logoutButton.setTitleColor(.black, for: .normal)
         self.logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -51,8 +51,6 @@ class SettingsViewController: UIViewController {
             self.logoutButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10)
         ])
         self.logoutButton.addTarget(self, action: #selector(didTapEdit), for: .touchUpInside)
-        
-        
     }
     
     func setupLogoutButton(){
@@ -68,7 +66,7 @@ class SettingsViewController: UIViewController {
         self.deleteUserButton.setTitle("로그아웃", for: .normal)
         self.deleteUserButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.left
         self.deleteUserButton.contentVerticalAlignment = UIControl.ContentVerticalAlignment.top
-        self.deleteUserButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        self.deleteUserButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         self.deleteUserButton.backgroundColor = .white
         self.deleteUserButton.setTitleColor(colors.errorRed, for: .normal)
         self.deleteUserButton.translatesAutoresizingMaskIntoConstraints = false
