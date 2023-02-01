@@ -146,34 +146,6 @@ final class UserUsecase {
         }
     }
     
-    //MARK: user profile related
-    func requestProfile(onNetworkFailure: @escaping ()->()) {
-        
-        self.profileRepository
-            .requestProfile(user_id: self.user!.id, token: self.userResponse!.accessToken, onNetworkFailure: onNetworkFailure)
-            .subscribe(
-                onSuccess: { [weak self] fetchedProfile in
-                    self?.userProfile = fetchedProfile
-                },
-                onFailure: { _ in
-                    self.error = .signupError
-                }
-            )
-            .disposed(by: disposeBag)
-        
-        /*
-        self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
-            guard let self = self else {return}
-            switch result {
-            case .success(let profile):
-                self.userProfile = profile
-            case .failure(let error):
-                //error 처리하기
-                print("profile fetch erro")
-            }
-        }*/
-    }
-    
     
     private func replaceAccessToken(newToken: String){
         self.userResponse?.accessToken = newToken
@@ -194,5 +166,20 @@ final class UserUsecase {
     
     func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
         self.repository.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
+    }
+    
+    //=======TEST로 ProfileRepo 갈아끼워보기=========
+    func requestProfile(token: String?, onNetworkFailure: @escaping ()->()) {
+        self.profileRepository
+            .requestProfile(user_id: self.user!.id, token: userResponse!.accessToken, onNetworkFailure: onNetworkFailure)
+            .subscribe(
+                onSuccess: { [weak self] fetchedProfile in
+                    self?.userProfile = fetchedProfile
+                },
+                onFailure: { _ in
+                    self.userProfile = nil
+                }
+            )
+            .disposed(by: disposeBag)
     }
 }
