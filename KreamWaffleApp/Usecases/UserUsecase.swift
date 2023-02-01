@@ -122,9 +122,10 @@ final class UserUsecase {
                 print("newtoken: \(response.accessToken)")
             case .failure(let error):
                 self.error = error as LoginError
+                /*
                 if (error == .invalidRefreshTokenError){
                     self.logout()
-                }
+                }*/
             }
         }
     }

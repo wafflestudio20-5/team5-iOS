@@ -60,20 +60,14 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
+            print("여기여기여기 \(status.element)")
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }else{
-                self.userProfileVM.requestUserProfile { [weak self] in
-                    let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                    alert.addAction(okAction)
-                    self?.present(alert, animated: false, completion: nil)
+                print("[Log] MyTabVC: user Profile not loaded.")
                 }
             }
         }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

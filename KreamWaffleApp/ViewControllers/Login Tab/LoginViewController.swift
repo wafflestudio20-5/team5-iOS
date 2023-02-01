@@ -381,7 +381,7 @@ extension LoginViewController {
         self.helpStack.translatesAutoresizingMaskIntoConstraints = false
         self.helpStack.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
         self.helpStack.heightAnchor.constraint(equalToConstant: self.view.frame.height/32).isActive = true
-        self.helpStack.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: self.view.frame.height/40).isActive = true
+        self.helpStack.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: self.view.frame.height/50).isActive = true
         self.helpStack.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 80).isActive = true
         self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -80).isActive = true
     }

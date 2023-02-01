@@ -23,8 +23,6 @@ class LoginRepository {
     
     private var semaphore = DispatchSemaphore (value: 0)
     
-    private let apiKey = "f330b07acf479c98b184db47a4d2608b" //for Naver
-    
     private let baseAPIURL = "https://kream-waffle.cf/accounts" //server
     
     private let userDefaults = UserDefaults.standard
