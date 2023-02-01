@@ -447,25 +447,12 @@ extension StylePostViewController { //button 관련 메서드들.
         if (!self.userInfoViewModel.isLoggedIn()) {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
-            Task {
-                let isValidToken = await self.userInfoViewModel.checkAccessToken()
-                if isValidToken {
-                    if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                        self.hidesBottomBarWhenPushed = true;
-                        
-                        
-                        let commentRepository = StyleCommentRepository()
-                        let commentUsecase = CommentUsecase(commentRepository: commentRepository)
-                        let commentViewModel = CommentViewModel(commentUsecase: commentUsecase)
-                        self.navigationController?.pushViewController(CommentViewController(commentViewModel: commentViewModel), animated: true)
-                    } else {
-                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
-                    }
-                } else {
-                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
-                }
-            }
+            self.hidesBottomBarWhenPushed = true;
             
+            let commentRepository = StyleCommentRepository()
+            let commentUsecase = CommentUsecase(commentRepository: commentRepository)
+            let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.stylePostViewModel.getPostId())
+            self.navigationController?.pushViewController(CommentViewController(commentViewModel: commentViewModel), animated: true)
         }
     }
 }

@@ -12,6 +12,7 @@ import RxCocoa
 
 final class CommentViewController: UIViewController {
     private let commentViewModel: CommentViewModel
+    private let userInfoViewModel: UserInfoViewModel
 
     private let commentCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -59,7 +60,8 @@ final class CommentViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    init(commentViewModel: CommentViewModel) {
+    init(userInfoViewModel: UserInfoViewModel, commentViewModel: CommentViewModel) {
+        self.userInfoViewModel = userInfoViewModel
         self.commentViewModel = commentViewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -78,10 +80,12 @@ final class CommentViewController: UIViewController {
         setUpCollectionView()
         bindUI()
         bindCollectionView()
+        requestInitialData()
         
         commentCollectionView.register(UINib(nibName: "CommentHeader", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader , withReuseIdentifier: "CommentHeaderIdentifier")
         commentCollectionView.register(UINib(nibName: "ReplyCell", bundle: nil), forCellWithReuseIdentifier: "ReplyCellIdentifier")
     }
+    
     
     func addSubviews() {
         self.view.addSubview(self.enterCommentView)
@@ -167,6 +171,23 @@ final class CommentViewController: UIViewController {
                     }
                     .disposed(by: disposeBag)
     }
+    
+    func requestInitialData() {
+        Task {
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if isValidToken {
+                let token = self.userInfoViewModel.UserResponse?.accessToken
+                self.commentViewModel.requestInitialFeed(token: token)
+            } else {
+                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                }
+                alert.addAction(okAction)
+                self.present(alert, animated: false, completion: nil)
+            }
+        }
+    }
 }
 
 extension CommentViewController: UICollectionViewDataSource {
@@ -222,5 +243,27 @@ extension CommentViewController: UITextViewDelegate {
         let characterCount = newString.count
         guard characterCount <= 700 else { return false }
         return true
+    }
+}
+
+extension CommentViewController: UIScrollViewDelegate  {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if (position > (self.commentCollectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if isValidToken {
+                    let token = self.userInfoViewModel.UserResponse?.accessToken
+                    self.commentViewModel.requestNextFeed(token: token)
+                } else {
+                    let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    alert.addAction(okAction)
+                    self.present(alert, animated: false, completion: nil)
+                }
+            }
+        }
     }
 }

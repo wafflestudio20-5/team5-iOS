@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol CommentRepositoryProtocol {
-    
+    func requestInitialCommentData(token: String, id: Int, completion: @escaping () -> ()) -> Single<CommentResponse>
+    func requestNextCommentData(token: String, cursor: String, completion: @escaping () -> ()) -> Single<CommentResponse>
 }
