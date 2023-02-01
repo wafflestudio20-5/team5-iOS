@@ -21,18 +21,20 @@ class TabBarViewController: UITabBarController {
     let styleFeedViewModel: StyleFeedViewModel
     let userInfoViewModel : UserInfoViewModel
     let loginViewModel : LoginViewModel
+    let UserProfileViewModel: UserProfileViewModel
     let homeTabBarItem: UITabBarItem
     let styleTabBarItem: UITabBarItem
     let shopTabBarItem: UITabBarItem
     let myTabBarItem: UITabBarItem
 
 
-    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleFeedViewModel: StyleFeedViewModel, userInfoViewModel:UserInfoViewModel, loginViewModel: LoginViewModel) {
+    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleFeedViewModel: StyleFeedViewModel, userInfoViewModel:UserInfoViewModel, loginViewModel: LoginViewModel, userProfileViewModel: UserProfileViewModel) {
         self.homeViewModel = homeViewModel
         self.shopViewModel = shopViewModel
         self.styleFeedViewModel = styleFeedViewModel
         self.userInfoViewModel = userInfoViewModel
         self.loginViewModel = loginViewModel
+        self.UserProfileViewModel = userProfileViewModel
         
         self.homeTabBarItem = UITabBarItem(title: "HOME", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         self.styleTabBarItem = UITabBarItem(title: "STYLE", image: UIImage(systemName: "heart.text.square"), selectedImage: UIImage(systemName: "heart.text.square.fill"))
@@ -82,7 +84,7 @@ class TabBarViewController: UITabBarController {
         let shopTab = UINavigationController(rootViewController: ShopTabViewController(viewModel: self.shopViewModel))
         shopTab.tabBarItem = shopTabBarItem
     
-        let myTab = UINavigationController(rootViewController: MyTabViewController(userInfoVM: self.userInfoViewModel, loginVM: self.loginViewModel))
+        let myTab = UINavigationController(rootViewController: MyTabViewController(userInfoVM: self.userInfoViewModel, loginVM: self.loginViewModel, userProfileVM: self.UserProfileViewModel))
         myTab.tabBarItem = myTabBarItem
         self.tabBar.tintColor = .black
         self.tabBar.barTintColor = .white

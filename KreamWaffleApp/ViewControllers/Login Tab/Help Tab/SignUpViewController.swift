@@ -23,9 +23,11 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     var sizeSelected = false
     
     var necessaryTerms : TermsButton?
+    var necessaryTermChecked = false
     var additionalTerms : TermsButton?
     
     var signupButton = UIButton()
+
     
     init(viewModel : SignUpViewModel){
         self.viewModel = viewModel
@@ -63,7 +65,6 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
             .disposed(by: bag)
         
         self.viewModel.shoeSizeRelay.subscribe { size in
-            print("[Log] SignupVC: The sleected size is ", size.element)
             if (size.element != 0){
             self.sizeField?.textfield.text = String(size.element ?? 0)
             }else{
@@ -84,6 +85,31 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
             .map { $0 ? UIColor.white: UIColor.darkGray}
             .bind(to: self.signupButton.rx.tintColor)
             .disposed(by: bag)
+        
+        self.signupButton.rx
+            .tap
+            .bind {
+                self.viewModel.didTapSignup()
+                self.viewModel.errorRelay
+                    .asObservable()
+                    .subscribe { error in //TODO: sync 가 안맞음. 수정하기
+                    if (error.element == LoginError.signupError ){
+                        print("[Log] Signup VC: Error in signup")
+                        self.showErrorNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
+                    }else if (error.element == LoginError.alreadySignedUpError){
+                        self.showErrorNotification(errorText: "이미 회원가입된 이메일입니다.")
+                    }else{
+                        self.showEmailSentNotification()
+                    }
+                }
+            }
+        
+        self.necessaryTerms?.checkButton.rx
+            .tap
+            .bind { [self] in
+                self.necessaryTermChecked = !self.necessaryTermChecked
+                self.viewModel.liabilityCheckRelay.accept(necessaryTermChecked)
+            }
     }
     
     
@@ -181,17 +207,27 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
         self.signupButton.titleLabel?.textColor = .white
         self.signupButton.layer.cornerRadius = 10
         self.signupButton.clipsToBounds = true
-        //self.signupButton.addTarget(self, action: #selector(didTapSignup), for: .touchUpInside)
     }
     
-    @objc func didTapSignup(){
-        self.viewModel.didTapSignup()
-        //self.viewModel.registerAccount(email: (self.emailField?.textfield.text)!,
-                                       //password: (self.passwordField?.textfield.text)!,
-                                       //shoeSize: 220)
-        //TODO: 여기 error 을 observable 로 해서 하기
-        /*
-        if (self.viewModel.Error != .signupError){
+    func showErrorNotification(errorText: String){
+        let errorNotification = CustomNotificationView(notificationText: errorText)
+        self.view.addSubview(errorNotification)
+        errorNotification.translatesAutoresizingMaskIntoConstraints = false
+        errorNotification.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
+        errorNotification.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+        errorNotification.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.view.frame.height/64).isActive = true
+        errorNotification.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.frame.height/16).isActive = true
+        let seconds = 2.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                errorNotification.alpha = 0.0
+                }) { _ in
+                errorNotification.removeFromSuperview()
+                }
+        }
+    }
+    
+    func showEmailSentNotification(){
         let loadingVC = LoadingViewController()
 
         // Animate loadingVC over the existing views on screen
@@ -199,17 +235,16 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
 
         // Animate loadingVC with a fade in animation
         loadingVC.modalTransitionStyle = .crossDissolve
-        
+            
         loadingVC.setUpNotification(notificationText: "이메일로 인증링크가 발송되었습니다.")
         self.present(loadingVC, animated: true, completion: nil)
-        
-        let seconds = 2.5
+            
+        let seconds = 2.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
             loadingVC.dismiss(animated: true)
             self.dismiss(animated: true)
         }
-    }*/
-}
+    }
     
     @objc func didTapSelectShoeSize(){
         let vc = ShoeSizeSelectionViewController(viewModel: self.viewModel)

@@ -24,7 +24,7 @@ class EditProfileTableViewCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = .black
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 10, bottom: 3, trailing: 10)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 7, bottom: 5, trailing: 7)
         button.configuration = configuration
         return button
     }()

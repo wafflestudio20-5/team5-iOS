@@ -169,7 +169,10 @@ class LoginRepository {
             "shoe_size": shoe_size,
         ] as [String : Any]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response{ response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .response{ response in
+                debugPrint(response)
             switch response.result {
             case .success(let data):
                 do{

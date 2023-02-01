@@ -28,6 +28,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     let userInfoVM : UserInfoViewModel
     let loginVM: LoginViewModel
+    let userProfileVM: UserProfileViewModel
     let fixedView = UIView()
     let profileImageView = UIImageView()
     let profileNameLabel = UILabel()
@@ -45,9 +46,10 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     let temporaryUserData = TemporaryUserData()
     // **************** 임시!! ********************
 
-    init(userInfoVM : UserInfoViewModel, loginVM: LoginViewModel) {
+    init(userInfoVM : UserInfoViewModel, loginVM: LoginViewModel, userProfileVM: UserProfileViewModel) {
         self.userInfoVM = userInfoVM
         self.loginVM = loginVM
+        self.userProfileVM = userProfileVM
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -55,17 +57,27 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /*
+    
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+            }else{
+                self.userProfileVM.requestUserProfile { [weak self] in
+                    let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                    alert.addAction(okAction)
+                    self?.present(alert, animated: false, completion: nil)
+                }
             }
         }
-    }*/
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         setUpSegmentedControl()
         setUpTabBarButton()
@@ -285,7 +297,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     @objc
     func profileChangeButtonTapped() {
-        let profileChangeVC = EditProfileViewController(viewModel: self.userInfoVM)
+        let profileChangeVC = EditProfileViewController(viewModel: self.userProfileVM)
         profileChangeVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(profileChangeVC, animated: true)
     }

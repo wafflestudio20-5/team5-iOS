@@ -8,29 +8,24 @@
 import UIKit
 import RxSwift
 import RxRelay
+import PhotosUI
 
-class EditProfileViewController: UIViewController, UITableViewDelegate {
-    
-    //임시 profile data --> view model 로 맵핑해주는걸로 고치기
-    let data = Profile(user_id: 1, user_name: "gracekim027", profile_name: "feifh9", introduction: "", image: "Kream", num_followers: 0, num_followings: 0, following: "true")
+class EditProfileViewController: UIViewController, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var editDic : BehaviorRelay<[editCase]> = BehaviorRelay(value: [editCase.profileName, editCase.userName, editCase.introduction])
     var temDic : [editCase] = []
     
     var disposeBag = DisposeBag()
 
-    var viewModel : UserInfoViewModel?
+    var viewModel : UserProfileViewModel
     var editTable = UITableView()
     
-    var profileImage : UIImage?
-    var profileName : String?
-    var userName : String?
     var bio : String?
     
     lazy var profileButton : UIButton  = {
         let button = UIButton()
         let editLabel = UILabel()
-        button.setImage(UIImage(named: data.image), for: .normal)
+        button.setImage(UIImage(named: viewModel.userProfile.image), for: .normal)
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"
         editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -59,6 +54,24 @@ class EditProfileViewController: UIViewController, UITableViewDelegate {
         return button
     }()
     
+    lazy var saveButton : UIButton = {
+        let button = UIButton()
+        self.view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -self.view.frame.height/32),
+            button.heightAnchor.constraint(equalToConstant: self.view.frame.height/16)
+        ])
+        button.setTitle("저장", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+        button.backgroundColor = colors.lessLightGray
+        button.titleLabel?.textColor = .white
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +96,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate {
                 .items(cellIdentifier: "EditProfileTableViewCell", cellType: EditProfileTableViewCell.self))
         { [self] index, element, cell in
                 //element is editCase
-                      cell.addData(editCase: element, userProfile: self.data)
+            cell.addData(editCase: element, userProfile: self.viewModel.userProfile)
                       cell.editButton.addTarget(self, action: #selector(self.editCell), for: .touchUpInside)
             }
                   .disposed(by: disposeBag)
@@ -98,7 +111,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate {
         ])
     }
     
-    init(viewModel: UserInfoViewModel){
+    init(viewModel: UserProfileViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -109,15 +122,28 @@ class EditProfileViewController: UIViewController, UITableViewDelegate {
     
     @objc
     func editProfileImage(){
-        let subVC = SubEditProfileViewController(myProfile: self.data, editCase: .profileName)
-        subVC.modalPresentationStyle = .pageSheet
-        self.present(subVC, animated: true)
+        let uiImagePickerVC = UIImagePickerController()
+        uiImagePickerVC.sourceType = .photoLibrary
+        uiImagePickerVC.delegate = self
+        self.present(uiImagePickerVC, animated: true, completion: nil)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            //TODO: profile 자체 수정
+            self.profileButton.setImage(image, for: .normal)
+        }
+        dismiss(animated: true, completion: nil)
     }
     
     @objc
     func editCell(){
         //TODO edit case 에 따라 변경되도록 하기
-        let subVC = SubEditProfileViewController(myProfile: self.data, editCase: .profileName)
+        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName)
         subVC.modalPresentationStyle = .pageSheet
         self.present(subVC, animated: true)
     }

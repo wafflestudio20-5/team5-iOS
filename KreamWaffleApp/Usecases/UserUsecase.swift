@@ -11,10 +11,12 @@ import RxRelay
 final class UserUsecase {
     
     private let repository : LoginRepository
+    private let profileRepository : UserProfileRepository
     private let disposeBag = DisposeBag()
     
     var user : User?
     var userResponse : UserResponse?
+    var userProfile : Profile?
     
     ///toggle when logged in
     var loggedIn : Bool {
@@ -32,13 +34,13 @@ final class UserUsecase {
     
     ///VC should observe login state and toggle logged in
     let loginState = BehaviorRelay<Bool>(value: false)
-    
     let errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
-    init(dataRepository : LoginRepository){
+    init(dataRepository : LoginRepository, profileRepository: UserProfileRepository){
         self.repository = dataRepository
         self.error = .noError
         self.loggedIn = false
+        self.profileRepository = profileRepository
     }
     
     //MARK: related to log in, log out, sign up
@@ -100,10 +102,10 @@ final class UserUsecase {
         repository.registerAccount(with: email, password: password, shoe_size: shoeSize) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
-            case .success(let response):
-                print("register success")
-            case .failure(let error):
-                self.error = error as LoginError
+            case .success(_):
+                print("[Log] User usecase: Register success")
+            case .failure(_):
+                self.error = .signupError
                 self.loggedIn = false
             }
         }
@@ -143,21 +145,20 @@ final class UserUsecase {
         }
     }
     
-    func testCheckAccessToken() {
-        print("token before checkIfValidToken: \(self.userResponse?.accessToken)")
-        repository.checkIfValidToken { [weak self] (result) in
-            guard let self = self else { return }
+    //MARK: user profile related
+    func requestProfile(onNetworkFailure: @escaping ()->()) {
+        self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
+            guard let self = self else {return}
             switch result {
-            case .success:
-                print("[Log] UserUsecase: access token is still valid")
+            case .success(let profile):
+                self.userProfile = profile
             case .failure(let error):
-                self.error = error as LoginError
-                Task {
-                    await self.requestsNewAccessToken()
-                }
+                //error 처리하기
+                print("profile fetch erro")
             }
         }
     }
+    
     
     private func replaceAccessToken(newToken: String){
         self.userResponse?.accessToken = newToken
