@@ -230,10 +230,9 @@ class LoginRepository {
             .validate()
             .response { response in
             
-            //***
-//            print("\n================getNewToken================\n")
-//            debugPrint(response)
-            //***
+         
+           print("\n================getNewToken================\n")
+           debugPrint(response)
             
             switch response.result {
             case .success(let data):

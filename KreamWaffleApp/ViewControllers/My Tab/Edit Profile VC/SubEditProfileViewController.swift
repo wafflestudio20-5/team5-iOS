@@ -12,13 +12,18 @@ enum editCase {
     case profileName
     case userName
     case introduction
+    
+    case password
+    case email
+    case shoeSize
 }
 
 class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
     
     let bag = DisposeBag()
     
-    var myProfile : Profile
+    var myProfile : Profile?
+    var user : User?
     var editCase : editCase
     
     var navBarTitle : String?
@@ -72,7 +77,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         case .profileName:
             self.navBarTitle = "프로필 이름 변경"
             self.detail = "나만의 프로필 이름으로 변경하세요. 변경 후 30일이 지나야 다시 변경 가능하므로 신중히 변경해주세요."
-            self.currentText = self.myProfile.profile_name
+            self.currentText = self.myProfile?.profile_name
             self.textfield = CustomTextfield(titleText: "프로필 이름", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .profileName, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 25)
         case .userName:
@@ -80,18 +85,29 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             self.detail = nil
             self.textfield = CustomTextfield(titleText: "이름", errorText: "", errorCondition: .none, placeholderText: "이름 또는 별명", defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 25)
-            self.currentText = self.myProfile.user_name
+            self.currentText = self.myProfile?.user_name
         case .introduction:
             self.navBarTitle = "소개 변경"
             self.detail = nil
             self.textfield = CustomTextfield(titleText: "소개", errorText: "", errorCondition: .none, placeholderText: nil, defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 100)
-            self.currentText = self.myProfile.introduction
+            self.currentText = self.myProfile?.introduction
+        case .password:
+            self.navBarTitle = "비밀번호 변경"
+            self.detail = "비밀번호를 변경해주세요......어쩌고 저쩌고"
+            self.currentText = self.myProfile?.profile_name
+            self.textfield = CustomTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .password, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
+            self.textfield?.setupTextCounter(maxCount: 25)
+        case .email:
+            let five = 5
+        case .shoeSize:
+            let five = 5
         }
     }
     
-    init(myProfile: Profile, editCase: editCase){
+    init(myProfile: Profile?, editCase: editCase, user: User?){
         self.myProfile = myProfile
+        self.user = user
         self.editCase = editCase
         super.init(nibName: nil, bundle: nil)
     }
