@@ -62,4 +62,15 @@ final class CommentUsecase {
         }
         
     }
+    
+    func sendComment(token: String, content: String, id: Int, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        self.commentRepository
+            .sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
+    }
+    
+    func sendReply(token: String, content: String, replyTarget: Int, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        self.commentRepository
+            .sendReply(token: token, content: content, replyTarget: replyTarget, completion: completion, onNetworkFailure: onNetworkFailure)
+    }
+
 }

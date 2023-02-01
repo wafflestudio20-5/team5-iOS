@@ -17,6 +17,8 @@
 		5C2882C4298A4B8A0063C0C1 /* ShopCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C3298A4B8A0063C0C1 /* ShopCommentRepository.swift */; };
 		5C2882C6298A4E6F0063C0C1 /* CommentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C5298A4E6F0063C0C1 /* CommentHeader.swift */; };
 		5C2882C8298A4E9F0063C0C1 /* ReplyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C7298A4E9F0063C0C1 /* ReplyCell.swift */; };
+		5C2882CA298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C9298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift */; };
+		5C2882CC298AF1AC0063C0C1 /* ReplyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */; };
 		5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */; };
 		5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */; };
 		5C2F9CA8295D7B600021D437 /* StyleFeedUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */; };
@@ -152,6 +154,8 @@
 		5C2882C3298A4B8A0063C0C1 /* ShopCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopCommentRepository.swift; sourceTree = "<group>"; };
 		5C2882C5298A4E6F0063C0C1 /* CommentHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeader.swift; sourceTree = "<group>"; };
 		5C2882C7298A4E9F0063C0C1 /* ReplyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyCell.swift; sourceTree = "<group>"; };
+		5C2882C9298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+presentLoginAgainAlert.swift"; sourceTree = "<group>"; };
+		5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyButton.swift; sourceTree = "<group>"; };
 		5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+hideKeyboard.swift"; sourceTree = "<group>"; };
 		5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedViewModel.swift; sourceTree = "<group>"; };
 		5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedUsecase.swift; sourceTree = "<group>"; };
@@ -293,6 +297,7 @@
 				5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */,
 				5C63455C296FE3DC00DA6D29 /* UIViewController+setUpBackButton.swift */,
 				5C6FBD7A297D132800B64FF0 /* UIViewController+pushUserProfileVC + pushNewPostVC.swift */,
+				5C2882C9298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -421,6 +426,7 @@
 				5C6FBD6E297AD0BA00B64FF0 /* FollowButton.swift */,
 				5C6CE19F2983A9D100755334 /* LoadingIndicator.swift */,
 				5C2882C5298A4E6F0063C0C1 /* CommentHeader.swift */,
+				5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */,
 			);
 			path = Customs;
 			sourceTree = "<group>";
@@ -822,6 +828,7 @@
 				65F8FBAD29620F7600679E72 /* UserListCollectionViewLayout.swift in Sources */,
 				5C6FBD4729796DB300B64FF0 /* NestedProfile.swift in Sources */,
 				5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */,
+				5C2882CC298AF1AC0063C0C1 /* ReplyButton.swift in Sources */,
 				5C6FBD5A2979826500B64FF0 /* UserListCollectionViewCell.swift in Sources */,
 				5C6FBD7D297D965A00B64FF0 /* FollowUserListViewController.swift in Sources */,
 				94A394F92988FCC8002AFE4A /* Brand.swift in Sources */,
@@ -929,6 +936,7 @@
 				6520AEAB295EB9D0002D549D /* CustomTextfield.swift in Sources */,
 				65F8FBB129620FCC00679E72 /* Post + PostResponse.swift in Sources */,
 				6520AEAB295EB9D0002D549D /* CustomTextfield.swift in Sources */,
+				5C2882CA298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift in Sources */,
 				65F8FBB129620FCC00679E72 /* Post + PostResponse.swift in Sources */,
 				5C6FBD4F2979744E00B64FF0 /* UserListUsecase.swift in Sources */,
 				65DC40B52980239700D14DBF /* NewPostViewController.swift in Sources */,

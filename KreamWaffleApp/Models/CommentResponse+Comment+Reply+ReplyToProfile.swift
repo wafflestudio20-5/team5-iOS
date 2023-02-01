@@ -8,7 +8,7 @@
 import Foundation
 //style 탭과 shop 탭의 comment, reply를 전반적으로 담당하는 모델
 
-final class CommentResponse: Decodable {
+final class CommentResponse: Codable {
     private enum CodingKeys: String, CodingKey {
         case next, previous, results
     }
@@ -26,7 +26,7 @@ final class CommentResponse: Decodable {
     }
 }
 
-final class Comment: Decodable {
+final class Comment: Codable {
     private enum CodingKeys: String, CodingKey {
         case id, content, created_by, created_at, replies
     }
@@ -48,7 +48,7 @@ final class Comment: Decodable {
     }
 }
 
-final class Reply: Decodable {
+final class Reply: Codable {
     private enum CodingKeys: String, CodingKey {
         case id, content, to_profile, created_by, created_at
     }
@@ -70,7 +70,7 @@ final class Reply: Decodable {
     }
 }
 
-final class ReplyToProfile: Decodable {
+final class ReplyToProfile: Codable {
     private enum CodingKeys: String, CodingKey {
         case user_id, profile_name
     }

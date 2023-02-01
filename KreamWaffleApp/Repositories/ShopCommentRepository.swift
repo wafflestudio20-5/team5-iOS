@@ -72,4 +72,71 @@ final class ShopCommentRepository: CommentRepositoryProtocol {
             return Disposables.create()
         }
     }
+    
+    func sendComment(token: String, content: String, id: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
+//        let finalUrl = baseUrl + "\(id)/comments"
+//        
+//        let headers: HTTPHeaders = [
+//            "accept": "application/json",
+//            "Authorization": "Bearer \(token)"
+//        ]
+//        
+//        var request = URLRequest(url: URL(string: finalUrl)!)
+//        request.httpMethod = HTTPMethod.post.rawValue
+//        request.headers = headers
+//        let body: [String: Any] = [
+//            "content" : "\(content)",
+//            "created_by": "{}"
+//        ]
+//        
+//        do {
+//            let jsonData = try JSONSerialization.data(withJSONObject: body, options:JSONSerialization.WritingOptions.prettyPrinted)
+//            request.httpBody = jsonData
+//        } catch {
+//            onNetworkFailure()
+//        }
+//        
+//        
+//        
+//        AF.request(request)
+//            .validate()
+//            .responseDecodable(of: CommentResponse.self) { response in
+//                //**********
+//                print("\n=============== comment 등록 ===============\n")
+//                debugPrint(response)
+//                //**********
+//                
+//                switch response.result {
+//                case .success(let result):
+//                    completion()
+//                case .failure(let error):
+//                    onNetworkFailure()
+//                }
+//            }
+    }
+    
+    func sendReply(token: String, content: String, replyTarget: Int, completion: @escaping ()->(), onNetworkFailure: @escaping () -> ()) {
+//        let headers: HTTPHeaders = [
+//            "accept": "application/json",
+//            "Authorization": "Bearer \(token)"
+//        ]
+//
+//        AF.request(cursor, method: .get, headers: headers)
+//            .validate()
+//            .responseDecodable(of: CommentResponse.self) { response in
+//                //**********
+//                print("\n=============== style comment 이어서 불러오기 ===============\n")
+//                debugPrint(response)
+//                //**********
+//
+//                switch response.result {
+//                case .success(let result):
+//                    single(.success(result))
+//                case .failure(let error):
+//                    single(.failure(error))
+//                }
+//
+//                completion()
+//            }
+    }
 }

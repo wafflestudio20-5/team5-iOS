@@ -16,7 +16,7 @@ final class ReplyCell: UICollectionViewCell {
     private let profileImageView = UIImageView()
     private let profileNameLabel = UILabel()
     private let contentLabel = UILabel()
-    let replyButton = UIButton()
+    let replyButton = ReplyButton()
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -25,6 +25,7 @@ final class ReplyCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         self.profileImageView.image = nil
+        self.replyButton.replyToProfile = nil
         super.prepareForReuse()
     }
     

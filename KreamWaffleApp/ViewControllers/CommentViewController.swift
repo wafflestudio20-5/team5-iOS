@@ -31,8 +31,13 @@ final class CommentViewController: UIViewController {
         return collectionView
     }()
     
+    private let font1: CGFloat = 14;
+        
     private let collectionViewRefreshControl = UIRefreshControl()
     private let enterCommentView = UIView()
+    private let writingReplyIndicator = UIView()
+    private let writingReplyLabel = UILabel()
+    private let stopWritingReplyButton = UIButton()
     
     private lazy var sendCommentButton: UIButton = {
         let button = UIButton()
@@ -40,6 +45,8 @@ final class CommentViewController: UIViewController {
         button.setTitle("등록", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel!.font = UIFont.boldSystemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
+
         return button
     }()
     
@@ -78,6 +85,7 @@ final class CommentViewController: UIViewController {
         configureDelegate()
         setUpEnterCommentView()
         setUpCollectionView()
+        setUpWritingReplyIndicator()
         bindUI()
         bindCollectionView()
         requestInitialData()
@@ -92,7 +100,9 @@ final class CommentViewController: UIViewController {
         self.enterCommentView.addSubview(enterCommentTextView)
         self.enterCommentView.addSubview(sendCommentButton)
         self.view.addSubview(commentCollectionView)
-
+        self.view.addSubview(writingReplyIndicator)
+        self.writingReplyIndicator.addSubview(writingReplyLabel)
+        self.writingReplyIndicator.addSubview(stopWritingReplyButton)
     }
     
     func configureDelegate() {
@@ -119,14 +129,16 @@ final class CommentViewController: UIViewController {
         self.enterCommentTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.enterCommentTextView.leadingAnchor.constraint(equalTo: self.enterCommentView.leadingAnchor, constant: 5),
-            self.enterCommentTextView.trailingAnchor.constraint(equalTo: self.sendCommentButton.leadingAnchor, constant: -5),
+            self.enterCommentTextView.trailingAnchor.constraint(equalTo: self.enterCommentView.trailingAnchor, constant: -35),
             self.enterCommentTextView.bottomAnchor.constraint(equalTo: self.enterCommentView.bottomAnchor, constant: -5),
         ])
         
         self.sendCommentButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.sendCommentButton.trailingAnchor.constraint(equalTo: self.enterCommentView.trailingAnchor, constant: -7.5),
+            self.sendCommentButton.leadingAnchor.constraint(equalTo: self.enterCommentTextView.trailingAnchor, constant: 5),
+            self.sendCommentButton.widthAnchor.constraint(equalToConstant: 30),
             self.sendCommentButton.centerYAnchor.constraint(equalTo: self.enterCommentView.centerYAnchor),
+            self.sendCommentButton.heightAnchor.constraint(equalToConstant: 20),
         ])
         
         self.enterCommentView.bringSubviewToFront(self.sendCommentButton)
@@ -145,6 +157,42 @@ final class CommentViewController: UIViewController {
         ])
     }
     
+    func setUpWritingReplyIndicator() {
+        self.writingReplyIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.writingReplyLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.stopWritingReplyButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.writingReplyIndicator.backgroundColor = .lightGray
+        
+        self.writingReplyLabel.font = UIFont.boldSystemFont(ofSize: self.font1)
+        self.writingReplyLabel.textColor = .black
+        self.writingReplyLabel.numberOfLines = 1
+        self.writingReplyLabel.textAlignment = .left
+        self.writingReplyLabel.adjustsFontSizeToFitWidth = false
+        self.writingReplyLabel.text = "답글 작성 중입니다..."
+        
+        self.stopWritingReplyButton.setImage(UIImage(systemName: "x.circle"), for: .normal)
+        self.stopWritingReplyButton.addTarget(self, action: #selector(stopWritingReplyButtonTapped), for: .touchUpInside)
+        self.stopWritingReplyButton.setPreferredSymbolConfiguration(.init(pointSize: 20, weight: .regular, scale: .default), forImageIn: .normal)
+        self.stopWritingReplyButton.tintColor = .black
+        self.stopWritingReplyButton.backgroundColor = .white
+        
+        NSLayoutConstraint.activate([
+            self.writingReplyIndicator.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.writingReplyIndicator.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.writingReplyIndicator.heightAnchor.constraint(equalToConstant: 20),
+            self.writingReplyIndicator.bottomAnchor.constraint(equalTo: self.enterCommentView.topAnchor),
+            
+            self.writingReplyLabel.leadingAnchor.constraint(equalTo: self.writingReplyIndicator.leadingAnchor),
+            self.writingReplyLabel.trailingAnchor.constraint(equalTo: self.stopWritingReplyButton.leadingAnchor),
+            self.writingReplyLabel.centerYAnchor.constraint(equalTo: self.writingReplyIndicator.centerYAnchor),
+            
+            self.stopWritingReplyButton.widthAnchor.constraint(equalToConstant: 20),
+            self.stopWritingReplyButton.trailingAnchor.constraint(equalTo: self.writingReplyIndicator.trailingAnchor),
+            self.stopWritingReplyButton.centerYAnchor.constraint(equalTo: self.writingReplyLabel.centerYAnchor),
+        ])
+    }
+    
     func bindUI() {
         self.enterCommentTextView.rx.text
             .orEmpty
@@ -154,6 +202,11 @@ final class CommentViewController: UIViewController {
         self.commentViewModel.postTextRelay
             .map { $0.isEmpty || $0 == self.textViewPlaceHolder }
             .bind(to: sendCommentButton.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        self.commentViewModel.isWritingReplyRelay
+            .map { !$0 }
+            .bind(to: writingReplyIndicator.rx.isHidden)
             .disposed(by: disposeBag)
     }
     
@@ -202,6 +255,10 @@ extension CommentViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let replyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReplyCellIdentifier", for: indexPath) as! ReplyCell
         replyCell.configure(with: self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row])
+        replyCell.replyButton.tag = self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row].id
+        replyCell.replyButton.replyToProfile = self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row].to_profile
+        replyCell.replyButton.addTarget(self, action: #selector(replyToReplyButtonTapped(sender:)), for: .touchUpInside)
+        
         return replyCell
     }
 
@@ -213,6 +270,10 @@ extension CommentViewController: UICollectionViewDataSource {
                 let commentHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CommentHeaderIdentifier", for: indexPath) as! CommentHeader
 
                 commentHeader.configure(with: self.commentViewModel.getComment(at: indexPath.section))
+                commentHeader.replyButton.tag = self.commentViewModel.getCommentId(at: indexPath.section)
+                commentHeader.replyButton.addTarget(self, action: #selector(replyToCommentButtonTapped(sender:)), for: .touchUpInside)
+                commentHeader.replyButton.replyToProfile = self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row].to_profile
+                
                 return commentHeader
             }
 
@@ -256,14 +317,61 @@ extension CommentViewController: UIScrollViewDelegate  {
                     let token = self.userInfoViewModel.UserResponse?.accessToken
                     self.commentViewModel.requestNextData(token: token!)
                 } else {
-                    let alert = UIAlertController(title: "실패", message: "다시 로그인해주세요.", preferredStyle: UIAlertController.Style.alert)
-                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                    alert.addAction(okAction)
-                    self.present(alert, animated: false, completion: nil)
+                    self.presentLoginAgainAlert()
                 }
             }
         }
+    }
+}
+
+extension CommentViewController {
+    @objc func replyToReplyButtonTapped(sender: ReplyButton) {
+        self.commentViewModel.isWritingReply = true
+        self.commentViewModel.currentReplyToProfile = sender.replyToProfile
+        self.writingReplyLabel.text = "\(sender.replyToProfile!.profile_name)님에게 답글 작성중..."
+        self.commentViewModel.currentReplyTarget = sender.tag
+    }
+    
+    @objc func replyToCommentButtonTapped(sender: ReplyButton) {
+        self.commentViewModel.isWritingReply = true
+        self.commentViewModel.currentReplyToProfile = sender.replyToProfile
+        self.writingReplyLabel.text = "\(sender.replyToProfile!.profile_name)님에게 답글 작성중..."
+        self.commentViewModel.currentReplyTarget = sender.tag
+    }
+    
+    @objc func stopWritingReplyButtonTapped() {
+        self.commentViewModel.isWritingReply = false
+        self.enterCommentTextView.endEditing(true)
+        self.enterCommentTextView.text = textViewPlaceHolder
+    }
+    
+    @objc func sendComment() {
+        Task {
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if isValidToken {
+                let token = self.userInfoViewModel.UserResponse!.accessToken                
+                
+                self.commentViewModel.sendComment(
+                    token: token,
+                    content: self.enterCommentTextView.text,
+                    completion: { [weak self] in
+                        self?.requestInitialData()
+                        self?.enterCommentTextView.text = self?.textViewPlaceHolder
+                    },
+                    onNetworkFailure: {[weak self] in
+                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(okAction)
+                        self?.present(alert, animated: false, completion: nil)
+                    }
+                )
+                
+            } else {
+                self.presentLoginAgainAlert()
+            }
+        }
+        
     }
 }
