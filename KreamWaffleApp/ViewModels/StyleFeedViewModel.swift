@@ -46,9 +46,5 @@ final class StyleFeedViewModel {
     func getStylePostListCount() -> Int {
         return self.styleFeedUsecase.stylePostList.count
     }
-    
-    func onSuccess() {
-        
-    }
 }
 

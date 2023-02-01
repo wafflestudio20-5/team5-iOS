@@ -35,11 +35,7 @@ struct User : Codable {
 }
 
 struct UserResponse: Codable {
-    var accessToken : String {
-        didSet {
-            print("\n\n🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇token changed to: \(accessToken)🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇🎇\n\n")
-        }
-    }
+    var accessToken : String
     var refreshToken : String
     var user: User
     let exists: Bool?

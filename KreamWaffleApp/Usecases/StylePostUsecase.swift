@@ -35,11 +35,15 @@ final class StylePostUsecase {
     }
     
     func getThumbnailImageRatio() -> Float {
-        return self.thumbnailImageRatio! //문제점!
+        return self.thumbnailImageRatio!
     }
     
     func getUserId() -> Int {
         return self.stylePost!.created_by.user_id
+    }
+    
+    func getPostId() -> Int {
+        return self.postId
     }
     
     func requestPost(token: String?, onNetworkFailure: @escaping () -> ()) {

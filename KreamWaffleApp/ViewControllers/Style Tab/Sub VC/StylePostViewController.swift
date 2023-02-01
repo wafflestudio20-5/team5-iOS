@@ -104,6 +104,7 @@ final class StylePostViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .lightGray
         self.setUpBackButton()
         self.navigationItem.backButtonTitle = ""
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
 //        navigationItem.title = "최신"
     }
     
@@ -223,8 +224,8 @@ final class StylePostViewController: UIViewController {
         likeButton.setImage(UIImage(systemName: "face.smiling"), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
-
         likeButton.tintColor = .black
+        likeButton.backgroundColor = .white
         
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -371,7 +372,11 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func numLikesLabelTapped() {
-        self.navigationController?.pushViewController(LikedUserListViewController(userInfoViewModel: self.userInfoViewModel), animated: true)
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            self.navigationController?.pushViewController(LikedUserListViewController(id: self.stylePostViewModel.getPostId(), userInfoViewModel: self.userInfoViewModel), animated: true)
+        }
     }
 
     @objc func idLabelTapped() {
@@ -384,18 +389,22 @@ extension StylePostViewController { //button 관련 메서드들.
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
             Task {
-                await self.userInfoViewModel.checkAccessToken()
-                if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                    self.userInfoViewModel.requestFollow(token: token, user_id: self.writerUserId) { [weak self] in
-                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if (isValidToken) {
+                    if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                        self.userInfoViewModel.requestFollow(token: token, user_id: self.writerUserId) { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
                         }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
+                        
+                        self.followButton.followButtonTapped()
+                    } else {
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                     }
-                    
-                    self.followButton.followButtonTapped()
                 } else {
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 }
@@ -408,18 +417,22 @@ extension StylePostViewController { //button 관련 메서드들.
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
             Task {
-                await self.userInfoViewModel.checkAccessToken()
-                if let token = self.userInfoViewModel.UserResponse?.accessToken {
-                    self.stylePostViewModel.likeButtonTapped(token: token) {[weak self] in
-                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if isValidToken {
+                    if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                        self.stylePostViewModel.likeButtonTapped(token: token) {[weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
+                            
                         }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
-                        
+                        self.isLiked = !self.isLiked
+                    } else {
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                     }
-                    self.isLiked = !self.isLiked
                 } else {
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 }

@@ -21,10 +21,7 @@ struct TemporaryUserData {
 }
 
 class MyTabViewController: UIViewController, UITabBarControllerDelegate {
-    
-    var selectedItems = [YPMediaItem]()
-    
-    let bag = DisposeBag()
+    let disposeBag = DisposeBag()
     
     let userInfoVM : UserInfoViewModel
     let loginVM: LoginViewModel
@@ -37,8 +34,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     //Child VCs
     //구매 데이터를 usecase 로 받도록 나중에 설정할 필요있음.
-    private var myShoppingVC = MyShoppingViewController()
-    private var myProfileVC = MyProfileViewController()
+    private var myShoppingVC: MyShoppingViewController
+    private var myProfileVC: MyProfileViewController
     
     
     // **************** 임시!! ********************
@@ -48,6 +45,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     init(userInfoVM : UserInfoViewModel, loginVM: LoginViewModel) {
         self.userInfoVM = userInfoVM
         self.loginVM = loginVM
+        self.myShoppingVC = MyShoppingViewController(userInfoVM: self.userInfoVM)
+        self.myProfileVC = MyProfileViewController(userInfoVM: self.userInfoVM)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -55,12 +54,13 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }
-        }
+        }.disposed(by: disposeBag)
     }
 
     override func viewDidLoad() {
@@ -104,7 +104,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
             let loginScreen: LoginViewController! = (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.loginVC
 
             loginScreen.modalPresentationStyle = .fullScreen
-            self.present(loginScreen, animated: false)
             self.present(loginScreen, animated: false)
         }
     }
@@ -289,15 +288,3 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.navigationController?.pushViewController(profileChangeVC, animated: true)
     }
 }
-
-
-extension MyTabViewController: YPImagePickerDelegate {
-    func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
-        //
-    }
-    
-    func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
-        return true
-    }
-}
-
