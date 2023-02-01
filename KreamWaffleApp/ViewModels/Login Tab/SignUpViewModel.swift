@@ -31,7 +31,7 @@ class SignUpViewModel{
     }
     
     func isValidSignUp() -> Observable<Bool> {
-        return Observable.combineLatest(emailTextRelay, pwTextRelay, shoeSizeRelay, liabilityCheckRelay).map { email, password, size, checked in
+        Observable.combineLatest(emailTextRelay, pwTextRelay, shoeSizeRelay, liabilityCheckRelay).map { email, password, size, checked in
             return self.isValidEmail(input: email) && self.isValidPassword(input: password) && (size != 0) && checked
         }
     }

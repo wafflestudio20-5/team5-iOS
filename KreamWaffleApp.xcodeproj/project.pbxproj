@@ -76,7 +76,6 @@
 		65781D032976C415000FC684 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65781D022976C415000FC684 /* LoginViewModel.swift */; };
 		657E61CC2987C08600CA196D /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657E61CB2987C08600CA196D /* Token.swift */; };
 		6583C9E32960B5E7007C741F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E22960B5E6007C741F /* SignUpViewController.swift */; };
-		6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E42960DCA5007C741F /* FindEmailViewController.swift */; };
 		6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */; };
 		65B4DE332972DC9200771920 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B4DE322972DC9200771920 /* CustomError.swift */; };
 		65DC40B52980239700D14DBF /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DC40B42980239700D14DBF /* NewPostViewController.swift */; };
@@ -206,7 +205,6 @@
 		65781D022976C415000FC684 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		657E61CB2987C08600CA196D /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		6583C9E22960B5E6007C741F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		6583C9E42960DCA5007C741F /* FindEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindEmailViewController.swift; sourceTree = "<group>"; };
 		6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		65B4DE322972DC9200771920 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		65DC40B42980239700D14DBF /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
@@ -448,7 +446,6 @@
 			isa = PBXGroup;
 			children = (
 				6583C9E22960B5E6007C741F /* SignUpViewController.swift */,
-				6583C9E42960DCA5007C741F /* FindEmailViewController.swift */,
 				6583C9E62960DCB0007C741F /* FindPasswordViewController.swift */,
 				656F1A56296136B00052B148 /* ShoeSizeSelectionViewController.swift */,
 			);
@@ -852,7 +849,6 @@
 				5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */,
 				5C6FBD582979778900B64FF0 /* FollowerUserListRepository.swift in Sources */,
 				65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */,
-				6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */,
 				65653F3A295B73C9002F250B /* SearchViewController.swift in Sources */,
 				5C6FBD562979776A00B64FF0 /* FollowingUserListRepository.swift in Sources */,
 				655A94CD296C6D4900F0184B /* CustomNotificationView.swift in Sources */,

@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import UIKit
+import RxSwift
 
 class UserProfileRepository {
     private let baseAPIURL = "https://kream-waffle.cf/styles/profiles"
@@ -55,7 +56,32 @@ class UserProfileRepository {
         }
     }
     
-    func editProfile(newProfile: Profile){
+    func requestProfile(user_id: Int, token: String?, onNetworkFailure: @escaping ()->()) -> Single<Profile> {
         
+        let uri = "https://kream-waffle.cf/styles/profiles/"
+        
+        var headers : HTTPHeaders = [
+            "accept": "application/json",
+        ]
+        if let token = token {
+            headers.add(name: "Authorization", value: "Bearer \(token)")
+        }
+        
+        return Single.create { single in
+            AF.request(uri + "\(user_id)/", method: .get, headers: headers)
+                .validate()
+                .responseDecodable(of: Profile.self) {response in
+                    switch response.result {
+                    case .success(let result):
+                        debugPrint(response)
+                        single(.success(result))
+                    case .failure:
+                        debugPrint(response)
+                        onNetworkFailure()
+                    }
+                }
+            
+            return Disposables.create()
+        }
     }
 }

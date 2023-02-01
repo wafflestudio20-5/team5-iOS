@@ -42,22 +42,6 @@ class TabBarViewController: UITabBarController {
         self.myTabBarItem = UITabBarItem(title: "MY", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
         
         super.init(nibName: nil, bundle: nil)
-        
-        //토글 되면 홈탭으로 돌아가야함. 
-        self.loginViewModel.loginState.asObservable().subscribe { status in
-            self.loginState = status.element
-            if (status.element!){
-                print("[Log] Tab bar controller: change to hometab")
-                self.selectedIndex = 0
-                self.dismiss(animated: true)
-            }
-        }.disposed(by: bag)
-        
-        if (self.selectedIndex == 1 || self.selectedIndex == 3){
-            if (!self.loginState!){
-                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
-            }
-        }
     }
     
     

@@ -235,7 +235,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.profileChangeButton.setTitleColor(.black, for: .normal)
         self.profileChangeButton.layer.cornerRadius = 7.5
         self.profileChangeButton.layer.borderWidth = 1
-        self.profileChangeButton.layer.borderColor = colors.lightGray.cgColor
+        self.profileChangeButton.layer.borderColor = colors.lessLightGray.cgColor
 
         self.profileChangeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

@@ -147,6 +147,20 @@ final class UserUsecase {
     
     //MARK: user profile related
     func requestProfile(onNetworkFailure: @escaping ()->()) {
+        
+        self.profileRepository
+            .requestProfile(user_id: self.user!.id, token: self.userResponse!.accessToken, onNetworkFailure: onNetworkFailure)
+            .subscribe(
+                onSuccess: { [weak self] fetchedProfile in
+                    self?.userProfile = fetchedProfile
+                },
+                onFailure: { _ in
+                    self.error = .signupError
+                }
+            )
+            .disposed(by: disposeBag)
+        
+        /*
         self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
             guard let self = self else {return}
             switch result {
@@ -156,7 +170,7 @@ final class UserUsecase {
                 //error 처리하기
                 print("profile fetch erro")
             }
-        }
+        }*/
     }
     
     
