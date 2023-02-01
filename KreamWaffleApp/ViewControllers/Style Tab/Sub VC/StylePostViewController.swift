@@ -441,6 +441,23 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func commentButtonTapped() {
-        print("comment button")
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if isValidToken {
+                    if let token = self.userInfoViewModel.UserResponse?.accessToken {
+                        self.hidesBottomBarWhenPushed = true;
+                        self.navigationController?.pushViewController(CommentViewController(), animated: true)
+                    } else {
+                        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                    }
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
+            }
+            
+        }
     }
 }
