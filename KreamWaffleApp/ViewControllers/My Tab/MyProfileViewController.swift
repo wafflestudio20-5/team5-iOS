@@ -62,6 +62,7 @@ class MyProfileViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         //adding bottom border to follower bar
         self.followerBar.layer.addBorder([.bottom], color: colors.lightGray, width: 1.0)
+        configureFollowerBarTapGesture()
     }
     
     
@@ -100,6 +101,15 @@ class MyProfileViewController: UIViewController {
         noPostView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     }
     
+    func configureFollowerBarTapGesture() {
+        self.followerBar.subView2.isUserInteractionEnabled = true
+        self.followerBar.subView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followerNumLabelTapped)))
+        
+        self.followerBar.subView3.isUserInteractionEnabled = true
+        self.followerBar.subView3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followingNumLabelTapped)))
+    }
+
+    
     func setUpChildStyleFeedCollectionView() {
         let styleFeedRepository = StyleFeedRepository()
         let styleFeedUsecase = StyleFeedUsecase(repository: styleFeedRepository, type: "default", user_id: userInfoVM.User!.id)
@@ -115,7 +125,7 @@ class MyProfileViewController: UIViewController {
             self.userStyleFeedCollectionViewVC!.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.userStyleFeedCollectionViewVC!.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.userStyleFeedCollectionViewVC!.view.topAnchor.constraint(equalTo: self.followerBar.bottomAnchor),
-            self.userStyleFeedCollectionViewVC!.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            self.userStyleFeedCollectionViewVC!.view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
         
         self.userStyleFeedCollectionViewVC!.view.isHidden = true
@@ -144,6 +154,40 @@ class MyProfileViewController: UIViewController {
                 pushNewPostVC(userInfoViewModel: self.userInfoVM)
             } else {
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+            }
+        }
+    }
+    
+    @objc func followerNumLabelTapped() {
+        if (!self.userInfoVM.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            Task {
+                let isValidToken = await self.userInfoVM.checkAccessToken()
+                if (isValidToken) {
+                    let followUserListViewController = FollowUserListViewController(id: userInfoVM.getUserId()!, userInfoViewModel: self.userInfoVM, selectedSegmentIdx: 0)
+                    self.navigationController?.pushViewController(followUserListViewController, animated: false)
+                }
+                else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
+            }
+        }
+    }
+    
+    @objc func followingNumLabelTapped() {
+        
+        if (!self.userInfoVM.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            Task {
+                let isValidToken = await self.userInfoVM.checkAccessToken()
+                if (isValidToken) {
+                    let followUserListViewController = FollowUserListViewController(id: userInfoVM.getUserId()!, userInfoViewModel: self.userInfoVM, selectedSegmentIdx: 1)
+                    self.navigationController?.pushViewController(followUserListViewController, animated: false)
+                } else {
+                    (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                }
             }
         }
     }
