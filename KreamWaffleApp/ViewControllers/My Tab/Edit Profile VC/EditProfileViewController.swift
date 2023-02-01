@@ -12,7 +12,7 @@ import RxRelay
 class EditProfileViewController: UIViewController, UITableViewDelegate {
     
     //임시 profile data --> view model 로 맵핑해주는걸로 고치기
-    let data = Profile(user_id: 1, user_name: "gracekim027", profile_name: "feifh9", introduction: "", image: "kream", num_followers: 0, num_followings: 0, following: "true")
+    let data = Profile(user_id: 1, user_name: "gracekim027", profile_name: "feifh9", introduction: "", image: "Kream", num_followers: 0, num_followings: 0, following: "true")
     
     var editDic : BehaviorRelay<[editCase]> = BehaviorRelay(value: [editCase.profileName, editCase.userName, editCase.introduction])
     var temDic : [editCase] = []
@@ -29,12 +29,32 @@ class EditProfileViewController: UIViewController, UITableViewDelegate {
     
     lazy var profileButton : UIButton  = {
         let button = UIButton()
-        button.setImage(profileImage, for: .normal)
-        button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
-        button.layer.cornerRadius = 0.5 * button.bounds.size.width
-        button.clipsToBounds = true
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.borderWidth = 2
+        let editLabel = UILabel()
+        button.setImage(UIImage(named: data.image), for: .normal)
+        editLabel.backgroundColor = .systemGray
+        editLabel.text = "편집"
+        editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        editLabel.textAlignment = .center
+        editLabel.textColor = .white
+        editLabel.translatesAutoresizingMaskIntoConstraints = false
+        button.addSubview(editLabel)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(button)
+        NSLayoutConstraint.activate([
+            editLabel.leadingAnchor.constraint(equalTo: button.leadingAnchor),
+            editLabel.trailingAnchor.constraint(equalTo: button.trailingAnchor),
+            editLabel.bottomAnchor.constraint(equalTo: button.bottomAnchor),
+            editLabel.heightAnchor.constraint(equalToConstant: 30),
+            
+            button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
+            button.widthAnchor.constraint(equalToConstant: 100),
+            button.heightAnchor.constraint(equalToConstant: 100)
+        ])
+        
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 50
         button.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
         return button
     }()
@@ -46,9 +66,6 @@ class EditProfileViewController: UIViewController, UITableViewDelegate {
         self.setUpBackButton()
         self.title = "프로필 관리"
         self.view.addSubviews(self.profileButton, self.editTable)
-        self.profileButton.translatesAutoresizingMaskIntoConstraints = false
-        self.profileButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        self.profileButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
         self.inputTableView()
     }
     

@@ -24,14 +24,14 @@ class EditProfileTableViewCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = .black
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 3, bottom: 0, trailing: 3)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 10, bottom: 3, trailing: 10)
         button.configuration = configuration
         return button
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         super.init(style: .default, reuseIdentifier: "EditProfileTableViewCell")
-        self.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 60).isActive = true
+        self.contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
         self.contentView.addSubviews(titleLabel, currentTextLabel, underLine, editButton)
         self.setupDesign()
     }
@@ -61,7 +61,7 @@ class EditProfileTableViewCell: UITableViewCell {
     
     func setupDesign(){
         self.titleLabel.textColor = .black
-        self.titleLabel.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        self.titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
@@ -82,7 +82,7 @@ class EditProfileTableViewCell: UITableViewCell {
         let titleString = NSAttributedString(string: "변경", attributes: attributes)
         self.editButton.setAttributedTitle(titleString, for: .normal)
         self.editButton.layer.borderWidth = 1
-        self.editButton.layer.cornerRadius = 5
+        self.editButton.layer.cornerRadius = 9
         self.editButton.setTitleColor(.black, for: .normal)
         self.editButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -109,8 +109,9 @@ class EditProfileTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        if (selected){
+            self.backgroundColor = .clear
+        }
     }
 
 }
