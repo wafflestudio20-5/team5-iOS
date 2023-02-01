@@ -23,6 +23,11 @@ final class ReplyCell: UICollectionViewCell {
         setUpLayout()
     }
     
+    override func prepareForReuse() {
+        self.profileImageView.image = nil
+        super.prepareForReuse()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         addSubviews()
@@ -30,15 +35,15 @@ final class ReplyCell: UICollectionViewCell {
     }
     
     func configure(with reply: Reply) {
+        self.userNameLabel.text = reply.created_by.user_name
+        
+        let fullText = "@\(reply.to_profile.profile_name) \(reply.content)"
+        let attribtuedString = NSMutableAttributedString(string: fullText)
+        let range = (fullText as NSString).range(of: "@\(reply.to_profile.profile_name)")
+        attribtuedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
+        self.contentLabel.attributedText = attribtuedString
         
         contentLabel.sizeToFit()
-        
-        
-        
-        
-        
-        
-        
         self.sizeToFit()
         
         let urlString = reply.created_by.image

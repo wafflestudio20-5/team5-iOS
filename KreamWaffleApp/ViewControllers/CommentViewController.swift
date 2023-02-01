@@ -11,23 +11,24 @@ import RxSwift
 import RxCocoa
 
 final class CommentViewController: UIViewController {
-//    private let commentCollectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//
-//        let cellWidth = UIScreen.main.bounds.width
-//        layout.itemSize = CGSize(width: cellWidth, height: UIScreen.main.bounds.height/16)
-//
-//        layout.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
-//        layout.minimumLineSpacing = 0
-//        layout.minimumInteritemSpacing = 0
-//        layout.scrollDirection = .vertical
-//
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.backgroundColor = .white
-//
-//        return collectionView
-//    }()
     private let commentViewModel: CommentViewModel
+
+    private let commentCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+
+        let cellWidth = UIScreen.main.bounds.width
+        layout.itemSize = CGSize(width: cellWidth, height: UIScreen.main.bounds.height/16)
+
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        layout.scrollDirection = .vertical
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+
+        return collectionView
+    }()
     
     private let collectionViewRefreshControl = UIRefreshControl()
     private let enterCommentView = UIView()
@@ -74,25 +75,25 @@ final class CommentViewController: UIViewController {
         addSubviews()
         configureDelegate()
         setUpEnterCommentView()
-//        setUpCollectionView()
+        setUpCollectionView()
         bindUI()
+        bindCollectionView()
         
-//        commentCollectionView.register(UINib(nibName: "CommentHeader", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader , withReuseIdentifier: "CommentHeaderIdentifier")
-//        commentCollectionView.register(UINib(nibName: "ReplyCell", bundle: nil), forCellWithReuseIdentifier: "ReplyCellIdentifier")
+        commentCollectionView.register(UINib(nibName: "CommentHeader", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader , withReuseIdentifier: "CommentHeaderIdentifier")
+        commentCollectionView.register(UINib(nibName: "ReplyCell", bundle: nil), forCellWithReuseIdentifier: "ReplyCellIdentifier")
     }
     
     func addSubviews() {
         self.view.addSubview(self.enterCommentView)
         self.enterCommentView.addSubview(enterCommentTextView)
         self.enterCommentView.addSubview(sendCommentButton)
-//        self.view.addSubview(commentCollectionView)
+        self.view.addSubview(commentCollectionView)
 
     }
     
     func configureDelegate() {
         enterCommentTextView.delegate = self
-        //        commentCollectionView.delegate = self
-        //        commentCollectionView.dataSource = self
+        commentCollectionView.dataSource = self
     }
     
     func setUpEnterCommentView() {
@@ -115,7 +116,6 @@ final class CommentViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.enterCommentTextView.leadingAnchor.constraint(equalTo: self.enterCommentView.leadingAnchor, constant: 5),
             self.enterCommentTextView.trailingAnchor.constraint(equalTo: self.sendCommentButton.leadingAnchor, constant: -5),
-//            self.enterCommentTextView.heightAnchor.constraint(equalToConstant: 20),
             self.enterCommentTextView.bottomAnchor.constraint(equalTo: self.enterCommentView.bottomAnchor, constant: -5),
         ])
         
@@ -128,18 +128,18 @@ final class CommentViewController: UIViewController {
         self.enterCommentView.bringSubviewToFront(self.sendCommentButton)
     }
     
-//    func setUpCollectionView() {
-//
-//        commentCollectionView.showsVerticalScrollIndicator = false
-//
-//        commentCollectionView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            self.commentCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-//            self.commentCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-//            self.commentCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-//            self.commentCollectionView.bottomAnchor.constraint(equalTo: self.enterCommentView.topAnchor),
-//        ])
-//    }
+    func setUpCollectionView() {
+
+        commentCollectionView.showsVerticalScrollIndicator = false
+
+        commentCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.commentCollectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.commentCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.commentCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.commentCollectionView.bottomAnchor.constraint(equalTo: self.enterCommentView.topAnchor),
+        ])
+    }
     
     func bindUI() {
         self.enterCommentTextView.rx.text
@@ -152,50 +152,52 @@ final class CommentViewController: UIViewController {
             .bind(to: sendCommentButton.rx.isHidden)
             .disposed(by: disposeBag)
     }
+    
+    func bindCollectionView() {
+        self.commentViewModel.commentDataSource
+                    .subscribe { [weak self] event in
+                        switch event {
+                        case .next:
+                            self!.commentCollectionView.reloadData()
+                        case .completed:
+                            break
+                        case .error:
+                            break
+                        }
+                    }
+                    .disposed(by: disposeBag)
+    }
 }
 
-//extension CommentViewController: UICollectionViewDataSource {
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-////            return comments.count
-//        return 1 //댓글의 수
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 1 //reply의 수
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-////        let replyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReplyCellIdentifier", for: indexPath) as! ReplyCell
-////        replyCell.configure(with: comments[indexPath.section].replies[indexPath.row])
-////        return replyCell
-//        return ReplyCell()
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) ->
-//            UICollectionReusableView {
-//
-//            if kind == UICollectionView.elementKindSectionHeader {
-//
-//                let commentHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CommentHeaderIdentifier", for: indexPath) as! CommentHeader
-//
-////                commentHeader.configure(with: comments[indexPath.section])
-//                return commentHeader
-//            }
-//
-//            return UICollectionReusableView()
-//    }
-//}
-//
-//extension CommentViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-////        let stylePostRepository = StylePostRepository()
-////        let stylePostUsecase = StylePostUsecase(stylePostRepository: stylePostRepository, postId: self.styleFeedViewModel.getStylePostAt(at: indexPath.row).id)
-////
-////        let stylePostViewModel = StylePostViewModel(stylePostUsecase: stylePostUsecase)
-////        let newPostViewController = StylePostViewController(stylePostViewModel: stylePostViewModel, userInfoViewModel: self.userInfoViewModel)
-////        self.navigationController?.pushViewController(newPostViewController, animated: true)
-//    }
-//}
+extension CommentViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return self.commentViewModel.commentCount
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.commentViewModel.replyCountOfComment(at: section)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let replyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReplyCellIdentifier", for: indexPath) as! ReplyCell
+        replyCell.configure(with: self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row])
+        return replyCell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) ->
+            UICollectionReusableView {
+
+            if kind == UICollectionView.elementKindSectionHeader {
+
+                let commentHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CommentHeaderIdentifier", for: indexPath) as! CommentHeader
+
+                commentHeader.configure(with: self.commentViewModel.getComment(at: indexPath.section))
+                return commentHeader
+            }
+
+            return UICollectionReusableView()
+    }
+}
 
 extension CommentViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {

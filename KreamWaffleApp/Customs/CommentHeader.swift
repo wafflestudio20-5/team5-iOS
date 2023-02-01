@@ -23,6 +23,11 @@ final class CommentHeader: UICollectionReusableView {
         setUpLayout()
     }
     
+    override func prepareForReuse() {
+        self.profileImageView.image = nil
+        super.prepareForReuse()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         addSubviews()
@@ -30,15 +35,10 @@ final class CommentHeader: UICollectionReusableView {
     }
     
     func configure(with comment: Comment) {
+        self.userNameLabel.text = comment.created_by.user_name
+        self.contentLabel.text = comment.content
         
         contentLabel.sizeToFit()
-        
-        
-        
-        
-        
-        
-        
         self.sizeToFit()
         
         let urlString = comment.created_by.image

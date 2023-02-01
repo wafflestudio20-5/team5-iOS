@@ -20,4 +20,18 @@ final class CommentViewModel {
     init(commentUsecase: CommentUsecase) {
         self.commentUsecase = commentUsecase
     }
+    
+    var commentCount: Int {
+        get {
+            self.commentUsecase.commentList.count
+        }
+    }
+    
+    func replyCountOfComment(at index: Int) -> Int {
+        return self.commentUsecase.commentList[index].replies.count
+    }
+    
+    func getComment(at index: Int) -> Comment {
+        return self.commentUsecase.commentList[index]
+    }
 }
