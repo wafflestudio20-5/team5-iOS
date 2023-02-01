@@ -6,29 +6,71 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
+import Alamofire
 
 final class FollowerUserListRepository: UserListRepositoryProtocol {
-    let testData = [
-        NestedProfile(user_id: 1,
-                      user_name: "first_follower",
-                      profile_name: "first_follower_profile_name",
-                      image: "https://developer.apple.com/swift/images/swift-og.png",
-                      following: "true"
-        ),
-        NestedProfile(user_id: 2,
-                      user_name: "second_follower",
-                      profile_name: "second_follower_profile_name",
-                      image: "https://logos-world.net/wp-content/uploads/2021/10/Python-Symbol.png",
-                      following: "true"
-        )
-    ]
-    
-    
-    func userListApiRequest(page: Int, completion: (Error?, [NestedProfile]?) -> Void) {
-        completion(nil, testData)
+    let baseUrl = "https://kream-waffle.cf/styles/profiles/"
+
+    func requestInitialUserListData(token: String, id: Int, completion: @escaping ()->()) -> Single<UserListResponse> {
+        return Single.create { single in
+            let finalUrl = URL(string: self.baseUrl + "\(id)/followers/")
+            
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "Authorization": "Bearer \(token)"
+            ]
+            
+            AF.request(finalUrl!, method: .get, headers: headers)
+                .validate()
+                .responseDecodable(of: UserListResponseWithFromAtPrefix.self) { response in
+                    //**********
+                    debugPrint(response)
+                    //**********
+                    
+                    switch response.result {
+                    case .success(let result):
+                        single(.success(UserListResponse(next: result.next, previous: result.previous, results: result.results.map {$0.nestedProfile})))
+                        print("success")
+                    case .failure(let error):
+                        single(.failure(error))
+                    }
+                    
+                    completion()
+                }
+            
+            return Disposables.create()
+        }
     }
     
-    func followRequest(user_id: String) {
-        return
+    func requestNextUserListData(token: String, cursor: String, completion: @escaping ()->()) -> Single<UserListResponse> {
+        return Single.create { single in
+            let finalUrl = URL(string: cursor)
+            
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "Authorization": "Bearer \(token)"
+            ]
+            
+            AF.request(finalUrl!, method: .get, headers: headers)
+                .validate()
+                .responseDecodable(of: UserListResponseWithFromAtPrefix.self) { response in
+                    //**********
+                    debugPrint(response)
+                    //**********
+                    
+                    switch response.result {
+                    case .success(let result):
+                        single(.success(UserListResponse(next: result.next, previous: result.previous, results: result.results.map {$0.nestedProfile})))
+                    case .failure(let error):
+                        single(.failure(error))
+                    }
+                    
+                    completion()
+                }
+            
+            return Disposables.create()
+        }
     }
 }

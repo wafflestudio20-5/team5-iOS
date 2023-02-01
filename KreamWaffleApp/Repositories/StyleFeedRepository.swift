@@ -10,18 +10,9 @@ import RxSwift
 import Alamofire
 
 final class StyleFeedRepository {
-    let baseUrl = "https://kream-waffle.cf/styles/posts/"
-    
-    func requestPostResponseData(type: String, token: String?, cursor: String?, user_id: Int?, completion: @escaping () -> ()) -> Single<PostResponse> {
+    func requestPostResponseData(token: String?, cursor: String, completion: @escaping () -> ()) -> Single<PostResponse> {
         return Single.create { single in
-            var urlStr = self.baseUrl + "?type=\(type)"
-            if let cursor = cursor {
-                urlStr += "&cursor=\(cursor)"
-            }
-            if let user_id = user_id {
-                urlStr += "&user_id=\(user_id)"
-            }
-            let finalUrl = URL(string: urlStr)
+            let finalUrl = URL(string: cursor)
             
             var headers: HTTPHeaders = [
                 "accept": "application/json"

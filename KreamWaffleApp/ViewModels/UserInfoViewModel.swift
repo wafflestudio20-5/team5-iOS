@@ -42,8 +42,8 @@ final class UserInfoViewModel {
         self.UserUseCase.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
     }
     
-    func checkAccessToken() async {
-        await self.UserUseCase.checkAccessToken()
+    func checkAccessToken() async -> Bool{
+        return await self.UserUseCase.checkAccessToken()
     }
     
 }
