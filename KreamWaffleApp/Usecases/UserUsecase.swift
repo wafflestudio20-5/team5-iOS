@@ -143,6 +143,22 @@ final class UserUsecase {
         }
     }
     
+    func testCheckAccessToken() {
+        print("token before checkIfValidToken: \(self.userResponse?.accessToken)")
+        repository.checkIfValidToken { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                print("[Log] UserUsecase: access token is still valid")
+            case .failure(let error):
+                self.error = error as LoginError
+                Task {
+                    await self.requestsNewAccessToken()
+                }
+            }
+        }
+    }
+    
     private func replaceAccessToken(newToken: String){
         self.userResponse?.accessToken = newToken
     }

@@ -194,14 +194,17 @@ class LoginRepository {
             completion(.failure(.urlError))
             return
         }
-        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "{}".data(using: .utf8)!
+
+        AF.request(request)
             .validate()
-            .response{ response in
-            //***
+            .response { (response) in
             print("\n================checkIfValidToken================\n")
             debugPrint(response)
-            //***
-            
             switch response.result {
             case .success:
                 completion(.success(true))
