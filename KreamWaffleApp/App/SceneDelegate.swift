@@ -30,19 +30,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let homeViewModel = HomeViewModel()
         let loginRepository = LoginRepository()
-        let UserUsecase = UserUsecase(dataRepository: loginRepository)
+        let profileRepository = ProfileRepository()
+        let UserUsecase = UserUsecase(dataRepository: loginRepository, profileRepository: profileRepository)
+        
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
         
         let styleViewModel = StyleFeedViewModel(styleFeedUsecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest", user_id: nil))
         let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
         let loginViewModel = LoginViewModel(UserUseCase: UserUsecase)
+        let userProfileViewModel = UserProfileViewModel(usecase: UserUsecase)
         loginViewModel.getSavedUser()
-        
         let LoginVC = LoginViewController(viewModel: loginViewModel)
         self.loginVC = LoginVC
         
-        self.rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel)
+        self.rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel, userProfileViewModel: userProfileViewModel)
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
     }

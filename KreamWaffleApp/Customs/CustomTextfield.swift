@@ -94,6 +94,7 @@ class CustomTextfield : UIView {
     }
     
     func configureTextfield(){
+        self.textfield.textColor = .black
         self.textfield.attributedPlaceholder = NSAttributedString(string: placeholderText ?? "", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .regular)])
         self.textfield.backgroundColor = .clear
         self.textfield.translatesAutoresizingMaskIntoConstraints = false

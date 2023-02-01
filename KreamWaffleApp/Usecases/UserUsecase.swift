@@ -11,10 +11,13 @@ import RxRelay
 final class UserUsecase {
     
     private let repository : LoginRepository
+    private let profileRepository : ProfileRepository
     private let disposeBag = DisposeBag()
     
     var user : User?
     var userResponse : UserResponse?
+    
+    var userProfile : Profile?
     
     ///toggle when logged in
     var loggedIn : Bool {
@@ -35,8 +38,9 @@ final class UserUsecase {
     
     let errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
-    init(dataRepository : LoginRepository){
+    init(dataRepository : LoginRepository, profileRepository: ProfileRepository){
         self.repository = dataRepository
+        self.profileRepository = profileRepository
         self.error = .noError
         self.loggedIn = false
     }
@@ -121,9 +125,10 @@ final class UserUsecase {
                     self.replaceAccessToken(newToken: response.accessToken)
                 case .failure(let error):
                     self.error = error as LoginError
+                    /*
                     if (error == .invalidRefreshTokenError){
                         self.logout()
-                    }
+                    }*/
                 }
             }
         }
@@ -156,10 +161,33 @@ final class UserUsecase {
     }
     
     
-    func getUserProfile(){
-        
-    }
-    
+    //MARK: user profile related
+    func requestProfile(onNetworkFailure: @escaping ()->()) {
+            
+            self.profileRepository
+                .requestProfile(user_id: self.user!.id, token: self.userResponse!.accessToken, onNetworkFailure: onNetworkFailure)
+                .subscribe(
+                    onSuccess: { [weak self] fetchedProfile in
+                        self?.userProfile = fetchedProfile
+                    },
+                    onFailure: { _ in
+                        self.error = .signupError
+                    }
+                )
+                .disposed(by: disposeBag)
+            
+            /*
+            self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
+                guard let self = self else {return}
+                switch result {
+                case .success(let profile):
+                    self.userProfile = profile
+                case .failure(let error):
+                    //error 처리하기
+                    print("profile fetch erro")
+                }
+            }*/
+        }
     ///logging out deletes saved/current user and initializes parameters.
     func logout(){
         repository.logOutUser()

@@ -25,6 +25,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     let userInfoVM : UserInfoViewModel
     let loginVM: LoginViewModel
+    let userProfileVM: UserProfileViewModel
     let fixedView = UIView()
     let profileImageView = UIImageView()
     let profileNameLabel = UILabel()
@@ -42,9 +43,11 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     let temporaryUserData = TemporaryUserData()
     // **************** 임시!! ********************
 
-    init(userInfoVM : UserInfoViewModel, loginVM: LoginViewModel) {
+    init(userInfoVM : UserInfoViewModel, loginVM: LoginViewModel, userProfileVM: UserProfileViewModel) {
         self.userInfoVM = userInfoVM
         self.loginVM = loginVM
+        self.userProfileVM = userProfileVM
+
         self.myShoppingVC = MyShoppingViewController(userInfoVM: self.userInfoVM)
         self.myProfileVC = MyProfileViewController(userInfoVM: self.userInfoVM)
         super.init(nibName: nil, bundle: nil)
@@ -59,12 +62,18 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+            }else{
+                self.userProfileVM.requestUserProfile { [weak self] in
+                    print("Profile Loading 실패")
+                }
             }
         }.disposed(by: disposeBag)
     }
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         setUpSegmentedControl()
         setUpTabBarButton()
@@ -221,7 +230,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.profileChangeButton.setTitleColor(.black, for: .normal)
         self.profileChangeButton.layer.cornerRadius = 7.5
         self.profileChangeButton.layer.borderWidth = 1
-        self.profileChangeButton.layer.borderColor = colors.lightGray.cgColor
+        self.profileChangeButton.layer.borderColor = colors.lessLightGray.cgColor
 
         self.profileChangeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -283,7 +292,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     @objc
     func profileChangeButtonTapped() {
-        let profileChangeVC = EditProfileViewController(viewModel: self.userInfoVM)
+        let profileChangeVC = EditProfileViewController(viewModel: self.userProfileVM)
         profileChangeVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(profileChangeVC, animated: true)
     }

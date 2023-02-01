@@ -21,6 +21,7 @@ final class ProfileRepository {
         static let uri = "https://kream-waffle.cf/styles/profiles/"
     }
     
+    
     func requestProfile(user_id: Int, token: String?, onNetworkFailure: @escaping ()->()) -> Single<Profile> {
         var headers : HTTPHeaders = [
             "accept": "application/json",
