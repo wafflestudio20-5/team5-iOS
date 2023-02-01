@@ -97,6 +97,7 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
     }
     
     private func configureTextfield() {
+        self.textView.backgroundColor = .white
         self.textView.translatesAutoresizingMaskIntoConstraints = false
         self.textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
         self.textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
@@ -106,7 +107,7 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
     
     private func configureImageCollectionView() {
         self.imageCollectionView.showsHorizontalScrollIndicator = false
-        self.imageCollectionView.backgroundColor = .clear
+        self.imageCollectionView.backgroundColor = .white
         
         self.imageCollectionView.contentInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         

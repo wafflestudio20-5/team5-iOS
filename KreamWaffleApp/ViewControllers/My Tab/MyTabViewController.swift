@@ -21,7 +21,7 @@ struct TemporaryUserData {
 }
 
 class MyTabViewController: UIViewController, UITabBarControllerDelegate {
-    let bag = DisposeBag()
+    let disposeBag = DisposeBag()
     
     let userInfoVM : UserInfoViewModel
     let loginVM: LoginViewModel
@@ -54,12 +54,13 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }
-        }
+        }.disposed(by: disposeBag)
     }
 
     override func viewDidLoad() {

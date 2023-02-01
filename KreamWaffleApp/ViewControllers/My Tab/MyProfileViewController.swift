@@ -16,7 +16,7 @@ class MyProfileViewController: UIViewController {
     
     init(userInfoVM: UserInfoViewModel) {
         self.userInfoVM = userInfoVM
-        super.init()
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
