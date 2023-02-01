@@ -23,6 +23,8 @@ class LoginRepository {
     
     private var semaphore = DispatchSemaphore (value: 0)
     
+    private let apiKey = "f330b07acf479c98b184db47a4d2608b" //for Naver
+    
     private let baseAPIURL = "https://kream-waffle.cf/accounts" //server
     
     private let userDefaults = UserDefaults.standard
@@ -167,10 +169,7 @@ class LoginRepository {
             "shoe_size": shoe_size,
         ] as [String : Any]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .validate()
-            .response{ response in
-                debugPrint(response)
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response{ response in
             switch response.result {
             case .success(let data):
                 do{
@@ -190,32 +189,31 @@ class LoginRepository {
     ///checks if current access token is valid. If valid, returns true. If not, returns invalidAccessTokenError
     func checkIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()) async {
         let URLString = "\(baseAPIURL)/token/verify/"
-        guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
-            print("url error")
-            completion(.failure(.urlError))
-            return
-        }
-
-             
+               guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                   completion(.failure(.urlError))
+                   return
+               }
         
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.post.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = "{}".data(using: .utf8)!
+               
         AF.request(request)
             .validate()
             .response { (response) in
-            print("\n================checkIfValidToken================\n")
-            debugPrint(response)
-            switch response.result {
-            case .success:
-                completion(.success(true))
-            case .failure(let error):
-               if (error.responseCode == 400){
-                    completion(.failure(.invalidAccessTokenError))
-                }else{
-                    completion(.failure(.unknownError))
-
+                print("\n================checkIfValidToken================\n")
+                debugPrint(response)
+                switch response.result {
+                case .success:
+                    completion(.success(true))
+                case .failure(let error):
+                    if (error.responseCode == 400){
+                        completion(.failure(.invalidAccessTokenError))
+                    }else{
+                        completion(.failure(.unknownError))
+                    }
                 }
             }
     }

@@ -30,8 +30,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let homeViewModel = HomeViewModel()
         let loginRepository = LoginRepository()
-        let profileRepository = UserProfileRepository()
+        let profileRepository = ProfileRepository()
         let UserUsecase = UserUsecase(dataRepository: loginRepository, profileRepository: profileRepository)
+        
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
         

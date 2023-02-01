@@ -21,6 +21,6 @@ class UserProfileViewModel {
     }
     
     func requestUserProfile(onNetworkFailure: @escaping ()->()){
-        self.usecase.requestProfile(token: usecase.userResponse?.accessToken, onNetworkFailure: onNetworkFailure)
+        self.usecase.requestProfile(onNetworkFailure: onNetworkFailure)
     }
 }

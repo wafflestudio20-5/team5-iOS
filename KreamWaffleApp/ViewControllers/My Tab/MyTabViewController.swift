@@ -67,14 +67,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                     print("Profile Loading 실패")
                 }
             }
-<<<<<<< HEAD
-        }
-    }
-=======
         }.disposed(by: disposeBag)
     }
 
->>>>>>> d28f9441ebf6b38f4e0a3056f6086632e6920709
 
     override func viewDidLoad() {
         super.viewDidLoad()
