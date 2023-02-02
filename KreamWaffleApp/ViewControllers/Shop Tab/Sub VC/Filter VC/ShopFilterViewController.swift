@@ -44,8 +44,6 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
         self.navigationItem.titleView?.tintColor = .black
         self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationController?.navigationBar.scrollEdgeAppearance?.backgroundColor = .white
-//        self.navigationItem.titleView?.backgroundColor = .white
-//        self.navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(named: "arrow.backward"), style: .plain, target: self, action: nil)
         self.setUpBackButton()
     }
     
