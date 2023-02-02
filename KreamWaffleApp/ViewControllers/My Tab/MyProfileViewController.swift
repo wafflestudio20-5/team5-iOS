@@ -9,7 +9,6 @@ import UIKit
 import AVFoundation
 import AVKit
 import Photos
-import YPImagePicker
 import RxCocoa
 import RxSwift
 
@@ -30,7 +29,6 @@ class MyProfileViewController: UIViewController {
     func shouldAddToSelection(indexPath: IndexPath, numSelections: Int) -> Bool {
         return true
     }
-    var selectedItems = [YPMediaItem]()
     
     let followerBar = MyTabSharedUIStackVIew(title1: "0", subtitle1: "게시물", title2: "2", subtitle2: "팔로워", title3: "0", subtitle3: "팔로잉", setCount: 3)
     let noPostView = UIStackView()
@@ -132,7 +130,7 @@ class MyProfileViewController: UIViewController {
     }
     
     func bindChildStyleFeedCollectionView() {
-        self.userStyleFeedCollectionViewVC!.isEmptyRelay
+        self.userStyleFeedCollectionViewVC!.isEmptyFeedRelay
             .bind(to: self.userStyleFeedCollectionViewVC!.view.rx.isHidden)
             .disposed(by: disposeBag)
     }

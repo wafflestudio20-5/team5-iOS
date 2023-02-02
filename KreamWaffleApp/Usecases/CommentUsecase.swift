@@ -15,10 +15,11 @@ final class CommentUsecase {
     private let disposeBag = DisposeBag()
     
     let commentRelay: BehaviorRelay<[Comment]> = .init(value: [])
+    let commentDidLoad: BehaviorRelay<Bool> = .init(value: false)
     
     var commentList = [Comment]() {
         didSet {
-            self.commentRelay.accept(self.commentList)
+            commentDidLoad.accept(true)
         }
     }
     

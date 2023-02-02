@@ -27,31 +27,17 @@ final class CommentViewModel {
     
     var currentReplyToProfile: ReplyToProfile?
 
-    var commentDataSource: Observable<[Comment]> {
-        return self.commentUsecase.commentRelay.asObservable()
+    var commentDidLoad: Observable<Bool> {
+        return self.commentUsecase.commentDidLoad.asObservable()
+    }
+    
+    var commentDataSource: [Comment] {
+        return self.commentUsecase.commentList
     }
     
     init(commentUsecase: CommentUsecase, id: Int) {
         self.commentUsecase = commentUsecase
         self.id = id
-    }
-    
-    var commentCount: Int {
-        get {
-            self.commentUsecase.commentList.count
-        }
-    }
-    
-    func replyCountOfComment(at index: Int) -> Int {
-        return self.commentUsecase.commentList[index].replies.count
-    }
-    
-    func getComment(at index: Int) -> Comment {
-        return self.commentUsecase.commentList[index]
-    }
-    
-    func getCommentId(at index: Int) -> Int {
-        return self.commentUsecase.commentList[index].id
     }
     
     func requestInitialData(token: String) {

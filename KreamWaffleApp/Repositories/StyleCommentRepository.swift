@@ -81,7 +81,6 @@ final class StyleCommentRepository: CommentRepositoryProtocol {
             "Authorization": "Bearer \(token)"
         ]
         
-        
         let parameters = [
             "content": content,
         ]

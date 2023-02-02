@@ -83,16 +83,20 @@ final class StylePostViewController: UIViewController {
     
     private func refreshData() {
         Task {
-            await self.userInfoViewModel.checkAccessToken()
-            let token = self.userInfoViewModel.UserResponse?.accessToken
-            
-            self.stylePostViewModel.requestPost(token: token) { [weak self] in
-                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self?.navigationController?.popViewController(animated: true)
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if (isValidToken) {
+                let token = self.userInfoViewModel.UserResponse?.accessToken
+                
+                self.stylePostViewModel.requestPost(token: token) { [weak self] in
+                    let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                    alert.addAction(okAction)
+                    self?.present(alert, animated: false, completion: nil)
                 }
-                alert.addAction(okAction)
-                self?.present(alert, animated: false, completion: nil)
+            } else {
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }
         }
     }
@@ -447,8 +451,9 @@ extension StylePostViewController { //button 관련 메서드들.
         if (!self.userInfoViewModel.isLoggedIn()) {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
-            self.hidesBottomBarWhenPushed = true;
-            
+            self.hidesBottomBarWhenPushed = true
+            self.tabBarController?.tabBar.isHidden = true
+
             let commentRepository = StyleCommentRepository()
             let commentUsecase = CommentUsecase(commentRepository: commentRepository)
             let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.stylePostViewModel.getPostId())

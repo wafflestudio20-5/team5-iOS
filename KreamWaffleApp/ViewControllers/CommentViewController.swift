@@ -88,7 +88,9 @@ final class CommentViewController: UIViewController {
         setUpWritingReplyIndicator()
         bindUI()
         bindCollectionView()
+        setUpRefreshControl()
         requestInitialData()
+        
         
         commentCollectionView.register(UINib(nibName: "CommentHeader", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader , withReuseIdentifier: "CommentHeaderIdentifier")
         commentCollectionView.register(UINib(nibName: "ReplyCell", bundle: nil), forCellWithReuseIdentifier: "ReplyCellIdentifier")
@@ -108,6 +110,7 @@ final class CommentViewController: UIViewController {
     func configureDelegate() {
         enterCommentTextView.delegate = self
         commentCollectionView.dataSource = self
+        commentCollectionView.delegate = self
     }
     
     func setUpEnterCommentView() {
@@ -145,7 +148,7 @@ final class CommentViewController: UIViewController {
     }
     
     func setUpCollectionView() {
-
+        commentCollectionView.backgroundColor = .lightGray
         commentCollectionView.showsVerticalScrollIndicator = false
 
         commentCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -211,19 +214,25 @@ final class CommentViewController: UIViewController {
     }
     
     func bindCollectionView() {
-        self.commentViewModel.commentDataSource
-                    .subscribe { [weak self] event in
-                        switch event {
-                        case .next:
-                            self!.commentCollectionView.reloadData()
-                        case .completed:
-                            break
-                        case .error:
-                            break
-                        }
-                    }
-                    .disposed(by: disposeBag)
+        self.commentViewModel.commentDidLoad
+            .subscribe { [weak self] event in
+                switch event {
+                case .next:
+                    self!.commentCollectionView.reloadData()
+                case .completed:
+                    break
+                case .error:
+                    break
+                }
+            }
+            .disposed(by: disposeBag)
     }
+    
+    func setUpRefreshControl() {
+        self.collectionViewRefreshControl.addTarget(self, action: #selector(refreshFunction), for: .valueChanged)
+        self.commentCollectionView.refreshControl = self.collectionViewRefreshControl
+    }
+
     
     func requestInitialData() {
         Task {
@@ -245,18 +254,19 @@ final class CommentViewController: UIViewController {
 
 extension CommentViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.commentViewModel.commentCount
+        return self.commentViewModel.commentDataSource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.commentViewModel.replyCountOfComment(at: section)
+        return self.commentViewModel.commentDataSource[section].replies.count
+        
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let replyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReplyCellIdentifier", for: indexPath) as! ReplyCell
-        replyCell.configure(with: self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row])
-        replyCell.replyButton.tag = self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row].id
-        replyCell.replyButton.replyToProfile = self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row].to_profile
+        replyCell.configure(with: self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row])
+        replyCell.replyButton.tag = self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row].id
+        replyCell.replyButton.replyToProfile = self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row].to_profile
         replyCell.replyButton.addTarget(self, action: #selector(replyToReplyButtonTapped(sender:)), for: .touchUpInside)
         
         return replyCell
@@ -268,11 +278,11 @@ extension CommentViewController: UICollectionViewDataSource {
             if kind == UICollectionView.elementKindSectionHeader {
 
                 let commentHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CommentHeaderIdentifier", for: indexPath) as! CommentHeader
-
-                commentHeader.configure(with: self.commentViewModel.getComment(at: indexPath.section))
-                commentHeader.replyButton.tag = self.commentViewModel.getCommentId(at: indexPath.section)
+                
+                commentHeader.configure(with: self.commentViewModel.commentDataSource[indexPath.section])
+                commentHeader.replyButton.tag = self.commentViewModel.commentDataSource[indexPath.section].id
                 commentHeader.replyButton.addTarget(self, action: #selector(replyToCommentButtonTapped(sender:)), for: .touchUpInside)
-                commentHeader.replyButton.replyToProfile = self.commentViewModel.getComment(at: indexPath.section).replies[indexPath.row].to_profile
+                commentHeader.replyButton.replyToProfile = self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row].to_profile
                 
                 return commentHeader
             }
@@ -345,6 +355,19 @@ extension CommentViewController {
         self.enterCommentTextView.text = textViewPlaceHolder
     }
     
+    @objc func refreshFunction() {
+        Task {
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if isValidToken {
+                let token = self.userInfoViewModel.UserResponse?.accessToken
+                self.commentViewModel.requestInitialData(token: token!)
+                self.collectionViewRefreshControl.endRefreshing()
+            } else {
+                self.presentLoginAgainAlert()
+            }
+        }
+    }
+    
     @objc func sendButtonTapped() {
         Task {
             let isValidToken = await self.userInfoViewModel.checkAccessToken()
@@ -352,7 +375,7 @@ extension CommentViewController {
                 let token = self.userInfoViewModel.UserResponse!.accessToken
                 
                 if (self.commentViewModel.isWritingReply) {
-                    self.commentViewModel.sendReply(
+                    await self.commentViewModel.sendReply(
                         token: token,
                         to_profile: self.commentViewModel.currentReplyToProfile!.profile_name,
                         content: self.enterCommentTextView.text,
@@ -369,8 +392,10 @@ extension CommentViewController {
                             self?.present(alert, animated: false, completion: nil)
                         }
                     )
+                    
+                    self.commentCollectionView.reloadData()
                 } else {
-                    self.commentViewModel.sendComment(
+                    await self.commentViewModel.sendComment(
                         token: token,
                         content: self.enterCommentTextView.text,
                         completion: { [weak self] in
@@ -386,11 +411,16 @@ extension CommentViewController {
                             self?.present(alert, animated: false, completion: nil)
                         }
                     )
+                    
+                    self.commentCollectionView.reloadData()
                 }
             } else {
                 self.presentLoginAgainAlert()
             }
         }
-        
     }
+}
+
+extension CommentViewController: UICollectionViewDelegate {
+    
 }

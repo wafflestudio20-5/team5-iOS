@@ -19,7 +19,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
     private let disposeBag = DisposeBag()
     private let styleFeedViewModel: StyleFeedViewModel
     private let userInfoViewModel: UserInfoViewModel
-    let isEmptyRelay = BehaviorRelay<Bool>(value: true)
+    let isEmptyFeedRelay = BehaviorRelay<Bool>(value: true)
     
     private let collectionViewRefreshControl = UIRefreshControl()
     
@@ -87,7 +87,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
         
         self.styleFeedViewModel.stylePostDataSource
             .map { $0.count == 0 }
-            .bind(to: isEmptyRelay)
+            .bind(to: isEmptyFeedRelay)
             .disposed(by: disposeBag)
     }
     
