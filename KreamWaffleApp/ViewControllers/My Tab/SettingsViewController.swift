@@ -9,7 +9,7 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
-    var viewModel : EditAccountViewModel?
+    var viewModel : LoginViewModel?
     
     var logoutButton = UIButton()
     var divider = UILabel()
@@ -28,7 +28,7 @@ class SettingsViewController: UIViewController {
         setupLogoutButton()
     }
     
-    init(viewModel: EditAccountViewModel){
+    init(viewModel: LoginViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
