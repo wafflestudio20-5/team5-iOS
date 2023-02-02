@@ -121,6 +121,7 @@
 		CE571D87298A809600DAB878 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D86298A809600DAB878 /* UserProfileViewModel.swift */; };
 		CE571D89298AE69500DAB878 /* LoginSettingsEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */; };
 		CE9EBDE5298B921600F4131A /* EditAccountVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDE4298B921600F4131A /* EditAccountVIewModel.swift */; };
+		CE9EBDE9298BAA5400F4131A /* ProductSizeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDE8298BAA5400F4131A /* ProductSizeSelectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -255,6 +256,7 @@
 		CE571D86298A809600DAB878 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSettingsEditViewController.swift; sourceTree = "<group>"; };
 		CE9EBDE4298B921600F4131A /* EditAccountVIewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountVIewModel.swift; sourceTree = "<group>"; };
+		CE9EBDE8298BAA5400F4131A /* ProductSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSizeSelectionViewController.swift; sourceTree = "<group>"; };
 		F7EF6F841C68824F321DFFC4 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -430,9 +432,9 @@
 		65653F3B295B73FC002F250B /* Shop Tab */ = {
 			isa = PBXGroup;
 			children = (
+				CE9EBDE7298BAA2600F4131A /* Detail VC */,
 				65653F44295B8408002F250B /* Sub VC */,
 				9428AE4C295719A500DC7907 /* ShopTabViewController.swift */,
-				5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -666,6 +668,15 @@
 			path = "Edit Login VC";
 			sourceTree = "<group>";
 		};
+		CE9EBDE7298BAA2600F4131A /* Detail VC */ = {
+			isa = PBXGroup;
+			children = (
+				5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */,
+				CE9EBDE8298BAA5400F4131A /* ProductSizeSelectionViewController.swift */,
+			);
+			path = "Detail VC";
+			sourceTree = "<group>";
+		};
 		D11222DD1DD286E50EA59C49 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -834,6 +845,7 @@
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */,
+				CE9EBDE9298BAA5400F4131A /* ProductSizeSelectionViewController.swift in Sources */,
 				5CB810DF29683D4E0021FDD6 /* StylePostRepository.swift in Sources */,
 				CE571D89298AE69500DAB878 /* LoginSettingsEditViewController.swift in Sources */,
 				5C6CE1A22983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift in Sources */,
