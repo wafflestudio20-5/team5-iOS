@@ -197,7 +197,7 @@ class LoginRepository {
         
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "accept")
         request.httpBody = "{}".data(using: .utf8)!
                
         AF.request(request)
@@ -217,6 +217,39 @@ class LoginRepository {
                 }
             }
     }
+    
+    //TEST 용
+    func test_CheckIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()) {
+        let URLString = "\(baseAPIURL)/token/verify/"
+               guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                   completion(.failure(.urlError))
+                   return
+               }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.httpBody = "{}".data(using: .utf8)!
+               
+        AF.request(request)
+            .validate()
+            .response { (response) in
+                print("\n================TEST용! checkIfValidToken================\n")
+                debugPrint(response)
+                switch response.result {
+                case .success:
+                    completion(.success(true))
+                case .failure(let error):
+                    if (error.responseCode == 400){
+                        completion(.failure(.invalidAccessTokenError))
+                    }else{
+                        completion(.failure(.unknownError))
+                    }
+                }
+            }
+        
+    }
 
     ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
     func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()) async {
@@ -230,7 +263,6 @@ class LoginRepository {
             .validate()
             .response { response in
             
-         
            print("\n================getNewToken================\n")
            debugPrint(response)
             
@@ -298,13 +330,62 @@ class LoginRepository {
         AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers)
             .validate()
             .response { response in
+            print("==========changePassword==============")
+            debugPrint(response)
             switch response.result {
             case .success(_):
                 completion(.success(true))
             case .failure(let error):
-                completion(.failure(.unknownError))
+                completion(.failure(.passwordChangeError))
                 print(error)
             }
         }
     }
+    
+    func changeUserInfo(token: String, shoeSize: Int, completion: @escaping (Result<User, LoginError>) -> ()){
+        let URLString = "\(baseAPIURL)/user/"
+            guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                   completion(.failure(.urlError))
+                   return
+               }
+    
+        let parameters = [
+            "shoe_size": shoeSize,
+            "phone_number": ""
+        ] as [String:Any]
+        
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+               
+        AF.request(url, method: .put, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
+            .validate()
+            .response{ response in
+            switch response.result {
+            case .success(let data):
+                do{
+                    let results : User = try JSONDecoder().decode(User.self, from: data!)
+                    self.saveUser(user: results)
+                    print("[Log] Login Repository: saved updated uer data")
+                    completion(.success(results))
+                }catch{
+                    completion(.failure(.unknownError))
+                    //let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                    //print(String(describing: json))
+                    print("[Log] LoginRepo: Error is \(error)")
+                }
+                
+            case .failure(let error):
+                //let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                //let loginError = checkErrorMessage(String(describing: json))
+                completion(.failure(.unknownError))
+                print(error)
+            }
+            
+        }
+    }
+    
+    
 }

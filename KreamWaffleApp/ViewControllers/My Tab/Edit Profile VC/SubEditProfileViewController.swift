@@ -36,6 +36,8 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
     var textfield : CustomTextfield?
     var line = UILabel()
     var saveButton = UIButton()
+    
+    var viewModel : EditAccountViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +45,9 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         mapData()
         addNavigationBar()
         setupSubviews()
-        bind()
+        if (self.editCase == .password){
+            self.bindForPasswordSetting()
+        }
     }
     
     private func addNavigationBar() {
@@ -94,8 +98,8 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             self.currentText = self.myProfile?.introduction
         case .password:
             self.navBarTitle = "비밀번호 변경"
-            self.detail = "비밀번호를 변경해주세요......어쩌고 저쩌고"
-            self.currentText = self.myProfile?.profile_name
+            self.detail = "비밀번호를 변경해주세요."
+            self.currentText = nil
             self.textfield = CustomTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .password, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 25)
         case .email:
@@ -105,10 +109,11 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         }
     }
     
-    init(myProfile: Profile?, editCase: editCase, user: User?){
+    init(myProfile: Profile?, editCase: editCase, user: User?, viewModel: EditAccountViewModel?){
         self.myProfile = myProfile
         self.user = user
         self.editCase = editCase
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -151,7 +156,8 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         self.saveButton.layer.cornerRadius = 10
         self.saveButton.clipsToBounds = true
     }
-    
+
+    //MARK: - only for profile settings
     func bind(){
         self.textfield?.textfield.rx.text
             .orEmpty
@@ -175,6 +181,94 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .bind(to: self.saveButton.rx.isEnabled)
             .disposed(by: bag)
     }
+    
+    //MARK: - only for user settings
+    func bindForPasswordSetting() {
+        
+        self.textfield?.textfield.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { changedText in
+                self.textfield?.editTextCounter(text: changedText)
+                self.viewModel?.pwTextRelay.accept(changedText)
+            })
+            .disposed(by: bag)
+        
+        self.textfield?.textfield.rx.text
+            .orEmpty
+            .bind(to: self.viewModel!.pwTextRelay)
+            .disposed(by: bag)
+        
+        self.viewModel?.isValidPasswordRelay()
+            .map { $0 ? UIColor.black: UIColor.lightGray}
+            .bind(to: self.saveButton.rx.backgroundColor)
+            .disposed(by: bag)
+        
+        self.viewModel?.isValidPasswordRelay()
+            .map { $0 ? UIColor.white: UIColor.darkGray}
+            .bind(to: self.saveButton.rx.tintColor)
+            .disposed(by: bag)
+        
+        self.viewModel?.isValidPasswordRelay()
+            .bind(to: self.saveButton.rx.isEnabled)
+            .disposed(by: bag)
+        
+        self.saveButton.rx
+            .tap
+            .bind {
+                self.viewModel?.changePassword()
+                
+                //TODO: 에러처리해주기
+                self.showActionCompleteNotification()
+                
+                /*
+                self.viewModel.errorRelay
+                    .asObservable()
+                    .subscribe { error in //TODO: sync 가 안맞음. 수정하기
+                    if (error.element == LoginError.signupError ){
+                        print("[Log] Signup VC: Error in signup")
+                        self.showErrorNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
+                    }else if (error.element == LoginError.alreadySignedUpError){
+                        self.showErrorNotification(errorText: "이미 회원가입된 이메일입니다.")
+                    }else{
+                        self.showEmailSentNotification()
+                    }
+                }*/
+            }
+    }
+    
+    func showErrorNotification(errorText: String){
+        let errorNotification = CustomNotificationView(notificationText: errorText)
+        self.view.addSubview(errorNotification)
+        errorNotification.translatesAutoresizingMaskIntoConstraints = false
+        errorNotification.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
+        errorNotification.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+        errorNotification.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.view.frame.height/64).isActive = true
+        errorNotification.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.frame.height/16).isActive = true
+        let seconds = 2.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                errorNotification.alpha = 0.0
+                }) { _ in
+                errorNotification.removeFromSuperview()
+                }
+        }
+    }
+    
+    func showActionCompleteNotification(){
+        let loadingVC = LoadingViewController()
+        loadingVC.modalPresentationStyle = .overCurrentContext
+        loadingVC.modalTransitionStyle = .crossDissolve
+        loadingVC.setUpNotification(notificationText: "비밀변호가 변경되었습니다.")
+        self.present(loadingVC, animated: true, completion: nil)
+        let seconds = 2.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            loadingVC.dismiss(animated: true)
+            self.dismiss(animated: true)
+        }
+    }
+    
+    
     
 
     required init?(coder: NSCoder) {

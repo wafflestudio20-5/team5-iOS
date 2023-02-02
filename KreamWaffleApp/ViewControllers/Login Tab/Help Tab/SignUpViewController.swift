@@ -247,7 +247,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     }
     
     @objc func didTapSelectShoeSize(){
-        let vc = ShoeSizeSelectionViewController(viewModel: self.viewModel)
+        let vc = ShoeSizeSelectionViewController(viewModel: self.viewModel, loginVM: nil)
         //vc.view.backgroundColor = .systemYellow
         vc.modalPresentationStyle = .pageSheet
         if let sheet = vc.sheetPresentationController {
