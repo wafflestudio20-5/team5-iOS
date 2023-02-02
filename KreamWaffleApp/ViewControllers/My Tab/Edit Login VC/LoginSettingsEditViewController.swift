@@ -51,18 +51,16 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
             cell.addData(editCase: element, userProfile: nil, user: viewModel.user)
             if (element == .password){
                 //=========for changing password============
-                
                 self.viewModel.pwTextRelay.subscribe { pw in
-                    print("changed \(pw.element)")
-                    //바인딩 문제있음. 
-                    cell.currentTextLabel.text = pw.element
+                   //get pw's count and make length of *
+                    let str = String(repeating: "*", count: pw.element?.count ?? 8)
+                    cell.currentTextLabel.text = str
                 }
                 
                 cell.editButton.rx
                     .tap
                     .bind {
                         let subVC = SubEditProfileViewController(myProfile: nil, editCase: element, user: viewModel.user, viewModel: self.viewModel)
-                        subVC.bindForPasswordSetting()
                         subVC.modalPresentationStyle = .pageSheet
                         self.present(subVC, animated: true)
                     }

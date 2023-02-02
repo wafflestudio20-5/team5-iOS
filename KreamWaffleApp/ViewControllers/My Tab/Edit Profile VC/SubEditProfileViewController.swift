@@ -45,7 +45,9 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         mapData()
         addNavigationBar()
         setupSubviews()
-        //bind()
+        if (self.editCase == .password){
+            self.bindForPasswordSetting()
+        }
     }
     
     private func addNavigationBar() {
@@ -187,7 +189,6 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .orEmpty
             .distinctUntilChanged()
             .subscribe(onNext: { changedText in
-                print(changedText)
                 self.textfield?.editTextCounter(text: changedText)
                 self.viewModel?.pwTextRelay.accept(changedText)
             })
@@ -216,6 +217,10 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .tap
             .bind {
                 self.viewModel?.changePassword()
+                
+                //TODO: 에러처리해주기
+                self.showActionCompleteNotification()
+                
                 /*
                 self.viewModel.errorRelay
                     .asObservable()
