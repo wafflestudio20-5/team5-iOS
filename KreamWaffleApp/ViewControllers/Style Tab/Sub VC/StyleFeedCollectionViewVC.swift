@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import CHTCollectionViewWaterfallLayout
 import RxSwift
-import RxCocoa
 
 final class StyleFeedCollectionViewVC : UIViewController{
     /*  이 view model을 뭘 끼우느냐에 따라서
@@ -19,7 +18,6 @@ final class StyleFeedCollectionViewVC : UIViewController{
     private let disposeBag = DisposeBag()
     private let styleFeedViewModel: StyleFeedViewModel
     private let userInfoViewModel: UserInfoViewModel
-    let isEmptyRelay = BehaviorRelay<Bool>(value: true)
     
     private let collectionViewRefreshControl = UIRefreshControl()
     
@@ -84,11 +82,6 @@ final class StyleFeedCollectionViewVC : UIViewController{
                         }
                     }
                     .disposed(by: disposeBag)
-        
-        self.styleFeedViewModel.stylePostDataSource
-            .map { $0.count == 0 }
-            .bind(to: isEmptyRelay)
-            .disposed(by: disposeBag)
     }
     
     private func setUpRefreshControl() {
@@ -104,25 +97,17 @@ final class StyleFeedCollectionViewVC : UIViewController{
     
     func requestInitialFeed() {
         Task {
-            let isValidToken = await self.userInfoViewModel.checkAccessToken()
-            if isValidToken {
-                let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-                self.styleFeedViewModel.requestInitialFeed(token: token)
-            } else {
-                self.styleFeedViewModel.requestInitialFeed(token: nil)
-            }
+            await self.userInfoViewModel.checkAccessToken()
+            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+            self.styleFeedViewModel.requestInitialFeed(token: token)
         }
     }
     
     func requestNextFeed() {
         Task {
-            let isValidToken = await self.userInfoViewModel.checkAccessToken()
-            if isValidToken {
-                let token: String? = self.userInfoViewModel.UserResponse?.accessToken
-                self.styleFeedViewModel.requestNextFeed(token: token)
-            } else {
-                self.styleFeedViewModel.requestNextFeed(token: nil)
-            }
+            await self.userInfoViewModel.checkAccessToken()
+            let token: String? = self.userInfoViewModel.UserResponse?.accessToken
+            self.styleFeedViewModel.requestNextFeed(token: token)
         }
     }
 }
@@ -163,7 +148,13 @@ extension StyleFeedCollectionViewVC: UIScrollViewDelegate  {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
         if (position > (self.collectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-            requestNextFeed()
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                if isValidToken {
+                    let token = self.userInfoViewModel.UserResponse?.accessToken
+                    self.styleFeedViewModel.requestNextFeed(token: token)
+                }
+            }
         }
     }
 }

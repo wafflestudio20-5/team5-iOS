@@ -35,7 +35,7 @@ final class UserListUsecase {
                 switch event {
                 case .success(let userListResponse):
                     self.cursor = userListResponse.next
-                    self.userList = userListResponse.results
+                    self.userList += userListResponse.results
                 case .failure(let error):
                     self.cursor = nil
                     self.userList.removeAll()
