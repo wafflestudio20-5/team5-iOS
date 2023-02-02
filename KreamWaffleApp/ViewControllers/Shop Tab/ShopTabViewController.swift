@@ -11,8 +11,8 @@ import RxCocoa
 class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     //서치하지 않을때 서치할때 아래 view controller 를 갈아끼우기
     
-    private var searchVC : SearchViewController
-    private var shopVC : ShopMainViewController
+//    private var searchVC : SearchViewController
+//    private var shopVC : ShopMainViewController
     
     var header = UIView()
     var searchBar = UISearchBar()
@@ -28,6 +28,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     
     // collection views
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCollectionViewFlowLayout())
+    var isPaginating = false
     
     private let viewModel: ShopViewModel
     private let disposeBag = DisposeBag()
@@ -40,8 +41,8 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     
     
     init(viewModel: ShopViewModel) {
-        self.searchVC = SearchViewController()
-        self.shopVC = ShopMainViewController()
+//        self.searchVC = SearchViewController()
+//        self.shopVC = ShopMainViewController()
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -54,6 +55,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        setUpNavigationBar()
         addSubviews()
         configureSubviews()
         configureCategoryFilterButton()
@@ -72,16 +74,13 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     
     func configureSubviews(){
         configureSearchBar()
-        configureChildVC()
+//        configureChildVC()
     }
     
-    func configureChildVC(){
-        self.add(searchVC)
-        self.searchVC.view.frame = CGRect(x: 0, y: self.searchBar.frame.maxY, width: self.view.frame.width, height: self.view.frame.height)
-        self.add(shopVC)
-        self.shopVC.view.frame = CGRect(x: 0, y: self.searchBar.frame.maxY, width: self.view.frame.width, height: self.view.frame.height)
-        searchVC.view.isHidden = true
+    private func setUpNavigationBar() {
+        self.setUpBackButton()
     }
+
     
     private func configureSearchBar(){
         self.searchBar.frame = CGRect(x: 0, y: 0, width: view.frame.width - 80, height: 0)
@@ -95,6 +94,18 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.searchBar.searchTextField.textColor = .black
         self.searchBar.layer.borderColor = UIColor.clear.cgColor
         self.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        
+        // toolbar above keyboard
+        let keyboardToolBar = UIToolbar()
+        keyboardToolBar.backgroundColor = .white
+        keyboardToolBar.tintColor = .black
+        keyboardToolBar.sizeToFit()
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(didTapDoneSearchBar))
+        
+        keyboardToolBar.setItems([flexibleSpace, doneButton], animated: true)
+        self.searchBar.searchTextField.inputAccessoryView = keyboardToolBar
     }
     
     private func configureCategoryFilterButton() {
@@ -229,6 +240,8 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     private func setupCollectionView() {
         self.view.addSubview(collectionView)
         self.collectionView.backgroundColor = .white
+        self.collectionView.showsVerticalScrollIndicator = false
+        
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.collectionView.topAnchor.constraint(equalTo: self.immediateDeliveryButton.bottomAnchor, constant: 7),
@@ -254,8 +267,9 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(didTapCancelSearchBar))
         cancelButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .medium)], for: .normal)
         self.navigationItem.rightBarButtonItem = cancelButton
-        self.searchVC.view.isHidden = false
-        self.shopVC.view.isHidden = true
+        
+//        self.searchVC.view.isHidden = false
+//        self.shopVC.view.isHidden = true
         returnViewToInitialFrame()
     }
     
@@ -263,8 +277,14 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.navigationItem.rightBarButtonItem = nil
         self.searchBar.endEditing(true)
         returnViewToInitialFrame()
-        self.searchVC.view.isHidden = true
-        self.shopVC.view.isHidden = false
+//        self.searchVC.view.isHidden = true
+//        self.shopVC.view.isHidden = false
+    }
+    
+    @objc func didTapDoneSearchBar() {
+        didTapCancelSearchBar()
+        self.viewModel.requestBrandShopPostsData(selectedBrand: 2)
+        print("done")
     }
     
     func returnViewToInitialFrame(){
@@ -282,7 +302,6 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
             })
         }
     }
-   
 }
 
 
@@ -315,15 +334,17 @@ extension ShopTabViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView {
             var selectedProduct = self.viewModel.getProductAtIndex(index: indexPath.row)
-            let shopPostDetailViewModel = ShopTabDetailViewModel(shopPost: selectedProduct)
+            let shopPostDetailViewModel = ShopTabDetailViewModel(usecase: ShopDetailUsecase(repository: ShopDetailRepository()), shopPost: selectedProduct)
             let productDetailVC = ProductDetailViewController(viewModel: shopPostDetailViewModel)
+            
+            self.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(productDetailVC, animated: true)
+            self.hidesBottomBarWhenPushed = false
         } else if collectionView == self.categoryCollectionView {
 //            var selectedCategory = self.viewModel.getCategoryAtIndex(index: indexPath.row)
             
             var selectedCategoryCell = collectionView.cellForItem(at: indexPath) as! CategoryCollectionViewCell
             selectedCategoryCell.isSelected = !selectedCategoryCell.isSelected
-//            print(selectedCategoryCell.categoryLabel.text!)
             self.viewModel.requestCategoryData(selectedCategory: selectedCategoryCell.categoryParameter)
 //            selectedCategoryCell.isSelected = true
         }
@@ -334,8 +355,15 @@ extension ShopTabViewController: UICollectionViewDelegate {
 extension ShopTabViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        if (position > self.collectionView.contentSize.height-scrollView.frame.size.height) {
+        if position > (self.collectionView.contentSize.height - 100 - scrollView.frame.size.height) {
+            guard !isPaginating else { return }
+            
+            isPaginating = true
             self.viewModel.requestMoreData()
+            isPaginating = false
+                
         }
+            
+        
     }
 }
