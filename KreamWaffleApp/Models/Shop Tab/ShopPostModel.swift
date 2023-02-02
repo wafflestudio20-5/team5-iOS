@@ -50,3 +50,41 @@ struct ProductImage: Codable {
     }
 }
 
+// Product Size
+struct ProductSizeModel: Decodable {
+    var count: Int
+    var results: [ProductSize]
+}
+
+struct ProductSize: Codable {
+    let id: Int
+    let size: String
+    let sales_price: Int
+    let purchase_price: Int
+    
+    private enum CodingKeys: String, CodingKey {
+        case id, size, sales_price, purchase_price
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        id = try container.decodeIfPresent(Int.self, forKey: .id) ?? -1
+        size = try container.decodeIfPresent(String.self, forKey: .size) ?? "-"
+        sales_price = try container.decodeIfPresent(Int.self, forKey: .sales_price) ?? -1
+        purchase_price = try container.decodeIfPresent(Int.self, forKey: .purchase_price) ?? -1
+        
+    }
+    
+    init(
+        id: Int,
+        size: String,
+        sales_price: Int,
+        purchase_price: Int
+    ) {
+        self.id = id
+        self.size = size
+        self.sales_price = sales_price
+        self.purchase_price = purchase_price
+    }
+}

@@ -1,9 +1,9 @@
-//
 //  ViewModel.swift
 //  KreamWaffleApp
 //
 //  Created by 이선재 on 2022/12/24.
 //
+
 import Foundation
 import Alamofire
 import RxSwift
@@ -41,15 +41,7 @@ final class ShopViewModel {
 }
 
 extension ShopViewModel {
-    // request all shopPosts
-    func requestData() {
-        self.usecase.loadShopPosts()
-    }
-    
-    func requestMoreData() {
-        self.usecase.loadMoreShopPosts()
-    }
-    
+    // get functions
     func getProductAtIndex(index: Int) -> Product {
         return self.usecase.getProductAtIndex(index: index)
     }
@@ -57,8 +49,17 @@ extension ShopViewModel {
     func getFilterItemAtIndex(index: Int) -> ShopFilterItem {
         return self.usecase.getFilterItemAtIndex(index: index)
     }
-    
+}
 
+extension ShopViewModel {
+    // request all shopPosts without filtering
+    func requestData() {
+        self.usecase.loadShopPosts()
+    }
+    
+    func requestMoreData() {
+        self.usecase.loadMoreShopPosts()
+    }
 }
 
 extension ShopViewModel {
@@ -68,7 +69,7 @@ extension ShopViewModel {
     }
     
     func requestMoreImmediateDeliveryData() {
-//        self.usecase.loadMoreImmediateDeliveryShopPosts()
+        self.usecase.loadMoreImmediateDeliveryShopPosts()
     }
 }
 
@@ -123,7 +124,8 @@ struct ProductData {
     let price: Int
     let total_wishes: Int
     let total_shares: Int
-    let imageSource: [ProductImage]
+    let  productimage_urls: [String]
+//    let imageSource: [ProductImage]
     
     init(product: Product) {
         self.id = product.id
@@ -136,7 +138,8 @@ struct ProductData {
         self.price = product.price
         self.total_wishes = product.total_wishes
         self.total_shares = product.total_shares
-        self.imageSource = product.imageSource
+        self.productimage_urls = product.productimage_urls
+//        self.imageSource = product.imageSource
     }
 }
 

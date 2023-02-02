@@ -24,33 +24,11 @@ final class ShopRepository {
                     switch response.result {
                     case .success(let result):
                         let productInfoList = result.results
-                        
-                        let group = DispatchGroup()
-                        for (var product) in productInfoList {
-                            // request brand_name
-                            group.enter()
-                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
-                                product.brand_name = brandName!
-                                group.leave()
-                            }
-                            
-                            // request productimages
-                            group.enter()
-                            self?.requestProductImages(id: product.id) { (error, productImages) in
-                                product.imageSource = productImages!
-                                group.leave()
-                            }
-                        }
-                        
-                        group.notify(queue: .main) {
-                            single(.success(productInfoList))
-                        }
-                        
+                        single(.success(productInfoList))
                     case .failure(let _):
                         single(.success([]))
                     }
                 }
-
             return Disposables.create()
         }
     }
@@ -68,29 +46,7 @@ final class ShopRepository {
                     switch response.result {
                     case .success(let result):
                         let productInfoList = result.results
-                    
-                        let group = DispatchGroup()
-                        for (var product) in productInfoList {
-                            // request brand_name
-                            group.enter()
-                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
-                                product.brand_name = brandName!
-                                group.leave()
-                            }
-                            
-                            // request productimages
-                            group.enter()
-                            self?.requestProductImages(id: product.id) { (error, productImages) in
-                                product.imageSource = productImages!
-                                group.leave()
-                            }
-                            
-                        }
-                    
-                        group.notify(queue: .main) {
-                            single(.success(productInfoList))
-                        }
-                        
+                        single(.success(productInfoList))
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -113,28 +69,7 @@ final class ShopRepository {
                     switch response.result {
                     case .success(let result):
                         let productInfoList = result.results
-                        
-                        let group = DispatchGroup()
-                        for (var product) in productInfoList {
-                            // request brand_name
-                            group.enter()
-                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
-                                product.brand_name = brandName!
-                                group.leave()
-                            }
-                            
-                            // request productimages
-                            group.enter()
-                            self?.requestProductImages(id: product.id) { (error, productImages) in
-                                product.imageSource = productImages!
-                                group.leave()
-                            }
-                            
-                        }
-                        
-                        group.notify(queue: .main) {
-                            single(.success(productInfoList))
-                        }
+                        single(.success(productInfoList))
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -157,28 +92,7 @@ final class ShopRepository {
                     switch response.result {
                     case .success(let result):
                         let productInfoList = result.results
-                        
-                        let group = DispatchGroup()
-                        for (var product) in productInfoList {
-                            // request brand_name
-                            group.enter()
-                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
-                                product.brand_name = brandName!
-                                group.leave()
-                            }
-                            
-                            // request productimages
-                            group.enter()
-                            self?.requestProductImages(id: product.id) { (error, productImages) in
-                                product.imageSource = productImages!
-                                group.leave()
-                            }
-                            
-                        }
-                        
-                        group.notify(queue: .main) {
-                            single(.success(productInfoList))
-                        }
+                        single(.success(productInfoList))
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -201,28 +115,7 @@ final class ShopRepository {
                     switch response.result {
                     case .success(let result):
                         let productInfoList = result.results
-                        
-                        let group = DispatchGroup()
-                        for (var product) in productInfoList {
-                            // request brand_name
-                            group.enter()
-                            self?.requestShopPostBrand(brandId: product.brand) { (error, brandName) in
-                                product.brand_name = brandName!
-                                group.leave()
-                            }
-                            
-                            // request productimages
-                            group.enter()
-                            self?.requestProductImages(id: product.id) { (error, productImages) in
-                                product.imageSource = productImages!
-                                group.leave()
-                            }
-                            
-                        }
-                        
-                        group.notify(queue: .main) {
-                            single(.success(productInfoList))
-                        }
+                        single(.success(productInfoList))
                     case .failure(let _):
                         single(.success([]))
                     }
@@ -230,6 +123,30 @@ final class ShopRepository {
 
             return Disposables.create()
         }
+    }
+}
+
+
+extension ShopRepository {
+    func requestProductSizes(id: Int, completionHandler: @escaping (Error?, [ProductSize]?) -> Void) {
+        let url = URL(string: "https://kream-waffle.cf/shop/productinfos/1/products/")
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "X-CSRFToken": "wAUIiwaucgMaZgb5kRFX0pfg671QBCmNGstFne8OngndR1VP0fkVC1EkwT3V22by"
+        ]
+        
+        AF.request(url!, method: .get, headers: headers)
+            .responseDecodable(of: ProductSizeModel.self) { response in
+                switch response.result {
+                case .success(let result):
+//                    print(result)
+//                    print(result.results)
+                    completionHandler(nil, result.results)
+                case .failure(let error):
+                    print("failed to request product size")
+//                    completionHandler(error, [])
+                }
+            }
     }
 }
 
