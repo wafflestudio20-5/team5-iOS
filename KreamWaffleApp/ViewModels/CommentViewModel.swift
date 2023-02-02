@@ -13,7 +13,8 @@ final class CommentViewModel {
     let postTextRelay = BehaviorRelay<String>(value: "")
     private let commentUsecase: CommentUsecase
     private var isAlreadyFetchingDataFromServer = false
-    private let id: Int //style탭 포스팅이든 shop탭 상품이든 아무튼 그 대상 ID
+    private let id: Int //style탭 포스팅이든 shop탭 상품이든 그 대상 ID
+    
     var currentReplyTarget: Int = 0
     
     var isWritingReply = false {
@@ -21,6 +22,7 @@ final class CommentViewModel {
             isWritingReplyRelay.accept(isWritingReply)
         }
     }
+    
     let isWritingReplyRelay = BehaviorRelay<Bool>(value: false)
     
     var currentReplyToProfile: ReplyToProfile?
@@ -69,10 +71,10 @@ final class CommentViewModel {
     }
     
     func sendComment(token: String, content: String, completion: @escaping ()->(), onNetworkFailure: @escaping () -> ()) {
-        if (!isWritingReply) { //reply 아니라 comment일 때
-            self.commentUsecase.sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
-        } else {
-            self.commentUsecase.sendReply(token: token, content: content, replyTarget: currentReplyTarget, completion: completion, onNetworkFailure: onNetworkFailure)
-        }
+        self.commentUsecase.sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
+    }
+    
+    func sendReply(token: String, to_profile: String, content: String, completion: @escaping ()->(), onNetworkFailure: @escaping () -> ()) {
+        self.commentUsecase.sendReply(token: token, to_profile: to_profile, content: content, replyTarget: currentReplyTarget, completion: completion, onNetworkFailure: onNetworkFailure)
     }
 }

@@ -68,9 +68,9 @@ final class CommentUsecase {
             .sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
-    func sendReply(token: String, content: String, replyTarget: Int, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+    func sendReply(token: String, to_profile: String, content: String, replyTarget: Int, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
         self.commentRepository
-            .sendReply(token: token, content: content, replyTarget: replyTarget, completion: completion, onNetworkFailure: onNetworkFailure)
+            .sendReply(token: token, to_profile: to_profile, content: content, replyTarget: replyTarget, completion: completion, onNetworkFailure: onNetworkFailure)
     }
 
 }

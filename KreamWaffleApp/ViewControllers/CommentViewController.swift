@@ -45,7 +45,7 @@ final class CommentViewController: UIViewController {
         button.setTitle("등록", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.titleLabel!.font = UIFont.boldSystemFont(ofSize: 14)
-        button.addTarget(self, action: #selector(sendComment), for: .touchUpInside)
+        button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
 
         return button
     }()
@@ -345,29 +345,48 @@ extension CommentViewController {
         self.enterCommentTextView.text = textViewPlaceHolder
     }
     
-    @objc func sendComment() {
+    @objc func sendButtonTapped() {
         Task {
             let isValidToken = await self.userInfoViewModel.checkAccessToken()
             if isValidToken {
-                let token = self.userInfoViewModel.UserResponse!.accessToken                
+                let token = self.userInfoViewModel.UserResponse!.accessToken
                 
-                self.commentViewModel.sendComment(
-                    token: token,
-                    content: self.enterCommentTextView.text,
-                    completion: { [weak self] in
-                        self?.requestInitialData()
-                        self?.enterCommentTextView.text = self?.textViewPlaceHolder
-                    },
-                    onNetworkFailure: {[weak self] in
-                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
+                if (self.commentViewModel.isWritingReply) {
+                    self.commentViewModel.sendReply(
+                        token: token,
+                        to_profile: self.commentViewModel.currentReplyToProfile!.profile_name,
+                        content: self.enterCommentTextView.text,
+                        completion: { [weak self] in
+                            self?.requestInitialData()
+                            self?.enterCommentTextView.text = self?.textViewPlaceHolder
+                        },
+                        onNetworkFailure: { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
                         }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
-                    }
-                )
-                
+                    )
+                } else {
+                    self.commentViewModel.sendComment(
+                        token: token,
+                        content: self.enterCommentTextView.text,
+                        completion: { [weak self] in
+                            self?.requestInitialData()
+                            self?.enterCommentTextView.text = self?.textViewPlaceHolder
+                        },
+                        onNetworkFailure: { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
+                        }
+                    )
+                }
             } else {
                 self.presentLoginAgainAlert()
             }
