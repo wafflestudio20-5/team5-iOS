@@ -57,7 +57,6 @@
 		5CB810E129683D6A0021FDD6 /* StylePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810E029683D6A0021FDD6 /* StylePostViewModel.swift */; };
 		5CB810E529684F000021FDD6 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */; };
 		5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9B33F296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift */; };
-		5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
 		651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E71842977CF1A00D81E2F /* OpeningViewController.swift */; };
 		651E718B297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */; };
@@ -131,7 +130,7 @@
 		CE571D87298A809600DAB878 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D86298A809600DAB878 /* UserProfileViewModel.swift */; };
 		CE571D89298AE69500DAB878 /* LoginSettingsEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */; };
 		CE9EBDE5298B921600F4131A /* EditAccountVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDE4298B921600F4131A /* EditAccountVIewModel.swift */; };
-		CE9EBDE9298BAA5400F4131A /* ProductSizeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDE8298BAA5400F4131A /* ProductSizeSelectionViewController.swift */; };
+		CE9EBDF1298BDDF400F4131A /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDF0298BDDF400F4131A /* ProductDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -199,7 +198,6 @@
 		5CB810E029683D6A0021FDD6 /* StylePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePostViewModel.swift; sourceTree = "<group>"; };
 		5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
 		5CE9B33F296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailImagesCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
-		5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		651E71842977CF1A00D81E2F /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabSharedUIStackVIew.swift; sourceTree = "<group>"; };
@@ -277,6 +275,7 @@
 		CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSettingsEditViewController.swift; sourceTree = "<group>"; };
 		CE9EBDE4298B921600F4131A /* EditAccountVIewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAccountVIewModel.swift; sourceTree = "<group>"; };
 		CE9EBDE8298BAA5400F4131A /* ProductSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSizeSelectionViewController.swift; sourceTree = "<group>"; };
+		CE9EBDF0298BDDF400F4131A /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		F7EF6F841C68824F321DFFC4 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -458,11 +457,9 @@
 		65653F3B295B73FC002F250B /* Shop Tab */ = {
 			isa = PBXGroup;
 			children = (
-
-				94A39516298B7B48002AFE4A /* Detail VC */,
 				65653F44295B8408002F250B /* Sub VC */,
 				9428AE4C295719A500DC7907 /* ShopTabViewController.swift */,
-				5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */,
+				CE9EBDF0298BDDF400F4131A /* ProductDetailViewController.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -564,6 +561,7 @@
 				9428AE2D2957170600DC7907 /* Products */,
 				D11222DD1DD286E50EA59C49 /* Pods */,
 				39518DD1225ED41FF26BAD9F /* Frameworks */,
+				CE9EBDEF298BDAD500F4131A /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -700,13 +698,12 @@
 			path = "Edit Login VC";
 			sourceTree = "<group>";
 		};
-		CE9EBDE7298BAA2600F4131A /* Detail VC */ = {
+		CE9EBDEF298BDAD500F4131A /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				5CE9B341296878FD00B3C894 /* ProductDetailViewController.swift */,
 				CE9EBDE8298BAA5400F4131A /* ProductSizeSelectionViewController.swift */,
 			);
-			path = "Detail VC";
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		D11222DD1DD286E50EA59C49 /* Pods */ = {
@@ -869,7 +866,6 @@
 				94A394F92988FCC8002AFE4A /* Brand.swift in Sources */,
 				5C6FBD67297A60C200B64FF0 /* UserListViewModel.swift in Sources */,
 				94A394F72988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift in Sources */,
-				5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */,
 				94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */,
 				5C2882C6298A4E6F0063C0C1 /* CommentHeader.swift in Sources */,
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
@@ -880,7 +876,6 @@
 				65188908295C1CE70026E003 /* LoginViewController.swift in Sources */,
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */,
-				CE9EBDE9298BAA5400F4131A /* ProductSizeSelectionViewController.swift in Sources */,
 				5CB810DF29683D4E0021FDD6 /* StylePostRepository.swift in Sources */,
 				CE571D89298AE69500DAB878 /* LoginSettingsEditViewController.swift in Sources */,
 				5C6CE1A22983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift in Sources */,
@@ -915,7 +910,6 @@
 				5C2882B829884A340063C0C1 /* UserListResponse + NestedProfileWrapper.swift in Sources */,
 				5C6FBD582979778900B64FF0 /* FollowerUserListRepository.swift in Sources */,
 				65653F3F295B7BDF002F250B /* SearchTableViewCell.swift in Sources */,
-				6583C9E52960DCA5007C741F /* FindEmailViewController.swift in Sources */,
 				5C2882BA298A33430063C0C1 /* CommentRepositoryProtocol.swift in Sources */,
 				5C2882C4298A4B8A0063C0C1 /* ShopCommentRepository.swift in Sources */,
 				65653F3A295B73C9002F250B /* SearchViewController.swift in Sources */,
@@ -930,6 +924,7 @@
 				6537F7152985BF1A00FC58E8 /* SubEditProfileViewController.swift in Sources */,
 				5C6FBD452976A1ED00B64FF0 /* StylePostUsecase.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
+				CE9EBDF1298BDDF400F4131A /* ProductDetailViewController.swift in Sources */,
 				944A114D295D6D5C00F8CDB7 /* ShopPostRequestParameters.swift in Sources */,
 				65653F35295B5B01002F250B /* CustomSegmentedControl.swift in Sources */,
 				65653F43295B8217002F250B /* Extensions.swift in Sources */,

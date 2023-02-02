@@ -137,9 +137,6 @@ final class UserUsecase {
     
     //현재 토큰이 유효하다면 true, 아니면 false
     func checkAccessToken() async -> Bool{
-        if (!self.loggedIn) {
-            return false
-        }
         Task {
             await repository.checkIfValidToken { [weak self] (result) in
                 guard let self = self else { return }

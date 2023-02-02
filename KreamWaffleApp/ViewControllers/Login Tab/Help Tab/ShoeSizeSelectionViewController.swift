@@ -1,4 +1,5 @@
 //
+//
 //  ShoeSizeSelectionViewController.swift
 //  KreamWaffleApp
 //
@@ -10,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 
-//for the half screen modal view 
+//for the half screen modal view
 class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout {
     private let bag = DisposeBag()
     let viewModel : SignUpViewModel?
@@ -123,4 +124,3 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
         self.dismiss(animated: true)
     }
 }
-
