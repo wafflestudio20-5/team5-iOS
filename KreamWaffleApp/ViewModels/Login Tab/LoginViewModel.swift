@@ -30,6 +30,18 @@ class LoginViewModel {
         }
     }
     
+    var errorRelay: BehaviorRelay<LoginError> {
+        get {
+            self.UserUseCase.errorRelay
+        }
+    }
+    
+    var user : User? {
+        get {
+            self.UserUseCase.user
+        }
+    }
+    
     ///VC observes login state
     var loginState : BehaviorRelay<Bool> {
         get {
@@ -102,6 +114,10 @@ class LoginViewModel {
     
     func logout(){
         self.UserUseCase.logout()
+    }
+    
+    func changePassword(newPassword: String){
+        self.UserUseCase.changePassword(newPasword: newPassword)
     }
     
 }

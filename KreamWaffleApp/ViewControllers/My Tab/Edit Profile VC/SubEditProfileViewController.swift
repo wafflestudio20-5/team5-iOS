@@ -36,6 +36,8 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
     var textfield : CustomTextfield?
     var line = UILabel()
     var saveButton = UIButton()
+    
+    var loginVM : LoginViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,8 +96,8 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             self.currentText = self.myProfile?.introduction
         case .password:
             self.navBarTitle = "비밀번호 변경"
-            self.detail = "비밀번호를 변경해주세요......어쩌고 저쩌고"
-            self.currentText = self.myProfile?.profile_name
+            self.detail = "비밀번호를 변경해주세요."
+            self.currentText = nil
             self.textfield = CustomTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .password, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 25)
         case .email:
@@ -105,10 +107,11 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         }
     }
     
-    init(myProfile: Profile?, editCase: editCase, user: User?){
+    init(myProfile: Profile?, editCase: editCase, user: User?, loginVM: LoginViewModel?){
         self.myProfile = myProfile
         self.user = user
         self.editCase = editCase
+        self.loginVM = loginVM
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -151,6 +154,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         self.saveButton.layer.cornerRadius = 10
         self.saveButton.clipsToBounds = true
     }
+
     
     func bind(){
         self.textfield?.textfield.rx.text
@@ -175,6 +179,53 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .bind(to: self.saveButton.rx.isEnabled)
             .disposed(by: bag)
     }
+    
+    //MARK: - only for user settings
+    func bindLoginVM() {
+        self.saveButton.rx.tap.bind {
+            self.loginVM?.changePassword(newPassword: self.textfield?.textfield.text ?? "")
+            self.loginVM!.errorRelay.subscribe { error in
+                if (error.event.element == LoginError.passwordChangeError){
+                    self.showErrorNotification(errorText: "비밀번호를 확인해주세요.")
+                }else{
+                    self.showActionCompleteNotification()
+                }
+            }.disposed(by: self.bag)
+        }.disposed(by: bag)
+    }
+    
+    func showErrorNotification(errorText: String){
+        let errorNotification = CustomNotificationView(notificationText: errorText)
+        self.view.addSubview(errorNotification)
+        errorNotification.translatesAutoresizingMaskIntoConstraints = false
+        errorNotification.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
+        errorNotification.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+        errorNotification.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.view.frame.height/64).isActive = true
+        errorNotification.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.frame.height/16).isActive = true
+        let seconds = 2.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                errorNotification.alpha = 0.0
+                }) { _ in
+                errorNotification.removeFromSuperview()
+                }
+        }
+    }
+    
+    func showActionCompleteNotification(){
+        let loadingVC = LoadingViewController()
+        loadingVC.modalPresentationStyle = .overCurrentContext
+        loadingVC.modalTransitionStyle = .crossDissolve
+        loadingVC.setUpNotification(notificationText: "비밀변호가 변경되었습니다.")
+        self.present(loadingVC, animated: true, completion: nil)
+        let seconds = 2.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            loadingVC.dismiss(animated: true)
+            self.dismiss(animated: true)
+        }
+    }
+    
+    
     
 
     required init?(coder: NSCoder) {

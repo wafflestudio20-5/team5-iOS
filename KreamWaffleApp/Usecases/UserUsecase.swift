@@ -199,4 +199,16 @@ final class UserUsecase {
     func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
         self.repository.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
     }
+    
+    func changePassword(newPasword: String){
+        repository.changePassword(token: self.userResponse!.accessToken, newPassword: newPasword) { [weak self] (result) in
+            guard let self = self else {return}
+            switch result {
+            case .success(_):
+                print("[Log] UserUsecase: Password change success.")
+            case .failure(let error):
+                self.error = error as LoginError
+            }
+        }
+    }
 }

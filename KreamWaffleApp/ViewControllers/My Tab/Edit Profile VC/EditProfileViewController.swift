@@ -143,7 +143,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     @objc
     func editCell(){
         //TODO edit case 에 따라 변경되도록 하기
-        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName, user: nil)
+        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName, user: nil, loginVM: nil)
         subVC.modalPresentationStyle = .pageSheet
         self.present(subVC, animated: true)
     }

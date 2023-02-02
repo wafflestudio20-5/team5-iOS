@@ -298,11 +298,13 @@ class LoginRepository {
         AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers)
             .validate()
             .response { response in
+            print("==========changePassword==============")
+            debugPrint(response)
             switch response.result {
             case .success(_):
                 completion(.success(true))
             case .failure(let error):
-                completion(.failure(.unknownError))
+                completion(.failure(.passwordChangeError))
                 print(error)
             }
         }

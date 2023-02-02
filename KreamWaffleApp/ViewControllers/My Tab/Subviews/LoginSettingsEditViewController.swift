@@ -50,7 +50,8 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
                 cell.editButton.rx
                     .tap
                     .bind {
-                        let subVC = SubEditProfileViewController(myProfile: nil, editCase: element, user: viewModel.UserUseCase.user!)
+                        let subVC = SubEditProfileViewController(myProfile: nil, editCase: element, user: viewModel.UserUseCase.user!, loginVM: self.viewModel)
+                        subVC.bindLoginVM()
                         subVC.modalPresentationStyle = .pageSheet
                         self.present(subVC, animated: true)
                     }
