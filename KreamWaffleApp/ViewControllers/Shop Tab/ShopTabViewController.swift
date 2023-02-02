@@ -315,8 +315,8 @@ extension ShopTabViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView {
             var selectedProduct = self.viewModel.getProductAtIndex(index: indexPath.row)
-            let shopPostDetailViewModel = ShopTabDetailViewModel(shopPost: selectedProduct)
-            let productDetailVC = ProductDetailViewController(viewModel: shopPostDetailViewModel)
+            let shopPostDetailViewModel = ShopTabDetailViewModel(usecase: ShopDetailUsecase(repository: ShopDetailRepository()), shopPost: selectedProduct)
+            let productDetailVC = ProductDetailViewController(viewModel: shopPostDetailViewModel )
             navigationController?.pushViewController(productDetailVC, animated: true)
         } else if collectionView == self.categoryCollectionView {
 //            var selectedCategory = self.viewModel.getCategoryAtIndex(index: indexPath.row)
