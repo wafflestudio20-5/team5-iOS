@@ -75,6 +75,9 @@ final class StylePostViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.hidesBottomBarWhenPushed = false;
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.backgroundColor = .white
         refreshData()
     }
     
@@ -193,7 +196,7 @@ final class StylePostViewController: UIViewController {
         contentLabel.lineBreakStrategy = .hangulWordPriority
         contentLabel.textAlignment = .left
         contentLabel.adjustsFontSizeToFitWidth = false
-        contentLabel.numberOfLines = Int.max
+        contentLabel.numberOfLines = 0
         
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -333,7 +336,6 @@ final class StylePostViewController: UIViewController {
         self.numLikesLabel.sizeToFit()
         
         self.writerUserId = post.created_by.user_id
-        self.followButton.configure(following: post.created_by.following)
         
         if post.liked == "true" {
             self.isLiked = true
@@ -442,6 +444,15 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func commentButtonTapped() {
-        print("comment button")
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            self.hidesBottomBarWhenPushed = true;
+            
+            let commentRepository = StyleCommentRepository()
+            let commentUsecase = CommentUsecase(commentRepository: commentRepository)
+            let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.stylePostViewModel.getPostId())
+            self.navigationController?.pushViewController(CommentViewController(userInfoViewModel: self.userInfoViewModel, commentViewModel: commentViewModel), animated: true)
+        }
     }
 }

@@ -13,5 +13,6 @@ extension UIViewController {
         self.navigationController?.navigationBar.backIndicatorImage = UIImage(systemName: "arrow.backward")
         self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(systemName: "arrow.backward")
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem?.tintColor = .black
     }
 }

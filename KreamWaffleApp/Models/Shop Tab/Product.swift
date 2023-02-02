@@ -18,14 +18,13 @@ class Product: Codable {
     let price: Int
     let total_wishes: Int
     let total_shares: Int
-    var imageSource: [ProductImage] = [ProductImage(id: -1, url: "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png")]
-//    let transactionCount: Int
-//    let bookmarkCount: Int
-//    let relatedStyleCount: Int
+    let productimage_urls: [String]
+//    var imageSource: [ProductImage] = [ProductImage(id: -1, url: "https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png")]
+
     let thumbnailImageRatio: Float // (세로/가로) 비율
     
     private enum CodingKeys: String, CodingKey {
-        case id, brand, eng_name, kor_name, delivery_tag, productimage_set, brand_name, price, total_wishes, total_shares
+        case id, brand, eng_name, kor_name, delivery_tag, productimage_set, brand_name, price, total_wishes, total_shares, productimage_urls
     }
     
     required init(from decoder: Decoder) throws {
@@ -41,8 +40,8 @@ class Product: Codable {
         price = try container.decodeIfPresent(Int.self, forKey: .price) ?? 0
         total_wishes = try container.decodeIfPresent(Int.self, forKey: .total_wishes) ?? 0
         total_shares = try container.decodeIfPresent(Int.self, forKey: .total_shares) ?? 0
-        
-//        imageSource = []
+        productimage_urls = try container.decodeIfPresent([String].self, forKey: .productimage_urls) ?? []
+
         thumbnailImageRatio = 1
     }
     
@@ -57,7 +56,8 @@ class Product: Codable {
         price: Int,
         total_wishes: Int,
         total_shares: Int,
-        imageSource: [ProductImage],
+        productimage_urls: [String],
+//        imageSource: [ProductImage],
         thumbnailImageRatio: Float
     ) {
         self.id = id
@@ -70,7 +70,8 @@ class Product: Codable {
         self.price = price
         self.total_wishes = total_wishes
         self.total_shares = total_shares
-        self.imageSource = imageSource
+        self.productimage_urls = productimage_urls
+//        self.imageSource = imageSource
         self.thumbnailImageRatio = thumbnailImageRatio
     }
 

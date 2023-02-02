@@ -54,7 +54,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(product: ProductData) {
-        let imageUrlString = product.imageSource[0].url
+//        let imageUrlString = product.imageSource[0].url
+        let imageUrlString = product.productimage_urls[0]
         let imageUrl = URL(string: imageUrlString)
         self.imageView.kf.setImage(with: imageUrl)
         self.brandLabel.text = product.brand_name
@@ -84,7 +85,9 @@ class ProductCollectionViewCell: UICollectionViewCell {
         }
         
         
-        self.priceLabel.text = "\(product.price) 원"
+//        self.priceLabel.text = "\(product.price) 원"
+        let formattedPrice = PriceFormatter.formatNumberToCurrency(intToFormat: product.price)
+        self.priceLabel.text = "\(formattedPrice) 원"
 //        self.transactionCountLabel.text = "\(product.transactionCount)"
 //        self.transactionCount = product.transactionCount
 //        self.bookmarkCountLabel.text = "\(product.total_wishes)"
@@ -292,3 +295,4 @@ class ProductCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
