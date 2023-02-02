@@ -6,28 +6,14 @@
 //
 
 import Foundation
-import UIKit
-import RxSwift
-import RxRelay
 
 final class ShopTabDetailViewModel {
-    let usecase: ShopDetailUsecase
-    
+//    private let repository: ShopTabDetailRepository
     let shopPost: Product
     
-    var productSizeInfoDataSource: Observable<[ProductSize]> {
-        return self.usecase.productSizeInfoObservable
-            
-    }
-    
-    init(usecase : ShopDetailUsecase, shopPost: Product) {
-        self.usecase = usecase
+    init(shopPost: Product) {
+//        self.repository = repository
         self.shopPost = shopPost
-        requestProductSizeInfo(id: shopPost.id)
-    }
-    
-    func requestProductSizeInfo(id: Int) {
-        self.usecase.loadProductSizeInfo(id: id)
     }
     
     func getBrand() -> String {
@@ -46,9 +32,8 @@ final class ShopTabDetailViewModel {
         return self.shopPost.price
     }
     
-    func getImageSources() -> [String] {
-//        return self.shopPost.imageSource
-        return self.shopPost.productimage_urls
+    func getImageSources() -> [ProductImage] {
+        return self.shopPost.imageSource
     }
     
     func getThumbnailImageRatio() -> Float {

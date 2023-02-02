@@ -41,7 +41,15 @@ final class ShopViewModel {
 }
 
 extension ShopViewModel {
-    // get functions
+    // request all shopPosts
+    func requestData() {
+        self.usecase.loadShopPosts()
+    }
+    
+    func requestMoreData() {
+        self.usecase.loadMoreShopPosts()
+    }
+    
     func getProductAtIndex(index: Int) -> Product {
         return self.usecase.getProductAtIndex(index: index)
     }
@@ -49,18 +57,8 @@ extension ShopViewModel {
     func getFilterItemAtIndex(index: Int) -> ShopFilterItem {
         return self.usecase.getFilterItemAtIndex(index: index)
     }
-}
-
-extension ShopViewModel {
-    // request all shopPosts without filtering
-    func requestData() {
-        self.usecase.loadShopPosts()
-    }
     
-    func requestMoreData() {
-        
-        self.usecase.loadMoreShopPosts()
-    }
+
 }
 
 extension ShopViewModel {
@@ -70,7 +68,7 @@ extension ShopViewModel {
     }
     
     func requestMoreImmediateDeliveryData() {
-        self.usecase.loadMoreImmediateDeliveryShopPosts()
+//        self.usecase.loadMoreImmediateDeliveryShopPosts()
     }
 }
 
@@ -125,8 +123,7 @@ struct ProductData {
     let price: Int
     let total_wishes: Int
     let total_shares: Int
-    let  productimage_urls: [String]
-//    let imageSource: [ProductImage]
+    let imageSource: [ProductImage]
     
     init(product: Product) {
         self.id = product.id
@@ -139,8 +136,7 @@ struct ProductData {
         self.price = product.price
         self.total_wishes = product.total_wishes
         self.total_shares = product.total_shares
-        self.productimage_urls = product.productimage_urls
-//        self.imageSource = product.imageSource
+        self.imageSource = product.imageSource
     }
 }
 

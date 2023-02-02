@@ -57,6 +57,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){
@@ -259,6 +260,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
             self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.divider.heightAnchor.constraint(equalToConstant: 15),
             self.divider.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor, constant: self.view.frame.height/64),
+
         ])
     }
     

@@ -100,11 +100,11 @@ class MyProfileViewController: UIViewController {
     }
     
     func configureFollowerBarTapGesture() {
-        self.followerBar.subView2.isUserInteractionEnabled = true
-        self.followerBar.subView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followerNumLabelTapped)))
+        self.followerBar.subView2?.isUserInteractionEnabled = true
+        self.followerBar.subView2?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followerNumLabelTapped)))
         
-        self.followerBar.subView3.isUserInteractionEnabled = true
-        self.followerBar.subView3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followingNumLabelTapped)))
+        self.followerBar.subView3?.isUserInteractionEnabled = true
+        self.followerBar.subView3?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followingNumLabelTapped)))
     }
 
     

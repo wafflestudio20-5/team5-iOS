@@ -124,8 +124,12 @@ extension ShopUsecase {
     }
     
     func loadMoreShopPosts() {
+        if paginating == true {
+            return
+        }
+        paginating = true
+        
         self.page += 1
-        print("requested page \(self.page)")
         
         let parameters = ShopPostRequestParameters(page: self.page)
         self.repository
@@ -140,11 +144,11 @@ extension ShopUsecase {
             })
             .disposed(by: self.disposeBag)
         
+        paginating = false
     }
 }
 
 extension ShopUsecase {
-    // immediate delivery tag
     func loadImmediateDeliveryShopPosts() {
         let parameters = ShopPostRequestParameters(page: 1)
         self.repository
@@ -159,20 +163,7 @@ extension ShopUsecase {
     }
     
     func loadMoreImmediateDeliveryShopPosts() {
-        self.page += 1
         
-        let parameters = ShopPostRequestParameters(page: 1)
-        self.repository
-            .requestImmediateDeliveryShopPostData(parameters: parameters)
-            .subscribe(onSuccess: { [self] fetchedProductInfos in
-                var prevProductInfos = self.shopRelay.value
-                prevProductInfos.append(contentsOf: fetchedProductInfos)
-                self.productInfoList = prevProductInfos
-            },
-            onFailure: { _ in
-                self.productInfoList = []
-            })
-            .disposed(by: self.disposeBag)
     }
 }
 
@@ -191,20 +182,7 @@ extension ShopUsecase {
     }
     
     func loadMoreBrandDeliveryShopPosts() {
-        self.page += 1
         
-        let parameters = ShopPostRequestParameters(page: 1)
-        self.repository
-            .requestBrandDeliveryShopPostData(parameters: parameters)
-            .subscribe(onSuccess: { [self] fetchedProductInfos in
-                var prevProductInfos = self.shopRelay.value
-                prevProductInfos.append(contentsOf: fetchedProductInfos)
-                self.productInfoList = prevProductInfos
-            },
-            onFailure: { _ in
-                self.productInfoList = []
-            })
-            .disposed(by: self.disposeBag)
     }
 }
 
@@ -222,21 +200,8 @@ extension ShopUsecase {
             .disposed(by: self.disposeBag)
     }
     
-    func loadMoreCategoryShopPosts(selectedCategory: String) {
-        self.page += 1
+    func loadMoreCategoryShopPosts() {
         
-        let parameters = ShopPostRequestParameters(page: 1)
-        self.repository
-            .requestCategoryShopPostData(parameters: parameters, category: selectedCategory)
-            .subscribe(onSuccess: { [self] fetchedProductInfos in
-                var prevProductInfos = self.shopRelay.value
-                prevProductInfos.append(contentsOf: fetchedProductInfos)
-                self.productInfoList = prevProductInfos
-            },
-            onFailure: { _ in
-                self.productInfoList = []
-            })
-            .disposed(by: self.disposeBag)
     }
 }
 
@@ -254,21 +219,8 @@ extension ShopUsecase {
             .disposed(by: self.disposeBag)
     }
     
-    func loadMoreBrandShopPosts(selectedBrand: Int) {
-        self.page += 1
+    func loadMoreBrandShopPosts() {
         
-        let parameters = ShopPostRequestParameters(page: 1)
-        self.repository
-            .requestBrandShopPostData(parameters: parameters, brandId: selectedBrand)
-            .subscribe(onSuccess: { [self] fetchedProductInfos in
-                var prevProductInfos = self.shopRelay.value
-                prevProductInfos.append(contentsOf: fetchedProductInfos)
-                self.productInfoList = prevProductInfos
-            },
-            onFailure: { _ in
-                self.productInfoList = []
-            })
-            .disposed(by: self.disposeBag)
     }
 }
 
@@ -287,20 +239,7 @@ extension ShopUsecase {
     }
     
     func loadMoreBrands() {
-        self.page += 1
         
-        let parameters = ShopPostRequestParameters(page: 1)
-        self.repository
-            .requestBrandsData(parameters: parameters)
-            .subscribe(onSuccess: { [self] fetchedBrands in
-                var prevBrands = self.brandsRelay.value
-                prevBrands.append(contentsOf: fetchedBrands)
-                self.brandsList = prevBrands
-            },
-            onFailure: { _ in
-                self.brandsList = []
-            })
-            .disposed(by: self.disposeBag)
     }
 }
 

@@ -40,21 +40,9 @@ final class StyleFeedUsecase {
     }
     
     func requestInitialFeed(token: String?, completion: @escaping () -> ()) {
-        self.repository
-            .requestPostResponseData(token: token, cursor: initialCursor, completion: completion)
-            .subscribe { event in
-                switch event {
-                case .success(let postResponse):
-                    self.cursor = postResponse.next
-                    self.stylePostList = postResponse.results
-                case .failure(let error):
-                    self.cursor = nil
-                    self.stylePostList.removeAll()
-                    print(error)
-                }
-                
-            }
-            .disposed(by: disposeBag)
+        self.stylePostList.removeAll()
+        self.cursor = initialCursor
+        requestNextFeed(token: token, completion: completion)
     }
     
     func requestNextFeed(token: String?, completion: @escaping () -> ()) {
