@@ -16,9 +16,7 @@
 		5C2882C2298A4B7A0063C0C1 /* StyleCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C1298A4B7A0063C0C1 /* StyleCommentRepository.swift */; };
 		5C2882C4298A4B8A0063C0C1 /* ShopCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C3298A4B8A0063C0C1 /* ShopCommentRepository.swift */; };
 		5C2882C6298A4E6F0063C0C1 /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C5298A4E6F0063C0C1 /* CommentCollectionViewCell.swift */; };
-		5C2882C8298A4E9F0063C0C1 /* ReplyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C7298A4E9F0063C0C1 /* ReplyCell.swift */; };
 		5C2882CA298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C9298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift */; };
-		5C2882CC298AF1AC0063C0C1 /* ReplyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */; };
 		5C2F9CA1295D77090021D437 /* UIViewController+hideKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */; };
 		5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */; };
 		5C2F9CA8295D7B600021D437 /* StyleFeedUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */; };
@@ -163,9 +161,7 @@
 		5C2882C1298A4B7A0063C0C1 /* StyleCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleCommentRepository.swift; sourceTree = "<group>"; };
 		5C2882C3298A4B8A0063C0C1 /* ShopCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopCommentRepository.swift; sourceTree = "<group>"; };
 		5C2882C5298A4E6F0063C0C1 /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
-		5C2882C7298A4E9F0063C0C1 /* ReplyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyCell.swift; sourceTree = "<group>"; };
 		5C2882C9298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+presentLoginAgainAlert.swift"; sourceTree = "<group>"; };
-		5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyButton.swift; sourceTree = "<group>"; };
 		5C2F9CA0295D77090021D437 /* UIViewController+hideKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+hideKeyboard.swift"; sourceTree = "<group>"; };
 		5C2F9CA5295D7B250021D437 /* StyleFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedViewModel.swift; sourceTree = "<group>"; };
 		5C2F9CA7295D7B600021D437 /* StyleFeedUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleFeedUsecase.swift; sourceTree = "<group>"; };
@@ -450,8 +446,6 @@
 				651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */,
 				5C6FBD6E297AD0BA00B64FF0 /* FollowButton.swift */,
 				5C6CE19F2983A9D100755334 /* LoadingIndicator.swift */,
-				5C2882C5298A4E6F0063C0C1 /* CommentCollectionViewCell.swift */,
-				5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */,
 				94A3951B298B7C05002AFE4A /* ShopDetailSizefield.swift */,
 				94A3951D298B7C13002AFE4A /* PaddingLabel.swift */,
 				94A3951F298B7C25002AFE4A /* PriceFormatter.swift */,
@@ -641,7 +635,7 @@
 				94155C54297A4F330092B561 /* Shop Tab */,
 				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
 				65F8FBB32962104E00679E72 /* StyleFeedCollectionViewCell.swift */,
-				5C2882C7298A4E9F0063C0C1 /* ReplyCell.swift */,
+				5C2882C5298A4E6F0063C0C1 /* CommentCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -868,7 +862,6 @@
 				65F8FBAD29620F7600679E72 /* UserListCollectionViewLayout.swift in Sources */,
 				5C6FBD4729796DB300B64FF0 /* NestedProfile.swift in Sources */,
 				5C2F9CA6295D7B250021D437 /* StyleFeedViewModel.swift in Sources */,
-				5C2882CC298AF1AC0063C0C1 /* ReplyButton.swift in Sources */,
 				5C6FBD5A2979826500B64FF0 /* UserListCollectionViewCell.swift in Sources */,
 				5C6FBD7D297D965A00B64FF0 /* FollowUserListViewController.swift in Sources */,
 				94A394F92988FCC8002AFE4A /* Brand.swift in Sources */,
@@ -879,7 +872,6 @@
 				5C2882C6298A4E6F0063C0C1 /* CommentCollectionViewCell.swift in Sources */,
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
 				5C6FBD77297BCCF500B64FF0 /* ProfileViewController.swift in Sources */,
-				5C2882C8298A4E9F0063C0C1 /* ReplyCell.swift in Sources */,
 				65653F3D295B7601002F250B /* KeywordCollectionViewCell.swift in Sources */,
 				65DF48972961E13C00AF6CDB /* TermsButton.swift in Sources */,
 				94A39518298B7B77002AFE4A /* ProductSizeSelectionViewController.swift in Sources */,

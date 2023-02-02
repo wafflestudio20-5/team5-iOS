@@ -102,29 +102,4 @@ final class StyleCommentRepository: CommentRepositoryProtocol {
                 }
             }
     }
-    
-    func sendReply(token: String, to_profile: String, content: String, replyTarget: Int, completion: @escaping ()->(), onNetworkFailure: @escaping () -> ()) {
-        let headers: HTTPHeaders = [
-            "accept": "application/json",
-            "Authorization": "Bearer \(token)"
-        ]
-//
-//        AF.request(cursor, method: .get, headers: headers)
-//            .validate()
-//            .responseDecodable(of: CommentResponse.self) { response in
-//                //**********
-//                print("\n=============== style comment 이어서 불러오기 ===============\n")
-//                debugPrint(response)
-//                //**********
-//
-//                switch response.result {
-//                case .success(let result):
-//                    single(.success(result))
-//                case .failure(let error):
-//                    single(.failure(error))
-//                }
-//
-//                completion()
-//            }
-    }
 }

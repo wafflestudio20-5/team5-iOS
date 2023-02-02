@@ -17,13 +17,13 @@ final class CommentViewModel {
     
     var currentReplyTarget: Int = 0
     
-    var isWritingReply = false {
+    var isWritingComment = false {
         didSet {
-            isWritingReplyRelay.accept(isWritingReply)
+            isWritingCommentRelay.accept(isWritingComment)
         }
     }
     
-    let isWritingReplyRelay = BehaviorRelay<Bool>(value: false)
+    let isWritingCommentRelay = BehaviorRelay<Bool>(value: false)
     
     var currentReplyToProfile: ReplyToProfile?
 
@@ -60,7 +60,4 @@ final class CommentViewModel {
         self.commentUsecase.sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
-    func sendReply(token: String, to_profile: String, content: String, completion: @escaping ()->(), onNetworkFailure: @escaping () -> ()) {
-        self.commentUsecase.sendReply(token: token, to_profile: to_profile, content: content, replyTarget: currentReplyTarget, completion: completion, onNetworkFailure: onNetworkFailure)
-    }
 }

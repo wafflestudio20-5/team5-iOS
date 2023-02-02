@@ -16,7 +16,6 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     private let profileImageView = UIImageView()
     private let profileNameLabel = UILabel()
     private let contentLabel = UILabel()
-    let replyButton = ReplyButton()
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -25,7 +24,6 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         self.profileImageView.image = nil
-        self.replyButton.replyToProfile = nil
         super.prepareForReuse()
     }
     
@@ -63,14 +61,12 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         self.addSubview(profileImageView)
         self.addSubview(profileNameLabel)
         self.addSubview(contentLabel)
-        self.addSubview(replyButton)
     }
     
     private func setUpLayout() {
         setUpProfileImageView()
         setUpProfileNameLabel()
         setUpContentLabel()
-        setUpReplyButton()
     }
     
     private func setUpProfileImageView() {
@@ -118,21 +114,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
             contentLabel.leadingAnchor.constraint(equalTo: self.profileImageView.trailingAnchor, constant: 7),
             contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
             contentLabel.topAnchor.constraint(equalTo: self.profileNameLabel.bottomAnchor),
-            contentLabel.bottomAnchor.constraint(equalTo: self.replyButton.topAnchor)
+            contentLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     
-    private func setUpReplyButton() {
-        replyButton.titleLabel!.font = UIFont.systemFont(ofSize: self.font2)
-        replyButton.titleLabel!.text = "답글 쓰기"
-        replyButton.backgroundColor = .clear
-        
-        replyButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            replyButton.widthAnchor.constraint(equalToConstant: 30),
-            replyButton.leadingAnchor.constraint(equalTo: self.contentLabel.leadingAnchor),
-            replyButton.heightAnchor.constraint(equalToConstant: 20),
-            replyButton.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-        ])
-    }
 }
