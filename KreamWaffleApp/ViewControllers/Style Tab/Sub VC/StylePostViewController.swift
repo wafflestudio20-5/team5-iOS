@@ -75,21 +75,28 @@ final class StylePostViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        self.hidesBottomBarWhenPushed = false;
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.backgroundColor = .white
         refreshData()
     }
     
     private func refreshData() {
         Task {
-            await self.userInfoViewModel.checkAccessToken()
-            let token = self.userInfoViewModel.UserResponse?.accessToken
-            
-            self.stylePostViewModel.requestPost(token: token) { [weak self] in
-                let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self?.navigationController?.popViewController(animated: true)
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if (isValidToken) {
+                let token = self.userInfoViewModel.UserResponse?.accessToken
+                
+                self.stylePostViewModel.requestPost(token: token) { [weak self] in
+                    let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                    alert.addAction(okAction)
+                    self?.present(alert, animated: false, completion: nil)
                 }
-                alert.addAction(okAction)
-                self?.present(alert, animated: false, completion: nil)
+            } else {
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }
         }
     }
@@ -193,7 +200,7 @@ final class StylePostViewController: UIViewController {
         contentLabel.lineBreakStrategy = .hangulWordPriority
         contentLabel.textAlignment = .left
         contentLabel.adjustsFontSizeToFitWidth = false
-        contentLabel.numberOfLines = Int.max
+        contentLabel.numberOfLines = 0
         
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -333,7 +340,6 @@ final class StylePostViewController: UIViewController {
         self.numLikesLabel.sizeToFit()
         
         self.writerUserId = post.created_by.user_id
-        self.followButton.configure(following: post.created_by.following)
         
         if post.liked == "true" {
             self.isLiked = true
@@ -442,6 +448,16 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func commentButtonTapped() {
-        print("comment button")
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            self.hidesBottomBarWhenPushed = true
+            self.tabBarController?.tabBar.isHidden = true
+
+            let commentRepository = StyleCommentRepository()
+            let commentUsecase = CommentUsecase(commentRepository: commentRepository)
+            let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.stylePostViewModel.getPostId())
+            self.navigationController?.pushViewController(CommentViewController(userInfoViewModel: self.userInfoViewModel, commentViewModel: commentViewModel), animated: true)
+        }
     }
 }

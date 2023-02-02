@@ -182,3 +182,16 @@ extension UIButton{
 
 }
 
+
+extension UIViewController {
+    func presentLoginAgainAlert() {
+        let alert = UIAlertController(title: "실패", message: "다시 로그인해주세요.", preferredStyle: UIAlertController.Style.alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(okAction)
+        self.present(alert, animated: false, completion: nil)
+    }
+    
+}
+
