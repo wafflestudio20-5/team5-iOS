@@ -293,12 +293,12 @@
 		5C2F9CA2295D77350021D437 /* My Tab */ = {
 			isa = PBXGroup;
 			children = (
-				CE9EBDE6298B966E00F4131A /* Edit Login VC */,
 				6537F7132985BEFF00FC58E8 /* Edit Profile VC */,
 				655A94D0296C772900F0184B /* Subviews */,
 				948C66942958482E00561C59 /* MyTabViewController.swift */,
 				65F8FBB92962125200679E72 /* MyShoppingViewController.swift */,
 				655A94CE296C73FB00F0184B /* MyProfileViewController.swift */,
+				6537F71129837CAF00FC58E8 /* SettingsViewController.swift */,
 			);
 			path = "My Tab";
 			sourceTree = "<group>";
@@ -382,7 +382,6 @@
 		65508A4F297BB1BB00C6431D /* Login Tab */ = {
 			isa = PBXGroup;
 			children = (
-				CE9EBDE4298B921600F4131A /* EditAccountVIewModel.swift */,
 				CE571D86298A809600DAB878 /* UserProfileViewModel.swift */,
 				65781D022976C415000FC684 /* LoginViewModel.swift */,
 				65508A50297BB1D100C6431D /* SignUpViewModel.swift */,
@@ -396,6 +395,7 @@
 				65F8FBB5296211B800679E72 /* ProfileSubview.swift */,
 				65F8FBB7296211E000679E72 /* ProfileSubviewSubCell.swift */,
 				651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */,
+				CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -431,6 +431,7 @@
 		65653F3B295B73FC002F250B /* Shop Tab */ = {
 			isa = PBXGroup;
 			children = (
+				94A39516298B7B48002AFE4A /* Detail VC */,
 				65653F44295B8408002F250B /* Sub VC */,
 				9428AE4C295719A500DC7907 /* ShopTabViewController.swift */,
 				CE9EBDF0298BDDF400F4131A /* ProductDetailViewController.swift */,
@@ -924,7 +925,6 @@
 				94A394F32988FC3D002AFE4A /* ShopFilterDetailViewController.swift in Sources */,
 				6537F71029837B3500FC58E8 /* EditProfileViewController.swift in Sources */,
 				5C2F9CA8295D7B600021D437 /* StyleFeedUsecase.swift in Sources */,
-				CE9EBDE5298B921600F4131A /* EditAccountVIewModel.swift in Sources */,
 				94CDFF972974742400C2095C /* HomeTabBrandsCollectionViewVC.swift in Sources */,
 				65F8FBB6296211B800679E72 /* ProfileSubview.swift in Sources */,
 				6583C9E72960DCB0007C741F /* FindPasswordViewController.swift in Sources */,

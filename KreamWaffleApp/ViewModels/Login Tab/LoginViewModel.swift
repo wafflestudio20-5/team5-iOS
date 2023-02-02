@@ -30,18 +30,6 @@ class LoginViewModel {
         }
     }
     
-    var errorRelay: BehaviorRelay<LoginError> {
-        get {
-            self.UserUseCase.errorRelay
-        }
-    }
-    
-    var user : User? {
-        get {
-            self.UserUseCase.user
-        }
-    }
-    
     ///VC observes login state
     var loginState : BehaviorRelay<Bool> {
         get {
@@ -107,20 +95,13 @@ class LoginViewModel {
         self.UserUseCase.signUp(email: email, password: password, shoeSize: shoeSize)
     }
     
-    func checkAccessToken() async -> Bool{
-        return await self.UserUseCase.checkAccessToken()
+    func checkAccessToken() async {
+        await self.UserUseCase.checkAccessToken()
     }
+    
     
     func logout(){
         self.UserUseCase.logout()
-    }
-    
-    func changePassword(newPassword: String){
-        self.UserUseCase.changePassword(newPasword: newPassword)
-    }
-    
-    func changeShoesize(newSize: Int){
-        self.UserUseCase.changeShoesize(newSize: newSize)
     }
     
 }
