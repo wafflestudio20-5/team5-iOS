@@ -17,9 +17,9 @@ class MyTabSharedUIStackVIew: UIStackView {
     let title3: String?
     let subtitle3: String?
     
-    lazy var subView1 = UIStackView()
-    lazy var subView2 = UIStackView()
-    lazy var subView3 = UIStackView()
+    var subView1 : UIStackView?
+    var subView2 : UIStackView?
+    var subView3: UIStackView?
     
     init(title1: String, subtitle1: String, title2 : String?, subtitle2: String?, title3: String?, subtitle3: String?, setCount: Int){
         self.setCount = setCount
