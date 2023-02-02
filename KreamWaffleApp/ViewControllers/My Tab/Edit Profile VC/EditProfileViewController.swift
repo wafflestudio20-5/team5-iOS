@@ -80,6 +80,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         self.title = "프로필 관리"
         self.view.addSubviews(self.profileButton, self.editTable)
         self.inputTableView()
+        test()
     }
     
     func inputTableView(){
@@ -148,6 +149,9 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         self.present(subVC, animated: true)
     }
     
-
+    func test(){
+        let profile = self.viewModel.userProfile
+        self.viewModel.editProfile(Profile: profile)
+    }
 
 }

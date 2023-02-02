@@ -47,4 +47,43 @@ final class ProfileRepository {
             return Disposables.create()
         }
     }
+    
+    //PUT: entire update (maybe change to patch?)
+    func updateUserProfile(profile: Profile, userId: Int, accessToken: String, completion: @escaping (Result<Bool, Error>) -> ()){
+        
+        let headers : HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)" ,
+            "accept": "application/json",
+            "Content-Type": "multipart/form-data",
+        ]
+        
+        let parameters = [
+            "user_name": profile.user_name,
+            "profile_name": profile.profile_name,
+            "introduction": profile.introduction,
+            "image": profile.image
+        ]
+        
+        AF.upload(multipartFormData: { multipartFormData in
+            for (key, value) in parameters {
+                multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
+            }
+            let imageJpegData = profile.updatedImage?.jpegData(compressionQuality: 1)
+            let sample = UIImage(named: "Kream")!.jpegData(compressionQuality: 1)
+            multipartFormData.append(((imageJpegData ?? sample)!), withName: "image", fileName: "\(index).jpg", mimeType: "image/jpg")
+                }, to: fetchUserConstants.uri + "\(userId)/", method: .put, headers: headers)
+            .validate()
+            .response() {response in
+                switch response.result {
+                case .success(_):
+                    debugPrint(response)
+                    completion(.success(true))
+                case .failure(let error):
+                    debugPrint(response)
+                    completion(.failure(error))
+                }
+            }
+    }
 }
+
+

@@ -225,16 +225,17 @@ final class UserUsecase {
         }
     }
     
-    //TEST 용
-    func test_checkIfAccessTokenValid(){
-        repository.test_CheckIfValidToken { [weak self] (result) in
-            guard let self = self else {return}
+    func updateProfile(Profile: Profile){
+        profileRepository.updateUserProfile(profile: Profile, userId: self.user!.id , accessToken: self.userResponse!.accessToken){ [weak self] (result) in
+            guard let self = self else { return }
             switch result {
             case .success(let bool):
-                print(bool)
-            case .failure(_):
-                print("false")
+                print("update 완료")
+            case .failure(let error):
+                print(error)
             }
         }
     }
+    
+    
 }

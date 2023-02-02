@@ -246,10 +246,17 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     func setUpData() {
         // 서버에서 받아온 user data를 뷰에 세팅하는 함수.
         // 나중에 Rx로 바꿔야함.
-        let url = URL(string: self.temporaryUserData.profileImageUrl)
-        self.profileImageView.kf.setImage(with: url)
-        self.profileNameLabel.text = temporaryUserData.nickname
-        self.userNameLabel.text = self.userInfoVM.User?.parsed_email
+        if self.userProfileVM.userProfile != nil{
+            let url = URL(string: self.userProfileVM.userProfile.image)
+            self.profileImageView.kf.setImage(with: url)
+            self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
+            self.userNameLabel.text = self.userProfileVM.userProfile.user_name
+        }else {
+            let url = URL(string: self.temporaryUserData.profileImageUrl)
+            self.profileImageView.kf.setImage(with: url)
+            self.profileNameLabel.text = temporaryUserData.nickname
+            self.userNameLabel.text = self.userInfoVM.User?.parsed_email
+        }
     }
     
     func setupDivider(){
