@@ -49,17 +49,20 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
         { [self] index, element, cell in
                 //element is editCase
             cell.addData(editCase: element, userProfile: nil, user: viewModel.user)
-            if (element != .email && element != .shoeSize){
+            if (element == .password){
                 //=========for changing password============
+                
                 self.viewModel.pwTextRelay.subscribe { pw in
-                    cell.currentTextLabel.text = pw
+                    print("changed \(pw.element)")
+                    //바인딩 문제있음. 
+                    cell.currentTextLabel.text = pw.element
                 }
                 
                 cell.editButton.rx
                     .tap
                     .bind {
                         let subVC = SubEditProfileViewController(myProfile: nil, editCase: element, user: viewModel.user, viewModel: self.viewModel)
-                        subVC.bindForPasswordSetting() //binds activate button to VM
+                        subVC.bindForPasswordSetting()
                         subVC.modalPresentationStyle = .pageSheet
                         self.present(subVC, animated: true)
                     }

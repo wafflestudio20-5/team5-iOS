@@ -19,9 +19,8 @@ class EditAccountViewModel {
     var dummyRelay =  BehaviorRelay<Bool>(value: true)
     
     //로그인 정보 탭에서 사용하는 릴레이
-    var pwTextRelay: BehaviorRelay<String>
+    var pwTextRelay =  BehaviorRelay<String>(value: "**********")
     var shoeSizeRelay: BehaviorRelay<Int>
-    
     
     //프로필 관리 탭에서 사용하는 릴레이
     var profileNameRelay: BehaviorRelay<String>
@@ -30,7 +29,6 @@ class EditAccountViewModel {
     
     init(usecase: UserUsecase){
         self.usecase = usecase
-        pwTextRelay = BehaviorRelay<String>(value: "**********")
         shoeSizeRelay = BehaviorRelay<Int>(value: usecase.user?.shoeSize ?? 0)
         profileNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.profile_name ?? "")
         userNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.user_name ?? "")

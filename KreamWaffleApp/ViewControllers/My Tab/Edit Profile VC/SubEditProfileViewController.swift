@@ -45,7 +45,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         mapData()
         addNavigationBar()
         setupSubviews()
-        bind()
+        //bind()
     }
     
     private func addNavigationBar() {
@@ -155,7 +155,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         self.saveButton.clipsToBounds = true
     }
 
-    
+    //MARK: - only for profile settings
     func bind(){
         self.textfield?.textfield.rx.text
             .orEmpty
@@ -183,6 +183,21 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
     //MARK: - only for user settings
     func bindForPasswordSetting() {
         
+        self.textfield?.textfield.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .subscribe(onNext: { changedText in
+                print(changedText)
+                self.textfield?.editTextCounter(text: changedText)
+                self.viewModel?.pwTextRelay.accept(changedText)
+            })
+            .disposed(by: bag)
+        
+        self.textfield?.textfield.rx.text
+            .orEmpty
+            .bind(to: self.viewModel!.pwTextRelay)
+            .disposed(by: bag)
+        
         self.viewModel?.isValidPasswordRelay()
             .map { $0 ? UIColor.black: UIColor.lightGray}
             .bind(to: self.saveButton.rx.backgroundColor)
@@ -191,6 +206,10 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         self.viewModel?.isValidPasswordRelay()
             .map { $0 ? UIColor.white: UIColor.darkGray}
             .bind(to: self.saveButton.rx.tintColor)
+            .disposed(by: bag)
+        
+        self.viewModel?.isValidPasswordRelay()
+            .bind(to: self.saveButton.rx.isEnabled)
             .disposed(by: bag)
         
         self.saveButton.rx
