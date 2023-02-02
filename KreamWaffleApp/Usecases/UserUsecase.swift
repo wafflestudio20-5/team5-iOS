@@ -224,4 +224,17 @@ final class UserUsecase {
             }
         }
     }
+    
+    //TEST 용
+    func test_checkIfAccessTokenValid(){
+        repository.test_CheckIfValidToken { [weak self] (result) in
+            guard let self = self else {return}
+            switch result {
+            case .success(let bool):
+                print(bool)
+            case .failure(_):
+                print("false")
+            }
+        }
+    }
 }

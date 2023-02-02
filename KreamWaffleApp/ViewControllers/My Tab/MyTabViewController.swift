@@ -100,7 +100,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     @objc func settingButtonTapped(){
-        let settingsVC = SettingsViewController(viewModel: self.loginVM)
+        let viewModel = EditAccountViewModel(usecase: self.loginVM.UserUseCase)
+        let settingsVC = SettingsViewController(viewModel: viewModel)
         settingsVC.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(settingsVC, animated: true)
     }

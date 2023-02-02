@@ -197,7 +197,7 @@ class LoginRepository {
         
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "accept")
         request.httpBody = "{}".data(using: .utf8)!
                
         AF.request(request)
@@ -217,6 +217,39 @@ class LoginRepository {
                 }
             }
     }
+    
+    //TEST 용
+    func test_CheckIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()) {
+        let URLString = "\(baseAPIURL)/token/verify/"
+               guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                   completion(.failure(.urlError))
+                   return
+               }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.httpBody = "{}".data(using: .utf8)!
+               
+        AF.request(request)
+            .validate()
+            .response { (response) in
+                print("\n================TEST용! checkIfValidToken================\n")
+                debugPrint(response)
+                switch response.result {
+                case .success:
+                    completion(.success(true))
+                case .failure(let error):
+                    if (error.responseCode == 400){
+                        completion(.failure(.invalidAccessTokenError))
+                    }else{
+                        completion(.failure(.unknownError))
+                    }
+                }
+            }
+        
+    }
 
     ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
     func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()) async {
@@ -230,7 +263,6 @@ class LoginRepository {
             .validate()
             .response { response in
             
-         
            print("\n================getNewToken================\n")
            debugPrint(response)
             

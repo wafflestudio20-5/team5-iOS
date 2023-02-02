@@ -14,7 +14,7 @@ import RxCocoa
 class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout {
     private let bag = DisposeBag()
     let viewModel : SignUpViewModel?
-    let loginVM: LoginViewModel?
+    let loginVM: EditAccountViewModel?
     var sizeView : UICollectionView!
     private var layout = UICollectionViewFlowLayout()
     private var backButton = UIButton()
@@ -22,7 +22,7 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
     
     let shoeSizes = [220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290, 295, 300]
     
-    init(viewModel: SignUpViewModel?, loginVM: LoginViewModel?){
+    init(viewModel: SignUpViewModel?, loginVM: EditAccountViewModel?){
         self.viewModel = viewModel
         self.loginVM = loginVM
         super.init(nibName: nil, bundle: nil)
@@ -72,7 +72,8 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
             .rx
             .modelSelected(Int.self)
             .subscribe(onNext: { model in
-                self.loginVM?.changeShoesize(newSize: model)
+                self.loginVM?.shoeSizeRelay.accept(model)
+                self.loginVM?.changeShoeSize()
                 self.dismiss(animated: true)
             }).disposed(by: bag)
     }
