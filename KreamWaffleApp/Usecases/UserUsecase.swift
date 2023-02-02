@@ -125,6 +125,7 @@ final class UserUsecase {
                     self.replaceAccessToken(newToken: response.accessToken)
                 case .failure(let error):
                     self.error = error as LoginError
+                    //TODO: 이거 에러.
                     /*
                     if (error == .invalidRefreshTokenError){
                         self.logout()
@@ -201,5 +202,42 @@ final class UserUsecase {
     
     func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
         self.repository.requestFollow(token: token, user_id: user_id, onNetworkFailure: onNetworkFailure)
+    }
+    
+    func changePassword(newPasword: String){
+        repository.changePassword(token: self.userResponse!.accessToken, newPassword: newPasword) { [weak self] (result) in
+            guard let self = self else {return}
+            switch result {
+            case .success(_):
+                print("[Log] UserUsecase: Password change success.")
+            case .failure(let error):
+                self.error = error as LoginError
+            }
+        }
+    }
+    
+    func changeShoesize(newSize: Int){
+        repository.changeUserInfo(token: self.userResponse!.accessToken, shoeSize: newSize) { [weak self] (result) in
+            guard let self = self else {return}
+            switch result {
+            case .success(let user):
+                self.user = user
+            case .failure(let error):
+                self.error = error as LoginError
+            }
+        }
+    }
+    
+    //TEST 용
+    func test_checkIfAccessTokenValid(){
+        repository.test_CheckIfValidToken { [weak self] (result) in
+            guard let self = self else {return}
+            switch result {
+            case .success(let bool):
+                print(bool)
+            case .failure(_):
+                print("false")
+            }
+        }
     }
 }

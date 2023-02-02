@@ -61,7 +61,7 @@ class EditProfileTableViewCell: UITableViewCell {
             
         case .shoeSize:
             self.titleLabel.text = "신발 사이즈"
-            self.currentTextLabel.text = "\(user?.shoeSize)"
+            self.currentTextLabel.text = String(user?.shoeSize ?? 0)
         }
     }
     
