@@ -18,8 +18,7 @@ class TabBarViewController: UITabBarController {
     
     let homeViewModel: HomeViewModel
     let shopViewModel: ShopViewModel
-    let latestStyleFeedViewModel: StyleFeedViewModel
-    let followingStyleFeedViewModel: StyleFeedViewModel
+    let styleFeedViewModel: StyleFeedViewModel
     let userInfoViewModel : UserInfoViewModel
     let loginViewModel : LoginViewModel
     let UserProfileViewModel: UserProfileViewModel
@@ -29,12 +28,10 @@ class TabBarViewController: UITabBarController {
     let myTabBarItem: UITabBarItem
 
 
-    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, latestStyleFeedViewModel: StyleFeedViewModel, followingStyleFeedViewModel: StyleFeedViewModel, userInfoViewModel:UserInfoViewModel, loginViewModel: LoginViewModel, userProfileViewModel: UserProfileViewModel) {
-        
+    init(homeViewModel: HomeViewModel, shopViewModel: ShopViewModel, styleFeedViewModel: StyleFeedViewModel, userInfoViewModel:UserInfoViewModel, loginViewModel: LoginViewModel, userProfileViewModel: UserProfileViewModel) {
         self.homeViewModel = homeViewModel
         self.shopViewModel = shopViewModel
-        self.latestStyleFeedViewModel = latestStyleFeedViewModel
-        self.followingStyleFeedViewModel = followingStyleFeedViewModel
+        self.styleFeedViewModel = styleFeedViewModel
         self.userInfoViewModel = userInfoViewModel
         self.loginViewModel = loginViewModel
         self.UserProfileViewModel = userProfileViewModel
@@ -65,7 +62,7 @@ class TabBarViewController: UITabBarController {
         homeTab.modalPresentationStyle = .fullScreen
         homeTab.tabBarItem = homeTabBarItem
 
-        let styleTab = UINavigationController(rootViewController: StyleTabViewController(latestStyleFeedViewModel: self.latestStyleFeedViewModel, followingStyleFeedViewModel: self.followingStyleFeedViewModel, userInfoViewModel: self.userInfoViewModel))
+        let styleTab = UINavigationController(rootViewController: StyleTabViewController(styleFeedViewModel: self.styleFeedViewModel, userInfoViewModel: self.userInfoViewModel))
         styleTab.tabBarItem = styleTabBarItem
 
         let shopTab = UINavigationController(rootViewController: ShopTabViewController(viewModel: self.shopViewModel))
