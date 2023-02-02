@@ -55,7 +55,7 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
                         subVC.modalPresentationStyle = .pageSheet
                         self.present(subVC, animated: true)
                     }
-            }else if (element == .email){
+            }else if (element == .email || element == .shoeSize){
                 cell.removeButton()
             }else if (element == .shoeSize){
                 cell.editButton.rx
@@ -81,7 +81,7 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
         NSLayoutConstraint.activate([
             self.editTable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.editTable.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.editTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 60),
+            self.editTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80),
             self.editTable.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
     }

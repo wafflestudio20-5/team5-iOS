@@ -107,10 +107,9 @@ class LoginViewModel {
         self.UserUseCase.signUp(email: email, password: password, shoeSize: shoeSize)
     }
     
-    func checkAccessToken() async {
-        await self.UserUseCase.checkAccessToken()
+    func checkAccessToken() async -> Bool{
+        return await self.UserUseCase.checkAccessToken()
     }
-    
     
     func logout(){
         self.UserUseCase.logout()
