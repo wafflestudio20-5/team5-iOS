@@ -310,5 +310,50 @@ class LoginRepository {
         }
     }
     
+    func changeUserInfo(token: String, shoeSize: Int, completion: @escaping (Result<User, LoginError>) -> ()){
+        let URLString = "\(baseAPIURL)/user/"
+            guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                   completion(.failure(.urlError))
+                   return
+               }
+    
+        let parameters = [
+            "shoe_size": shoeSize,
+            "phone_number": ""
+        ] as [String:Any]
+        
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+               
+        AF.request(url, method: .put, parameters: parameters, encoding: URLEncoding.httpBody, headers: headers)
+            .validate()
+            .response{ response in
+            switch response.result {
+            case .success(let data):
+                do{
+                    let results : User = try JSONDecoder().decode(User.self, from: data!)
+                    self.saveUser(user: results)
+                    print("[Log] Login Repository: saved updated uer data")
+                    completion(.success(results))
+                }catch{
+                    completion(.failure(.unknownError))
+                    //let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                    //print(String(describing: json))
+                    print("[Log] LoginRepo: Error is \(error)")
+                }
+                
+            case .failure(let error):
+                //let json = String(data: response.data!, encoding: String.Encoding.utf8)
+                //let loginError = checkErrorMessage(String(describing: json))
+                completion(.failure(.unknownError))
+                print(error)
+            }
+            
+        }
+    }
+    
     
 }

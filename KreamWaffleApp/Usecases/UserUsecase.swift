@@ -212,4 +212,16 @@ final class UserUsecase {
             }
         }
     }
+    
+    func changeShoesize(newSize: Int){
+        repository.changeUserInfo(token: self.userResponse!.accessToken, shoeSize: newSize) { [weak self] (result) in
+            guard let self = self else {return}
+            switch result {
+            case .success(let user):
+                self.user = user
+            case .failure(let error):
+                self.error = error as LoginError
+            }
+        }
+    }
 }

@@ -119,4 +119,8 @@ class LoginViewModel {
         self.UserUseCase.changePassword(newPasword: newPassword)
     }
     
+    func changeShoesize(newSize: Int){
+        self.UserUseCase.changeShoesize(newSize: newSize)
+    }
+    
 }

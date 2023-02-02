@@ -55,13 +55,13 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
                         subVC.modalPresentationStyle = .pageSheet
                         self.present(subVC, animated: true)
                     }
-            }else if (element == .email || element == .shoeSize){
+            }else if (element == .email){
                 cell.removeButton()
             }else if (element == .shoeSize){
                 cell.editButton.rx
                     .tap
                     .bind {
-                        let vc = ShoeSizeSelectionViewController(viewModel: nil)
+                        let vc = ShoeSizeSelectionViewController(viewModel: nil, loginVM: self.viewModel)
                         vc.modalPresentationStyle = .pageSheet
                         if let sheet = vc.sheetPresentationController {
                             sheet.detents = [.medium()]
