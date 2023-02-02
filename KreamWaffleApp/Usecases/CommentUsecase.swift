@@ -20,6 +20,7 @@ final class CommentUsecase {
     var commentList = [Comment]() {
         didSet {
             commentDidLoad.accept(true)
+            commentRelay.accept(commentList)
         }
     }
     

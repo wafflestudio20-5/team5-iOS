@@ -31,8 +31,8 @@ final class CommentViewModel {
         return self.commentUsecase.commentDidLoad.asObservable()
     }
     
-    var commentDataSource: [Comment] {
-        return self.commentUsecase.commentList
+    var commentDataSource: Observable<[Comment]> {
+        return self.commentUsecase.commentRelay.asObservable()
     }
     
     init(commentUsecase: CommentUsecase, id: Int) {

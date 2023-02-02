@@ -15,7 +15,7 @@
 		5C2882C0298A33680063C0C1 /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882BF298A33680063C0C1 /* CommentViewController.swift */; };
 		5C2882C2298A4B7A0063C0C1 /* StyleCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C1298A4B7A0063C0C1 /* StyleCommentRepository.swift */; };
 		5C2882C4298A4B8A0063C0C1 /* ShopCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C3298A4B8A0063C0C1 /* ShopCommentRepository.swift */; };
-		5C2882C6298A4E6F0063C0C1 /* CommentHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C5298A4E6F0063C0C1 /* CommentHeader.swift */; };
+		5C2882C6298A4E6F0063C0C1 /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C5298A4E6F0063C0C1 /* CommentCollectionViewCell.swift */; };
 		5C2882C8298A4E9F0063C0C1 /* ReplyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C7298A4E9F0063C0C1 /* ReplyCell.swift */; };
 		5C2882CA298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882C9298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift */; };
 		5C2882CC298AF1AC0063C0C1 /* ReplyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */; };
@@ -162,7 +162,7 @@
 		5C2882BF298A33680063C0C1 /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
 		5C2882C1298A4B7A0063C0C1 /* StyleCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleCommentRepository.swift; sourceTree = "<group>"; };
 		5C2882C3298A4B8A0063C0C1 /* ShopCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopCommentRepository.swift; sourceTree = "<group>"; };
-		5C2882C5298A4E6F0063C0C1 /* CommentHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHeader.swift; sourceTree = "<group>"; };
+		5C2882C5298A4E6F0063C0C1 /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		5C2882C7298A4E9F0063C0C1 /* ReplyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyCell.swift; sourceTree = "<group>"; };
 		5C2882C9298AD54B0063C0C1 /* UIViewController+presentLoginAgainAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+presentLoginAgainAlert.swift"; sourceTree = "<group>"; };
 		5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyButton.swift; sourceTree = "<group>"; };
@@ -450,7 +450,7 @@
 				651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */,
 				5C6FBD6E297AD0BA00B64FF0 /* FollowButton.swift */,
 				5C6CE19F2983A9D100755334 /* LoadingIndicator.swift */,
-				5C2882C5298A4E6F0063C0C1 /* CommentHeader.swift */,
+				5C2882C5298A4E6F0063C0C1 /* CommentCollectionViewCell.swift */,
 				5C2882CB298AF1AC0063C0C1 /* ReplyButton.swift */,
 				94A3951B298B7C05002AFE4A /* ShopDetailSizefield.swift */,
 				94A3951D298B7C13002AFE4A /* PaddingLabel.swift */,
@@ -876,7 +876,7 @@
 				94A394F72988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift in Sources */,
 				5CE9B342296878FD00B3C894 /* ProductDetailViewController.swift in Sources */,
 				94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */,
-				5C2882C6298A4E6F0063C0C1 /* CommentHeader.swift in Sources */,
+				5C2882C6298A4E6F0063C0C1 /* CommentCollectionViewCell.swift in Sources */,
 				65653F37295B5B25002F250B /* colors.swift in Sources */,
 				5C6FBD77297BCCF500B64FF0 /* ProfileViewController.swift in Sources */,
 				5C2882C8298A4E9F0063C0C1 /* ReplyCell.swift in Sources */,

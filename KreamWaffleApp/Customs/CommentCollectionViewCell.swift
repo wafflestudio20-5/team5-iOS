@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Kingfisher
 
-final class CommentHeader: UICollectionReusableView {
+final class CommentCollectionViewCell: UICollectionViewCell {
     private let font1: CGFloat = 14;
     private let font2: CGFloat = 13;
     

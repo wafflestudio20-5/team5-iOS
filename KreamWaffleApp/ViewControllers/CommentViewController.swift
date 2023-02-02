@@ -90,10 +90,6 @@ final class CommentViewController: UIViewController {
         bindCollectionView()
         setUpRefreshControl()
         requestInitialData()
-        
-        
-        commentCollectionView.register(UINib(nibName: "CommentHeader", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader , withReuseIdentifier: "CommentHeaderIdentifier")
-        commentCollectionView.register(UINib(nibName: "ReplyCell", bundle: nil), forCellWithReuseIdentifier: "ReplyCellIdentifier")
     }
     
     
@@ -109,7 +105,6 @@ final class CommentViewController: UIViewController {
     
     func configureDelegate() {
         enterCommentTextView.delegate = self
-        commentCollectionView.dataSource = self
         commentCollectionView.delegate = self
     }
     
@@ -214,16 +209,11 @@ final class CommentViewController: UIViewController {
     }
     
     func bindCollectionView() {
-        self.commentViewModel.commentDidLoad
-            .subscribe { [weak self] event in
-                switch event {
-                case .next:
-                    self!.commentCollectionView.reloadData()
-                case .completed:
-                    break
-                case .error:
-                    break
-                }
+        commentCollectionView.register(CommentCollectionViewCell.self, forCellWithReuseIdentifier: "CommentCollectionViewCell")
+
+        self.commentViewModel.commentDataSource
+            .bind(to: commentCollectionView.rx.items(cellIdentifier: "CommentCollectionViewCell", cellType: CommentCollectionViewCell.self)) { index, item, cell in
+                cell.configure(with: item)
             }
             .disposed(by: disposeBag)
     }
@@ -249,45 +239,6 @@ final class CommentViewController: UIViewController {
                 self.present(alert, animated: false, completion: nil)
             }
         }
-    }
-}
-
-extension CommentViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.commentViewModel.commentDataSource.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.commentViewModel.commentDataSource[section].replies.count
-        
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let replyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ReplyCellIdentifier", for: indexPath) as! ReplyCell
-        replyCell.configure(with: self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row])
-        replyCell.replyButton.tag = self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row].id
-        replyCell.replyButton.replyToProfile = self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row].to_profile
-        replyCell.replyButton.addTarget(self, action: #selector(replyToReplyButtonTapped(sender:)), for: .touchUpInside)
-        
-        return replyCell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) ->
-            UICollectionReusableView {
-
-            if kind == UICollectionView.elementKindSectionHeader {
-
-                let commentHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CommentHeaderIdentifier", for: indexPath) as! CommentHeader
-                
-                commentHeader.configure(with: self.commentViewModel.commentDataSource[indexPath.section])
-                commentHeader.replyButton.tag = self.commentViewModel.commentDataSource[indexPath.section].id
-                commentHeader.replyButton.addTarget(self, action: #selector(replyToCommentButtonTapped(sender:)), for: .touchUpInside)
-                commentHeader.replyButton.replyToProfile = self.commentViewModel.commentDataSource[indexPath.section].replies[indexPath.row].to_profile
-                
-                return commentHeader
-            }
-
-            return UICollectionReusableView()
     }
 }
 
