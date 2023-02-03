@@ -319,11 +319,29 @@ extension ShopUsecase {
     // filtered data
     func loadFilteredData(resetPage: Bool, category: [String]?, brands: [Brand]?, prices: [String]?, deliveryTag: Int) {
         if resetPage == true {
+            self.productInfoList = []
             let parameters = ShopPostRequestParameters(page: 1)
             self.repository
                 .requestFilteredShopPostData(parameters: parameters, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
                 .subscribe(onSuccess: { [self] fetchedProductInfos in
                     self.productInfoList = fetchedProductInfos
+                },
+                onFailure: { _ in
+                    self.productInfoList = []
+                })
+                .disposed(by: self.disposeBag)
+        }
+    }
+    
+    func loadMoreFilteredData(resetPage: Bool, category: [String]?, brands: [Brand]?, prices: [String]?, deliveryTag: Int, page: Int) {
+        if resetPage == false {
+            let parameters = ShopPostRequestParameters(page: page)
+            self.repository
+                .requestFilteredShopPostData(parameters: parameters, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
+                .subscribe(onSuccess: { [self] fetchedProductInfos in
+                    var prevProductInfos = self.shopRelay.value
+                    prevProductInfos.append(contentsOf: fetchedProductInfos)
+                    self.productInfoList = prevProductInfos
                 },
                 onFailure: { _ in
                     self.productInfoList = []

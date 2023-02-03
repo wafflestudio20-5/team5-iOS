@@ -10,12 +10,6 @@ import ImageSlideshow
 class ProductDetailViewController: UIViewController, UISheetPresentationControllerDelegate {
     private let viewModel: ShopTabDetailViewModel
     private let userInfoViewModel: UserInfoViewModel
-//    private var currentProductSizeInfo: ProductSize? {
-//        didSet {
-//            purchase_price = currentProductSizeInfo?.purchase_price ?? 0
-//            sales_price = currentProductSizeInfo?.sales_price ?? 0
-//        }
-//    }
     
     //main views
     private let scrollView = UIScrollView()
@@ -30,7 +24,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     private let priceSubLabel = UILabel()
     
     private var bookmarkCount = Int()
-//    var purchasePrice = Int()
+    var formattedPrice = String()
 //    var sellPrice = Int()
     
     // comment buttons
@@ -95,7 +89,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         setupBrandLabel()
         setupeng_nameLabel()
         setupkor_nameLabel()
-        setupShoeSizeField()
+        setupSizeField()
         setupPriceLabel()
         setUpCommentButton()
         
@@ -106,12 +100,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.hidesBottomBarWhenPushed = false;
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.backgroundColor = .white
-    }
-    
     private func configure() {
         imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
 
@@ -119,14 +107,8 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.eng_nameLabel.text = self.viewModel.getEngName()
         self.kor_nameLabel.text = self.viewModel.getKorName()
         
-        let formattedPrice = PriceFormatter.formatNumberToCurrency(intToFormat: self.viewModel.getPrice())
-        self.priceLabel.text = "\(formattedPrice)원"
-//        print(self.viewModel.usecase.productSizeInfoList)
-//        self.purchase_price = self.viewModel.getProductInfoForSize(size: "ALL").purchase_price
-//        self.sales_price = self.viewModel.getProductInfoForSize(size: "ALL").sales_price
-//        print(self.purchase_price)
-//        self.bookmarkCount = self.viewModel.getTotalWishes()
-//        self.purchasePrice = self.viewModel.price
+        self.formattedPrice = PriceFormatter.formatNumberToCurrency(intToFormat: self.viewModel.getPrice())
+        self.priceLabel.text = "\(self.formattedPrice)원"
     }
     
     private func applyDesign() {
@@ -261,17 +243,20 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         ])
     }
     
-    private func setupShoeSizeField() {
+    private func setupSizeField() {
         self.sizeField = ShopDetailSizefield(selectedSize: nil)
-//        self.view.addSubview(sizeField!)
+        self.sizeField?.button.addTarget(self, action: #selector(didTapSelectSize), for: .touchUpInside)
+        if self.viewModel.getProductSizeCount() == 1 {
+            self.sizeField?.textfield.text = "ONE SIZE"
+        }
+        
         self.contentView.addSubview(sizeField!)
         self.sizeField?.translatesAutoresizingMaskIntoConstraints = false
-        
         self.sizeField?.topAnchor.constraint(equalTo: self.kor_nameLabel.bottomAnchor, constant: 20).isActive = true
         self.sizeField?.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: self.marginConstant).isActive = true
         self.sizeField?.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -self.marginConstant).isActive = true
         self.sizeField?.heightAnchor.constraint(greaterThanOrEqualToConstant: 50).isActive = true
-        self.sizeField?.button.addTarget(self, action: #selector(didTapSelectSize), for: .touchUpInside)
+        
     }
     
     private func setupPriceLabel() {
@@ -416,7 +401,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         // price label
         let priceLabel: UILabel = {
             let label = UILabel()
-            label.text = "10,000"
+            label.text = formattedPrice
             label.textColor = .white
             label.font = UIFont.systemFont(ofSize: self.h3FontSize, weight: .bold)
             return label
@@ -476,7 +461,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         // price label
         let priceLabel: UILabel = {
             let label = UILabel()
-            label.text = "10,000"
+            label.text = formattedPrice
             label.textColor = .white
             label.font = UIFont.systemFont(ofSize: self.h3FontSize, weight: .bold)
             return label
