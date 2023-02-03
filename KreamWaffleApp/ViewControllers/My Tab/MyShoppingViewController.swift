@@ -5,9 +5,11 @@
 //  Created by grace kim  on 2023/01/02.
 //
 import UIKit
+import RxSwift
 
 class MyShoppingViewController: UIViewController {
     private let userInfoVM: UserInfoViewModel
+    let bag = DisposeBag()
     
     var purchaseTitle = UILabel()
     var purchaseButton = UIButton()
@@ -25,6 +27,7 @@ class MyShoppingViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         self.userInfoVM.requestData(myShopType: .purchase)
         self.userInfoVM.requestData(myShopType: .sale)
+        self.userInfoVM.requestWishData()
     }
     
     required init?(coder: NSCoder) {
@@ -43,6 +46,7 @@ class MyShoppingViewController: UIViewController {
         setupPurchaseButton()
         setupSalesButton()
         bind()
+        addNumberLabels()
     }
     
     func addSubviews(){
@@ -106,11 +110,34 @@ class MyShoppingViewController: UIViewController {
     
     func bind(){
         self.userInfoVM.salesProductCountObservable.subscribe { [weak self] count in
-            print("[Log] My Shop Tab: sales count is \(count)")
+            self?.salesNumber.text = "\(count.element ?? 0), (디자인 수정 예정)"
         }
+        .disposed(by: bag)
+        
         self.userInfoVM.purchasedProductsCountObservable.subscribe { [weak self] count in
-            print("[Log] My Shop Tab: purchase count is \(count)")
+            self?.purchaseNumber.text = "\(count.element ?? 0), (디자인 수정 예정)"
         }
+        .disposed(by: bag)
+        
+        self.userInfoVM.wishDataCountObservable.subscribe { [weak self] count in
+            self?.followerBar.title3 = "\(count.element ?? 0)"
+        }
+    }
+    
+    func addNumberLabels(){
+        self.purchaseNumber.translatesAutoresizingMaskIntoConstraints = false
+        self.purchaseButton.addSubview(purchaseNumber)
+        NSLayoutConstraint.activate([
+            self.purchaseNumber.centerXAnchor.constraint(equalTo: self.purchaseButton.centerXAnchor),
+            self.purchaseNumber.centerYAnchor.constraint(equalTo: self.purchaseButton.centerYAnchor)
+        ])
+        
+        self.salesNumber.translatesAutoresizingMaskIntoConstraints = false
+        self.salesButton.addSubview(salesNumber)
+        NSLayoutConstraint.activate([
+            self.salesNumber.centerXAnchor.constraint(equalTo: self.salesButton.centerXAnchor),
+            self.salesNumber.centerYAnchor.constraint(equalTo: self.salesButton.centerYAnchor)
+        ])
     }
     
     func titleLabel(title: String) -> UILabel{

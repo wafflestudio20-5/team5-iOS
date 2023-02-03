@@ -38,12 +38,11 @@ class UserShopRepository {
             AF.request(url, method: .get, parameters: parameters, headers: headers)
                 .validate()
                 .responseDecodable(of: UserProductResponse.self) { [weak self] response in
-                    print("=======shop========")
-                    debugPrint(response)
+                    //print("=======shop========")
+                    //debugPrint(response)
                     switch response.result {
                     case .success(let result):
                         single(.success(result))
-                        print("여기여기여기여기 \(result.count)")
                     case .failure(let _):
                         single(.success(UserProductResponse(count: 0, next: "", previous: "", itemList: [])))
                     }
@@ -51,4 +50,29 @@ class UserShopRepository {
             return Disposables.create()
         }
     }
+    
+    func requestWishData(token: String) -> Single<WishProductResponse> {
+        return Single.create { single in
+            let url = URL(string: "https://kream-waffle.cf/shop/wishes/")
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "Authorization": "Bearer \(token)"
+            ]
+            AF.request(url!, method: .get, parameters: nil, headers: headers)
+                .validate()
+                .responseDecodable(of: WishProductResponse.self) { [weak self] response in
+                    print("=======Wish========")
+                    debugPrint(response)
+                    switch response.result {
+                    case .success(let result):
+                        single(.success(result))
+                    case .failure(let _):
+                        single(.success(WishProductResponse(count: 0, next: "", previous: "", itemList: [])))
+                    }
+                }
+            return Disposables.create()
+        }
+    }
+    
+    
 }

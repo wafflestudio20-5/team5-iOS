@@ -14,7 +14,7 @@ class MyTabSharedUIStackVIew: UIStackView {
     let subtitle1: String
     let title2: String?
     let subtitle2: String?
-    let title3: String?
+    var title3: String?
     let subtitle3: String?
     
     var subView1 : UIStackView?

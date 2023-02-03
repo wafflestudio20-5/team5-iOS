@@ -96,6 +96,12 @@ final class UserUsecase {
         return self.salesProductCountRelay.asObservable()
     }
     
+    //wish data count related
+    var wishDataCountRelay = BehaviorRelay<Int>(value: 0)
+    var wishDataCountObservable : Observable<Int> {
+        return self.wishDataCountRelay.asObservable()
+    }
+    
     private var page: Int = 1
     private var paginating = false
     
@@ -331,22 +337,14 @@ extension UserUsecase {
             .disposed(by: self.disposeBag)
     }
     
-    /* --> 만약 pagination 한다면 사용. 
-    func loadMoreShopPosts(myShopType: myShopDataType, token: String) {
-        self.page += 1
-        print("requested page \(self.page)")
-        let parameters = ShopPostRequestParameters(page: self.page)
+    func loadWishItems(token: String){
         self.userShopRepository
-            .requestShopPostData(parameters:parameters, token: token, myShopType: myShopType)
+            .requestWishData(token: token)
             .subscribe(onSuccess: { [self] fetchedProductInfos in
-                //TODO: pagination?
-                //self.productRelay.append(contentsOf: fetchedProductInfos.itemList)
-                //self.productInfoList = prevProductInfos
-            },
-            onFailure: { _ in
-                self.productInfoList = []
+                self.wishDataCountRelay.accept(fetchedProductInfos.count)
+            }, onFailure: { _ in
+                print("wish data failure")
             })
             .disposed(by: self.disposeBag)
-        
-    }*/
+    }
 }
