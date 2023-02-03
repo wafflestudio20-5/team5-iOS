@@ -50,19 +50,40 @@ final class UserUsecase {
     // MARK: For my tab========
     
     // productinfo
-    var productRelay = BehaviorRelay<[UserProduct]>(value:[])
-    var productObservable: Observable<[UserProduct]> {
-        return self.productRelay.asObservable()
+    var purchaseProductRelay = BehaviorRelay<[UserProduct]>(value:[])
+    var purchaseProductObservable: Observable<[UserProduct]> {
+        return self.purchaseProductRelay.asObservable()
     }
-    
-    var userProductCount = 0
-    var productInfoList = [UserProduct]() {
+    var purchaseProductList = [UserProduct](){
         didSet {
-            self.getProductInfoObserver()
+            self.getPurchaseProductObserver()
         }
     }
-    func getProductInfoObserver() {
-        self.productRelay.accept(productInfoList)
+    func getPurchaseProductObserver(){
+        self.purchaseProductRelay.accept(purchaseProductList)
+    }
+    
+    var purchasedProductCountRelay = BehaviorRelay<Int>(value: 0)
+    var purchaseProductCountObservable: Observable<Int> {
+        return self.purchasedProductCountRelay.asObservable()
+    }
+
+    
+    var salesProductRelay = BehaviorRelay<[UserProduct]>(value: [])
+    var salesProductObservable : Observable<[UserProduct]> {
+        return self.salesProductRelay.asObservable()
+    }
+    var salesProductList = [UserProduct](){
+        didSet {
+            self.getSalesProductObserver()
+        }
+    }
+    func getSalesProductObserver(){
+        self.salesProductRelay.accept(salesProductList)
+    }
+    var salesProductCountRelay = BehaviorRelay<Int>(value: 0)
+    var salesProductCountObservable: Observable<Int> {
+        return self.salesProductCountRelay.asObservable()
     }
     
     private var page: Int = 1
@@ -283,15 +304,23 @@ extension UserUsecase {
         self.userShopRepository
             .requestShopPostData(parameters: parameters, token: token, myShopType: myShopType)
             .subscribe(onSuccess: { [self] fetchedProductInfos in
-                self.userProductCount = fetchedProductInfos.count
-                self.productInfoList = fetchedProductInfos.itemList
+                switch(myShopType){
+                case .purchase:
+                    self.purchasedProductCountRelay.accept(fetchedProductInfos.count)
+                    self.purchaseProductList = fetchedProductInfos.itemList
+                case .sale:
+                    self.salesProductCountRelay.accept(fetchedProductInfos.count)
+                    self.salesProductList = fetchedProductInfos.itemList
+                }
             },
             onFailure: { _ in
-                self.productInfoList = []
+                self.purchaseProductList = []
+                self.salesProductList = []
             })
             .disposed(by: self.disposeBag)
     }
     
+    /* --> 만약 pagination 한다면 사용. 
     func loadMoreShopPosts(myShopType: myShopDataType, token: String) {
         self.page += 1
         print("requested page \(self.page)")
@@ -308,5 +337,5 @@ extension UserUsecase {
             })
             .disposed(by: self.disposeBag)
         
-    }
+    }*/
 }

@@ -17,12 +17,14 @@ class MyShoppingViewController: UIViewController {
     
     var salesTitle = UILabel()
     var salesButton = UILabel()
+    var salesNumber = UILabel()
     
     
     init(userInfoVM: UserInfoViewModel) {
         self.userInfoVM = userInfoVM
         super.init(nibName: nil, bundle: nil)
         self.userInfoVM.requestData(myShopType: .purchase)
+        self.userInfoVM.requestData(myShopType: .sale)
     }
     
     required init?(coder: NSCoder) {
@@ -40,6 +42,7 @@ class MyShoppingViewController: UIViewController {
         setUpSubviews()
         setupPurchaseButton()
         setupSalesButton()
+        bind()
     }
     
     func addSubviews(){
@@ -99,6 +102,15 @@ class MyShoppingViewController: UIViewController {
             self.salesButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/10),
             self.salesButton.topAnchor.constraint(equalTo: salesTitle.bottomAnchor, constant: 10)
         ])
+    }
+    
+    func bind(){
+        self.userInfoVM.salesProductCountObservable.subscribe { [weak self] count in
+            print("[Log] My Shop Tab: sales count is \(count)")
+        }
+        self.userInfoVM.purchasedProductsCountObservable.subscribe { [weak self] count in
+            print("[Log] My Shop Tab: purchase count is \(count)")
+        }
     }
     
     func titleLabel(title: String) -> UILabel{
