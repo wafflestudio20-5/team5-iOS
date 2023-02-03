@@ -151,7 +151,7 @@ class LoginViewController: UIViewController {
         errorNotification.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
         errorNotification.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.view.frame.height/64).isActive = true
         errorNotification.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.frame.height/16).isActive = true
-        let seconds = 2.0
+        let seconds = 1.0
         DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
             UIView.animate(withDuration: 1.0, delay: 0.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
                 errorNotification.alpha = 0.0
@@ -176,7 +176,6 @@ class LoginViewController: UIViewController {
     }
     
     @objc func loginWithGoogle(){
-        //TODO: 에러처리하기
         GIDSignIn.sharedInstance()?.signIn()
     }
     

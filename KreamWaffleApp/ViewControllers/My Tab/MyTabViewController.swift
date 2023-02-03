@@ -58,7 +58,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     
-    
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){

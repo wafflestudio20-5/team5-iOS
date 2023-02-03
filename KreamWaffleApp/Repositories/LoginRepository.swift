@@ -402,5 +402,37 @@ class LoginRepository {
         }
     }
     
-    
+    func deleteUser(token: String, completion: @escaping (LoginError) -> ()){
+        let URLString = "\(baseAPIURL)/quit/"
+            guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                completion(.urlError)
+                   return
+               }
+        
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+               
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: headers)
+            .validate()
+            .response{ response in
+            print("==========deleteUser==============")
+            debugPrint(response)
+            switch response.result {
+            case .success(_):
+                print("[Log] Login Repo: 탈퇴 에러 처리 오류 발생")
+                completion(.unknownError)
+            case .failure(let error):
+                if (error.responseCode == 401){
+                    completion(.deleteAccountSuccessError)
+                }else{
+                    completion(.unknownError)
+                    print("[Log] Login Repo: 탈퇴 에러 처리 오류 발생")
+                }
+                
+            }
+    }
+}
 }

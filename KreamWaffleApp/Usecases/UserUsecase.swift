@@ -58,10 +58,15 @@ final class UserUsecase {
     func getSavedUser(){
         Task {
             if let savedUserResponse = repository.getUserResponse(){
-                self.userResponse = savedUserResponse
-                self.loggedIn = true
-                await self.checkAccessToken()
-                self.user = savedUserResponse.user
+                let isValidToken = await self.checkAccessToken()
+                if isValidToken {
+                    self.userResponse = savedUserResponse
+                    self.loggedIn = true
+                    self.user = savedUserResponse.user
+                    self.requestProfile {
+                        print("로그인은 되었지만 Profile loading 은 실패")
+                    }
+                }
             }else{
                 print("no saved user reponse")
             }
@@ -239,5 +244,11 @@ final class UserUsecase {
         }
     }
     
-    
+    //delete save user
+    func deleteUser(){
+        repository.deleteUser(token: self.userResponse!.accessToken) { [weak self] (result) in
+            guard let self = self else {return}
+            self.error = result as LoginError
+        }
+    }
 }

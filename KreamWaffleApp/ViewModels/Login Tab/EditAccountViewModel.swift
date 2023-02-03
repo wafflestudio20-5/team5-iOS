@@ -76,6 +76,9 @@ class EditAccountViewModel {
     func logout(){
         self.usecase.logout()
     }
-   
     
+    func deleteUser(){
+        self.usecase.deleteUser()
+    }
+   
 }

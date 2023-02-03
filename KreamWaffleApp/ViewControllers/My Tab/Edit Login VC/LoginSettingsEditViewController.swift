@@ -21,6 +21,9 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
     var disposeBag = DisposeBag()
 
     var editTable = UITableView()
+    var titleLabel = UILabel()
+    var currentTextLabel = UIButton()
+    var underLine = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +32,9 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
         self.navigationItem.backButtonDisplayMode = .minimal
         self.view.backgroundColor = .white
         self.view.addSubview(editTable)
+        self.view.addSubviews(currentTextLabel, underLine)
         self.setupTable()
-    
+        self.setupDeleteAccountButton()
     }
     
     
@@ -110,6 +114,39 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
             self.editTable.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80),
             self.editTable.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
+    }
+    
+    func setupDeleteAccountButton(){
+        let deleteAccountText = NSAttributedString(string: "회원 탈퇴", attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .regular)])
+        self.currentTextLabel.setAttributedTitle(deleteAccountText, for: .normal)
+        self.currentTextLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.currentTextLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            self.currentTextLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -self.view.frame.height/8)
+        ])
+        self.currentTextLabel.addTarget(self, action: #selector(tapDeleteAccount), for: .touchUpInside)
+       
+        self.underLine.backgroundColor = UIColor.systemGray
+        self.underLine.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.underLine.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            self.underLine.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            self.underLine.heightAnchor.constraint(equalToConstant: 0.7),
+            self.underLine.topAnchor.constraint(equalTo: self.currentTextLabel.bottomAnchor, constant: 10)
+        ])
+    }
+    
+    @objc func tapDeleteAccount(){
+        let alert = UIAlertController(title: "", message: "회원 탈퇴에 동의하십니까?", preferredStyle: UIAlertController.Style.alert)
+        let noAction = UIAlertAction(title: "아니요", style: .default)
+        let okAction = UIAlertAction(title: "네", style: .default) { _ in
+            self.viewModel.deleteUser()
+            self.viewModel.logout()
+            //self?.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(okAction)
+        alert.addAction(noAction)
+        self.present(alert, animated: true, completion: nil)
     }
 
     init(viewModel: EditAccountViewModel){
