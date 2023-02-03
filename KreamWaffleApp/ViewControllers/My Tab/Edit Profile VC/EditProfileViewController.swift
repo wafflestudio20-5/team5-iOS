@@ -27,24 +27,6 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     
     var profileButton = UIButton()
     
-    lazy var saveButton : UIButton = {
-        let button = UIButton()
-        self.view.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-            button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -self.view.frame.height/32),
-            button.heightAnchor.constraint(equalToConstant: self.view.frame.height/16)
-        ])
-        button.setTitle("저장", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        button.backgroundColor = colors.lessLightGray
-        button.titleLabel?.textColor = .white
-        button.layer.cornerRadius = 10
-        button.clipsToBounds = true
-        return button
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,13 +34,29 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         self.title = "프로필 관리"
         self.setUpBackButton()
         self.view.addSubviews(self.profileButton, self.editTable)
-        self.setupProfileButton()
+        self.bindViews()
         self.inputTableView()
     }
     
-    func setupProfileButton(){
+    func bindViews() {
+        self.viewModel.userProfileDataSource.subscribe { [weak self] event in
+            switch event {
+            case .next:
+                if let profile = event.element {
+                    self!.setupProfileButton(with: profile)
+                }
+            case .completed:
+                break
+            case .error:
+                break
+            }
+        }.disposed(by: disposeBag)
+    }
+    
+    
+    func setupProfileButton(with fetchedProfile: Profile){
         let editLabel = UILabel()
-        let urlString = self.viewModel.userProfile.image
+        let urlString = fetchedProfile.image
         if let url = URL.init(string: urlString) {
         let resource = ImageResource(downloadURL: url)
         KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
@@ -75,7 +73,6 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
             profileButton.setImageTintColor(colors.lessLightGray)
         }
         
-        profileButton.setImage(UIImage(named: viewModel.userProfile.image), for: .normal)
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"
         editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
