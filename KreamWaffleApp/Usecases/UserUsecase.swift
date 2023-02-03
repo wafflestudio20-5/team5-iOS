@@ -58,17 +58,12 @@ final class UserUsecase {
     func getSavedUser(){
         Task {
             if let savedUserResponse = repository.getUserResponse(){
-                let isValidToken = await self.checkAccessToken()
-                if isValidToken {
-                    self.userResponse = savedUserResponse
-                    self.loggedIn = true
-                    self.user = savedUserResponse.user
-                    self.requestProfile {
-                        print("로그인은 되었지만 Profile loading 은 실패")
-                    }
-                }
-            }else{
-                print("no saved user reponse")
+            self.userResponse = savedUserResponse
+            self.loggedIn = true
+            await self.checkAccessToken()
+            self.user = savedUserResponse.user
+        }else{
+           print("no saved user reponse")
             }
         }
     }

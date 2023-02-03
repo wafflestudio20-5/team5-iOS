@@ -61,8 +61,8 @@ class LoginRepository {
     func logOutUser(){
         userDefaults.removeObject(forKey: "savedUser")
         userDefaults.removeObject(forKey: "savedUserResponse")
-        //GIDSignIn.sharedInstance()?.signOut()
-        //NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
+        GIDSignIn.sharedInstance()?.signOut()
+        NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
     }
        
     //-MARK: Login account with custom server

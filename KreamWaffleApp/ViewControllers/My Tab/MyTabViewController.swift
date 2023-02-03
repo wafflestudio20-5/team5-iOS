@@ -30,6 +30,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     let profileImageView = UIImageView()
     let profileNameLabel = UILabel()
     let userNameLabel = UILabel()
+    let bioLabel = UILabel()
     let profileChangeButton = UIButton()
     let divider = UILabel()
     
@@ -65,8 +66,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 
         self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
         self.userNameLabel.text = self.userProfileVM.userProfile.user_name
+        self.bioLabel.text = self.userProfileVM.userProfile.introduction
     }
-        }
+        }.disposed(by: disposeBag)
     }
 
 
@@ -186,7 +188,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     func setUpLabelLayout() {
         self.view.addSubview(self.profileNameLabel)
 
-        self.profileNameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        self.profileNameLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         self.profileNameLabel.textColor = .black
         self.profileNameLabel.lineBreakMode = .byTruncatingTail
         self.profileNameLabel.numberOfLines = 1
@@ -214,8 +216,23 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         NSLayoutConstraint.activate([
             self.userNameLabel.leadingAnchor.constraint(equalTo: self.profileImageView.leadingAnchor),
             self.userNameLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
-            self.userNameLabel.heightAnchor.constraint(equalToConstant: 20),
-            self.userNameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 10),
+            self.userNameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 5)
+        ])
+        
+        self.view.addSubview(self.bioLabel)
+        
+        self.bioLabel.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        self.bioLabel.textColor = .black
+        self.bioLabel.lineBreakMode = .byTruncatingTail
+        self.bioLabel.numberOfLines = 1
+        self.bioLabel.textAlignment = .left
+        self.bioLabel.adjustsFontSizeToFitWidth = false
+        
+        self.bioLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.bioLabel.leadingAnchor.constraint(equalTo: self.profileImageView.leadingAnchor),
+            self.bioLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
+            self.bioLabel.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor, constant: 5)
         ])
     }
     
@@ -289,7 +306,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
             self.divider.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.divider.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.divider.heightAnchor.constraint(equalToConstant: 15),
-            self.divider.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor, constant: self.view.frame.height/64),
+            self.divider.topAnchor.constraint(equalTo: self.bioLabel.bottomAnchor, constant: self.view.frame.height/64),
 
         ])
     }
