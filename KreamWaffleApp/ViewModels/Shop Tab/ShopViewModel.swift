@@ -11,9 +11,39 @@ import RxSwift
 final class ShopViewModel {
     private let usecase: ShopUsecase
     
+    var currentDeliveryTag: Int = 0
+    var selectedCategory: [String]? = nil {
+        didSet {
+            if selectedCategory == nil {
+                print("no category")
+            }
+        
+            // NotificationCenter (send selected fields)
+            NotificationCenter.default.post(name: NSNotification.Name("categoryChanged"),
+                                            object: [
+                                                "category": selectedCategory,
+                                            ],
+                                            userInfo: nil)
+        }
+    }
+    var selectedBrands: [Brand]? = nil
+    var selectedPrices: [String]? = nil
+    
     init(usecase: ShopUsecase) {
         self.usecase = usecase
         requestData()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateDeliveryTag(_:)),
+                                               name: NSNotification.Name("deliveryTagChanged"),
+                                               object: nil)
+    }
+    
+    @objc func updateDeliveryTag(_ notification: Notification) {
+        guard let notification = notification.object as? [String: Any] else { return }
+        guard let deliveryTag = notification["deliveryTag"] as? Int else { return }
+       
+        self.currentDeliveryTag = deliveryTag
     }
     
     var shopDataSource: Observable<[ProductData]> {
@@ -22,13 +52,18 @@ final class ShopViewModel {
                 return product.map { ProductData(product: $0) }
             }
     }
-    
+     
+    // filters
     var filterDataSource: Observable<[String]> {
         return self.usecase.filterCategories
     }
     
     var filterItemDataSource: Observable<[ShopFilterItem]> {
         return self.usecase.shopFilterItems
+    }
+    
+    var categoryFilterItemListDataSource: Observable<[String]> {
+        return self.usecase.categoryListObservable
     }
     
     var brandFilterItemListDataSource: Observable<[Brand]> {
@@ -38,6 +73,7 @@ final class ShopViewModel {
     var priceFilterItemListDataSource: Observable<[String]> {
         return self.usecase.priceFilterItemList
     }
+
 }
 
 extension ShopViewModel {
@@ -48,6 +84,14 @@ extension ShopViewModel {
     
     func getFilterItemAtIndex(index: Int) -> ShopFilterItem {
         return self.usecase.getFilterItemAtIndex(index: index)
+    }
+    
+    func getFilterItemRowAtIndex(filterItemIndex: Int, rowIndex: Int) -> String {
+        return self.usecase.getFilterItemRowAtIndex(filterItemIndex: filterItemIndex, rowIndex: rowIndex)
+    }
+    
+    func getBrandFilterItemRowAtIndex(filterItemIndex: Int, rowIndex: Int) -> Brand {
+        return self.usecase.getBrandFilterItemRowAtIndex(filterItemIndex: filterItemIndex, rowIndex: rowIndex)
     }
 }
 
@@ -110,6 +154,30 @@ extension ShopViewModel {
     // request brands
     func requestBrandData() {
         self.usecase.loadBrands()
+    }
+}
+
+extension ShopViewModel {
+    func resetFilter() {
+        self.selectedCategory = nil
+        self.selectedBrands = nil
+        self.selectedPrices = nil
+        
+    }
+    func requestFilteredData(resetPage: Bool, category: [String]?, brands: [Brand]?, prices: [String]?, deliveryTag: Int) {
+        self.usecase.loadFilteredData(resetPage: resetPage, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
+    }
+    
+    func requestFilteredData(resetPage: Bool) {
+        let category = self.selectedCategory
+        let brands = self.selectedBrands
+        let prices = self.selectedPrices
+        let deliveryTag = self.currentDeliveryTag
+        
+        if (resetPage == true) {
+            self.usecase.loadFilteredData(resetPage: resetPage, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
+        }
+       
     }
 }
 
