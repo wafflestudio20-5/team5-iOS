@@ -110,11 +110,8 @@ final class StylePostViewController: UIViewController {
     }
     
     private func setUpNavigationBar() {
-        navigationController?.navigationBar.tintColor = .lightGray
         self.setUpBackButton()
-        self.navigationItem.backButtonTitle = ""
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
-//        navigationItem.title = "최신"
         
         let deletePostButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deletePostButtonTapped))
         deletePostButton.setTitleTextAttributes([
@@ -157,16 +154,17 @@ final class StylePostViewController: UIViewController {
     }
     
     private func setUpLabelLayout() {
+        let profileImageViewHeight: CGFloat = 30
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.contentMode = .scaleAspectFit
-        profileImageView.layer.cornerRadius = idLabelHeight/2
+        profileImageView.layer.cornerRadius = profileImageViewHeight/2
         profileImageView.clipsToBounds = true
         profileImageView.tintColor = .black
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            profileImageView.widthAnchor.constraint(equalToConstant: idLabelHeight),
-            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            profileImageView.heightAnchor.constraint(equalToConstant: idLabelHeight),
+            profileImageView.widthAnchor.constraint(equalToConstant: profileImageViewHeight),
+            profileImageView.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor),
+            profileImageView.heightAnchor.constraint(equalToConstant: profileImageViewHeight),
         ])
         
         userNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
@@ -184,7 +182,7 @@ final class StylePostViewController: UIViewController {
         NSLayoutConstraint.activate([
             userNameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             userNameLabel.widthAnchor.constraint(equalToConstant: 100),
-            userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             userNameLabel.heightAnchor.constraint(
                 equalToConstant: idLabelHeight
             ),
@@ -363,7 +361,8 @@ final class StylePostViewController: UIViewController {
         
         let urlString = post.created_by.image
         guard let url = URL.init(string: urlString) else {
-            self.profileImageView.image = UIImage(systemName: "person")
+            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+            self.profileImageView.tintColor = colors.lessLightGray
             return
         }
         let resource = ImageResource(downloadURL: url)
@@ -373,8 +372,8 @@ final class StylePostViewController: UIViewController {
             case .success(let value):
                 self.profileImageView.image = value.image
             case .failure(_):
-                self.profileImageView.image = UIImage(systemName: "person")
-            }
+                self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                self.profileImageView.tintColor = colors.lessLightGray            }
         }
         
     }
@@ -484,40 +483,54 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func deletePostButtonTapped() {
-        Task {
-            let isValidToken = await self.userInfoViewModel.checkAccessToken()
-            
-            if isValidToken {
-                let token = self.userInfoViewModel.UserResponse!.accessToken
+        let reallyDeleteAlert = UIAlertController(title: nil, message: "삭제하시겠습니까?", preferredStyle: UIAlertController.Style.alert)
+        let cancelDelete = UIAlertAction(title: "취소", style: .default)
+        let reallyDelete = UIAlertAction(title: "삭제", style: .default, handler: { (action) -> Void in
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
                 
-                self.stylePostViewModel.deletePost(
-                    postId: self.stylePostViewModel.getPostId(),
-                    token: token,
-                    completion: { [weak self] in
-                        let alert = UIAlertController(title: "성공", message: "삭제되었습니다.", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
+                if isValidToken {
+                    let token = self.userInfoViewModel.UserResponse!.accessToken
+                    
+                    self.stylePostViewModel.deletePost(
+                        postId: self.stylePostViewModel.getPostId(),
+                        token: token,
+                        completion: { [weak self] in
+                            let alert = UIAlertController(title: "성공", message: "삭제되었습니다.", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
+                        },
+                        onNetworkFailure: { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
                         }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
-                    },
-                    onNetworkFailure: { [weak self] in
-                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
+                    )
+                } else {
+                    let alert = UIAlertController(title: "실패", message: "세션이 만료되었습니다.\n다시 로그인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self.navigationController?.popViewController(animated: true)
                     }
-                )
-            } else {
-                let alert = UIAlertController(title: "실패", message: "세션이 만료되었습니다.\n다시 로그인해주세요", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.navigationController?.popViewController(animated: true)
+                    alert.addAction(okAction)
+                    self.present(alert, animated: false, completion: nil)
                 }
-                alert.addAction(okAction)
-                self.present(alert, animated: false, completion: nil)
             }
-        }
+            
+        })
+        
+        reallyDelete.setValue(UIColor.red, forKey: "titleTextColor")
+
+        reallyDeleteAlert.addAction(cancelDelete)
+        reallyDeleteAlert.addAction(reallyDelete)
+        
+        self.present(reallyDeleteAlert, animated: true, completion: nil)
+
+
     }
 }

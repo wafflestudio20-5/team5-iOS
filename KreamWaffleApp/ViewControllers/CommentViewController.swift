@@ -144,9 +144,6 @@ final class CommentViewController: UIViewController {
             self.sendCommentButton.topAnchor.constraint(equalTo: self.enterCommentTextView.topAnchor),
             self.sendCommentButton.heightAnchor.constraint(equalToConstant: 20),
         ])
-        
-//        self.enterCommentView.bringSubviewToFront(self.sendCommentButton)
-
     }
     
     func setUpCollectionView() {
@@ -220,7 +217,9 @@ final class CommentViewController: UIViewController {
 
         self.commentViewModel.commentDataSource
             .bind(to: commentCollectionView.rx.items(cellIdentifier: "CommentCollectionViewCell", cellType: CommentCollectionViewCell.self)) { index, item, cell in
-                cell.configure(with: item)
+                cell.configure(with: item, currentUserId: self.userInfoViewModel.getUserId())
+                cell.deleteButton.tag = item.id
+                cell.deleteButton.addTarget(self, action: #selector(self.deleteCommentButtonTapped(sender:)), for: .touchUpInside)
             }
             .disposed(by: disposeBag)
     }
@@ -276,23 +275,6 @@ extension CommentViewController: UITextViewDelegate {
     }
 }
 
-extension CommentViewController: UIScrollViewDelegate  {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if (position > (self.commentCollectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-            Task {
-                let isValidToken = await self.userInfoViewModel.checkAccessToken()
-                if isValidToken {
-                    let token = self.userInfoViewModel.UserResponse?.accessToken
-                    self.commentViewModel.requestNextData(token: token!)
-                } else {
-                    self.presentLoginAgainAlert()
-                }
-            }
-        }
-    }
-}
-
 extension CommentViewController {
     @objc func stopWritingReplyButtonTapped() {
         self.commentViewModel.isWritingComment = false
@@ -345,6 +327,56 @@ extension CommentViewController {
         }
     }
     
+    @objc func deleteCommentButtonTapped(sender: UIButton) {
+        let reallyDeleteAlert = UIAlertController(title: nil, message: "삭제하시겠습니까?", preferredStyle: UIAlertController.Style.alert)
+        let cancelDelete = UIAlertAction(title: "취소", style: .default)
+        let reallyDelete = UIAlertAction(title: "삭제", style: .default, handler: { (action) -> Void in
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
+                
+                if isValidToken {
+                    let token = self.userInfoViewModel.UserResponse!.accessToken
+                    
+                    self.commentViewModel.deleteComment(
+                        commentId: sender.tag,
+                        token: token,
+                        completion: { [weak self] in
+                            let alert = UIAlertController(title: "성공", message: "삭제되었습니다.", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.requestInitialData()
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
+                        },
+                        onNetworkFailure: { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
+                        }
+                    )
+                } else {
+                    let alert = UIAlertController(title: "실패", message: "세션이 만료되었습니다.\n다시 로그인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    alert.addAction(okAction)
+                    self.present(alert, animated: false, completion: nil)
+                }
+            }
+            
+        })
+        
+        reallyDelete.setValue(UIColor.red, forKey: "titleTextColor")
+
+        reallyDeleteAlert.addAction(cancelDelete)
+        reallyDeleteAlert.addAction(reallyDelete)
+        
+        self.present(reallyDeleteAlert, animated: true, completion: nil)
+    }
+    
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if view.frame.origin.y == 0 {
@@ -361,5 +393,10 @@ extension CommentViewController {
 }
 
 extension CommentViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! CommentCollectionViewCell
+        
+        let user_id = cell.writerId!
+        self.pushProfileVC(user_id: user_id, userInfoViewModel: self.userInfoViewModel)
+    }
 }

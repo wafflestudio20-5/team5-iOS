@@ -43,7 +43,13 @@ final class StyleFeedCollectionViewCell: UICollectionViewCell {
     func configure(with stylePost: Post) {
         self.idLabel.text = stylePost.created_by.profile_name
         self.contentLabel.text = stylePost.content
-        self.numLikesLabel.text = "😊 \(stylePost.num_likes)"
+        
+        let attributedString = NSMutableAttributedString(string: "")
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(systemName: "face.smiling")
+        attributedString.append(NSAttributedString(attachment: imageAttachment))
+        attributedString.append(NSAttributedString(string: " \(stylePost.num_likes)"))
+        self.numLikesLabel.attributedText = attributedString
         
         let urlString = stylePost.images[0]
         guard let url = URL.init(string: urlString) else {

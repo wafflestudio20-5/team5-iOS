@@ -17,6 +17,10 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     private let profileNameLabel = UILabel()
     private let contentLabel = UILabel()
     
+    let deleteButton = UIButton()
+    
+    var writerId: Int?
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUpLayout()
@@ -24,6 +28,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         self.profileImageView.image = nil
+        self.deleteButton.isHidden = true
         super.prepareForReuse()
     }
     
@@ -31,18 +36,27 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
+        setUpDeleteButton()
     }
     
-    func configure(with comment: Comment) {
+    func configure(with comment: Comment, currentUserId: Int?) {
+        self.writerId = comment.created_by.user_id
         self.profileNameLabel.text = comment.created_by.user_name
         self.contentLabel.text = comment.content
+        
+        if let currentUserId = currentUserId {
+            if (currentUserId == self.writerId) {
+                self.deleteButton.isHidden = false
+            }
+        }
         
         contentLabel.sizeToFit()
         self.sizeToFit()
         
         let urlString = comment.created_by.image
         guard let url = URL.init(string: urlString) else {
-            self.profileImageView.image = UIImage(systemName: "person")
+            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+            self.profileImageView.tintColor = colors.lessLightGray
             return
         }
         let resource = ImageResource(downloadURL: url)
@@ -52,7 +66,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
             case .success(let value):
                 self.profileImageView.image = value.image
             case .failure(_):
-                self.profileImageView.image = UIImage(systemName: "person")
+                self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                self.profileImageView.tintColor = colors.lessLightGray
             }
         }
     }
@@ -61,17 +76,18 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         self.addSubview(profileImageView)
         self.addSubview(profileNameLabel)
         self.addSubview(contentLabel)
+        self.addSubview(deleteButton)
     }
     
     private func setUpLayout() {
         setUpProfileImageView()
         setUpProfileNameLabel()
+        setUpDeleteButton()
         setUpContentLabel()
     }
     
     private func setUpProfileImageView() {
-        
-        let imageHeight = UIScreen.main.bounds.height/16
+        let imageHeight = UIScreen.main.bounds.height/16 - 10
         
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -101,6 +117,23 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    private func setUpDeleteButton() {
+        self.deleteButton.setImage(UIImage(systemName: "x.circle"), for: .normal)
+//        self.deleteButton.setPreferredSymbolConfiguration(.init(pointSize: 20, weight: .regular, scale: .default), forImageIn: .normal)
+        self.deleteButton.tintColor = .black
+        self.deleteButton.backgroundColor = .white
+        
+        self.deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
+            self.deleteButton.widthAnchor.constraint(equalToConstant: 20),
+            self.deleteButton.centerYAnchor.constraint(equalTo: self.profileImageView.centerYAnchor),
+            self.deleteButton.heightAnchor.constraint(equalToConstant: 20),
+        ])
+        
+        self.deleteButton.isHidden = true
+    }
+    
     private func setUpContentLabel() {
         contentLabel.font = UIFont.systemFont(ofSize: self.font1)
         contentLabel.textColor = .darkGray
@@ -117,5 +150,4 @@ final class CommentCollectionViewCell: UICollectionViewCell {
             contentLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
-    
 }
