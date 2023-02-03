@@ -74,31 +74,19 @@ final class ShopCommentRepository: CommentRepositoryProtocol {
     }
     
     func sendComment(token: String, content: String, id: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
-        let finalUrl = baseUrl + "\(id)/comments"
+        let finalUrl = baseUrl + "\(id)/comments/"
         
         let headers: HTTPHeaders = [
-            "accept": "application/json",
+            "Content-Type": "application/json",
             "Authorization": "Bearer \(token)"
         ]
         
-        var request = URLRequest(url: URL(string: finalUrl)!)
-        request.httpMethod = HTTPMethod.post.rawValue
-        request.headers = headers
-        let body: [String: Any] = [
-            "content" : "\(content)",
-            "created_by": "{}"
+        let parameters = [
+            "content": content,
         ]
         
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: body, options:JSONSerialization.WritingOptions.prettyPrinted)
-            request.httpBody = jsonData
-        } catch {
-            onNetworkFailure()
-        }
         
-        
-        
-        AF.request(request)
+        AF.request(finalUrl, method: .post, parameters:parameters,encoder:JSONParameterEncoder.default, headers: headers)
             .validate()
             .responseDecodable(of: CommentResponse.self) { response in
                 //**********
@@ -107,9 +95,9 @@ final class ShopCommentRepository: CommentRepositoryProtocol {
                 //**********
                 
                 switch response.result {
-                case .success(let result):
+                case .success(_):
                     completion()
-                case .failure(let error):
+                case .failure(_):
                     onNetworkFailure()
                 }
             }

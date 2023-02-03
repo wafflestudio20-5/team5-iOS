@@ -58,4 +58,6 @@ final class ShopDetailUsecase {
         }
         return self.productSizeInfoList[0]
     }
+    
+    
 }
