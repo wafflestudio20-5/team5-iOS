@@ -86,6 +86,7 @@ final class ShopCommentViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        self.setUpBackButton()
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
         self.view.backgroundColor = .white
@@ -144,8 +145,6 @@ final class ShopCommentViewController: UIViewController {
             self.sendCommentButton.topAnchor.constraint(equalTo: self.enterCommentTextView.topAnchor),
             self.sendCommentButton.heightAnchor.constraint(equalToConstant: 20),
         ])
-        
-//        self.enterCommentView.bringSubviewToFront(self.sendCommentButton)
     }
     
     func setUpCollectionView() {
