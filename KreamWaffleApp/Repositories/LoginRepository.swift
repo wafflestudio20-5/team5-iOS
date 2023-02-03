@@ -83,7 +83,10 @@ class LoginRepository {
             "password": password,
         ]
         
-        AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers).response{ response in
+        AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers)
+            .validate()
+            .response
+            { response in
             switch response.result {
             case .success(let data):
                 do{
@@ -97,8 +100,19 @@ class LoginRepository {
                     print(error)
                     completion(.failure(.unknownError))
                 }
-                
             case .failure(let error):
+                switch (error.responseCode){
+                case 401:
+                    completion(.failure(.loginError))
+                    print("[Log] Login Repository: Access Token 문제입니다.")
+                case 403: //아이디나 비밀번호가 잘못됨
+                    print("[Log] Login Repository: 비밀번호 일치 문제입니다.")
+                    completion(.failure(.loginError))
+                case 404: //요청 아이디 없는 경우
+                    completion(.failure(.noUserInfoError))
+                default:
+                    completion(.failure(.loginError))
+                }
                 let json = String(data: response.data!, encoding: String.Encoding.utf8)
                 let loginError = checkErrorMessage(String(describing: json))
                 completion(.failure(loginError))

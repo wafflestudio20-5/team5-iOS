@@ -8,6 +8,7 @@
 import Foundation
 
 enum LoginError: Error {
+    case loginError //default login error
     case noUserInfoError //그 이메일로 가입된 회원이 없을 때.
     case emailFormatError //이메일이 제대로된 이메일이 아닐때.
     case passwordFormatError //password 이 제대로된 password 가 아닐때.
