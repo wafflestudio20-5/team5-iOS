@@ -49,6 +49,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = .white
 //        requestProfile()
+        setUpBackButton()
         configureDesign()
         addSubviews()
         setUpFixedViewLayout()
@@ -410,7 +411,6 @@ extension ProfileViewController {
     }
     
     @objc func followingNumLabelTapped() {
-        
         if (!self.userInfoViewModel.isLoggedIn()) {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {

@@ -65,6 +65,7 @@ final class StylePostViewController: UIViewController {
     
     override func viewDidLoad() {
         self.view.backgroundColor = .white
+        setUpBackButton()
         addAllSubviews()
         setUpNavigationBar()
         setUpScrollView()

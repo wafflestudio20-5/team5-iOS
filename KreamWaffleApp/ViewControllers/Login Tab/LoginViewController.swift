@@ -262,7 +262,7 @@ extension LoginViewController: NaverThirdPartyLoginConnectionDelegate {
   
   // 모든 Error
   func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-    print("[Error] :", error)
+      print("[Error] :", error!)
   }
 }
 

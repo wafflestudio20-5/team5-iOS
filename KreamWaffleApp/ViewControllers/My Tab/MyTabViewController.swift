@@ -74,6 +74,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpBackButton()
         setUpSegmentedControl()
         setUpTabBarButton()
         setUpFixedViewLayout()

@@ -37,6 +37,7 @@ class FollowUserListViewController:UIViewController {
     }
     
     override func viewDidLoad() {
+        setUpBackButton()
         self.view.backgroundColor = .white
         setUpSegmentedControl()
         setUpChildVCs()

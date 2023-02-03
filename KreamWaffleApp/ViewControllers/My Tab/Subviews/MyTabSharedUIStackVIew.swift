@@ -21,6 +21,10 @@ class MyTabSharedUIStackVIew: UIStackView {
     var subView2 : UIStackView?
     var subView3: UIStackView?
     
+    lazy var titleLabel1 = UILabel()
+    lazy var titleLabel2 = UILabel()
+    lazy var titleLabel3 = UILabel()
+    
     init(title1: String, subtitle1: String, title2 : String?, subtitle2: String?, title3: String?, subtitle3: String?, setCount: Int){
         self.setCount = setCount
         self.title1 = title1
@@ -32,18 +36,25 @@ class MyTabSharedUIStackVIew: UIStackView {
         super.init(frame: .zero)
         setupMainView()
         setupSubviews()
+        setUpTitleLabel()
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func titleLabel(title: String) -> UILabel{
-        let label = UILabel()
-        label.text = title
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        return label
+    func setUpTitleLabel() {
+        self.titleLabel1.text = self.title1
+        self.titleLabel1.textColor = .black
+        self.titleLabel1.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        
+        self.titleLabel2.text = self.title2 ?? ""
+        self.titleLabel2.textColor = .black
+        self.titleLabel2.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        
+        self.titleLabel3.text = self.title3 ?? ""
+        self.titleLabel3.textColor = .black
+        self.titleLabel3.font = UIFont.systemFont(ofSize: 15, weight: .bold)
     }
     
     func subtitleLabel(title: String) -> UILabel{
@@ -64,19 +75,16 @@ class MyTabSharedUIStackVIew: UIStackView {
     }
     
     func setupSubviews(){
-        let titleLabel_1 = titleLabel(title: self.title1)
         let subtitleLabel_1 = subtitleLabel(title: self.subtitle1)
-        let subview_1 = miniStackView(subviews: [titleLabel_1, subtitleLabel_1])
+        let subview_1 = miniStackView(subviews: [self.titleLabel1, subtitleLabel_1])
         subview_1.translatesAutoresizingMaskIntoConstraints = false
         
-        let titleLabel_2 = titleLabel(title: self.title2 ?? "")
         let subtitleLabel_2 = subtitleLabel(title: self.subtitle2 ?? "")
-        let subview_2 = miniStackView(subviews: [titleLabel_2, subtitleLabel_2])
+        let subview_2 = miniStackView(subviews: [self.titleLabel2, subtitleLabel_2])
         subview_2.translatesAutoresizingMaskIntoConstraints = false
         
-        let titleLabel_3 = titleLabel(title: self.title3 ?? "")
         let subtitleLabel_3 = subtitleLabel(title: self.subtitle3 ?? "")
-        let subview_3 = miniStackView(subviews: [titleLabel_3, subtitleLabel_3])
+        let subview_3 = miniStackView(subviews: [self.titleLabel3, subtitleLabel_3])
         subview_3.translatesAutoresizingMaskIntoConstraints = false
         
         let subviews = [subview_1, subview_2, subview_3]

@@ -35,9 +35,11 @@ class MyProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpBackButton()
         self.view.backgroundColor = .white
         addSubviews()
         setUpSubviews()
+        addFollowerBarTapGestrue()
     }
     
     func addSubviews(){
@@ -54,6 +56,15 @@ class MyProfileViewController: UIViewController {
        
         setupNoPostView()
     }
+    
+    func addFollowerBarTapGestrue() {
+        self.followerBar.titleLabel2.isUserInteractionEnabled = true
+        self.followerBar.titleLabel2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followerNumLabelTapped)))
+        
+        self.followerBar.titleLabel3.isUserInteractionEnabled = true
+        self.followerBar.titleLabel3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followingNumLabelTapped)))
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         //adding bottom border to follower bar
