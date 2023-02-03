@@ -34,7 +34,7 @@ class MyShoppingViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let followerBar = MyTabSharedUIStackVIew(title1: "일반 회원", subtitle1: "회원등급", title2: "0P", subtitle2: "포인트", title3: "14", subtitle3: "관심 상품", setCount: 3)
+    let followerBar = MyTabSharedUIStackVIew(title1: "일반 회원", subtitle1: "회원등급", title2: "0P", subtitle2: "포인트", title3: "0", subtitle3: "관심 상품", setCount: 3)
     
     
     override func viewDidLoad() {
@@ -45,7 +45,7 @@ class MyShoppingViewController: UIViewController {
         setUpSubviews()
         setupPurchaseButton()
         setupSalesButton()
-        bind()
+        //bind()
         addNumberLabels()
     }
     
@@ -93,6 +93,7 @@ class MyShoppingViewController: UIViewController {
         
         self.salesButton.backgroundColor = colors.lessLightGray
         self.salesButton.layer.cornerRadius = 10
+        self.salesButton.layer.masksToBounds = true
         
         self.salesTitle.translatesAutoresizingMaskIntoConstraints = false
         self.salesButton.translatesAutoresizingMaskIntoConstraints = false
@@ -108,61 +109,60 @@ class MyShoppingViewController: UIViewController {
         ])
     }
     
+    //API랑 연결 끊음.
+    /*
     func bind(){
         self.userInfoVM.salesProductCountObservable.subscribe { [weak self] count in
-            self?.salesNumber.text = "\(count.element ?? 0), (디자인 수정 예정)"
+            self?.salesNumber.text = "\(count.element ?? 0)"
         }
         .disposed(by: bag)
         
         self.userInfoVM.purchasedProductsCountObservable.subscribe { [weak self] count in
-            self?.purchaseNumber.text = "\(count.element ?? 0), (디자인 수정 예정)"
+            self?.purchaseNumber.text = "\(count.element ?? 0)"
         }
         .disposed(by: bag)
         
         self.userInfoVM.wishDataCountObservable.subscribe { [weak self] count in
             self?.followerBar.changeWishNumberCount(newString: "\(count.element ?? 0)")
         }
-    }
+    }*/
     
     func addNumberLabels(){
         self.purchaseNumber.translatesAutoresizingMaskIntoConstraints = false
+        self.purchaseNumber.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        self.purchaseNumber.text = "0"
+        self.purchaseNumber.textColor = colors.errorRed
         self.purchaseButton.addSubview(purchaseNumber)
+        
+        let subLabel_1 = UILabel()
+        subLabel_1.text = "전체"
+        subLabel_1.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        subLabel_1.translatesAutoresizingMaskIntoConstraints = false
+        self.purchaseButton.addSubview(subLabel_1)
         NSLayoutConstraint.activate([
-            self.purchaseNumber.centerXAnchor.constraint(equalTo: self.purchaseButton.centerXAnchor),
-            self.purchaseNumber.centerYAnchor.constraint(equalTo: self.purchaseButton.centerYAnchor)
+            self.purchaseNumber.leadingAnchor.constraint(equalTo: self.purchaseButton.leadingAnchor, constant: self.view.frame.width/8),
+            self.purchaseNumber.topAnchor.constraint(equalTo: self.purchaseButton.topAnchor, constant: self.view.frame.height/20),
+            subLabel_1.centerXAnchor.constraint(equalTo: self.purchaseNumber.centerXAnchor),
+            subLabel_1.bottomAnchor.constraint(equalTo: self.purchaseNumber.topAnchor, constant: -10)
         ])
         
+        let subLabel_2 = UILabel()
+        subLabel_2.text = "전체"
+        subLabel_2.font = UIFont.systemFont(ofSize: 13, weight: .light)
+        self.salesButton.addSubview(subLabel_2)
+        subLabel_2.translatesAutoresizingMaskIntoConstraints = false
         self.salesNumber.translatesAutoresizingMaskIntoConstraints = false
+        self.salesNumber.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        self.salesNumber.textColor = colors.accentGreen
         self.salesButton.addSubview(salesNumber)
+        self.salesButton.setupCornerRadius(10)
+        self.salesNumber.text = "0"
         NSLayoutConstraint.activate([
-            self.salesNumber.centerXAnchor.constraint(equalTo: self.salesButton.centerXAnchor),
-            self.salesNumber.centerYAnchor.constraint(equalTo: self.salesButton.centerYAnchor)
+            self.salesNumber.leadingAnchor.constraint(equalTo: self.salesButton.leadingAnchor, constant: self.view.frame.width/8),
+            self.salesNumber.topAnchor.constraint(equalTo: self.salesButton.topAnchor, constant: self.view.frame.height/20),
+            subLabel_2.centerXAnchor.constraint(equalTo: self.salesNumber.centerXAnchor),
+            subLabel_2.bottomAnchor.constraint(equalTo: self.salesNumber.topAnchor, constant: -10)
         ])
-    }
-    
-    func titleLabel(title: String) -> UILabel{
-        let label = UILabel()
-        label.text = title
-        label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        return label
-    }
-    
-    func subtitleLabel(title: String) -> UILabel{
-        let label = UILabel()
-        label.text = title
-        label.textColor = .darkGray
-        label.font = UIFont.systemFont(ofSize: 13, weight: .medium)
-        return label
-    }
-    
-    func miniStackView(subviews: [UILabel]) -> UIStackView{
-        let view = UIStackView()
-        view.addArrangedSubviews(subviews)
-        view.axis = .vertical
-        view.alignment = .center
-        view.spacing = 5
-        return view
     }
     
     override func viewDidAppear(_ animated: Bool) {
