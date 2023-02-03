@@ -127,20 +127,23 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
             self.viewModel.tapRelay.asObservable()
                 .subscribe{ [self] editCase in
                     
+                    //Binding to cell's saves buttons, and calling API.
                     if (element == editCase.element){
                     switch (element){
                     case .profileName:
                         cell.currentTextLabel.text = viewModel.profileNameRelay.value
+                        self.viewModel.partialEditProfile(newValue: viewModel.profileNameRelay.value, editCase: .profileName)
                     case .userName:
                         cell.currentTextLabel.text = viewModel.userNameRelay.value
+                        self.viewModel.partialEditProfile(newValue: viewModel.userNameRelay.value, editCase: .userName)
                     case .introduction:
                         cell.currentTextLabel.text = viewModel.bioRelay.value
+                        self.viewModel.partialEditProfile(newValue: viewModel.bioRelay.value, editCase: .introduction)
                     default:
                         print("")
                     }
                 }
-                    
-                }.disposed(by: bag)
+            }.disposed(by: bag)
             
             
             cell.editButton.rx.tap.bind {

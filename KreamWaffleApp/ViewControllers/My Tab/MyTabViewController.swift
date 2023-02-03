@@ -38,10 +38,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     private var myShoppingVC: MyShoppingViewController
     private var myProfileVC: MyProfileViewController
     
-    
-    // **************** 임시!! ********************
-    let temporaryUserData = TemporaryUserData()
-    // **************** 임시!! ********************
 
     init(userInfoVM : UserInfoViewModel, loginVM: LoginViewModel, userProfileVM: UserProfileViewModel) {
         self.userInfoVM = userInfoVM
@@ -63,24 +59,14 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
             }else{
-                self.userProfileVM.requestUserProfile { [weak self] in
+                self.userProfileVM.requestUserProfile {
                     print("Profile Loading 실패")
                 }
                 
-                if self.userProfileVM.userProfile != nil {
-                    self.userProfileVM.partialEditProfle(Profile: self.userProfileVM.userProfile) //TEST용 줄
-                    if self.userProfileVM.userProfile.image != nil {
-                        print("\(self.userProfileVM.userProfile.image)")
-                        self.profileImageView.kf.setImage(with: URL(string: self.userProfileVM.userProfile.image))
-                    }else{
-                        print("Nil Image")
-                        self.profileImageView.image = UIImage(systemName: "person")
-                    }
-                    self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
-                    self.userNameLabel.text = self.userProfileVM.userProfile.user_name
-                }
-            }
-        }.disposed(by: disposeBag)
+        self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
+        self.userNameLabel.text = self.userProfileVM.userProfile.user_name
+    }
+        }
     }
 
 
