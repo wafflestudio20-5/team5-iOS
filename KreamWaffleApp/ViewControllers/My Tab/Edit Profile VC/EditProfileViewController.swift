@@ -55,6 +55,19 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     
     
     func setupProfileButton(with fetchedProfile: Profile){
+        
+        profileButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(profileButton)
+        NSLayoutConstraint.activate([
+            profileButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            profileButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
+            profileButton.widthAnchor.constraint(equalToConstant: 100),
+            profileButton.heightAnchor.constraint(equalToConstant: 100)])
+        
+        profileButton.layer.masksToBounds = true
+        profileButton.layer.cornerRadius = 50
+        profileButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+        
         let editLabel = UILabel()
         let urlString = fetchedProfile.image
         if let url = URL.init(string: urlString) {
@@ -73,6 +86,14 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
             profileButton.setImageTintColor(colors.lessLightGray)
         }
         
+        //TODO: 나중에 시간 있으면 수정하기.
+        profileButton.contentVerticalAlignment = .fill
+        profileButton.contentHorizontalAlignment = .fill
+        
+        self.viewModel.imageRelay.subscribe { image in
+            self.profileButton.setImage(image, for: .normal)
+        }.disposed(by: self.bag)
+    
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"
         editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -80,23 +101,12 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         editLabel.textColor = .white
         editLabel.translatesAutoresizingMaskIntoConstraints = false
         profileButton.addSubview(editLabel)
-        
-        profileButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(profileButton)
         NSLayoutConstraint.activate([
             editLabel.leadingAnchor.constraint(equalTo: profileButton.leadingAnchor),
             editLabel.trailingAnchor.constraint(equalTo: profileButton.trailingAnchor),
             editLabel.bottomAnchor.constraint(equalTo: profileButton.bottomAnchor),
-            editLabel.heightAnchor.constraint(equalToConstant: 30),
-            
-            profileButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            profileButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
-            profileButton.widthAnchor.constraint(equalToConstant: 100),
-            profileButton.heightAnchor.constraint(equalToConstant: 100)])
-        
-        profileButton.layer.masksToBounds = true
-        profileButton.layer.cornerRadius = 50
-        profileButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+            editLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
     
     @objc func tappedCancel(){
@@ -185,9 +195,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
-            //TODO: profile 자체 수정
-            self.profileButton.setImage(image, for: .normal)
+            self.viewModel.imageRelay.accept(image)
+            self.viewModel.editProfileImage(newImage: image)
         }
+        
         dismiss(animated: true, completion: nil)
     }
 

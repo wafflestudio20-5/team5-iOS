@@ -90,7 +90,7 @@ class EditProfileTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             self.currentTextLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 5),
             self.currentTextLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
-            self.currentTextLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40)
+            self.currentTextLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -60)
         ])
         
         self.currentTextLabel.numberOfLines = 1
