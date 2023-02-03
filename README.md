@@ -51,3 +51,5 @@ Login
 <center><img src="/Assets/STYLE-3-NewPost.PNG" width="30%" height="30%"></center>  
 포스팅 상세페이지
 <center><img src="/Assets/STYLE-4-StylePost.PNG" width="30%" height="30%"></center>  
+댓글  
+<center><img src="/Assets/STYLE-5-Comments.PNG" width="30%" height="30%"></center>  
