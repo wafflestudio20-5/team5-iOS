@@ -484,40 +484,54 @@ extension StylePostViewController { //button 관련 메서드들.
     }
     
     @objc func deletePostButtonTapped() {
-        Task {
-            let isValidToken = await self.userInfoViewModel.checkAccessToken()
-            
-            if isValidToken {
-                let token = self.userInfoViewModel.UserResponse!.accessToken
+        let reallyDeleteAlert = UIAlertController(title: nil, message: "삭제하시겠습니까?", preferredStyle: UIAlertController.Style.alert)
+        let cancelDelete = UIAlertAction(title: "취소", style: .default)
+        let reallyDelete = UIAlertAction(title: "삭제", style: .default, handler: { (action) -> Void in
+            Task {
+                let isValidToken = await self.userInfoViewModel.checkAccessToken()
                 
-                self.stylePostViewModel.deletePost(
-                    postId: self.stylePostViewModel.getPostId(),
-                    token: token,
-                    completion: { [weak self] in
-                        let alert = UIAlertController(title: "성공", message: "삭제되었습니다.", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
+                if isValidToken {
+                    let token = self.userInfoViewModel.UserResponse!.accessToken
+                    
+                    self.stylePostViewModel.deletePost(
+                        postId: self.stylePostViewModel.getPostId(),
+                        token: token,
+                        completion: { [weak self] in
+                            let alert = UIAlertController(title: "성공", message: "삭제되었습니다.", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
+                        },
+                        onNetworkFailure: { [weak self] in
+                            let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                                self?.navigationController?.popViewController(animated: true)
+                            }
+                            alert.addAction(okAction)
+                            self?.present(alert, animated: false, completion: nil)
                         }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
-                    },
-                    onNetworkFailure: { [weak self] in
-                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
-                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                        alert.addAction(okAction)
-                        self?.present(alert, animated: false, completion: nil)
+                    )
+                } else {
+                    let alert = UIAlertController(title: "실패", message: "세션이 만료되었습니다.\n다시 로그인해주세요", preferredStyle: UIAlertController.Style.alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                        self.navigationController?.popViewController(animated: true)
                     }
-                )
-            } else {
-                let alert = UIAlertController(title: "실패", message: "세션이 만료되었습니다.\n다시 로그인해주세요", preferredStyle: UIAlertController.Style.alert)
-                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-                    self.navigationController?.popViewController(animated: true)
+                    alert.addAction(okAction)
+                    self.present(alert, animated: false, completion: nil)
                 }
-                alert.addAction(okAction)
-                self.present(alert, animated: false, completion: nil)
             }
-        }
+            
+        })
+        
+        reallyDelete.setValue(UIColor.red, forKey: "titleTextColor")
+
+        reallyDeleteAlert.addAction(cancelDelete)
+        reallyDeleteAlert.addAction(reallyDelete)
+        
+        self.present(reallyDeleteAlert, animated: true, completion: nil)
+
+
     }
 }
