@@ -9,12 +9,12 @@ import Foundation
 import RxSwift
 import Alamofire
 
-final class StyleCommentRepository: CommentRepositoryProtocol {
+final class StyleCommentRepository {
     private let baseUrl = "https://kream-waffle.cf/styles/"
 
-    func requestInitialCommentData(token: String, id: Int, completion: @escaping () -> ()) -> Single<[Comment]> {
+    func requestInitialCommentData(token: String, postId: Int, completion: @escaping () -> ()) -> Single<[Comment]> {
         return Single.create { single in
-            let finalUrl = self.baseUrl + "posts/\(id)/comments/"
+            let finalUrl = self.baseUrl + "posts/\(postId)/comments/"
             
             let headers: HTTPHeaders = [
                 "accept": "application/json",
@@ -43,8 +43,8 @@ final class StyleCommentRepository: CommentRepositoryProtocol {
         }
     }
     
-    func sendComment(token: String, content: String, id: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
-        let finalUrl = baseUrl + "posts/\(id)/comments/"
+    func sendComment(token: String, content: String, postId: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
+        let finalUrl = baseUrl + "posts/\(postId)/comments/"
         
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",

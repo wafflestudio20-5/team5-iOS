@@ -10,8 +10,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class CommentViewController: UIViewController {
-    private let commentViewModel: CommentViewModel
+final class StyleCommentViewController: UIViewController {
+    private let styleCommentViewModel: StyleCommentViewModel
     private let userInfoViewModel: UserInfoViewModel
     
     private var textViewBottomConstraint: NSLayoutConstraint?
@@ -75,9 +75,9 @@ final class CommentViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    init(userInfoViewModel: UserInfoViewModel, commentViewModel: CommentViewModel) {
+    init(userInfoViewModel: UserInfoViewModel, styleCommentViewModel: StyleCommentViewModel) {
         self.userInfoViewModel = userInfoViewModel
-        self.commentViewModel = commentViewModel
+        self.styleCommentViewModel = styleCommentViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -198,15 +198,15 @@ final class CommentViewController: UIViewController {
     func bindUI() {
         self.enterCommentTextView.rx.text
             .orEmpty
-            .bind(to: self.commentViewModel.postTextRelay)
+            .bind(to: self.styleCommentViewModel.postTextRelay)
             .disposed(by: disposeBag)
         
-        self.commentViewModel.postTextRelay
+        self.styleCommentViewModel.postTextRelay
             .map { $0.isEmpty || $0 == self.textViewPlaceHolder }
             .bind(to: sendCommentButton.rx.isHidden)
             .disposed(by: disposeBag)
         
-        self.commentViewModel.isWritingCommentRelay
+        self.styleCommentViewModel.isWritingCommentRelay
             .map { !$0 }
             .bind(to: writingReplyIndicator.rx.isHidden)
             .disposed(by: disposeBag)
@@ -215,7 +215,7 @@ final class CommentViewController: UIViewController {
     func bindCollectionView() {
         commentCollectionView.register(CommentCollectionViewCell.self, forCellWithReuseIdentifier: "CommentCollectionViewCell")
 
-        self.commentViewModel.commentDataSource
+        self.styleCommentViewModel.commentDataSource
             .bind(to: commentCollectionView.rx.items(cellIdentifier: "CommentCollectionViewCell", cellType: CommentCollectionViewCell.self)) { index, item, cell in
                 cell.configure(with: item, currentUserId: self.userInfoViewModel.getUserId())
                 cell.deleteButton.tag = item.id
@@ -235,7 +235,7 @@ final class CommentViewController: UIViewController {
             let isValidToken = await self.userInfoViewModel.checkAccessToken()
             if isValidToken {
                 let token = self.userInfoViewModel.UserResponse?.accessToken
-                self.commentViewModel.requestInitialData(token: token!)
+                self.styleCommentViewModel.requestInitialData(token: token!)
             } else {
                 let alert = UIAlertController(title: "실패", message: "다시 로그인해주세요.", preferredStyle: UIAlertController.Style.alert)
                 let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -248,9 +248,9 @@ final class CommentViewController: UIViewController {
     }
 }
 
-extension CommentViewController: UITextViewDelegate {
+extension StyleCommentViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        self.commentViewModel.isWritingComment = true
+        self.styleCommentViewModel.isWritingComment = true
         if textView.text == textViewPlaceHolder {
             textView.text = nil
             textView.textColor = .black
@@ -275,9 +275,9 @@ extension CommentViewController: UITextViewDelegate {
     }
 }
 
-extension CommentViewController {
+extension StyleCommentViewController {
     @objc func stopWritingReplyButtonTapped() {
-        self.commentViewModel.isWritingComment = false
+        self.styleCommentViewModel.isWritingComment = false
         self.enterCommentTextView.endEditing(true)
         self.enterCommentTextView.text = textViewPlaceHolder
     }
@@ -287,7 +287,7 @@ extension CommentViewController {
             let isValidToken = await self.userInfoViewModel.checkAccessToken()
             if isValidToken {
                 let token = self.userInfoViewModel.UserResponse?.accessToken
-                self.commentViewModel.requestInitialData(token: token!)
+                self.styleCommentViewModel.requestInitialData(token: token!)
                 self.collectionViewRefreshControl.endRefreshing()
             } else {
                 self.presentLoginAgainAlert()
@@ -296,7 +296,7 @@ extension CommentViewController {
     }
     
     @objc func sendButtonTapped() {
-        self.commentViewModel.isWritingComment = false
+        self.styleCommentViewModel.isWritingComment = false
         if self.enterCommentTextView.text == self.textViewPlaceHolder {
             return
         }
@@ -305,7 +305,7 @@ extension CommentViewController {
             if isValidToken {
                 let token = self.userInfoViewModel.UserResponse!.accessToken
                 
-                self.commentViewModel.sendComment(
+                self.styleCommentViewModel.sendComment(
                     token: token,
                     content: self.enterCommentTextView.text,
                     completion: { [weak self] in
@@ -337,7 +337,7 @@ extension CommentViewController {
                 if isValidToken {
                     let token = self.userInfoViewModel.UserResponse!.accessToken
                     
-                    self.commentViewModel.deleteComment(
+                    self.styleCommentViewModel.deleteComment(
                         commentId: sender.tag,
                         token: token,
                         completion: { [weak self] in
@@ -392,7 +392,7 @@ extension CommentViewController {
     }
 }
 
-extension CommentViewController: UICollectionViewDelegate {
+extension StyleCommentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CommentCollectionViewCell
         

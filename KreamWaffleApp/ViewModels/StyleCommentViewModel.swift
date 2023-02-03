@@ -9,11 +9,11 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class CommentViewModel {
+final class StyleCommentViewModel {
     let postTextRelay = BehaviorRelay<String>(value: "")
-    private let commentUsecase: CommentUsecase
+    private let styleCommentUsecase: StyleCommentUsecase
     private var isAlreadyFetchingDataFromServer = false
-    private let id: Int //style탭 포스팅이든 shop탭 상품이든 그 대상 ID
+    private let postId: Int //style탭 포스팅이든 shop탭 상품이든 그 대상 ID
     
     var currentReplyTarget: Int = 0
     
@@ -28,26 +28,26 @@ final class CommentViewModel {
     var currentReplyToProfile: ReplyToProfile?
     
     var commentDataSource: Observable<[Comment]> {
-        return self.commentUsecase.commentRelay.asObservable()
+        return self.styleCommentUsecase.commentRelay.asObservable()
     }
     
-    init(commentUsecase: CommentUsecase, id: Int) {
-        self.commentUsecase = commentUsecase
-        self.id = id
+    init(styleCommentUsecase: StyleCommentUsecase, postId: Int) {
+        self.styleCommentUsecase = styleCommentUsecase
+        self.postId = postId
     }
     
     func requestInitialData(token: String) {
         isAlreadyFetchingDataFromServer = true
-        self.commentUsecase.requestInitialData(token: token, id: id) { [weak self] in
+        self.styleCommentUsecase.requestInitialData(token: token, postId: postId) { [weak self] in
             self?.isAlreadyFetchingDataFromServer = false
         }
     }
     
     func sendComment(token: String, content: String, completion: @escaping ()->(), onNetworkFailure: @escaping () -> ()) {
-        self.commentUsecase.sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
+        self.styleCommentUsecase.sendComment(token: token, content: content, postId: postId, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
     func deleteComment(commentId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
-        self.commentUsecase.deleteComment(commentId: commentId, token: token, completion: completion, onNetworkFailure: onNetworkFailure)
+        self.styleCommentUsecase.deleteComment(commentId: commentId, token: token, completion: completion, onNetworkFailure: onNetworkFailure)
     }
 }
