@@ -14,8 +14,8 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
     private let index: Int
     private let disposeBag = DisposeBag()
     
+    private var deleteAllButton = UIBarButtonItem()
     private let tableView = UITableView()
-    private let showResultsButton = UIButton()
     
     // variables
     private var numberOfResults: Int = 0
@@ -39,23 +39,24 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
         setUpNavigationBarButtons()
         bindTableView()
         setUpTableView()
-        setUpShowResultsButton()
     }
     
     private func setUpNavigationBar() {
         self.navigationController?.navigationBar.tintColor = .black
         if index == 0 {
-            self.navigationItem.title = "브랜드"
+            self.navigationItem.title = "카테고리"
         } else if index == 1 {
+            self.navigationItem.title = "브랜드"
+        } else if index == 2 {
             self.navigationItem.title = "가격"
         }
-        
     }
     
     private func setUpNavigationBarButtons() {
         //configure delete all button
-        let deleteAllButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteAllButtonTapped))
-        deleteAllButton.tintColor = .lightGray
+        deleteAllButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteAllButtonTapped))
+        deleteAllButton.isEnabled = false
+        deleteAllButton.tintColor = .black
         navigationItem.rightBarButtonItem = deleteAllButton
     }
     
@@ -65,27 +66,36 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
         self.tableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
-        if index == 0 { // brand filter
+        if index == 0 { // category filter
+            let filterItemListDataSource = self.viewModel.categoryFilterItemListDataSource
+            filterItemListDataSource
+                .bind(to: self.tableView.rx.items(cellIdentifier: "ShopFilterDetailTableViewCell", cellType: ShopFilterDetailTableViewCell.self)) { index, category, cell in
+                    cell.configure(header: category)
+                }.disposed(by: self.disposeBag)
+        } else if index == 1 { // brand filter
             let filterItemListDataSource = self.viewModel.brandFilterItemListDataSource
             filterItemListDataSource
                 .bind(to: self.tableView.rx.items(cellIdentifier: "ShopFilterDetailTableViewCell", cellType: ShopFilterDetailTableViewCell.self)) { index, brand, cell in
                     cell.configure(header: brand.name)
                 }.disposed(by: self.disposeBag)
-        } else if index == 1 { // price filter
+        } else if index == 2 { // price filter
             let filterItemListDataSource = self.viewModel.priceFilterItemListDataSource
             filterItemListDataSource
                 .bind(to: self.tableView.rx.items(cellIdentifier: "ShopFilterDetailTableViewCell", cellType: ShopFilterDetailTableViewCell.self)) { index, price, cell in
                     cell.configure(header: price)
                 }.disposed(by: self.disposeBag)
+            
         }
-        
-
     }
     
     private func setUpTableView() {
-        self.tableView.backgroundColor = .white
-        self.tableView.allowsMultipleSelection = true
+        if index == 0 {
+            self.tableView.allowsMultipleSelection = false
+        } else {
+            self.tableView.allowsMultipleSelection = true
+        }
         
+        self.tableView.backgroundColor = .white
         self.view.addSubview(tableView)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -96,60 +106,74 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
         ])
     }
     
-    private func setUpShowResultsButton() {
-        self.view.addSubview(showResultsButton)
-        showResultsButton.setTitle("결과 보기", for: .normal)
-        showResultsButton.addTarget(self, action: #selector(showResultsButtonTapped), for: .touchUpInside)
-        showResultsButton.contentHorizontalAlignment = .center
-        showResultsButton.tintColor = .white
-        showResultsButton.backgroundColor = .black
-        showResultsButton.layer.borderWidth = 1
-        showResultsButton.layer.cornerRadius = 9.5
-        
-        showResultsButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            showResultsButton.heightAnchor.constraint(equalToConstant: 50),
-//            self.categoryFilterButton.widthAnchor.constraint(equalToConstant: 45),
-            showResultsButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -60),
-            showResultsButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
-            showResultsButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            showResultsButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
-        ])
+    private func validateDeleteButton() {
+        if tableView.indexPathsForSelectedRows == nil {
+            self.deleteAllButton.isEnabled = false
+        } else {
+            self.deleteAllButton.isEnabled = true
+        }
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            let indexPathsForSelectedRows = tableView.indexPathsForSelectedRows
+            if indexPathsForSelectedRows != nil {
+                if (index == 0 || index == 2) {
+                    var filterSelectionList: [String] = []
+                    for idPath in tableView.indexPathsForSelectedRows! {
+                        let selectedFilterItemAtRow = self.viewModel.getFilterItemRowAtIndex(filterItemIndex: index, rowIndex: idPath.row)
+                        filterSelectionList.append(selectedFilterItemAtRow)
+    //                    print(selectedFilterItemAtRow)
+                    }
+                    
+                    // NotificationCenter (send selected fields)
+                    NotificationCenter.default.post(name: NSNotification.Name("filterSelections"),
+                                                    object: [
+                                                        "index": index,
+                                                        "filterSelections": filterSelectionList,
+                                                    ],
+                                                    userInfo: nil)
+                } else if index == 1 {
+                    var filterSelectionList: [Brand] = []
+                    for idPath in tableView.indexPathsForSelectedRows! {
+                        let selectedFilterItemAtRow = self.viewModel.getBrandFilterItemRowAtIndex(filterItemIndex: index, rowIndex: idPath.row)
+                        filterSelectionList.append(selectedFilterItemAtRow)
+    //                    print(selectedFilterItemAtRow)
+                    }
+                    
+                    // NotificationCenter (send selected fields)
+                    NotificationCenter.default.post(name: NSNotification.Name("brandFilterSelections"),
+                                                    object: [
+                                                        "index": index,
+                                                        "filterSelections": filterSelectionList,
+                                                    ],
+                                                    userInfo: nil)
+                    
+                }
+            }
+        }
+    }
 }
 
 extension ShopFilterDetailViewController {
-    @objc func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
-    }
-    
     @objc func deleteAllButtonTapped() {
-        print("delete all button tapped")
-    }
-    
-    @objc func showResultsButtonTapped() {
-        self.dismiss(animated: true)
-    }
-    
-    func updateNumberOfResults() {
-        for idPath in tableView.indexPathsForSelectedRows! {
-//            let selectedFilterItem = self.viewModel.getFilterItemAtIndex(index: <#T##Int#>)
-            print(idPath.row)
-        }
-        
+        guard let selectedRows = tableView.indexPathsForSelectedRows else { return }
+        for indexPath in selectedRows { tableView.deselectRow(at: indexPath, animated: true) }
+        deleteAllButton.isEnabled = false
     }
     
 }
 
 extension ShopFilterDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedBrandId = indexPath.row + 1
-        self.viewModel.requestBrandShopPostsData(selectedBrand: selectedBrandId)
-//        updateNumberOfResults()
+        validateDeleteButton()
+
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        updateNumberOfResults()
+        
+
     }
 }
