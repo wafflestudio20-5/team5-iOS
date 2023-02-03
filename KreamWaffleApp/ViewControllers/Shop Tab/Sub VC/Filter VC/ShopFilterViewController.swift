@@ -16,12 +16,15 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
     private let tableView = UITableView()
     private let showResultsButton = UIButton()
     
-    var selectedBrand = ""
-    var selectedPrice = ""
+    var selectedCategory: [String]? = nil
+    var selectedBrands: [Brand]? = nil
+    var selectedPrices: [String]? = nil
+    var selectedDelivery: Int = 0
     
     init(viewModel: ShopViewModel) {
         self.viewModel = viewModel
         self.viewModel.requestBrandData()
+        self.viewModel.resetFilter()
         super.init(nibName: nil, bundle: nil)
         
     }
@@ -34,9 +37,17 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
         bindTableView()
         setUpTableView()
         setUpShowResultsButton()
-        
-        // add observer for selectedBrand and selectedPrice
 
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateFilterSelections(_:)),
+                                               name: NSNotification.Name("filterSelections"),
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateBrandFilterSelections(_:)),
+                                               name: NSNotification.Name("brandFilterSelections"),
+                                               object: nil)
+        
     }
     
     private func setUpNavigationBar() {
@@ -112,6 +123,37 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
 }
 
 extension ShopFilterViewController {
+    @objc func updateFilterSelections(_ notification: Notification) {
+        guard let notification = notification.object as? [String: Any] else { return }
+        guard let index = notification["index"] as? Int else { return }
+        guard let filterSelectionList = notification["filterSelections"] as? [String] else { return }
+ 
+        switch index {
+        case 0:
+            self.viewModel.selectedCategory = filterSelectionList
+//            selectedCategory = filterSelectionList
+        case 2:
+            self.viewModel.selectedPrices = filterSelectionList
+//            selectedPrices = filterSelectionList
+        default:
+            return
+        }
+    }
+    
+    @objc func updateBrandFilterSelections(_ notification: Notification) {
+        guard let notification = notification.object as? [String: Any] else { return }
+        guard let index = notification["index"] as? Int else { return }
+        guard let filterSelectionList = notification["filterSelections"] as? [Brand] else { return }
+ 
+        switch index {
+        case 1:
+            self.viewModel.selectedBrands = filterSelectionList
+//            selectedBrands = filterSelectionList
+        default:
+            return
+        }
+    }
+    
     @objc func cancelButtonTapped() {
         self.dismiss(animated: true)
     }
@@ -121,14 +163,14 @@ extension ShopFilterViewController {
     }
     
     @objc func showResultsButtonTapped() {
-        print("결과 보기 tapped")
+        self.viewModel.requestFilteredData(resetPage: true, category: self.viewModel.selectedCategory, brands: self.viewModel.selectedBrands, prices: self.viewModel.selectedPrices, deliveryTag: self.viewModel.currentDeliveryTag)
+        
+        self.dismiss(animated: true)
     }
 }
 
 extension ShopFilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedFilterItem = self.viewModel.getFilterItemAtIndex(index: indexPath.row)
-        
         let shopFilterDetailVC = ShopFilterDetailViewController(viewModel: viewModel, index: indexPath.row)
         navigationController?.pushViewController(shopFilterDetailVC, animated: true)
     }

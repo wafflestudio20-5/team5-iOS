@@ -51,7 +51,8 @@ class UserListCollectionViewCell: UICollectionViewCell {
         
         let urlString = nestedProfile.image
         guard let url = URL.init(string: urlString) else {
-            self.profileImageView.image = UIImage(systemName: "person")
+            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+            self.profileImageView.tintColor = colors.lessLightGray
             return
         }
         let resource = ImageResource(downloadURL: url)
@@ -61,7 +62,8 @@ class UserListCollectionViewCell: UICollectionViewCell {
             case .success(let value):
                 self.profileImageView.image = value.image
             case .failure(_):
-                self.profileImageView.image = UIImage(systemName: "person")
+                self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                self.profileImageView.tintColor = colors.lessLightGray
             }
         }
     }
@@ -76,7 +78,7 @@ class UserListCollectionViewCell: UICollectionViewCell {
     func setUpProfileImageView() {
         self.contentView.addSubview(profileImageView)
         
-        let imageHeight = UIScreen.main.bounds.height/16
+        let imageHeight = UIScreen.main.bounds.height/16 - 15
         
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

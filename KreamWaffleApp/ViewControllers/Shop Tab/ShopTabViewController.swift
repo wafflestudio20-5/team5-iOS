@@ -9,11 +9,6 @@ import RxSwift
 import RxCocoa
 
 class ShopTabViewController: UIViewController, UIScrollViewDelegate {
-    //서치하지 않을때 서치할때 아래 view controller 를 갈아끼우기
-    
-//    private var searchVC : SearchViewController
-//    private var shopVC : ShopMainViewController
-    
     var header = UIView()
     var searchBar = UISearchBar()
     
@@ -25,10 +20,12 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     // delivery tag filter buttons
     private let immediateDeliveryButton = UIButton()
     private let brandDeliveryButton = UIButton()
+    private var deliveryTag = 0
     
     // collection views
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: ShopCollectionViewFlowLayout())
     var isPaginating = false
+    var resetPage = false
     
     private let viewModel: ShopViewModel
     private let userInfoViewModel: UserInfoViewModel
@@ -38,12 +35,8 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     static let deliveryButtonBorderColor: UIColor = UIColor(red: 0.8863, green: 0.8863, blue: 0.8863, alpha: 1.0)
     static let brandDeliveryButtonSelectedColor: UIColor = ProductCollectionViewCell.brandDeliveryFontColor
     
-    // delivery buttons variable
-    
     
     init(viewModel: ShopViewModel, userInfoViewModel: UserInfoViewModel) {
-//        self.searchVC = SearchViewController()
-//        self.shopVC = ShopMainViewController()
         self.viewModel = viewModel
         self.userInfoViewModel = userInfoViewModel
         self.viewModel.requestData()
@@ -68,6 +61,11 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         bindCategoryCollectionView()
         setupCollectionView()
         bindCollectionView()
+      
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateCategorySelection(_:)),
+                                               name: NSNotification.Name("categoryChanged"),
+                                               object: nil)
     }
     
     func addSubviews(){
@@ -77,7 +75,6 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     
     func configureSubviews(){
         configureSearchBar()
-//        configureChildVC()
     }
     
     private func setUpNavigationBar() {
@@ -134,6 +131,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func configureCategoryCollectionView() {
+        self.categoryCollectionView.allowsMultipleSelection = false
         self.categoryCollectionView.showsHorizontalScrollIndicator = false
         self.categoryCollectionView.backgroundColor = .white
         
@@ -226,6 +224,13 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
             self.brandDeliveryButton.setTitleColor(.black, for: .normal)
             self.brandDeliveryButton.layer.borderColor = ShopTabViewController.deliveryButtonBorderColor.cgColor
         }
+        
+        // NotificationCenter (send selected fields)
+        NotificationCenter.default.post(name: NSNotification.Name("deliveryTagChanged"),
+                                        object: [
+                                            "deliveryTag": self.deliveryTag
+                                        ],
+                                        userInfo: nil)
     }
     
     private func bindCategoryCollectionView() {
@@ -243,7 +248,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     private func setupCollectionView() {
         self.view.addSubview(collectionView)
         self.collectionView.backgroundColor = .white
-        self.collectionView.showsVerticalScrollIndicator = false
+//        self.collectionView.showsVerticalScrollIndicator = false
         
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -270,9 +275,6 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(didTapCancelSearchBar))
         cancelButton.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .medium)], for: .normal)
         self.navigationItem.rightBarButtonItem = cancelButton
-        
-//        self.searchVC.view.isHidden = false
-//        self.shopVC.view.isHidden = true
         returnViewToInitialFrame()
     }
     
@@ -280,8 +282,6 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.navigationItem.rightBarButtonItem = nil
         self.searchBar.endEditing(true)
         returnViewToInitialFrame()
-//        self.searchVC.view.isHidden = true
-//        self.shopVC.view.isHidden = false
     }
     
     @objc func didTapDoneSearchBar() {
@@ -311,25 +311,46 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
 extension ShopTabViewController {
     // category filter button
     @objc func tappedCategoryFilterButton() {
-//        print("tapped category filter button")
-//        let shopFilterViewController = ShopFilterViewController()
         let shopFilterViewController = UINavigationController(rootViewController: ShopFilterViewController(viewModel: self.viewModel))
         self.present(shopFilterViewController, animated: true)
     }
     
     // delivery buttons
     @objc func tappedImmediateDeliveryButton() {
+        self.deliveryTag = 1
         self.immediateDeliveryButton.isSelected = true
         self.brandDeliveryButton.isSelected = false
         updateDeliveryButtonConfiguration()
-        self.viewModel.requestImmediateDeliveryData()
+        
+        self.viewModel.currentDeliveryTag = 1
+        self.viewModel.requestFilteredData(resetPage: true)
+//        self.viewModel.requestImmediateDeliveryData()
     }
     
     @objc func tappedBrandDeliveryButton() {
+        self.deliveryTag = 2
         self.immediateDeliveryButton.isSelected = false
         self.brandDeliveryButton.isSelected = true
         updateDeliveryButtonConfiguration()
-        self.viewModel.requestBrandDeliveryData()
+        
+        self.viewModel.currentDeliveryTag = 2
+        self.viewModel.requestFilteredData(resetPage: true)
+//        self.viewModel.requestBrandDeliveryData()
+    }
+    
+    @objc func updateCategorySelection(_ notification: Notification) {
+        guard let notification = notification.object as? [String: Any] else { return }
+        guard let selectedCategory = notification["category"] as? [String] else { return }
+        
+        
+        let categoryToIndex: [String : Int] = ["신발" : 0, "의류": 1, "패션 잡화" : 2, "라이프" : 3, "테크" : 4]
+        let collectionViewIndexRow = categoryToIndex[selectedCategory[0]]
+        var selectedCategoryCell = self.categoryCollectionView.cellForItem(at: [0, collectionViewIndexRow!]) as! CategoryCollectionViewCell
+        
+        for cell in self.categoryCollectionView.visibleCells {
+            cell.isSelected = false
+        }
+        selectedCategoryCell.isSelected = true
     }
 }
 
@@ -337,21 +358,27 @@ extension ShopTabViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView {
             var selectedProduct = self.viewModel.getProductAtIndex(index: indexPath.row)
-            let shopPostDetailViewModel = ShopTabDetailViewModel(usecase: ShopDetailUsecase(repository: ShopDetailRepository()), shopPost: selectedProduct)
+            
+            let shopDetailRepository = ShopDetailRepository()
+            let shopDetailUsecase = ShopDetailUsecase(repository: shopDetailRepository)
+            let shopPostDetailViewModel = ShopTabDetailViewModel(usecase: shopDetailUsecase, shopPost: selectedProduct)
             let productDetailVC = ProductDetailViewController(viewModel: shopPostDetailViewModel, userInfoViewModel: self.userInfoViewModel)
             
             self.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(productDetailVC, animated: true)
             self.hidesBottomBarWhenPushed = false
-        } else if collectionView == self.categoryCollectionView {
-//            var selectedCategory = self.viewModel.getCategoryAtIndex(index: indexPath.row)
             
+        } else if collectionView == self.categoryCollectionView {
+            
+            for cell in self.collectionView.visibleCells {
+                cell.isSelected = false
+            }
             var selectedCategoryCell = collectionView.cellForItem(at: indexPath) as! CategoryCollectionViewCell
-            selectedCategoryCell.isSelected = !selectedCategoryCell.isSelected
-            self.viewModel.requestCategoryData(selectedCategory: selectedCategoryCell.categoryParameter)
-//            selectedCategoryCell.isSelected = true
+            selectedCategoryCell.isSelected = true
+            self.viewModel.selectedCategory = [selectedCategoryCell.categoryLabel.text!]
+            
+            self.viewModel.requestFilteredData(resetPage: true, category: self.viewModel.selectedCategory, brands: self.viewModel.selectedBrands, prices: self.viewModel.selectedPrices, deliveryTag: self.viewModel.currentDeliveryTag)
         }
-        
     }
 }
 
@@ -359,14 +386,17 @@ extension ShopTabViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
         if position > (self.collectionView.contentSize.height - 100 - scrollView.frame.size.height) {
-            guard !isPaginating else { return }
-            
-            isPaginating = true
-            self.viewModel.requestMoreData()
-            isPaginating = false
-                
+            let group = DispatchGroup()
+            group.enter()
+            if (!isPaginating) {
+                isPaginating = true
+                self.viewModel.requestMoreData()
+                group.leave()
+            }
+            group.notify(queue: .main) {
+                self.isPaginating = false
+            }
+                 
         }
-            
-        
     }
 }

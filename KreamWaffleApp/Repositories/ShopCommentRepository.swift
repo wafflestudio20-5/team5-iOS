@@ -9,12 +9,12 @@ import Foundation
 import RxSwift
 import Alamofire
 
-final class ShopCommentRepository: CommentRepositoryProtocol {
-    private let baseUrl = "https://kream-waffle.cf/shop/productinfos/"
+final class ShopCommentRepository {
+    private let baseUrl = "https://kream-waffle.cf/shop/"
 
-    func requestInitialCommentData(token: String, id: Int, completion: @escaping () -> ()) -> Single<CommentResponse> {
+    func requestInitialCommentData(token: String, productId: Int, completion: @escaping () -> ()) -> Single<CommentResponse> {
         return Single.create { single in
-            let finalUrl = self.baseUrl + "\(id)/comments/"
+            let finalUrl = self.baseUrl + "productinfos/\(productId)/comments/"
             
             let headers: HTTPHeaders = [
                 "accept": "application/json",
@@ -73,8 +73,8 @@ final class ShopCommentRepository: CommentRepositoryProtocol {
         }
     }
     
-    func sendComment(token: String, content: String, id: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
-        let finalUrl = baseUrl + "\(id)/comments/"
+    func sendComment(token: String, content: String, productId: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
+        let finalUrl = baseUrl + "productinfos/\(productId)/comments/"
         
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -98,6 +98,28 @@ final class ShopCommentRepository: CommentRepositoryProtocol {
                 case .success(_):
                     completion()
                 case .failure(_):
+                    onNetworkFailure()
+                }
+            }
+    }
+    
+    func deleteComment(commentId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        let urlStr = self.baseUrl + "comments/\(commentId)/"
+
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+        
+        AF.request(urlStr, method: .delete, headers: headers)
+            .validate()
+            .responseString { response in
+                debugPrint(response)
+
+                switch response.result {
+                case .success:
+                    completion()
+                case .failure:
                     onNetworkFailure()
                 }
             }

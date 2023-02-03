@@ -106,6 +106,12 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.hidesBottomBarWhenPushed = false;
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.backgroundColor = .white
+    }
+    
     private func configure() {
         imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
 
@@ -556,10 +562,10 @@ extension ProductDetailViewController {
             self.hidesBottomBarWhenPushed = true
             self.tabBarController?.tabBar.isHidden = true
 
-            let commentRepository = ShopCommentRepository()
-            let commentUsecase = CommentUsecase(commentRepository: commentRepository)
-            let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.viewModel.getId())
-            self.navigationController?.pushViewController(CommentViewController(userInfoViewModel: self.userInfoViewModel, commentViewModel: commentViewModel), animated: true)
+            let shopCommentRepository = ShopCommentRepository()
+            let shopCommentUsecase = ShopCommentUsecase(shopCommentRepository: shopCommentRepository)
+            let shopCommentViewModel = ShopCommentViewModel(shopCommentUsecase: shopCommentUsecase, productId: self.viewModel.getId())
+            self.navigationController?.pushViewController(ShopCommentViewController(userInfoViewModel: self.userInfoViewModel, shopCommentViewModel: shopCommentViewModel), animated: true)
         }
     }
     
