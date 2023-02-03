@@ -247,6 +247,18 @@ final class UserUsecase {
         }
     }
     
+    func updatePartialProfile(newValue: String, editCase: editCase){
+        profileRepository.updatePartialUserProfile(newValue: newValue, editCase: editCase, userId: self.user!.id, accessToken: self.userResponse!.accessToken) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let bool):
+                print("update 완료")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     //delete save user
     func deleteUser(){
         repository.deleteUser(token: self.userResponse!.accessToken) { [weak self] (result) in

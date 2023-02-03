@@ -46,8 +46,14 @@ class UserProfileViewModel {
         self.usecase.requestProfile(onNetworkFailure: onNetworkFailure)
     }
     
+    //post
     func editProfile(Profile: Profile){
         self.usecase.updateProfile(Profile: Profile)
-        //use as post (밑에 전체 탭 버튼으로 수정)
     }
+    
+    //patch
+    func partialEditProfile(newValue: String, editCase: editCase){
+        self.usecase.updatePartialProfile(newValue: newValue, editCase: editCase)
+    }
+    
 }

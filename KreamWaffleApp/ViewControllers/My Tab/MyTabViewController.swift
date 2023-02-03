@@ -68,6 +68,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 }
                 
                 if self.userProfileVM.userProfile != nil {
+                    self.userProfileVM.partialEditProfle(Profile: self.userProfileVM.userProfile) //TEST용 줄
                     if self.userProfileVM.userProfile.image != nil {
                         print("\(self.userProfileVM.userProfile.image)")
                         self.profileImageView.kf.setImage(with: URL(string: self.userProfileVM.userProfile.image))

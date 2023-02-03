@@ -96,10 +96,15 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.setUpBackButton()
         self.title = "프로필 관리"
+        self.setUpBackButton()
         self.view.addSubviews(self.profileButton, self.editTable)
         self.inputTableView()
+        
+    }
+    
+    @objc func tappedCancel(){
+        self.dismiss(animated: true)
     }
     
     func inputTableView(){

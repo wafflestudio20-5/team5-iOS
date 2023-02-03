@@ -87,6 +87,50 @@ final class ProfileRepository {
                 }
             }
     }
+    
+    //PATCH: updates partial fields of the profile, only for one edit case
+    func updatePartialUserProfile(newValue: String, editCase: editCase, userId: Int, accessToken: String, completion: @escaping (Result<Bool, Error>) -> ()){
+        
+        let headers : HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)" ,
+            "accept": "application/json",
+            "Content-Type": "multipart/form-data",
+        ]
+        
+        var key : String
+        switch (editCase){
+        case .profileName:
+            key = "profile_name"
+        case .userName:
+            key = "user_name"
+        case .introduction:
+            key = "introduction"
+        default: //errror
+             key = "user_name"
+        }
+        
+        let parameters = [
+            key : newValue,
+        ]
+        
+        AF.upload(multipartFormData: { multipartFormData in
+            for (key, value) in parameters {
+                multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
+            }}, to: fetchUserConstants.uri + "\(userId)/", method: .patch, headers: headers)
+            .validate()
+            .response() {response in
+                print("=======-partial update profile=========")
+                debugPrint(response)
+                switch response.result {
+                case .success(_):
+                    debugPrint(response)
+                    completion(.success(true))
+                case .failure(let error):
+                    debugPrint(response)
+                    completion(.failure(error))
+                }
+            }
+    }
 }
 
 
