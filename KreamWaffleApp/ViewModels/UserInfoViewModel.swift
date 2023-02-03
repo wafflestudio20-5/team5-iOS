@@ -30,6 +30,10 @@ final class UserInfoViewModel {
         }
     }
     
+    var productObservable: Observable<[UserProduct]> {
+        return self.UserUseCase.productObservable
+    }
+    
     init (UserUseCase : UserUsecase){
         self.UserUseCase = UserUseCase
     }
@@ -48,5 +52,14 @@ final class UserInfoViewModel {
     
     func getUserId() -> Int? {
         return User?.id
+    }
+    
+    //for my shop tab
+    func requestData(myShopType : myShopDataType) {
+        self.UserUseCase.loadMyItems(myShopType: myShopType, token: self.UserUseCase.userResponse!.accessToken)
+    }
+    
+    func requestMoreData(myShopType: myShopDataType) {
+        self.UserUseCase.loadMoreShopPosts(myShopType: myShopType, token: self.UserUseCase.userResponse!.accessToken)
     }
 }

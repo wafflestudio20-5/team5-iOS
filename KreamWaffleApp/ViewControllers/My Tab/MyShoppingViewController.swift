@@ -22,6 +22,7 @@ class MyShoppingViewController: UIViewController {
     init(userInfoVM: UserInfoViewModel) {
         self.userInfoVM = userInfoVM
         super.init(nibName: nil, bundle: nil)
+        self.userInfoVM.requestData(myShopType: .purchase)
     }
     
     required init?(coder: NSCoder) {
@@ -30,8 +31,6 @@ class MyShoppingViewController: UIViewController {
     
     let followerBar = MyTabSharedUIStackVIew(title1: "일반 회원", subtitle1: "회원등급", title2: "0P", subtitle2: "포인트", title3: "14", subtitle3: "관심 상품", setCount: 3)
     
-    var purchasesButton = UIButton()
-    var salesButton = UIButton()
     
     override func viewDidLoad() {
         setUpBackButton()
@@ -64,18 +63,18 @@ class MyShoppingViewController: UIViewController {
         self.purchaseTitle.textColor = .black
         self.purchaseTitle.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         
-        self.purchaseButton.backgroundColor = colors.lightGray
+        self.purchaseButton.backgroundColor = colors.lessLightGray
         self.purchaseButton.layer.cornerRadius = 10
         
         self.purchaseTitle.translatesAutoresizingMaskIntoConstraints = false
         self.purchaseButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.purchaseTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            self.purchaseTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             self.purchaseTitle.topAnchor.constraint(equalTo: self.followerBar.bottomAnchor, constant: 20),
             
             self.purchaseButton.leadingAnchor.constraint(equalTo: self.purchaseTitle.leadingAnchor),
-            self.purchaseButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-            self.purchaseButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/8),
+            self.purchaseButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            self.purchaseButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/10),
             self.purchaseButton.topAnchor.constraint(equalTo: purchaseTitle.bottomAnchor, constant: 10)
         ])
     }
@@ -85,20 +84,20 @@ class MyShoppingViewController: UIViewController {
         self.salesTitle.textColor = .black
         self.salesTitle.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         
-        self.salesButton.backgroundColor = colors.lightGray
+        self.salesButton.backgroundColor = colors.lessLightGray
         self.salesButton.layer.cornerRadius = 10
         
         self.salesTitle.translatesAutoresizingMaskIntoConstraints = false
-        self.salesTitle.translatesAutoresizingMaskIntoConstraints = false
+        self.salesButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            self.salesTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            self.salesTitle.topAnchor.constraint(equalTo: self.followerBar.bottomAnchor, constant: 20),
+            self.salesTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            self.salesTitle.topAnchor.constraint(equalTo: self.purchaseButton.bottomAnchor, constant: 30),
             
-            self.salesButton.leadingAnchor.constraint(equalTo: self.purchaseTitle.leadingAnchor),
-            self.salesButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-            self.salesButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/8),
-            self.salesButton.topAnchor.constraint(equalTo: purchaseTitle.bottomAnchor, constant: 10)
+            self.salesButton.leadingAnchor.constraint(equalTo: self.salesTitle.leadingAnchor),
+            self.salesButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            self.salesButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/10),
+            self.salesButton.topAnchor.constraint(equalTo: salesTitle.bottomAnchor, constant: 10)
         ])
     }
     

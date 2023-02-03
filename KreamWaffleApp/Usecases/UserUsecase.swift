@@ -12,6 +12,7 @@ final class UserUsecase {
     
     private let repository : LoginRepository
     private let profileRepository : ProfileRepository
+    private let userShopRepository : UserShopRepository
     private let disposeBag = DisposeBag()
     
     var user : User?
@@ -46,9 +47,33 @@ final class UserUsecase {
     
     var errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
-    init(dataRepository : LoginRepository, profileRepository: ProfileRepository){
+    // MARK: For my tab========
+    
+    // productinfo
+    var productRelay = BehaviorRelay<[UserProduct]>(value:[])
+    var productObservable: Observable<[UserProduct]> {
+        return self.productRelay.asObservable()
+    }
+    
+    var userProductCount = 0
+    var productInfoList = [UserProduct]() {
+        didSet {
+            self.getProductInfoObserver()
+        }
+    }
+    func getProductInfoObserver() {
+        self.productRelay.accept(productInfoList)
+    }
+    
+    private var page: Int = 1
+    private var paginating = false
+    
+    //================
+    
+    init(dataRepository : LoginRepository, profileRepository: ProfileRepository, UserShopRepository: UserShopRepository){
         self.repository = dataRepository
         self.profileRepository = profileRepository
+        self.userShopRepository = UserShopRepository
         self.error = .noError
         self.loggedIn = false
     }
@@ -176,19 +201,9 @@ final class UserUsecase {
                     }
                 )
                 .disposed(by: disposeBag)
-            
-            /*
-            self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
-                guard let self = self else {return}
-                switch result {
-                case .success(let profile):
-                    self.userProfile = profile
-                case .failure(let error):
-                    //error 처리하기
-                    print("profile fetch erro")
-                }
-            }*/
         }
+    
+    
     ///logging out deletes saved/current user and initializes parameters.
     func logout(){
         repository.logOutUser()
@@ -258,5 +273,40 @@ final class UserUsecase {
             guard let self = self else {return}
             self.error = result as LoginError
         }
+    }
+}
+
+//related to my tab products
+extension UserUsecase {
+    func loadMyItems(myShopType: myShopDataType, token: String) {
+        let parameters = ShopPostRequestParameters(page: 1)
+        self.userShopRepository
+            .requestShopPostData(parameters: parameters, token: token, myShopType: myShopType)
+            .subscribe(onSuccess: { [self] fetchedProductInfos in
+                self.userProductCount = fetchedProductInfos.count
+                self.productInfoList = fetchedProductInfos.itemList
+            },
+            onFailure: { _ in
+                self.productInfoList = []
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func loadMoreShopPosts(myShopType: myShopDataType, token: String) {
+        self.page += 1
+        print("requested page \(self.page)")
+        let parameters = ShopPostRequestParameters(page: self.page)
+        self.userShopRepository
+            .requestShopPostData(parameters:parameters, token: token, myShopType: myShopType)
+            .subscribe(onSuccess: { [self] fetchedProductInfos in
+                //TODO: pagination?
+                //self.productRelay.append(contentsOf: fetchedProductInfos.itemList)
+                //self.productInfoList = prevProductInfos
+            },
+            onFailure: { _ in
+                self.productInfoList = []
+            })
+            .disposed(by: self.disposeBag)
+        
     }
 }

@@ -46,6 +46,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
 //        self.shopVC = ShopMainViewController()
         self.viewModel = viewModel
         self.userInfoViewModel = userInfoViewModel
+        self.viewModel.requestData()
         super.init(nibName: nil, bundle: nil)
     }
     
