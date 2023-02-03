@@ -30,6 +30,31 @@ final class UserInfoViewModel {
         }
     }
     
+    //========마이 쇼핑탭에서 쓰이는 정보=======
+    
+    //설명: Count 은 총 숫자. 마이쇼핑탭에서 쓰임.
+    var purchasedProductsCountObservable : Observable<Int>{
+        return self.UserUseCase.purchaseProductCountObservable
+    }
+    
+    var purchasedProductsObservable : Observable<[UserProduct]> {
+        return self.UserUseCase.purchaseProductObservable
+    }
+    
+    var salesProductObservable : Observable<[UserProduct]> {
+        return self.UserUseCase.salesProductObservable
+    }
+    
+    var salesProductCountObservable : Observable<Int>{
+        return self.UserUseCase.salesProductCountObservable
+    }
+    
+    var wishDataCountObservable : Observable<Int>{
+        return self.UserUseCase.wishDataCountObservable
+    }
+    
+    //====================================
+    
     init (UserUseCase : UserUsecase){
         self.UserUseCase = UserUseCase
     }
@@ -48,5 +73,13 @@ final class UserInfoViewModel {
     
     func getUserId() -> Int? {
         return User?.id
+    }
+
+    func requestData(myShopType : myShopDataType) {
+        self.UserUseCase.loadMyItems(myShopType: myShopType, token: self.UserUseCase.userResponse!.accessToken)
+    }
+    
+    func requestWishData(){
+        self.UserUseCase.loadWishItems(token: self.UserUseCase.userResponse!.accessToken)
     }
 }

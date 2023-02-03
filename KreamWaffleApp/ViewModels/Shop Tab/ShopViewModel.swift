@@ -14,10 +14,6 @@ final class ShopViewModel {
     var currentDeliveryTag: Int = 0
     var selectedCategory: [String]? = nil {
         didSet {
-            if selectedCategory == nil {
-                print("no category")
-            }
-        
             // NotificationCenter (send selected fields)
             NotificationCenter.default.post(name: NSNotification.Name("categoryChanged"),
                                             object: [
@@ -29,9 +25,11 @@ final class ShopViewModel {
     var selectedBrands: [Brand]? = nil
     var selectedPrices: [String]? = nil
     
+    var page: Int = 1
+    
     init(usecase: ShopUsecase) {
         self.usecase = usecase
-        requestData()
+        requestFilteredData(resetPage: true)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateDeliveryTag(_:)),
@@ -162,8 +160,29 @@ extension ShopViewModel {
         self.selectedCategory = nil
         self.selectedBrands = nil
         self.selectedPrices = nil
-        
     }
+    
+    func setSelectedCategory(category: String?) {
+        if category == nil {
+            self.selectedCategory = nil
+        } else {
+            self.selectedCategory = [category!]
+        }
+    }
+    
+    func setSelectedBrands(brands: [Brand]?) {
+        self.selectedBrands = brands
+    }
+    
+    func setSelectedPrices(prices: [String]?) {
+        self.selectedPrices = prices
+    }
+    
+    func setSelectedDelivery(deliveryTagIndex: Int) {
+        self.currentDeliveryTag = deliveryTagIndex
+    }
+    
+    
     func requestFilteredData(resetPage: Bool, category: [String]?, brands: [Brand]?, prices: [String]?, deliveryTag: Int) {
         self.usecase.loadFilteredData(resetPage: resetPage, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
     }
@@ -175,7 +194,11 @@ extension ShopViewModel {
         let deliveryTag = self.currentDeliveryTag
         
         if (resetPage == true) {
+            self.page = 1
             self.usecase.loadFilteredData(resetPage: resetPage, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
+        } else {
+            self.page += 1
+            self.usecase.loadMoreFilteredData(resetPage: false, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag, page: self.page)
         }
        
     }

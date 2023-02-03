@@ -90,18 +90,18 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             self.detail = "나만의 프로필 이름으로 변경하세요."
             self.currentText = self.myProfile?.profile_name
             self.textfield = CustomTextfield(titleText: "프로필 이름", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .profileName, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
-            self.textfield?.setupTextCounter(maxCount: 25)
+            self.textfield?.setupTextCounter(maxCount: 15)
         case .userName:
             self.navBarTitle = "이름 변경"
             self.detail = nil
             self.textfield = CustomTextfield(titleText: "이름", errorText: "", errorCondition: .none, placeholderText: "이름 또는 별명", defaultButtonImage: nil, pressedButtonImage: nil)
-            self.textfield?.setupTextCounter(maxCount: 25)
+            self.textfield?.setupTextCounter(maxCount: 15)
             self.currentText = self.myProfile?.user_name
         case .introduction:
             self.navBarTitle = "소개 변경"
             self.detail = nil
             self.textfield = CustomTextfield(titleText: "소개", errorText: "", errorCondition: .none, placeholderText: nil, defaultButtonImage: nil, pressedButtonImage: nil)
-            self.textfield?.setupTextCounter(maxCount: 100)
+            self.textfield?.setupTextCounter(maxCount: 40)
             self.currentText = self.myProfile?.introduction
         case .password:
             self.navBarTitle = "비밀번호 변경"
@@ -244,8 +244,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .tap
             .bind {
                 self.viewModel?.changePassword()
-                
-                //TODO: 에러처리해주기
+                self.viewModel?.tappedChangePasswordRelay.accept(.password)
                 self.showActionCompleteNotification()
             }
     }

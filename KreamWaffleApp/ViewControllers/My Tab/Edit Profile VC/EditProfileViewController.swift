@@ -25,73 +25,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     
     let bag = DisposeBag()
     
-    lazy var profileButton : UIButton  = {
-        let button = UIButton()
-        let editLabel = UILabel()
-        let urlString = self.viewModel.userProfile.image
-        if let url = URL.init(string: urlString) {
-            let resource = ImageResource(downloadURL: url)
-            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
-                switch result {
-                case .success(let value):
-                    button.setImage(value.image, for: .normal)
-                case .failure(_):
-                    button.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
-                    button.setImageTintColor(colors.lessLightGray)
-                }
-            }
-        } else {
-            button.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
-            button.setImageTintColor(colors.lessLightGray)
-        }
-        
-        button.setImage(UIImage(named: viewModel.userProfile.image), for: .normal)
-        editLabel.backgroundColor = .systemGray
-        editLabel.text = "편집"
-        editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        editLabel.textAlignment = .center
-        editLabel.textColor = .white
-        editLabel.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(editLabel)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button)
-        NSLayoutConstraint.activate([
-            editLabel.leadingAnchor.constraint(equalTo: button.leadingAnchor),
-            editLabel.trailingAnchor.constraint(equalTo: button.trailingAnchor),
-            editLabel.bottomAnchor.constraint(equalTo: button.bottomAnchor),
-            editLabel.heightAnchor.constraint(equalToConstant: 30),
-            
-            button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            button.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
-            button.widthAnchor.constraint(equalToConstant: 100),
-            button.heightAnchor.constraint(equalToConstant: 100)
-        ])
-        
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = 50
-        button.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
-        return button
-    }()
+    var profileButton = UIButton()
     
-    lazy var saveButton : UIButton = {
-        let button = UIButton()
-        self.view.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
-            button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
-            button.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -self.view.frame.height/32),
-            button.heightAnchor.constraint(equalToConstant: self.view.frame.height/16)
-        ])
-        button.setTitle("저장", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
-        button.backgroundColor = colors.lessLightGray
-        button.titleLabel?.textColor = .white
-        button.layer.cornerRadius = 10
-        button.clipsToBounds = true
-        return button
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,8 +34,79 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         self.title = "프로필 관리"
         self.setUpBackButton()
         self.view.addSubviews(self.profileButton, self.editTable)
+        self.bindViews()
         self.inputTableView()
+    }
+    
+    func bindViews() {
+        self.viewModel.userProfileDataSource.subscribe { [weak self] event in
+            switch event {
+            case .next:
+                if let profile = event.element {
+                    self!.setupProfileButton(with: profile)
+                }
+            case .completed:
+                break
+            case .error:
+                break
+            }
+        }.disposed(by: disposeBag)
+    }
+    
+    
+    func setupProfileButton(with fetchedProfile: Profile){
         
+        profileButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(profileButton)
+        NSLayoutConstraint.activate([
+            profileButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            profileButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
+            profileButton.widthAnchor.constraint(equalToConstant: 100),
+            profileButton.heightAnchor.constraint(equalToConstant: 100)])
+        
+        profileButton.layer.masksToBounds = true
+        profileButton.layer.cornerRadius = 50
+        profileButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+        
+        let editLabel = UILabel()
+        let urlString = fetchedProfile.image
+        if let url = URL.init(string: urlString) {
+        let resource = ImageResource(downloadURL: url)
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    self.profileButton.setImage(value.image, for: .normal)
+                case .failure(_):
+                    self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+                    self.profileButton.setImageTintColor(colors.lessLightGray)
+                }
+            }
+        } else {
+            profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+            profileButton.setImageTintColor(colors.lessLightGray)
+        }
+        
+        //TODO: 나중에 시간 있으면 수정하기.
+        profileButton.contentVerticalAlignment = .fill
+        profileButton.contentHorizontalAlignment = .fill
+        
+        self.viewModel.imageRelay.subscribe { image in
+            self.profileButton.setImage(image, for: .normal)
+        }.disposed(by: self.bag)
+    
+        editLabel.backgroundColor = .systemGray
+        editLabel.text = "편집"
+        editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        editLabel.textAlignment = .center
+        editLabel.textColor = .white
+        editLabel.translatesAutoresizingMaskIntoConstraints = false
+        profileButton.addSubview(editLabel)
+        NSLayoutConstraint.activate([
+            editLabel.leadingAnchor.constraint(equalTo: profileButton.leadingAnchor),
+            editLabel.trailingAnchor.constraint(equalTo: profileButton.trailingAnchor),
+            editLabel.bottomAnchor.constraint(equalTo: profileButton.bottomAnchor),
+            editLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
     
     @objc func tappedCancel(){
@@ -189,9 +195,10 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
-            //TODO: profile 자체 수정
-            self.profileButton.setImage(image, for: .normal)
+            self.viewModel.imageRelay.accept(image)
+            self.viewModel.editProfileImage(newImage: image)
         }
+        
         dismiss(animated: true, completion: nil)
     }
 

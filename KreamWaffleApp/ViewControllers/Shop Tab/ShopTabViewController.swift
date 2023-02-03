@@ -40,6 +40,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.viewModel = viewModel
         self.userInfoViewModel = userInfoViewModel
         super.init(nibName: nil, bundle: nil)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -52,7 +53,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.view.backgroundColor = .white
         setUpNavigationBar()
         addSubviews()
-        configureSubviews()
+//        configureSubviews()
         configureCategoryFilterButton()
         configureCategoryCollectionView()
         
@@ -68,7 +69,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func addSubviews(){
-        self.view.addSubview(searchBar)
+//        self.view.addSubview(searchBar)
         self.view.addSubview(collectionView)
     }
     
@@ -77,6 +78,12 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setUpNavigationBar() {
+        let bannerImgView = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
+        bannerImgView.image = UIImage(named: "kream_homebanner")
+        bannerImgView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        bannerImgView.contentMode = .scaleAspectFit
+        self.navigationItem.titleView = bannerImgView
+//        navigationController?.navigationBar.setBackgroundImage(bannerImg, for: .default)
         self.setUpBackButton()
     }
 
@@ -89,7 +96,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.navigationItem.titleView?.backgroundColor = .white
         let emptyImage = UIImage()
         self.searchBar.setImage(emptyImage, for: .search, state: .normal)
-        self.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "브랜드명, 모델명, 모델번호 등", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .light)])
+        self.searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "브랜드명 입력", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .light)])
         self.searchBar.searchTextField.textColor = .black
         self.searchBar.layer.borderColor = UIColor.clear.cgColor
         self.searchBar.searchTextField.font = UIFont.systemFont(ofSize: 14, weight: .medium)
@@ -122,7 +129,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         NSLayoutConstraint.activate([
             self.categoryFilterButton.heightAnchor.constraint(equalToConstant: 35),
             self.categoryFilterButton.widthAnchor.constraint(equalToConstant: 45),
-            self.categoryFilterButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.categoryFilterButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
             self.categoryFilterButton.bottomAnchor.constraint(equalTo: self.categoryFilterButton.topAnchor, constant: 50),
             self.categoryFilterButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
 //            self.categoryFilterButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 55)
@@ -137,7 +144,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
         self.view.addSubview(self.categoryCollectionView)
         self.categoryCollectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.categoryCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.categoryCollectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10),
             self.categoryCollectionView.bottomAnchor.constraint(equalTo: self.categoryFilterButton.bottomAnchor),
             self.categoryCollectionView.leadingAnchor.constraint(equalTo: self.categoryFilterButton.trailingAnchor, constant: 10),
             self.categoryCollectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -15)
@@ -310,29 +317,33 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
 extension ShopTabViewController {
     // category filter button
     @objc func tappedCategoryFilterButton() {
+        resetCategorySelection()
+        
         let shopFilterViewController = UINavigationController(rootViewController: ShopFilterViewController(viewModel: self.viewModel))
         self.present(shopFilterViewController, animated: true)
     }
     
     // delivery buttons
     @objc func tappedImmediateDeliveryButton() {
-        self.deliveryTag = 1
         self.immediateDeliveryButton.isSelected = true
         self.brandDeliveryButton.isSelected = false
         updateDeliveryButtonConfiguration()
         
-        self.viewModel.currentDeliveryTag = 1
+//        self.viewModel.currentDeliveryTag = 1
+        self.deliveryTag = 1
+        self.viewModel.setSelectedDelivery(deliveryTagIndex: 1)
         self.viewModel.requestFilteredData(resetPage: true)
-//        self.viewModel.requestImmediateDeliveryData()
     }
     
     @objc func tappedBrandDeliveryButton() {
-        self.deliveryTag = 2
+        
         self.immediateDeliveryButton.isSelected = false
         self.brandDeliveryButton.isSelected = true
         updateDeliveryButtonConfiguration()
         
-        self.viewModel.currentDeliveryTag = 2
+//        self.viewModel.currentDeliveryTag = 2
+        self.deliveryTag = 2
+        self.viewModel.setSelectedDelivery(deliveryTagIndex: 2)
         self.viewModel.requestFilteredData(resetPage: true)
 //        self.viewModel.requestBrandDeliveryData()
     }
@@ -350,6 +361,12 @@ extension ShopTabViewController {
             cell.isSelected = false
         }
         selectedCategoryCell.isSelected = true
+    }
+    
+    private func resetCategorySelection() {
+        for cell in self.categoryCollectionView.visibleCells {
+            cell.isSelected = false
+        }
     }
 }
 
@@ -374,9 +391,8 @@ extension ShopTabViewController: UICollectionViewDelegate {
             }
             var selectedCategoryCell = collectionView.cellForItem(at: indexPath) as! CategoryCollectionViewCell
             selectedCategoryCell.isSelected = true
-            self.viewModel.selectedCategory = [selectedCategoryCell.categoryLabel.text!]
-            
-            self.viewModel.requestFilteredData(resetPage: true, category: self.viewModel.selectedCategory, brands: self.viewModel.selectedBrands, prices: self.viewModel.selectedPrices, deliveryTag: self.viewModel.currentDeliveryTag)
+            self.viewModel.setSelectedCategory(category: selectedCategoryCell.categoryLabel.text!)
+            self.viewModel.requestFilteredData(resetPage: true)
         }
     }
 }
@@ -389,7 +405,8 @@ extension ShopTabViewController {
             group.enter()
             if (!isPaginating) {
                 isPaginating = true
-                self.viewModel.requestMoreData()
+//                self.viewModel.requestMoreData()
+                self.viewModel.requestFilteredData(resetPage: false)
                 group.leave()
             }
             group.notify(queue: .main) {

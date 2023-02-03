@@ -23,7 +23,6 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
     init(viewModel: ShopViewModel, index: Int) {
         self.viewModel = viewModel
         self.index = index
-//        self.shopFilterItem = viewModel.getFilterItemAtIndex(index: index)
         super.init(nibName: nil, bundle: nil)
         
     }
@@ -45,10 +44,13 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
         self.navigationController?.navigationBar.tintColor = .black
         if index == 0 {
             self.navigationItem.title = "카테고리"
+            self.viewModel.setSelectedCategory(category: nil)
         } else if index == 1 {
             self.navigationItem.title = "브랜드"
+            self.viewModel.setSelectedBrands(brands: nil)
         } else if index == 2 {
             self.navigationItem.title = "가격"
+            self.viewModel.setSelectedPrices(prices: nil)
         }
     }
     
@@ -118,6 +120,8 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillDisappear(animated)
         
         if self.isMovingFromParent {
+           
+            
             let indexPathsForSelectedRows = tableView.indexPathsForSelectedRows
             if indexPathsForSelectedRows != nil {
                 if (index == 0 || index == 2) {
@@ -125,7 +129,6 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
                     for idPath in tableView.indexPathsForSelectedRows! {
                         let selectedFilterItemAtRow = self.viewModel.getFilterItemRowAtIndex(filterItemIndex: index, rowIndex: idPath.row)
                         filterSelectionList.append(selectedFilterItemAtRow)
-    //                    print(selectedFilterItemAtRow)
                     }
                     
                     // NotificationCenter (send selected fields)
@@ -140,7 +143,6 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
                     for idPath in tableView.indexPathsForSelectedRows! {
                         let selectedFilterItemAtRow = self.viewModel.getBrandFilterItemRowAtIndex(filterItemIndex: index, rowIndex: idPath.row)
                         filterSelectionList.append(selectedFilterItemAtRow)
-    //                    print(selectedFilterItemAtRow)
                     }
                     
                     // NotificationCenter (send selected fields)
@@ -150,9 +152,30 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
                                                         "filterSelections": filterSelectionList,
                                                     ],
                                                     userInfo: nil)
-                    
                 }
+            } else {
+                // no fields were selected
+                switch index {
+                case 0:
+                    self.viewModel.setSelectedCategory(category: nil)
+                case 1:
+                    self.viewModel.setSelectedBrands(brands: nil)
+                case 2:
+                    self.viewModel.setSelectedPrices(prices: nil)
+                default:
+                    return
+                }
+                
+                NotificationCenter.default.post(name: NSNotification.Name("filterSelectionsNil"),
+                                                object: [
+                                                    "index": index
+                                                ],
+                                                userInfo: nil)
+                
+            
             }
+            
+            
         }
     }
 }
