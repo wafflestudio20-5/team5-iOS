@@ -82,7 +82,6 @@ class LoginRepository {
             "email": email,
             "password": password,
         ]
-        
         AF.request(url, method: .post, parameters: parameters, encoder: JSONParameterEncoder.default, headers: headers)
             .validate()
             .response
@@ -138,6 +137,7 @@ class LoginRepository {
         }
         
         AF.request(url, method: .get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
                 do{
@@ -276,7 +276,7 @@ class LoginRepository {
         AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
             .validate()
             .response { response in
-            
+                
            print("\n================getNewToken================\n")
            debugPrint(response)
             
