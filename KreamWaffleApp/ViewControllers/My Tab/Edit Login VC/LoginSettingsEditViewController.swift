@@ -49,8 +49,11 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
         { [self] index, element, cell in
                 //element is editCase
             cell.addData(editCase: element, userProfile: nil, user: viewModel.user)
+            cell.selectionStyle = .none
             if (element == .password){
                 //=========for changing password============
+                
+                //TODO: change this! 
                 self.viewModel.pwTextRelay.subscribe { pw in
                    //get pw's count and make length of *
                     let str = String(repeating: "*", count: pw.element?.count ?? 8)
@@ -60,7 +63,7 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
                 cell.editButton.rx
                     .tap
                     .bind {
-                        let subVC = SubEditProfileViewController(myProfile: nil, editCase: element, user: viewModel.user, viewModel: self.viewModel)
+                        let subVC = SubEditProfileViewController(myProfile: nil, editCase: element, user: viewModel.user, viewModel: self.viewModel, profileViewModel: nil)
                         subVC.modalPresentationStyle = .pageSheet
                         self.present(subVC, animated: true)
                     }

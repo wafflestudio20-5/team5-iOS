@@ -25,6 +25,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     lazy var profileButton : UIButton  = {
         let button = UIButton()
         let editLabel = UILabel()
+        let URL = URL(string: self.viewModel.userProfile.image)
+        button.kf.setImage(with: URL, for: .normal)
         button.setImage(UIImage(named: viewModel.userProfile.image), for: .normal)
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"
@@ -80,7 +82,6 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         self.title = "프로필 관리"
         self.view.addSubviews(self.profileButton, self.editTable)
         self.inputTableView()
-        test()
     }
     
     func inputTableView(){
@@ -98,7 +99,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         { [self] index, element, cell in
                 //element is editCase
             cell.addData(editCase: element, userProfile: self.viewModel.userProfile, user: nil)
-                      cell.editButton.addTarget(self, action: #selector(self.editCell), for: .touchUpInside)
+            cell.editButton.addTarget(self, action: #selector(self.editCell), for: .touchUpInside)
+            cell.selectionStyle = .none
             }
                   .disposed(by: disposeBag)
         
@@ -144,7 +146,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     @objc
     func editCell(){
         //TODO edit case 에 따라 변경되도록 하기
-        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName, user: nil, viewModel: nil)
+        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName, user: nil, viewModel: nil, profileViewModel: self.viewModel)
         subVC.modalPresentationStyle = .pageSheet
         self.present(subVC, animated: true)
     }

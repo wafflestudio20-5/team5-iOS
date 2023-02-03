@@ -6,13 +6,26 @@
 //
 
 import Foundation
+import RxRelay
+import UIKit
 
 class UserProfileViewModel {
     let usecase : UserUsecase
     
+    //var imageRelay : BehaviorRelay<UIImage>
+    var profileNameRelay: BehaviorRelay<String>
+    var userNameRelay:  BehaviorRelay<String>
+    var bioRelay: BehaviorRelay<String>
+    
     init(usecase: UserUsecase) {
         self.usecase = usecase
+        //imageRelay = BehaviorRelay<UIImage>(value: <#T##UIImage#>)
+        profileNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.profile_name ?? "")
+        userNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.user_name ?? "")
+        bioRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.introduction ?? "나를 소개하세요")
     }
+    
+
     
     var userProfile: Profile {
         get {

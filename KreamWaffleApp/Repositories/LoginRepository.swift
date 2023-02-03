@@ -277,6 +277,7 @@ class LoginRepository {
             case .failure(let error):
                if (error.responseCode == 401){
                     completion(.failure(.invalidRefreshTokenError))
+                    self.logOutUser()
                 }else{
                     completion(.failure(.unknownError))
                 }

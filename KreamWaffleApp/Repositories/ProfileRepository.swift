@@ -15,6 +15,8 @@
 import Foundation
 import RxSwift
 import Alamofire
+import Kingfisher
+import ImageSlideshow
 
 final class ProfileRepository {
     private struct fetchUserConstants {
@@ -37,6 +39,7 @@ final class ProfileRepository {
                     switch response.result {
                     case .success(let result):
                         debugPrint(response)
+                        
                         single(.success(result))
                     case .failure:
                         debugPrint(response)

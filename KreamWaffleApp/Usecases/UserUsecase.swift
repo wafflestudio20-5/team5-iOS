@@ -48,18 +48,21 @@ final class UserUsecase {
     //MARK: related to log in, log out, sign up
     ///signs in user with user defaults
     func getSavedUser(){
+        /*
         if let savedUser = repository.getUser(){
             self.user = savedUser
             self.loggedIn = true
         }else{
             print("no saved user")
-        }
+        }*/
         
         //TODO: 나중에는 only get user response
         Task {
             if let savedUserResponse = repository.getUserResponse(){
                 self.userResponse = savedUserResponse
+                self.loggedIn = true
                 await self.checkAccessToken()
+                self.user = savedUserResponse.user
             }else{
                 print("no saved user reponse")
             }

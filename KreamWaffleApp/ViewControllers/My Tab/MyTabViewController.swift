@@ -66,6 +66,18 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 self.userProfileVM.requestUserProfile { [weak self] in
                     print("Profile Loading 실패")
                 }
+                
+                if self.userProfileVM.userProfile != nil {
+                    if self.userProfileVM.userProfile.image != nil {
+                        print("\(self.userProfileVM.userProfile.image)")
+                        self.profileImageView.kf.setImage(with: URL(string: self.userProfileVM.userProfile.image))
+                    }else{
+                        print("Nil Image")
+                        self.profileImageView.image = UIImage(systemName: "person")
+                    }
+                    self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
+                    self.userNameLabel.text = self.userProfileVM.userProfile.user_name
+                }
             }
         }.disposed(by: disposeBag)
     }
@@ -257,6 +269,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
             self.profileNameLabel.text = temporaryUserData.nickname
             self.userNameLabel.text = self.userInfoVM.User?.parsed_email
         }
+        
     }
     
     func setupDivider(){
