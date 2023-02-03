@@ -22,26 +22,29 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     private let contentView = UIView()
     private let slideshow = ImageSlideshow()
     
-    let brandLabel = UILabel()
-    let eng_nameLabel = UILabel()
-    let kor_nameLabel = UILabel()
-    var sizeField : ShopDetailSizefield?
-    let priceLabel = UILabel()
-    let priceSubLabel = UILabel()
+    private let brandLabel = UILabel()
+    private let eng_nameLabel = UILabel()
+    private let kor_nameLabel = UILabel()
+    private var sizeField : ShopDetailSizefield?
+    private let priceLabel = UILabel()
+    private let priceSubLabel = UILabel()
     
-    var bookmarkCount = Int()
+    private var bookmarkCount = Int()
 //    var purchasePrice = Int()
 //    var sellPrice = Int()
     
+    // comment buttons
+    private let commentButton = UIButton()
+    
     // bottom toolbar
-    let bottomBar = UIView()
-    let bookmarkButton = UIView()
-    let purchaseButton = UIView()
-    let sellButton = UIView()
+    private let bottomBar = UIView()
+    private let bookmarkButton = UIView()
+    private let purchaseButton = UIView()
+    private let sellButton = UIView()
     
     // variables
-    var purchase_price = Int()
-    var sales_price = Int()
+    private var purchase_price = Int()
+    private var sales_price = Int()
     
     // font sizes
     let h1FontSize: CGFloat = 18 // brandLabel, priceLabel
@@ -58,7 +61,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     init(viewModel: ShopTabDetailViewModel, userInfoViewModel: UserInfoViewModel) {
         self.viewModel = viewModel
         self.userInfoViewModel = userInfoViewModel
-//        self.currentProductSizeInfo = nil
         
         super.init(nibName: nil, bundle: nil)
         
@@ -76,11 +78,8 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     @objc func updateSizeField(_ notification: Notification) {
         guard let isLikedNotificationMovie = notification.object as? [String: Any] else { return }
         guard let size = isLikedNotificationMovie["selectedSize"] as? String else { return }
-//        guard let index = self.movieList.firstIndex(where: { $0.id == movie.id }) else { return }
-        
-        // Update isLiked in movieList
+ 
         self.sizeField?.setTextfield(SelectedSize: size)
-//        self.movieList[index].isLiked = movie.isLiked
     }
     
     override func viewDidLoad() {
@@ -98,6 +97,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         setupkor_nameLabel()
         setupShoeSizeField()
         setupPriceLabel()
+        setUpCommentButton()
         
         setUpBottomBar()
         
@@ -133,7 +133,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     private func addSubviews() {
         self.view.addSubviews(scrollView, bottomBar)
         self.scrollView.addSubview(contentView)
-        self.contentView.addSubviews(slideshow, brandLabel, eng_nameLabel, kor_nameLabel, priceLabel, priceSubLabel)
+        self.contentView.addSubviews(slideshow, brandLabel, eng_nameLabel, kor_nameLabel, priceLabel, priceSubLabel, commentButton)
     }
     
     private func setUpScrollView() {
@@ -298,6 +298,21 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
             self.priceSubLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -self.marginConstant),
             self.priceSubLabel.topAnchor.constraint(equalTo: self.sizeField!.bottomAnchor, constant: 10),
 //            priceSubLabel.bottomAnchor.constraint(equalTo: self.priceLabel.topAnchor, constant: 30)
+        ])
+    }
+    
+    private func setUpCommentButton() {
+        commentButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
+        commentButton.setPreferredSymbolConfiguration(.init(pointSize: 30, weight: .regular, scale: .default), forImageIn: .normal)
+        commentButton.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
+        commentButton.tintColor = .black
+        
+        commentButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            commentButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: self.marginConstant),
+            commentButton.widthAnchor.constraint(equalToConstant: 50),
+            commentButton.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 10),
+            commentButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -533,6 +548,22 @@ extension ProductDetailViewController {
         
         self.present(productSizeSelectionVC, animated: true, completion: nil)
     }
+    
+    @objc func commentButtonTapped() {
+        if (!self.userInfoViewModel.isLoggedIn()) {
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            self.hidesBottomBarWhenPushed = true
+            self.tabBarController?.tabBar.isHidden = true
+
+            let commentRepository = ShopCommentRepository()
+            let commentUsecase = CommentUsecase(commentRepository: commentRepository)
+            let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.viewModel.getId())
+            self.navigationController?.pushViewController(CommentViewController(userInfoViewModel: self.userInfoViewModel, commentViewModel: commentViewModel), animated: true)
+        }
+    }
+    
+    
     
     @objc func tappedBookmarkButton() {
         print("tapped bookmark button")
