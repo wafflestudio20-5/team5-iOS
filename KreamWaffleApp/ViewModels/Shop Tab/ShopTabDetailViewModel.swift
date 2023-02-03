@@ -64,4 +64,6 @@ final class ShopTabDetailViewModel {
     func getProductInfoForSize(size: String) -> ProductSize {
         return self.usecase.getProductInfoForSize(size: size)
     }
+    
+  
 }
