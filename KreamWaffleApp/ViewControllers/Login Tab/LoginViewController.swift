@@ -188,9 +188,6 @@ class LoginViewController: UIViewController {
         if (self.loginState){
             print("login success")
             self.dismiss(animated: true)
-        }else{
-            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
-            print("login failure")
         }
     }
     
