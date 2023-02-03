@@ -38,8 +38,6 @@ class MyProfileViewController: UIViewController {
         self.view.backgroundColor = .white
         addSubviews()
         setUpSubviews()
-        setUpChildStyleFeedCollectionView()
-        bindChildStyleFeedCollectionView()
     }
     
     func addSubviews(){
@@ -59,6 +57,8 @@ class MyProfileViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         //adding bottom border to follower bar
+        setUpChildStyleFeedCollectionView()
+        bindChildStyleFeedCollectionView()
         self.followerBar.layer.addBorder([.bottom], color: colors.lightGray, width: 1.0)
         configureFollowerBarTapGesture()
     }
@@ -110,7 +110,9 @@ class MyProfileViewController: UIViewController {
     
     func setUpChildStyleFeedCollectionView() {
         let styleFeedRepository = StyleFeedRepository()
-        let styleFeedUsecase = StyleFeedUsecase(repository: styleFeedRepository, type: "default", user_id: userInfoVM.User?.id)
+        var styleFeedUsecase: StyleFeedUsecase
+        styleFeedUsecase = StyleFeedUsecase(repository: styleFeedRepository, type: "default", user_id: userInfoVM.User!.id)
+
         let styleFeedVM = StyleFeedViewModel(styleFeedUsecase: styleFeedUsecase)
         self.userStyleFeedCollectionViewVC = StyleFeedCollectionViewVC(styleFeedViewModel: styleFeedVM, userInfoViewModel: self.userInfoVM)
         

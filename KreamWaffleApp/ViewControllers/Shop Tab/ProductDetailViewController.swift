@@ -9,6 +9,7 @@ import ImageSlideshow
 
 class ProductDetailViewController: UIViewController, UISheetPresentationControllerDelegate {
     private let viewModel: ShopTabDetailViewModel
+    private let userInfoViewModel: UserInfoViewModel
 //    private var currentProductSizeInfo: ProductSize? {
 //        didSet {
 //            purchase_price = currentProductSizeInfo?.purchase_price ?? 0
@@ -54,8 +55,9 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     // other variables
     private var imageHeight = CGFloat()
     
-    init(viewModel: ShopTabDetailViewModel) {
+    init(viewModel: ShopTabDetailViewModel, userInfoViewModel: UserInfoViewModel) {
         self.viewModel = viewModel
+        self.userInfoViewModel = userInfoViewModel
 //        self.currentProductSizeInfo = nil
         
         super.init(nibName: nil, bundle: nil)

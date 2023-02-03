@@ -36,7 +36,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let shopViewModel = ShopViewModel(usecase: ShopUsecase(repository: ShopRepository()))
         
-        let styleViewModel = StyleFeedViewModel(styleFeedUsecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest", user_id: nil))
+        let latestStyleFeedViewModel = StyleFeedViewModel(styleFeedUsecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "latest", user_id: nil))
+        let followingStyleFeedViewModel = StyleFeedViewModel(styleFeedUsecase: StyleFeedUsecase(repository: StyleFeedRepository(), type: "following", user_id: nil))
         let userViewModel = UserInfoViewModel(UserUseCase: UserUsecase)
         let loginViewModel = LoginViewModel(UserUseCase: UserUsecase)
         let userProfileViewModel = UserProfileViewModel(usecase: UserUsecase)
@@ -44,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let LoginVC = LoginViewController(viewModel: loginViewModel)
         self.loginVC = LoginVC
         
-        self.rootVC = TabBarViewController(homeViewModel: homeViewModel, shopViewModel: shopViewModel, styleFeedViewModel: styleViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel, userProfileViewModel: userProfileViewModel)
+        self.rootVC = TabBarViewController(shopViewModel: shopViewModel, latestStyleFeedViewModel: latestStyleFeedViewModel, followingStyleFeedViewModel: followingStyleFeedViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel, userProfileViewModel: userProfileViewModel)
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
         self.window?.overrideUserInterfaceStyle = .light
