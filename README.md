@@ -16,7 +16,7 @@
 [BetterSegmentedControl](https://github.com/gmarm/BetterSegmentedControl)  
 [ImageSlideshow](https://github.com/zvonicek/ImageSlideshow)  
 ## 🔗 Related Projects    
-[Backend](https://github.com/wafflestudio20-5/team5-server/tree/develop)    
+[Backend](https://github.com/wafflestudio20-5/team5-server)    
 [Web Frontend](https://github.com/wafflestudio20-5/team5-web)   
 ## 🌄 Views
 ### MY Tab
