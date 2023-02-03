@@ -103,6 +103,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
                     }
                 }
             }
+            .disposed(by: bag)
         
         self.necessaryTerms?.checkButton.rx
             .tap
@@ -110,6 +111,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
                 self.necessaryTermChecked = !self.necessaryTermChecked
                 self.viewModel.liabilityCheckRelay.accept(necessaryTermChecked)
             }
+            .disposed(by: bag)
     }
     
     

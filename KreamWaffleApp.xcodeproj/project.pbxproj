@@ -120,7 +120,6 @@
 		CE571D83298A1A7C00DAB878 /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D82298A1A7C00DAB878 /* EditProfileTableViewCell.swift */; };
 		CE571D85298A53A600DAB878 /* UserProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D84298A53A600DAB878 /* UserProfileRepository.swift */; };
 		CE571D87298A809600DAB878 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D86298A809600DAB878 /* UserProfileViewModel.swift */; };
-		CE571D89298AE69500DAB878 /* LoginSettingsEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */; };
 		CE9EBDF1298BDDF400F4131A /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDF0298BDDF400F4131A /* ProductDetailViewController.swift */; };
 		CE9EBDF5298BF1F000F4131A /* CommentRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDF4298BF1F000F4131A /* CommentRepositoryProtocol.swift */; };
 		CE9EBDF7298BF21400F4131A /* ShopCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBDF6298BF21400F4131A /* ShopCommentRepository.swift */; };
@@ -271,7 +270,6 @@
 		CE571D82298A1A7C00DAB878 /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
 		CE571D84298A53A600DAB878 /* UserProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRepository.swift; sourceTree = "<group>"; };
 		CE571D86298A809600DAB878 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
-		CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSettingsEditViewController.swift; sourceTree = "<group>"; };
 		CE9EBDE8298BAA5400F4131A /* ProductSizeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSizeSelectionViewController.swift; sourceTree = "<group>"; };
 		CE9EBDF0298BDDF400F4131A /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewController.swift; sourceTree = "<group>"; };
 		CE9EBDF4298BF1F000F4131A /* CommentRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepositoryProtocol.swift; sourceTree = "<group>"; };
@@ -327,7 +325,7 @@
 		5C2F9CA2295D77350021D437 /* My Tab */ = {
 			isa = PBXGroup;
 			children = (
-				CE9EBE02298BF71300F4131A /* Edit Login VC */,
+				CE9EBE02298BF71300F4131A /* Settings */,
 				6537F7132985BEFF00FC58E8 /* Edit Profile VC */,
 				655A94D0296C772900F0184B /* Subviews */,
 				948C66942958482E00561C59 /* MyTabViewController.swift */,
@@ -718,13 +716,12 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		CE9EBE02298BF71300F4131A /* Edit Login VC */ = {
+		CE9EBE02298BF71300F4131A /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				CE571D88298AE69500DAB878 /* LoginSettingsEditViewController.swift */,
 				6537F71129837CAF00FC58E8 /* SettingsViewController.swift */,
 			);
-			path = "Edit Login VC";
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		D11222DD1DD286E50EA59C49 /* Pods */ = {
@@ -899,7 +896,6 @@
 				5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */,
 				5C6FBD512979745D00B64FF0 /* UserListRepositoryProtocol.swift in Sources */,
 				5CB810DF29683D4E0021FDD6 /* StylePostRepository.swift in Sources */,
-				CE571D89298AE69500DAB878 /* LoginSettingsEditViewController.swift in Sources */,
 				CE9EBDFB298BF24A00F4131A /* CommentUsecase.swift in Sources */,
 				5C6CE1A22983D55B00755334 /* CommentResponse+Comment+Reply+ReplyToProfile.swift in Sources */,
 				9428AE302957170600DC7907 /* AppDelegate.swift in Sources */,

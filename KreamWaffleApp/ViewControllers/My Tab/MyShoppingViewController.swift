@@ -120,7 +120,7 @@ class MyShoppingViewController: UIViewController {
         .disposed(by: bag)
         
         self.userInfoVM.wishDataCountObservable.subscribe { [weak self] count in
-            self?.followerBar.title3 = "\(count.element ?? 0)"
+            self?.followerBar.changeWishNumberCount(newString: "\(count.element ?? 0)")
         }
     }
     
