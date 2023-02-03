@@ -38,13 +38,14 @@ class UserShopRepository {
             AF.request(url, method: .get, parameters: parameters, headers: headers)
                 .validate()
                 .responseDecodable(of: UserProductResponse.self) { [weak self] response in
-                    //print("=======shop========")
-                    //debugPrint(response)
+                    print("=======shop========")
+                    debugPrint(response)
                     switch response.result {
                     case .success(let result):
                         single(.success(result))
+                        print("여기여기여기여기 \(result.count)")
                     case .failure(let _):
-                        single(.success(UserProductResponse(count: 0, itemList: [])))
+                        single(.success(UserProductResponse(count: 0, next: "", previous: "", itemList: [])))
                     }
                 }
             return Disposables.create()

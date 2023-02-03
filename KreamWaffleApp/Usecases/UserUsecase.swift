@@ -63,6 +63,16 @@ final class UserUsecase {
         self.purchaseProductRelay.accept(purchaseProductList)
     }
     
+    var purchasedProductCount = Int() {
+        didSet {
+            self.getPurchaseProductCountObserver()
+        }
+    }
+    
+    func getPurchaseProductCountObserver() {
+        self.purchasedProductCountRelay.accept(purchasedProductCount)
+    }
+    
     var purchasedProductCountRelay = BehaviorRelay<Int>(value: 0)
     var purchaseProductCountObservable: Observable<Int> {
         return self.purchasedProductCountRelay.asObservable()
@@ -306,7 +316,8 @@ extension UserUsecase {
             .subscribe(onSuccess: { [self] fetchedProductInfos in
                 switch(myShopType){
                 case .purchase:
-                    self.purchasedProductCountRelay.accept(fetchedProductInfos.count)
+                    self.purchasedProductCount = fetchedProductInfos.count
+                    print("사실은 요만큼 \(self.purchasedProductCount)")
                     self.purchaseProductList = fetchedProductInfos.itemList
                 case .sale:
                     self.salesProductCountRelay.accept(fetchedProductInfos.count)
