@@ -81,7 +81,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.view = UIView()
         configure()
         applyDesign()
-        
+        setUpNavigationBar()
         addSubviews()
         setUpScrollView()
         
@@ -118,6 +118,10 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         
     }
     
+    private func setUpNavigationBar() {
+        self.setUpBackButton()
+    }
+
     private func addSubviews() {
         self.view.addSubviews(scrollView, bottomBar)
         self.scrollView.addSubview(contentView)
@@ -542,15 +546,21 @@ extension ProductDetailViewController {
     
     @objc func commentButtonTapped() {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
-        } else {
-            self.hidesBottomBarWhenPushed = true
-            self.tabBarController?.tabBar.isHidden = true
+            self.presentLoginAgainAlert()
+        }
+        Task {
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            if (isValidToken) {
+                self.hidesBottomBarWhenPushed = true
+                self.tabBarController?.tabBar.isHidden = true
 
-            let shopCommentRepository = ShopCommentRepository()
-            let shopCommentUsecase = ShopCommentUsecase(shopCommentRepository: shopCommentRepository)
-            let shopCommentViewModel = ShopCommentViewModel(shopCommentUsecase: shopCommentUsecase, productId: self.viewModel.getId())
-            self.navigationController?.pushViewController(ShopCommentViewController(userInfoViewModel: self.userInfoViewModel, shopCommentViewModel: shopCommentViewModel), animated: true)
+                let shopCommentRepository = ShopCommentRepository()
+                let shopCommentUsecase = ShopCommentUsecase(shopCommentRepository: shopCommentRepository)
+                let shopCommentViewModel = ShopCommentViewModel(shopCommentUsecase: shopCommentUsecase, productId: self.viewModel.getId())
+                self.navigationController?.pushViewController(ShopCommentViewController(userInfoViewModel: self.userInfoViewModel, shopCommentViewModel: shopCommentViewModel), animated: true)
+            } else {
+                self.presentLoginAgainAlert()
+            }
         }
     }
     

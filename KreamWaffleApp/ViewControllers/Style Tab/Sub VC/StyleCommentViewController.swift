@@ -87,6 +87,7 @@ final class StyleCommentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setUpBackButton()
         self.hideKeyboardWhenTappedAround()
         self.view.backgroundColor = .white
         addSubviews()
