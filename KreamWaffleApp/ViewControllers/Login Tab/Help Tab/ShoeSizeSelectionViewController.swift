@@ -37,7 +37,7 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
         self.view.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 250/255.0, alpha: 1.0)
         bind()
         self.view.addSubview(titleLabel)
-        self.view.addSubview(backButton)
+        //self.view.addSubview(backButton)
         self.view.addSubview(sizeView)
         configureCollectionView()
     }
@@ -90,6 +90,7 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
         self.titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
         self.titleLabel.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
         
+        /*
         let blue_x = UIImage(systemName: "xmark")
         let tinted_x = blue_x?.withRenderingMode(.alwaysTemplate)
         self.backButton.setImage(tinted_x, for: .normal)
@@ -100,7 +101,7 @@ class ShoeSizeSelectionViewController: UIViewController, UIScrollViewDelegate, U
         backButton.centerYAnchor.constraint(equalTo: self.titleLabel.centerYAnchor).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/20).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: self.view.frame.height/20).isActive = true
-        backButton.addTarget(self, action: #selector(exitVC), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(exitVC), for: .touchUpInside)*/
     
         layout.scrollDirection = .vertical
         self.sizeView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)

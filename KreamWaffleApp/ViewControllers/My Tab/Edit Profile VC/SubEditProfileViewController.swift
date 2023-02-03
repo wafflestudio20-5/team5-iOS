@@ -38,6 +38,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
     var saveButton = UIButton()
     
     var viewModel : EditAccountViewModel?
+    var profileViewModel : UserProfileViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +46,12 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         mapData()
         addNavigationBar()
         setupSubviews()
+        
+        //프로필 변경인지 로그인 정보 변경인지에 따라 바인딩을 다르게 해주기.
         if (self.editCase == .password){
-            self.bindForPasswordSetting()
+            self.bindForPasswordSetting() //로그인 변경 정보 화면
+        }else{
+            self.bind() //프로필 정보 변경 화면
         }
     }
     
@@ -80,7 +85,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         switch (self.editCase){
         case .profileName:
             self.navBarTitle = "프로필 이름 변경"
-            self.detail = "나만의 프로필 이름으로 변경하세요. 변경 후 30일이 지나야 다시 변경 가능하므로 신중히 변경해주세요."
+            self.detail = "나만의 프로필 이름으로 변경하세요."
             self.currentText = self.myProfile?.profile_name
             self.textfield = CustomTextfield(titleText: "프로필 이름", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .profileName, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 25)
@@ -102,18 +107,20 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             self.currentText = nil
             self.textfield = CustomTextfield(titleText: "비밀번호", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .password, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 25)
-        case .email:
-            let five = 5
-        case .shoeSize:
-            let five = 5
+        default:
+            print("[Log] SubEditProfileVC: Edit Case error")
+            
         }
+        
+        self.textfield?.textfield.becomeFirstResponder()
     }
     
-    init(myProfile: Profile?, editCase: editCase, user: User?, viewModel: EditAccountViewModel?){
+    init(myProfile: Profile?, editCase: editCase, user: User?, viewModel: EditAccountViewModel?, profileViewModel: UserProfileViewModel?){
         self.myProfile = myProfile
         self.user = user
         self.editCase = editCase
         self.viewModel = viewModel
+        self.profileViewModel = profileViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -131,9 +138,9 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
         self.detailLabel.numberOfLines = 0
         self.detailLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.detailLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            self.detailLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
-            self.detailLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80)
+            self.detailLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            self.detailLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            self.detailLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70)
         ])
         
         
@@ -164,6 +171,16 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .distinctUntilChanged()
             .subscribe(onNext: { changedText in
                 self.textfield?.editTextCounter(text: changedText)
+                switch (self.editCase){
+                case .profileName:
+                    self.profileViewModel?.profileNameRelay.accept(changedText)
+                case .userName:
+                    self.profileViewModel?.userNameRelay.accept(changedText)
+                case .introduction:
+                    self.profileViewModel?.bioRelay.accept(changedText)
+                default:
+                    print("[Log] SubEditProfileVC: Error in given edit case.")
+                }
             })
             .disposed(by: bag)
         
@@ -180,6 +197,11 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .map{ $0 != self.currentText }
             .bind(to: self.saveButton.rx.isEnabled)
             .disposed(by: bag)
+        /*
+        self.saveButton.rx.tap
+            .subscribe { [weak self] tap in
+                self?.profileViewModel?.editProfile(Profile: <#Profile#>)
+            }*/
     }
     
     //MARK: - only for user settings

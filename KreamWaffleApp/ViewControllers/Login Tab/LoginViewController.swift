@@ -54,7 +54,7 @@ class LoginViewController: UIViewController {
         
         //for google login
         GIDSignIn.sharedInstance()?.presentingViewController = self // 로그인화면 불러오기
-        //GIDSignIn.sharedInstance()?.restorePreviousSignIn() // 자동로그인
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn() // 자동로그인
         GIDSignIn.sharedInstance()?.delegate = self
         
         self.view.backgroundColor = .white
@@ -70,6 +70,21 @@ class LoginViewController: UIViewController {
     init(viewModel : LoginViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        //bind to view model
+        self.viewModel
+            .errorRelay
+            .asObservable()
+            .subscribe(
+                onNext: { error in
+                    if (error == .noUserInfoError){
+                        self.showNotification(errorText: "입력하신 이메일로 된 사용자가 없습니다.")
+                    }else if (error == .loginError){
+                        self.showNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
+                    }
+                }
+            ).disposed(by: bag)
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -105,13 +120,6 @@ class LoginViewController: UIViewController {
         configureSocialLogin()
     }
     
-    
-    @objc func popVC(){
-        //TODO: set differently according to login state in VM --> 일단은 노티로.
-        //이게 아니라 root vc를 갈아끼워야하는 것 같음.
-        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
-    }
-    
     //changes activation of login button
     func bindLoginButton(){
         self.viewModel.bindTextfield(textfield: self.emailfield!.textfield, LoginTextfieldType: .Email)
@@ -132,25 +140,25 @@ class LoginViewController: UIViewController {
     
     @objc func didTapLogin(){
         self.viewModel.loginUserWithCustom()
-        //TODO: error도 observe 해서 눌렀는데 에러면 에러 화면 뜨게 끔하기.
     }
     
-    private func loginFailure(failureMessage: String){
-        let loadingVC = LoadingViewController()
-
-        // Animate loadingVC over the existing views on screen
-        loadingVC.modalPresentationStyle = .overCurrentContext
-
-        // Animate loadingVC with a fade in animation
-        loadingVC.modalTransitionStyle = .crossDissolve
-        
-        loadingVC.setUpNotification(notificationText: failureMessage)
-        self.present(loadingVC, animated: true, completion: nil)
-        
+    
+    func showNotification(errorText: String){
+        let errorNotification = CustomNotificationView(notificationText: errorText)
+        self.view.addSubview(errorNotification)
+        errorNotification.translatesAutoresizingMaskIntoConstraints = false
+        errorNotification.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive = true
+        errorNotification.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15).isActive = true
+        errorNotification.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: self.view.frame.height/64).isActive = true
+        errorNotification.heightAnchor.constraint(greaterThanOrEqualToConstant: self.view.frame.height/16).isActive = true
         let seconds = 2.0
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            loadingVC.dismiss(animated: true)
-    }
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: UIView.AnimationOptions.curveEaseIn, animations: {
+                errorNotification.alpha = 0.0
+                }) { _ in
+                errorNotification.removeFromSuperview()
+                }
+        }
     }
     
     @objc func didTapSignup(){
@@ -180,9 +188,6 @@ class LoginViewController: UIViewController {
         if (self.loginState){
             print("login success")
             self.dismiss(animated: true)
-        }else{
-            loginFailure(failureMessage: "이메일이나 비밀번호를 확인해주세요.")
-            print("login failure")
         }
     }
     
@@ -225,6 +230,10 @@ extension LoginViewController {
         UIGraphicsEndImageContext()
         
         return newImage!
+    }
+    
+    @objc func popVC(){
+        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
     }
 }
 
