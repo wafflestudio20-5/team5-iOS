@@ -12,6 +12,7 @@ class ShopFilterTableViewCell: UITableViewCell {
         return "ShopFilterTableViewCell"
     }
     private let headerIndexDict = [0 : "카테고리", 1 : "브랜드", 2 : "가격"]
+    private let headerIndexDefaultTextDict = [0 : "모든 카테고리", 1 : "모든 브랜드", 2 : "모든 가격"]
     
     private let headerLabel = UILabel()
     private let selectionLabel = UILabel()
@@ -32,6 +33,11 @@ class ShopFilterTableViewCell: UITableViewCell {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateSubHeaderBrand(_:)),
                                                name: NSNotification.Name("brandFilterSelections"),
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateSubHeaderNil(_:)),
+                                               name: NSNotification.Name("filterSelectionsNil"),
                                                object: nil)
     }
     
@@ -98,6 +104,15 @@ class ShopFilterTableViewCell: UITableViewCell {
  
         if headerIndexDict[index] == headerLabel.text {
             selectionLabel.text = filterSelectionList.map{$0.name}.joined(separator: ", ")
+        }
+    }
+    
+    @objc func updateSubHeaderNil(_ notification: Notification) {
+        guard let notification = notification.object as? [String: Any] else { return }
+        guard let index = notification["index"] as? Int else { return }
+        
+        if headerIndexDict[index] == headerLabel.text {
+            selectionLabel.text = headerIndexDefaultTextDict[index]
         }
     }
     

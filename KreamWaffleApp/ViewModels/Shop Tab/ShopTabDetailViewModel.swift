@@ -65,5 +65,9 @@ final class ShopTabDetailViewModel {
         return self.usecase.getProductInfoForSize(size: size)
     }
     
+    func getProductSizeCount() -> Int {
+        return self.usecase.productSizeInfoList.count
+    }
+    
   
 }

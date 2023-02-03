@@ -37,6 +37,7 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
         bindTableView()
         setUpTableView()
         setUpShowResultsButton()
+    
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateFilterSelections(_:)),
@@ -116,6 +117,7 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
         ])
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -148,13 +150,14 @@ extension ShopFilterViewController {
         switch index {
         case 1:
             self.viewModel.selectedBrands = filterSelectionList
-//            selectedBrands = filterSelectionList
         default:
             return
         }
     }
     
     @objc func cancelButtonTapped() {
+        self.viewModel.resetFilter()
+        self.viewModel.requestFilteredData(resetPage: true)
         self.dismiss(animated: true)
     }
     
@@ -163,8 +166,7 @@ extension ShopFilterViewController {
     }
     
     @objc func showResultsButtonTapped() {
-        self.viewModel.requestFilteredData(resetPage: true, category: self.viewModel.selectedCategory, brands: self.viewModel.selectedBrands, prices: self.viewModel.selectedPrices, deliveryTag: self.viewModel.currentDeliveryTag)
-        
+        self.viewModel.requestFilteredData(resetPage: true)
         self.dismiss(animated: true)
     }
 }
