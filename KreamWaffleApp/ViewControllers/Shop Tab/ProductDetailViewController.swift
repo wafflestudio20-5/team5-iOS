@@ -106,6 +106,12 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.hidesBottomBarWhenPushed = false;
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.backgroundColor = .white
+    }
+    
     private func configure() {
         imageHeight = CGFloat(viewModel.getThumbnailImageRatio()) * (self.view.bounds.width)
 
