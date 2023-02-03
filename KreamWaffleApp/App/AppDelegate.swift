@@ -29,14 +29,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // 애플리케이션을 등록할 때 입력한 URL Scheme
         instance?.serviceUrlScheme = "naverlogin" //TODO: 파일에 저장했는데 왜 안되지
         // 애플리케이션 등록 후 발급받은 클라이언트 아이디
-        instance?.consumerKey = "JYOXwPjau1XNGI6gnhpz"
+        instance?.consumerKey = Bundle.main.NAVER_CONSUMER_KEY
         // 애플리케이션 등록 후 발급받은 클라이언트 시크릿
-        instance?.consumerSecret = "q9NIM1RykO"
+        instance?.consumerSecret = Bundle.main.NAVER_CONSUMER_SECRET
         // 애플리케이션 이름
         instance?.appName = "Kream"
         
         //google
-        GIDSignIn.sharedInstance()?.clientID = "806966291001-oqdbe0bq0la26ao89h4t4imqnci2f27e.apps.googleusercontent.com"
+        GIDSignIn.sharedInstance()?.clientID = Bundle.main.GOOGLE_CLIENT_ID
         return true
     }
 

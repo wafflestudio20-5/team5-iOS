@@ -76,6 +76,7 @@ class LoginViewController: UIViewController {
             .asObservable()
             .subscribe(
                 onNext: { error in
+                    print(error)
                     if (error == .noUserInfoError){
                         self.showNotification(errorText: "입력하신 이메일로 된 사용자가 없습니다.")
                     }else if (error == .loginError){
