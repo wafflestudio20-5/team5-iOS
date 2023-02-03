@@ -40,7 +40,7 @@ enum errorCondition{
     }
 }
 
-class CustomTextfield : UIView {
+class CustomTextfield : UIView, UITextFieldDelegate {
     
     var titleText: String
     var errorText: String
@@ -66,11 +66,11 @@ class CustomTextfield : UIView {
     self.defaultButtonImage = defaultButtonImage
     self.pressedButtonImage = pressedButtonImage
     super.init(frame: .zero)
+    self.textfield.delegate = self
     self.addSubviews(titleLabel, textfield, bottomLine, warningLine, button)
     setDesign()
     
     }
-    
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -126,7 +126,13 @@ class CustomTextfield : UIView {
         }
     }
     
-    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                           replacementString string: String) -> Bool
+    {
+        let currentString: NSString = self.textfield.text as! NSString
+        let newString: NSString =  currentString.replacingCharacters(in: range, with: string) as NSString
+        return newString.length <= self.maxCount ?? 100
+    }
     
     func configureErrorMessage(){
         self.bottomLine.backgroundColor = .lightGray
