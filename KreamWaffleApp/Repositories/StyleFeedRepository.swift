@@ -25,8 +25,8 @@ final class StyleFeedRepository {
                 .validate()
                 .responseDecodable(of: PostResponse.self) { response in
                     //*****
-                    print("\n=================== style feed ======================\n")
-                    debugPrint(response)
+                    //print("\n=================== style feed ======================\n")
+                    //debugPrint(response)
                     //*****
                     
                     switch response.result {

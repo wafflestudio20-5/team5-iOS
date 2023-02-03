@@ -27,6 +27,9 @@ class EditAccountViewModel {
     var userNameRelay:  BehaviorRelay<String>
     var bioRelay: BehaviorRelay<String>
     
+    //변경 탭을 누르는 것을 담고 있는 릴레이
+    var tappedChangePasswordRelay = BehaviorRelay<editCase>(value: .none)
+    
     init(usecase: UserUsecase){
         self.usecase = usecase
         shoeSizeRelay = BehaviorRelay<Int>(value: usecase.user?.shoeSize ?? 0)

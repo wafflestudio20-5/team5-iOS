@@ -63,7 +63,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 self.userProfileVM.requestUserProfile {
                     print("Profile Loading 실패")
                 }
-                
+            
         self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
         self.userNameLabel.text = self.userProfileVM.userProfile.user_name
         self.bioLabel.text = self.userProfileVM.userProfile.introduction
@@ -232,7 +232,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.bioLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.bioLabel.leadingAnchor.constraint(equalTo: self.profileImageView.leadingAnchor),
-            self.bioLabel.trailingAnchor.constraint(equalTo: self.fixedView.trailingAnchor),
+            self.bioLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
             self.bioLabel.topAnchor.constraint(equalTo: self.userNameLabel.bottomAnchor, constant: 5)
         ])
     }
@@ -297,6 +297,18 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         
         self.profileNameLabel.text = profile.profile_name
         self.userNameLabel.text = profile.user_name
+        
+        self.userProfileVM.imageRelay.subscribe { [weak self] event in
+            switch event {
+            case .next:
+                self?.profileImageView.image = event.element
+            case .error(_):
+                break
+            case .completed:
+                break
+            }
+            
+        }
     }
     
     func setupDivider(){
@@ -315,7 +327,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     func setupChildVC(){
         self.add(self.myShoppingVC)
         self.add(self.myProfileVC)
-        //TODO: y 값 조정하기
         self.myShoppingVC.view.frame = CGRect(x: 0, y: 270, width: self.view.frame.width, height: self.view.frame.height)
         self.myProfileVC.view.frame = CGRect(x: 0, y: 270, width: self.view.frame.width, height: self.view.frame.height)
         self.myProfileVC.view.isHidden = true

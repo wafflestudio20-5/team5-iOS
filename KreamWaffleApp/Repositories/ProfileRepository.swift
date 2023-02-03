@@ -131,6 +131,40 @@ final class ProfileRepository {
                 }
             }
     }
+    
+    //PATCH: change Profile Image
+    func updateUserProfileImage(newImage: UIImage, userId: Int, accessToken: String, completion: @escaping (Result<Bool, Error>) -> ()){
+        
+        let headers : HTTPHeaders = [
+            "Authorization": "Bearer \(accessToken)" ,
+            "accept": "application/json",
+            "Content-Type": "multipart/form-data",
+        ]
+        
+        let parameters = [
+            "image": newImage
+        ]
+        
+        AF.upload(multipartFormData: { multipartFormData in
+            for (key, value) in parameters {
+                multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
+            }
+            let imageJpegData = newImage.jpegData(compressionQuality: 1)
+            let sample = UIImage(systemName: "person.crop.circle.fill")!.jpegData(compressionQuality: 1)
+            multipartFormData.append(((imageJpegData ?? sample)!), withName: "image", fileName: "\(index).jpg", mimeType: "image/jpg")
+                }, to: fetchUserConstants.uri + "\(userId)/", method: .patch, headers: headers)
+            .validate()
+            .response() {response in
+                switch response.result {
+                case .success(_):
+                    debugPrint(response)
+                    completion(.success(true))
+                case .failure(let error):
+                    debugPrint(response)
+                    completion(.failure(error))
+                }
+            }
+    }
 }
 
 

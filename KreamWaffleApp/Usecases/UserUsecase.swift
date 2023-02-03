@@ -12,6 +12,7 @@ final class UserUsecase {
     
     private let repository : LoginRepository
     private let profileRepository : ProfileRepository
+    private let userShopRepository : UserShopRepository
     private let disposeBag = DisposeBag()
     
     var user : User?
@@ -46,26 +47,88 @@ final class UserUsecase {
     
     var errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
-    init(dataRepository : LoginRepository, profileRepository: ProfileRepository){
+    // MARK: For my tab========
+    
+    // productinfo
+    var purchaseProductRelay = BehaviorRelay<[UserProduct]>(value:[])
+    var purchaseProductObservable: Observable<[UserProduct]> {
+        return self.purchaseProductRelay.asObservable()
+    }
+    var purchaseProductList = [UserProduct](){
+        didSet {
+            self.getPurchaseProductObserver()
+        }
+    }
+    func getPurchaseProductObserver(){
+        self.purchaseProductRelay.accept(purchaseProductList)
+    }
+    
+    var purchasedProductCount = Int() {
+        didSet {
+            self.getPurchaseProductCountObserver()
+        }
+    }
+    
+    func getPurchaseProductCountObserver() {
+        self.purchasedProductCountRelay.accept(purchasedProductCount)
+    }
+    
+    var purchasedProductCountRelay = BehaviorRelay<Int>(value: 0)
+    var purchaseProductCountObservable: Observable<Int> {
+        return self.purchasedProductCountRelay.asObservable()
+    }
+
+    
+    var salesProductRelay = BehaviorRelay<[UserProduct]>(value: [])
+    var salesProductObservable : Observable<[UserProduct]> {
+        return self.salesProductRelay.asObservable()
+    }
+    var salesProductList = [UserProduct](){
+        didSet {
+            self.getSalesProductObserver()
+        }
+    }
+    func getSalesProductObserver(){
+        self.salesProductRelay.accept(salesProductList)
+    }
+    var salesProductCountRelay = BehaviorRelay<Int>(value: 0)
+    var salesProductCountObservable: Observable<Int> {
+        return self.salesProductCountRelay.asObservable()
+    }
+    
+    //wish data count related
+    var wishDataCountRelay = BehaviorRelay<Int>(value: 0)
+    var wishDataCountObservable : Observable<Int> {
+        return self.wishDataCountRelay.asObservable()
+    }
+    
+    private var page: Int = 1
+    private var paginating = false
+    
+    //================
+    
+    init(dataRepository : LoginRepository, profileRepository: ProfileRepository, UserShopRepository: UserShopRepository){
         self.repository = dataRepository
         self.profileRepository = profileRepository
+        self.userShopRepository = UserShopRepository
         self.error = .noError
         self.loggedIn = false
     }
     
     //MARK: related to log in, log out, sign up
+    //TODO: 여기 좀 걱정됨. checkAccessToken 도 안하고 Login 해도 되나?
     ///signs in user with user defaults
     func getSavedUser(){
         Task {
-            if let savedUserResponse = repository.getUserResponse(){
-            self.userResponse = savedUserResponse
-            self.loggedIn = true
-            await self.checkAccessToken()
-            self.user = savedUserResponse.user
+        if let savedUserResponse = repository.getUserResponse(){
+       self.userResponse = savedUserResponse
+        await self.checkAccessToken()
+       self.loggedIn = true
+     self.user = savedUserResponse.user
         }else{
-           print("no saved user reponse")
-            }
-        }
+            print("no saved user reponse")
+                    }
+                }
     }
     
     ///gets user info with customLogin
@@ -127,11 +190,9 @@ final class UserUsecase {
                     self.replaceAccessToken(newToken: response.accessToken)
                 case .failure(let error):
                     self.error = error as LoginError
-                    //TODO: 이거 에러.
-                    /*
                     if (error == .invalidRefreshTokenError){
                         self.logout()
-                    }*/
+                    }
                 }
             }
         }
@@ -145,7 +206,6 @@ final class UserUsecase {
                 switch result {
                 case .success:
                     print("[Log] UserUsecase: access token is still valid")
-                    print("[Log] UserUsecase: that valid token is: \(self.userResponse?.accessToken)")
                 case .failure(let error):
                     Task {
                         await self.requestNewAccessToken()
@@ -178,19 +238,9 @@ final class UserUsecase {
                     }
                 )
                 .disposed(by: disposeBag)
-            
-            /*
-            self.profileRepository.getProfile(userId: self.user!.id, token: self.userResponse!.accessToken) { [weak self] (result) in
-                guard let self = self else {return}
-                switch result {
-                case .success(let profile):
-                    self.userProfile = profile
-                case .failure(let error):
-                    //error 처리하기
-                    print("profile fetch erro")
-                }
-            }*/
         }
+    
+    
     ///logging out deletes saved/current user and initializes parameters.
     func logout(){
         repository.logOutUser()
@@ -254,11 +304,59 @@ final class UserUsecase {
         }
     }
     
+    func updateProfileImage(newImage: UIImage){
+        profileRepository.updateUserProfileImage(newImage: newImage, userId: self.user!.id, accessToken: self.userResponse!.accessToken) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let bool):
+                print("사진 update 완료")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
     //delete save user
     func deleteUser(){
         repository.deleteUser(token: self.userResponse!.accessToken) { [weak self] (result) in
             guard let self = self else {return}
             self.error = result as LoginError
         }
+    }
+}
+
+//related to my tab products
+extension UserUsecase {
+    func loadMyItems(myShopType: myShopDataType, token: String) {
+        let parameters = ShopPostRequestParameters(page: 1)
+        self.userShopRepository
+            .requestShopPostData(parameters: parameters, token: token, myShopType: myShopType)
+            .subscribe(onSuccess: { [self] fetchedProductInfos in
+                switch(myShopType){
+                case .purchase:
+                    self.purchasedProductCount = fetchedProductInfos.count
+                    print("사실은 요만큼 \(self.purchasedProductCount)")
+                    self.purchaseProductList = fetchedProductInfos.itemList
+                case .sale:
+                    self.salesProductCountRelay.accept(fetchedProductInfos.count)
+                    self.salesProductList = fetchedProductInfos.itemList
+                }
+            },
+            onFailure: { _ in
+                self.purchaseProductList = []
+                self.salesProductList = []
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func loadWishItems(token: String){
+        self.userShopRepository
+            .requestWishData(token: token)
+            .subscribe(onSuccess: { [self] fetchedProductInfos in
+                self.wishDataCountRelay.accept(fetchedProductInfos.count)
+            }, onFailure: { _ in
+                print("wish data failure")
+            })
+            .disposed(by: self.disposeBag)
     }
 }
