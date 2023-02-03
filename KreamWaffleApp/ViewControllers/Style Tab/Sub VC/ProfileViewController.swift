@@ -284,11 +284,13 @@ final class ProfileViewController: UIViewController {
                 case .success(let value):
                     self.profileImageView.image = value.image
                 case .failure(_):
-                    self.profileImageView.image = UIImage(systemName: "person")
+                    self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                    self.profileImageView.tintColor = colors.lessLightGray
                 }
             }
         } else {
-            self.profileImageView.image = UIImage(systemName: "person")
+            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+            self.profileImageView.tintColor = colors.lessLightGray
         }
         
         

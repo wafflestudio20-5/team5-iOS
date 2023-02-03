@@ -361,7 +361,8 @@ final class StylePostViewController: UIViewController {
         
         let urlString = post.created_by.image
         guard let url = URL.init(string: urlString) else {
-            self.profileImageView.image = UIImage(systemName: "person")
+            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+            self.profileImageView.tintColor = colors.lessLightGray
             return
         }
         let resource = ImageResource(downloadURL: url)
@@ -371,8 +372,8 @@ final class StylePostViewController: UIViewController {
             case .success(let value):
                 self.profileImageView.image = value.image
             case .failure(_):
-                self.profileImageView.image = UIImage(systemName: "person")
-            }
+                self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                self.profileImageView.tintColor = colors.lessLightGray            }
         }
         
     }
