@@ -48,6 +48,8 @@ final class ShopUsecase {
     }
     
     // filter categories
+    let filterCategoriesList = ["shoes", "clothes", "fashion", "life", "tech"]
+    let filterCategoriesListKor = ["신발", "의류", "패션잡화", "라이프", "테크"]
     private let filterCategoriesSubject: BehaviorRelay<[String]> = .init(value: ["shoes", "clothes", "fashion", "life", "tech"])
     
     var filterCategories: Observable<[String]> {
@@ -55,10 +57,13 @@ final class ShopUsecase {
     }
     
     // filter items
+    let filterItemCategory = ShopFilterItem(header: "카테고리", selection: "모든 카테고리", items: [])
     let priceList = ["10만원 이하", "10만원 - 30만원 이하", "30만원 - 50만원 이하", "50만원 이상"]
     let filterItemBrand = ShopFilterItem(header: "브랜드", selection: "모든 브랜드", items: [])
     let filterItemPrice = ShopFilterItem(header: "가격", selection: "모든 가격", items: [])
+    
     private let shopFilterItemsSubject: BehaviorRelay<[ShopFilterItem]> = .init(value: [
+        ShopFilterItem(header: "카테고리", selection: "모든 카테고리", items: []),
         ShopFilterItem(header: "브랜드", selection: "모든 브랜드", items: []),
         ShopFilterItem(header: "가격", selection: "모든 가격", items: [])
     ])
@@ -96,6 +101,12 @@ final class ShopUsecase {
 //    var pricesObservable: Observable<[String]> {
 //        return self.pricesRelay.asObservable()
 //    }
+    
+    // category
+    var categoryRelay = BehaviorRelay<[String]>(value: ["신발", "의류", "패션잡화", "라이프", "테크"])
+    var categoryListObservable: Observable<[String]> {
+        return self.categoryRelay.asObservable()
+    }
     
     init(repository: ShopRepository) {
         self.repository = repository
@@ -305,6 +316,24 @@ extension ShopUsecase {
 }
 
 extension ShopUsecase {
+    // filtered data
+    func loadFilteredData(resetPage: Bool, category: [String]?, brands: [Brand]?, prices: [String]?, deliveryTag: Int) {
+        if resetPage == true {
+            let parameters = ShopPostRequestParameters(page: 1)
+            self.repository
+                .requestFilteredShopPostData(parameters: parameters, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
+                .subscribe(onSuccess: { [self] fetchedProductInfos in
+                    self.productInfoList = fetchedProductInfos
+                },
+                onFailure: { _ in
+                    self.productInfoList = []
+                })
+                .disposed(by: self.disposeBag)
+        }
+    }
+}
+
+extension ShopUsecase {
     // get functions
     func getProductAtIndex(index: Int) -> Product {
         return self.productInfoList[index]
@@ -315,14 +344,22 @@ extension ShopUsecase {
     }
     
     func getFilterItemAtIndex(index: Int) -> ShopFilterItem {
-        return self.filterItemPrice
+//        print(self.shopFilterItemsSubject.value[index])
+        return self.shopFilterItemsSubject.value[index]
+//        return self.filterItemPrice
     }
     
-//    func getFilterItemListDataSource(index: Int) -> Observable<[String]> {
-//        if index == 0 {
-//            return self.brandsObservable
-//        } else if index == 1 {
-//            return self.pricesObservable
-//        }
-//    }
+    func getFilterItemRowAtIndex(filterItemIndex: Int, rowIndex: Int) -> String {
+        if filterItemIndex == 0 {
+            return self.filterCategoriesListKor[rowIndex]
+        } else if filterItemIndex == 1 {
+            return self.brandsList[rowIndex].name
+        } else {
+            return self.priceList[rowIndex]
+        }
+    }
+    
+    func getBrandFilterItemRowAtIndex(filterItemIndex: Int, rowIndex: Int) -> Brand {
+        return self.brandsList[rowIndex]
+    }
 }

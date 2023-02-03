@@ -14,6 +14,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
+            print("set category cell")
             if isSelected {
                 self.contentView.backgroundColor = CategoryCollectionViewCell.selectedBgColor
                 self.categoryLabel.textColor = CategoryCollectionViewCell.selectedTextColor

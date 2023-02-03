@@ -101,7 +101,6 @@ extension ProductSizeSelectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var selectedCell = sizeCollectionView.cellForItem(at: indexPath) as! ProductSizeSelectionCollectionViewCell
         selectedCell.isSelected = true
-//        print(selectedCell.sizeLabel.text)
         
         // NotificationCenter (update sizeField)
         NotificationCenter.default.post(name: NSNotification.Name("sizeField"),

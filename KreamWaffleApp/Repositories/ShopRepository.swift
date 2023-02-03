@@ -11,6 +11,11 @@ import RxCocoa
 import RxSwift
 
 final class ShopRepository {
+    let categoryToUrlString: [String : String] = ["신발" : "shoes", "의류": "clothes", "패션 잡화" : "fashion", "라이프" : "life", "테크" : "tech"]
+    let priceToUrlString: [String : String] = ["10만원 이하" : "-100000", "10만원 - 30만원 이하" : "100000-300000", "30만원 - 50만원 이하" : "300000-500000", "50만원 이상" : "500000-"]
+    
+    var filterUrl = ""
+    
     func requestShopPostData(parameters: ShopPostRequestParameters) -> Single<[Product]> {
         return Single.create { single in
             let url = URL(string: "https://kream-waffle.cf/shop/productinfos/")
@@ -211,6 +216,56 @@ extension ShopRepository {
                     }
                 }
 
+            return Disposables.create()
+        }
+    }
+}
+
+extension ShopRepository {
+    func requestFilteredShopPostData(parameters: ShopPostRequestParameters, category: [String]?, brands: [Brand]?, prices: [String]?, deliveryTag: Int) -> Single<[Product]> {
+        return Single.create { single in
+            self.filterUrl = "?page=\(parameters.page)"
+            
+            if (category != nil) {
+                let selectedCategory = category![0]
+                self.filterUrl = self.filterUrl + "&category=\(self.categoryToUrlString[selectedCategory]!)"
+            }
+            if (brands != nil) {
+                for brand in brands! {
+                    self.filterUrl = self.filterUrl + "&brand_id=\(brand.id)"
+                }
+            }
+            if (prices != nil) {
+                for price in prices! {
+                    self.filterUrl = self.filterUrl + "&price=\(self.priceToUrlString[price]!)"
+                }
+            }
+            
+            if (deliveryTag == 1) {
+                self.filterUrl = self.filterUrl + "&delivery_tag=immediate"
+            } else if (deliveryTag == 2) {
+                self.filterUrl = self.filterUrl + "&delivery_tag=brand"
+            }
+                
+            print(self.filterUrl)
+            
+            let url = URL(string: "https://kream-waffle.cf/shop/productinfos/\(self.filterUrl)")
+            
+            let headers: HTTPHeaders = [
+                "accept": "application/json",
+                "X-CSRFToken": "jbFr0YqXW1gRUCkvMe5fASSCsdzPJUpHt3eo5Goh71RUMn4fsCKdcuhGSZBUakes"
+            ]
+            
+            AF.request(url!, method: .get, parameters: parameters, headers: headers)
+                .responseDecodable(of: ShopPostModel.self) { [weak self] response in
+                    switch response.result {
+                    case .success(let result):
+                        let productInfoList = result.results
+                        single(.success(productInfoList))
+                    case .failure(let _):
+                        single(.success([]))
+                    }
+                }
             return Disposables.create()
         }
     }

@@ -11,6 +11,7 @@ class ShopFilterTableViewCell: UITableViewCell {
     override var reuseIdentifier: String? {
         return "ShopFilterTableViewCell"
     }
+    private let headerIndexDict = [0 : "카테고리", 1 : "브랜드", 2 : "가격"]
     
     private let headerLabel = UILabel()
     private let selectionLabel = UILabel()
@@ -22,6 +23,16 @@ class ShopFilterTableViewCell: UITableViewCell {
         self.selectionStyle = .none
         setUpLabels()
         setUpLayout()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateSubHeader(_:)),
+                                               name: NSNotification.Name("filterSelections"),
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateSubHeaderBrand(_:)),
+                                               name: NSNotification.Name("brandFilterSelections"),
+                                               object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -68,6 +79,26 @@ class ShopFilterTableViewCell: UITableViewCell {
             selectionLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ])
         
+    }
+    
+    @objc func updateSubHeader(_ notification: Notification) {
+        guard let notification = notification.object as? [String: Any] else { return }
+        guard let index = notification["index"] as? Int else { return }
+        guard let filterSelectionList = notification["filterSelections"] as? [String] else { return }
+ 
+        if ((index == 0 || index == 2) && headerIndexDict[index] == headerLabel.text) {
+            selectionLabel.text = filterSelectionList.joined(separator: ", ")
+        }
+    }
+    
+    @objc func updateSubHeaderBrand(_ notification: Notification) {
+        guard let notification = notification.object as? [String: Any] else { return }
+        guard let index = notification["index"] as? Int else { return }
+        guard let filterSelectionList = notification["filterSelections"] as? [Brand] else { return }
+ 
+        if headerIndexDict[index] == headerLabel.text {
+            selectionLabel.text = filterSelectionList.map{$0.name}.joined(separator: ", ")
+        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
