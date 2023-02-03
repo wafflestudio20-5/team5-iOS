@@ -561,7 +561,6 @@
 				94A394F42988FC8D002AFE4A /* ShopFilterTableViewCell.swift */,
 				94A394F62988FCA4002AFE4A /* ShopFilterDetailTableViewCell.swift */,
 				94A39526298C0B9C002AFE4A /* ProductSizeSelectionCollectionViewCell.swift */,
-				5C2882D3298D11BD0063C0C1 /* CommentCollectionViewCell.swift */,
 			);
 			path = "Shop Tab";
 			sourceTree = "<group>";
@@ -637,6 +636,7 @@
 				5C6FBD592979826500B64FF0 /* UserListCollectionViewCell.swift */,
 				94155C54297A4F330092B561 /* Shop Tab */,
 				656F1A58296138870052B148 /* ShoeSizeSelectionCollectionViewCell.swift */,
+				5C2882D3298D11BD0063C0C1 /* CommentCollectionViewCell.swift */,
 				65F8FBB32962104E00679E72 /* StyleFeedCollectionViewCell.swift */,
 			);
 			path = Cells;

@@ -47,4 +47,7 @@ final class CommentViewModel {
         self.commentUsecase.sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
     }
     
+    func deleteComment(commentId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        self.commentUsecase.deleteComment(commentId: commentId, token: token, completion: completion, onNetworkFailure: onNetworkFailure)
+    }
 }

@@ -10,11 +10,11 @@ import RxSwift
 import Alamofire
 
 final class StyleCommentRepository: CommentRepositoryProtocol {
-    private let baseUrl = "https://kream-waffle.cf/styles/posts/"
+    private let baseUrl = "https://kream-waffle.cf/styles/"
 
     func requestInitialCommentData(token: String, id: Int, completion: @escaping () -> ()) -> Single<[Comment]> {
         return Single.create { single in
-            let finalUrl = self.baseUrl + "\(id)/comments/"
+            let finalUrl = self.baseUrl + "posts/\(id)/comments/"
             
             let headers: HTTPHeaders = [
                 "accept": "application/json",
@@ -44,7 +44,7 @@ final class StyleCommentRepository: CommentRepositoryProtocol {
     }
     
     func sendComment(token: String, content: String, id: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
-        let finalUrl = baseUrl + "\(id)/comments/"
+        let finalUrl = baseUrl + "posts/\(id)/comments/"
         
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -72,4 +72,27 @@ final class StyleCommentRepository: CommentRepositoryProtocol {
                 }
             }
     }
+    
+    func deleteComment(commentId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        let urlStr = self.baseUrl + "comments/\(commentId)/"
+
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+        
+        AF.request(urlStr, method: .delete, headers: headers)
+            .validate()
+            .responseString { response in
+                debugPrint(response)
+
+                switch response.result {
+                case .success:
+                    completion()
+                case .failure:
+                    onNetworkFailure()
+                }
+            }
+    }
+
 }

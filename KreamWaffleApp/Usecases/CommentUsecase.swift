@@ -45,4 +45,9 @@ final class CommentUsecase {
         self.commentRepository
             .sendComment(token: token, content: content, id: id, completion: completion, onNetworkFailure: onNetworkFailure)
     }
+    
+    func deleteComment(commentId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        self.commentRepository
+            .deleteComment(commentId: commentId, token: token, completion: completion, onNetworkFailure: onNetworkFailure)
+    }
 }

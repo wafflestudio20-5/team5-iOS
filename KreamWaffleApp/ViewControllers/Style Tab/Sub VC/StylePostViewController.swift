@@ -112,7 +112,6 @@ final class StylePostViewController: UIViewController {
     private func setUpNavigationBar() {
         self.setUpBackButton()
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
-//        navigationItem.title = "최신"
         
         let deletePostButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deletePostButtonTapped))
         deletePostButton.setTitleTextAttributes([
@@ -155,16 +154,17 @@ final class StylePostViewController: UIViewController {
     }
     
     private func setUpLabelLayout() {
+        let profileImageViewHeight: CGFloat = 30
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.contentMode = .scaleAspectFit
-        profileImageView.layer.cornerRadius = idLabelHeight/2
+        profileImageView.layer.cornerRadius = profileImageViewHeight/2
         profileImageView.clipsToBounds = true
         profileImageView.tintColor = .black
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            profileImageView.widthAnchor.constraint(equalToConstant: idLabelHeight),
-            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            profileImageView.heightAnchor.constraint(equalToConstant: idLabelHeight),
+            profileImageView.widthAnchor.constraint(equalToConstant: profileImageViewHeight),
+            profileImageView.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor),
+            profileImageView.heightAnchor.constraint(equalToConstant: profileImageViewHeight),
         ])
         
         userNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
@@ -182,7 +182,7 @@ final class StylePostViewController: UIViewController {
         NSLayoutConstraint.activate([
             userNameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
             userNameLabel.widthAnchor.constraint(equalToConstant: 100),
-            userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            userNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             userNameLabel.heightAnchor.constraint(
                 equalToConstant: idLabelHeight
             ),
