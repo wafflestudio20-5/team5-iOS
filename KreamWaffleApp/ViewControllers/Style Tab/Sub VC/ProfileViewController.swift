@@ -410,7 +410,6 @@ extension ProfileViewController {
     }
     
     @objc func followingNumLabelTapped() {
-        
         if (!self.userInfoViewModel.isLoggedIn()) {
             (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
         } else {
