@@ -61,8 +61,8 @@ class LoginRepository {
     func logOutUser(){
         userDefaults.removeObject(forKey: "savedUser")
         userDefaults.removeObject(forKey: "savedUserResponse")
-        //GIDSignIn.sharedInstance()?.signOut()
-        //NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
+        GIDSignIn.sharedInstance()?.signOut()
+        NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
     }
        
     //-MARK: Login account with custom server
@@ -211,7 +211,7 @@ class LoginRepository {
         
         var request = URLRequest(url: url)
         request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("application/json", forHTTPHeaderField: "Content-type")
         request.httpBody = "{}".data(using: .utf8)!
                
         AF.request(request)
@@ -232,38 +232,6 @@ class LoginRepository {
             }
     }
     
-    //TEST 용
-    func test_CheckIfValidToken(completion: @escaping (Result<Bool, LoginError>) -> ()) {
-        let URLString = "\(baseAPIURL)/token/verify/"
-               guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
-                   print("url error")
-                   completion(.failure(.urlError))
-                   return
-               }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = HTTPMethod.post.rawValue
-        request.setValue("application/json", forHTTPHeaderField: "accept")
-        request.httpBody = "{}".data(using: .utf8)!
-               
-        AF.request(request)
-            .validate()
-            .response { (response) in
-                print("\n================TEST용! checkIfValidToken================\n")
-                debugPrint(response)
-                switch response.result {
-                case .success:
-                    completion(.success(true))
-                case .failure(let error):
-                    if (error.responseCode == 400){
-                        completion(.failure(.invalidAccessTokenError))
-                    }else{
-                        completion(.failure(.unknownError))
-                    }
-                }
-            }
-        
-    }
 
     ///if current refresh token is valid, returns new access token. If not returns invalidRefreshToken error
     func getNewToken(completion: @escaping (Result<NewTokenResponse, LoginError>) -> ()) async {
@@ -402,5 +370,37 @@ class LoginRepository {
         }
     }
     
-    
+    func deleteUser(token: String, completion: @escaping (LoginError) -> ()){
+        let URLString = "\(baseAPIURL)/quit/"
+            guard let url = URL(string: URLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)  else {
+                   print("url error")
+                completion(.urlError)
+                   return
+               }
+        
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+               
+        AF.request(url, method: .post, parameters: nil, encoding: URLEncoding.httpBody, headers: headers)
+            .validate()
+            .response{ response in
+            print("==========deleteUser==============")
+            debugPrint(response)
+            switch response.result {
+            case .success(_):
+                print("[Log] Login Repo: 탈퇴 에러 처리 오류 발생")
+                completion(.unknownError)
+            case .failure(let error):
+                if (error.responseCode == 401){
+                    completion(.deleteAccountSuccessError)
+                }else{
+                    completion(.unknownError)
+                    print("[Log] Login Repo: 탈퇴 에러 처리 오류 발생")
+                }
+                
+            }
+    }
+}
 }

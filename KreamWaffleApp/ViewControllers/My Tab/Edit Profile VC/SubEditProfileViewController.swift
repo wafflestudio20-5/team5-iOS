@@ -16,6 +16,8 @@ enum editCase {
     case password
     case email
     case shoeSize
+    
+    case none
 }
 
 class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
@@ -197,11 +199,14 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .map{ $0 != self.currentText }
             .bind(to: self.saveButton.rx.isEnabled)
             .disposed(by: bag)
-        /*
+        
         self.saveButton.rx.tap
             .subscribe { [weak self] tap in
-                self?.profileViewModel?.editProfile(Profile: <#Profile#>)
-            }*/
+                self?.profileViewModel?.tapRelay.accept(self?.editCase ?? .none)
+                self?.dismiss(animated: true)
+                print("[Log] ProfileChangeVC: \(String(describing: self?.editCase)) tapped save.")
+            }
+            .disposed(by: bag)
     }
     
     //MARK: - only for user settings
@@ -242,20 +247,6 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
                 
                 //TODO: 에러처리해주기
                 self.showActionCompleteNotification()
-                
-                /*
-                self.viewModel.errorRelay
-                    .asObservable()
-                    .subscribe { error in //TODO: sync 가 안맞음. 수정하기
-                    if (error.element == LoginError.signupError ){
-                        print("[Log] Signup VC: Error in signup")
-                        self.showErrorNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
-                    }else if (error.element == LoginError.alreadySignedUpError){
-                        self.showErrorNotification(errorText: "이미 회원가입된 이메일입니다.")
-                    }else{
-                        self.showEmailSentNotification()
-                    }
-                }*/
             }
     }
     

@@ -23,6 +23,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     
     var bio : String?
     
+    let bag = DisposeBag()
+    
     lazy var profileButton : UIButton  = {
         let button = UIButton()
         let editLabel = UILabel()
@@ -94,10 +96,15 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.setUpBackButton()
         self.title = "프로필 관리"
+        self.setUpBackButton()
         self.view.addSubviews(self.profileButton, self.editTable)
         self.inputTableView()
+        
+    }
+    
+    @objc func tappedCancel(){
+        self.dismiss(animated: true)
     }
     
     func inputTableView(){
@@ -115,10 +122,38 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         { [self] index, element, cell in
                 //element is editCase
             cell.addData(editCase: element, userProfile: self.viewModel.userProfile, user: nil)
-            cell.editButton.addTarget(self, action: #selector(self.editCell), for: .touchUpInside)
+            
+            //binding current value label to newest
+            self.viewModel.tapRelay.asObservable()
+                .subscribe{ [self] editCase in
+                    
+                    //Binding to cell's saves buttons, and calling API.
+                    if (element == editCase.element){
+                    switch (element){
+                    case .profileName:
+                        cell.currentTextLabel.text = viewModel.profileNameRelay.value
+                        self.viewModel.partialEditProfile(newValue: viewModel.profileNameRelay.value, editCase: .profileName)
+                    case .userName:
+                        cell.currentTextLabel.text = viewModel.userNameRelay.value
+                        self.viewModel.partialEditProfile(newValue: viewModel.userNameRelay.value, editCase: .userName)
+                    case .introduction:
+                        cell.currentTextLabel.text = viewModel.bioRelay.value
+                        self.viewModel.partialEditProfile(newValue: viewModel.bioRelay.value, editCase: .introduction)
+                    default:
+                        print("")
+                    }
+                }
+            }.disposed(by: bag)
+            
+            
+            cell.editButton.rx.tap.bind {
+                let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: element, user:nil, viewModel: nil, profileViewModel: self.viewModel)
+                subVC.modalPresentationStyle = .pageSheet
+                self.present(subVC, animated: true)
+            }.disposed(by: bag)
             cell.selectionStyle = .none
             }
-                  .disposed(by: disposeBag)
+        .disposed(by: disposeBag)
         
         self.editTable.translatesAutoresizingMaskIntoConstraints = false
         self.editTable.backgroundColor = .clear
@@ -138,6 +173,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
     @objc
     func editProfileImage(){
@@ -157,19 +193,6 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
             self.profileButton.setImage(image, for: .normal)
         }
         dismiss(animated: true, completion: nil)
-    }
-    
-    @objc
-    func editCell(){
-        //TODO edit case 에 따라 변경되도록 하기
-        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName, user: nil, viewModel: nil, profileViewModel: self.viewModel)
-        subVC.modalPresentationStyle = .pageSheet
-        self.present(subVC, animated: true)
-    }
-    
-    func test(){
-        let profile = self.viewModel.userProfile
-        self.viewModel.editProfile(Profile: profile)
     }
 
 }

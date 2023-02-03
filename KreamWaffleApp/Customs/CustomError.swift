@@ -20,6 +20,7 @@ enum LoginError: Error {
     case invalidAccessTokenError
     case invalidRefreshTokenError
     case passwordChangeError //비밀번호 변경 요청 실패할시.
+    case deleteAccountSuccessError //회원탈퇴는 에러로 돌아옴.
  }
 
 func checkErrorMessage(_ errorMessage: String) -> LoginError{

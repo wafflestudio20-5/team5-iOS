@@ -42,6 +42,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let loginViewModel = LoginViewModel(UserUseCase: UserUsecase)
         let userProfileViewModel = UserProfileViewModel(usecase: UserUsecase)
         loginViewModel.getSavedUser()
+        
         let LoginVC = LoginViewController(viewModel: loginViewModel)
         self.loginVC = LoginVC
         

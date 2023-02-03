@@ -42,9 +42,9 @@ final class UserUsecase {
     }
     
     ///VC should observe login state and toggle logged in
-    let loginState = BehaviorRelay<Bool>(value: false)
+    var loginState = BehaviorRelay<Bool>(value: false)
     
-    let errorRelay = BehaviorRelay<LoginError>(value: .noError)
+    var errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
     init(dataRepository : LoginRepository, profileRepository: ProfileRepository){
         self.repository = dataRepository
@@ -58,12 +58,12 @@ final class UserUsecase {
     func getSavedUser(){
         Task {
             if let savedUserResponse = repository.getUserResponse(){
-                self.userResponse = savedUserResponse
-                self.loggedIn = true
-                await self.checkAccessToken()
-                self.user = savedUserResponse.user
-            }else{
-                print("no saved user reponse")
+            self.userResponse = savedUserResponse
+            self.loggedIn = true
+            await self.checkAccessToken()
+            self.user = savedUserResponse.user
+        }else{
+           print("no saved user reponse")
             }
         }
     }
@@ -197,6 +197,9 @@ final class UserUsecase {
         self.userResponse = nil
         self.user = nil
         self.loggedIn = false
+        self.errorRelay = BehaviorRelay<LoginError>.init(value: .noError)
+        self.profileRelay = BehaviorRelay<Profile>.init(value: Profile())
+        self.userProfile = nil
     }
     
     func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
@@ -239,5 +242,23 @@ final class UserUsecase {
         }
     }
     
+    func updatePartialProfile(newValue: String, editCase: editCase){
+        profileRepository.updatePartialUserProfile(newValue: newValue, editCase: editCase, userId: self.user!.id, accessToken: self.userResponse!.accessToken) { [weak self] (result) in
+            guard let self = self else { return }
+            switch result {
+            case .success(let bool):
+                print("update 완료")
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
     
+    //delete save user
+    func deleteUser(){
+        repository.deleteUser(token: self.userResponse!.accessToken) { [weak self] (result) in
+            guard let self = self else {return}
+            self.error = result as LoginError
+        }
+    }
 }

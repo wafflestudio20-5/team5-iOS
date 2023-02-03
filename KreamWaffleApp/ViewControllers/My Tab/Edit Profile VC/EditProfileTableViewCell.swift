@@ -62,7 +62,12 @@ class EditProfileTableViewCell: UITableViewCell {
         case .shoeSize:
             self.titleLabel.text = "신발 사이즈"
             self.currentTextLabel.text = String(user?.shoeSize ?? 0)
+            
+        case .none:
+            print("")
         }
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -80,7 +85,7 @@ class EditProfileTableViewCell: UITableViewCell {
         ])
     
         self.currentTextLabel.textColor = .black
-        self.currentTextLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        self.currentTextLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         self.currentTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.currentTextLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 5),
@@ -112,6 +117,7 @@ class EditProfileTableViewCell: UITableViewCell {
         ])
     }
     
+   
 
     override func awakeFromNib() {
         super.awakeFromNib()

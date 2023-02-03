@@ -18,6 +18,9 @@ class UserProfileViewModel {
     var userNameRelay:  BehaviorRelay<String>
     var bioRelay: BehaviorRelay<String>
     
+    //저장 버튼 탭 저장하는 릴레이 (각자의 저장 버튼을 누르면 tap Relay 가 그걸 받고, Profile edit VC가 그것을 보고 알아서 맞는 값을 위 릴레이에서 할당해준다.
+    var tapRelay = BehaviorRelay<editCase>(value: .none)
+    
     init(usecase: UserUsecase) {
         self.usecase = usecase
         //imageRelay = BehaviorRelay<UIImage>(value: <#T##UIImage#>)
@@ -43,7 +46,14 @@ class UserProfileViewModel {
         self.usecase.requestProfile(onNetworkFailure: onNetworkFailure)
     }
     
+    //post
     func editProfile(Profile: Profile){
         self.usecase.updateProfile(Profile: Profile)
     }
+    
+    //patch
+    func partialEditProfile(newValue: String, editCase: editCase){
+        self.usecase.updatePartialProfile(newValue: newValue, editCase: editCase)
+    }
+    
 }
