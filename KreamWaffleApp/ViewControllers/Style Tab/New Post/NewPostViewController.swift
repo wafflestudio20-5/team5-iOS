@@ -18,6 +18,8 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
     let disposeBag = DisposeBag()
     var cellHeight: CGFloat?
     
+//    private let refreshControl = UIRefreshControl()
+    
     private var imageCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -88,7 +90,6 @@ class NewPostViewController: UIViewController, UICollectionViewDelegate, UIScrol
         addPictureButton.tintColor = .black
         
         self.navigationItem.rightBarButtonItems = [uploadPostButton, addPictureButton]
-
     }
     
     func addSubviews(){

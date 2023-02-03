@@ -35,6 +35,10 @@ final class StylePostViewModel {
         return self.stylePostUsecase.getPostId()
     }
     
+    func isPostOfOneself(currentUserId: Int?) -> Bool {
+        return self.stylePostUsecase.isPostOfOneself(currentUserId: currentUserId)
+    }
+    
     func requestPost(token: String?, onNetworkFailure: @escaping ()->()) {
         self.stylePostUsecase.requestPost(token: token, onNetworkFailure: onNetworkFailure)
     }
@@ -42,4 +46,9 @@ final class StylePostViewModel {
     func likeButtonTapped(token: String, onNetworkFailure: @escaping ()->()) {
         self.stylePostUsecase.likeButtonTapped(token: token, onNetworkFailure: onNetworkFailure)
     }
+    
+    func deletePost(postId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        self.stylePostUsecase.deletePost(postId: postId, token: token, completion: completion, onNetworkFailure: onNetworkFailure)
+    }
+
 }

@@ -61,4 +61,26 @@ final class StylePostRepository {
                 }
             }
     }
+    
+    func deletePost(postId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        let urlStr = self.baseUrl + "\(postId)/"
+
+        let headers: HTTPHeaders = [
+            "accept": "application/json",
+            "Authorization": "Bearer \(token)"
+        ]
+        
+        AF.request(urlStr, method: .delete, headers: headers)
+            .validate()
+            .responseString { response in
+                debugPrint(response)
+
+                switch response.result {
+                case .success:
+                    completion()
+                case .failure:
+                    onNetworkFailure()
+                }
+            }
+    }
 }

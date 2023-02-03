@@ -18,6 +18,7 @@ final class StylePostUsecase {
         }
     }
     
+    private let writerId: Int
     private let postId: Int
     private var thumbnailImageRatio: Float?
     private var imageSourcesCount: Int?
@@ -25,9 +26,10 @@ final class StylePostUsecase {
     
     let stylePostRelay = PublishRelay<Post?>()
     
-    init(stylePostRepository: StylePostRepository, postId: Int) {
+    init(stylePostRepository: StylePostRepository, postId: Int, writerId: Int) {
         self.stylePostRepository = stylePostRepository
         self.postId = postId
+        self.writerId = writerId
     }
     
     func getImageSourcesCount() -> Int {
@@ -44,6 +46,14 @@ final class StylePostUsecase {
     
     func getPostId() -> Int {
         return self.postId
+    }
+        
+    func isPostOfOneself(currentUserId: Int?) -> Bool {
+        if let currentUserId = currentUserId {
+            return currentUserId == self.writerId
+        } else {
+            return false
+        }
     }
     
     func requestPost(token: String?, onNetworkFailure: @escaping () -> ()) {
@@ -65,5 +75,9 @@ final class StylePostUsecase {
     func likeButtonTapped(token: String, onNetworkFailure: @escaping () -> ()) {
         self.stylePostRepository
             .requestLike(token: token, postId: self.postId, onNetworkFailure: onNetworkFailure)
+    }
+    
+    func deletePost(postId: Int, token: String, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {
+        self.stylePostRepository.deletePost(postId: postId, token: token, completion: completion, onNetworkFailure: onNetworkFailure)
     }
 }

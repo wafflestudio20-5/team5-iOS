@@ -75,6 +75,7 @@ final class StylePostViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        updateDeletePostButton()
         self.hidesBottomBarWhenPushed = false;
         self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.tabBar.backgroundColor = .white
@@ -113,6 +114,18 @@ final class StylePostViewController: UIViewController {
         self.navigationItem.backButtonTitle = ""
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
 //        navigationItem.title = "최신"
+        
+        let deletePostButton = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deletePostButtonTapped))
+        deletePostButton.setTitleTextAttributes([
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+            NSAttributedString.Key.foregroundColor : UIColor.red],
+                                             for: .normal)
+        deletePostButton.setTitleTextAttributes([
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14),
+            NSAttributedString.Key.foregroundColor : UIColor.clear],
+                                             for: .disabled)
+        deletePostButton.isEnabled = false
+        self.navigationItem.rightBarButtonItem = deletePostButton
     }
     
     private func setUpScrollView() {
@@ -364,6 +377,14 @@ final class StylePostViewController: UIViewController {
         }
         
     }
+    
+    private func updateDeletePostButton() {
+        if let currentUserId = self.userInfoViewModel.User?.id {
+            self.navigationItem.rightBarButtonItem!.isEnabled = self.stylePostViewModel.isPostOfOneself(currentUserId: currentUserId)
+        } else {
+            self.navigationItem.rightBarButtonItem!.isEnabled = false
+        }
+    }
 }
 
 extension StylePostViewController { //button 관련 메서드들.
@@ -458,6 +479,44 @@ extension StylePostViewController { //button 관련 메서드들.
             let commentUsecase = CommentUsecase(commentRepository: commentRepository)
             let commentViewModel = CommentViewModel(commentUsecase: commentUsecase, id: self.stylePostViewModel.getPostId())
             self.navigationController?.pushViewController(CommentViewController(userInfoViewModel: self.userInfoViewModel, commentViewModel: commentViewModel), animated: true)
+        }
+    }
+    
+    @objc func deletePostButtonTapped() {
+        Task {
+            let isValidToken = await self.userInfoViewModel.checkAccessToken()
+            
+            if isValidToken {
+                let token = self.userInfoViewModel.UserResponse!.accessToken
+                
+                self.stylePostViewModel.deletePost(
+                    postId: self.stylePostViewModel.getPostId(),
+                    token: token,
+                    completion: { [weak self] in
+                        let alert = UIAlertController(title: "성공", message: "삭제되었습니다.", preferredStyle: UIAlertController.Style.alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(okAction)
+                        self?.present(alert, animated: false, completion: nil)
+                    },
+                    onNetworkFailure: { [weak self] in
+                        let alert = UIAlertController(title: "실패", message: "네트워크 연결을 확인해주세요", preferredStyle: UIAlertController.Style.alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        alert.addAction(okAction)
+                        self?.present(alert, animated: false, completion: nil)
+                    }
+                )
+            } else {
+                let alert = UIAlertController(title: "실패", message: "세션이 만료되었습니다.\n다시 로그인해주세요", preferredStyle: UIAlertController.Style.alert)
+                let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                    self.navigationController?.popViewController(animated: true)
+                }
+                alert.addAction(okAction)
+                self.present(alert, animated: false, completion: nil)
+            }
         }
     }
 }
