@@ -110,9 +110,7 @@ final class StylePostViewController: UIViewController {
     }
     
     private func setUpNavigationBar() {
-        navigationController?.navigationBar.tintColor = .lightGray
         self.setUpBackButton()
-        self.navigationItem.backButtonTitle = ""
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
 //        navigationItem.title = "최신"
         
