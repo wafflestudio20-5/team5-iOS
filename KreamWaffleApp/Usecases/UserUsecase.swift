@@ -42,9 +42,9 @@ final class UserUsecase {
     }
     
     ///VC should observe login state and toggle logged in
-    let loginState = BehaviorRelay<Bool>(value: false)
+    var loginState = BehaviorRelay<Bool>(value: false)
     
-    let errorRelay = BehaviorRelay<LoginError>(value: .noError)
+    var errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
     init(dataRepository : LoginRepository, profileRepository: ProfileRepository){
         self.repository = dataRepository
@@ -202,6 +202,9 @@ final class UserUsecase {
         self.userResponse = nil
         self.user = nil
         self.loggedIn = false
+        self.errorRelay = BehaviorRelay<LoginError>.init(value: .noError)
+        self.profileRelay = BehaviorRelay<Profile>.init(value: Profile())
+        self.userProfile = nil
     }
     
     func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {
