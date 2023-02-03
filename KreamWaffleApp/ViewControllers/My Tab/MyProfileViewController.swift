@@ -112,7 +112,7 @@ class MyProfileViewController: UIViewController {
         let styleFeedRepository = StyleFeedRepository()
         var styleFeedUsecase: StyleFeedUsecase
         styleFeedUsecase = StyleFeedUsecase(repository: styleFeedRepository, type: "default", user_id: userInfoVM.User!.id)
-        
+
         let styleFeedVM = StyleFeedViewModel(styleFeedUsecase: styleFeedUsecase)
         self.userStyleFeedCollectionViewVC = StyleFeedCollectionViewVC(styleFeedViewModel: styleFeedVM, userInfoViewModel: self.userInfoVM)
         

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>"카메라 사용"</string>
+	<string>&quot;카메라 사용&quot;</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>"앨범 사용"</string>
+	<string>&quot;앨범 사용&quot;</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>yourWording</string>
 	<key>CFBundleURLTypes</key>

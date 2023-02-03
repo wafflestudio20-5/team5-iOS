@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class Profile: Codable {
     private enum CodingKeys: String, CodingKey {
@@ -20,6 +21,7 @@ final class Profile: Codable {
     let num_followers: Int
     let num_followings: Int
     let following: String?
+    var updatedImage : UIImage? //Photopicker 에서 이미지 보낼때.
     
     init(
         user_id: Int,

@@ -48,6 +48,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.rootVC = TabBarViewController(shopViewModel: shopViewModel, latestStyleFeedViewModel: latestStyleFeedViewModel, followingStyleFeedViewModel: followingStyleFeedViewModel, userInfoViewModel: userViewModel, loginViewModel: loginViewModel, userProfileViewModel: userProfileViewModel)
         self.window?.rootViewController = rootVC
         self.window?.makeKeyAndVisible()
+        self.window?.overrideUserInterfaceStyle = .light
     }
 
     

@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import PhotosUI
+import Kingfisher
 
 class EditProfileViewController: UIViewController, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -25,6 +26,23 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     lazy var profileButton : UIButton  = {
         let button = UIButton()
         let editLabel = UILabel()
+        let urlString = self.viewModel.userProfile.image
+        if let url = URL.init(string: urlString) {
+            let resource = ImageResource(downloadURL: url)
+            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    button.setImage(value.image, for: .normal)
+                case .failure(_):
+                    button.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+                    button.setImageTintColor(colors.lessLightGray)
+                }
+            }
+        } else {
+            button.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+            button.setImageTintColor(colors.lessLightGray)
+        }
+        
         button.setImage(UIImage(named: viewModel.userProfile.image), for: .normal)
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"
@@ -97,7 +115,8 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         { [self] index, element, cell in
                 //element is editCase
             cell.addData(editCase: element, userProfile: self.viewModel.userProfile, user: nil)
-                      cell.editButton.addTarget(self, action: #selector(self.editCell), for: .touchUpInside)
+            cell.editButton.addTarget(self, action: #selector(self.editCell), for: .touchUpInside)
+            cell.selectionStyle = .none
             }
                   .disposed(by: disposeBag)
         
@@ -143,11 +162,14 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     @objc
     func editCell(){
         //TODO edit case 에 따라 변경되도록 하기
-        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName, user: nil, viewModel: nil)
+        let subVC = SubEditProfileViewController(myProfile: self.viewModel.userProfile, editCase: .profileName, user: nil, viewModel: nil, profileViewModel: self.viewModel)
         subVC.modalPresentationStyle = .pageSheet
         self.present(subVC, animated: true)
     }
     
-
+    func test(){
+        let profile = self.viewModel.userProfile
+        self.viewModel.editProfile(Profile: profile)
+    }
 
 }

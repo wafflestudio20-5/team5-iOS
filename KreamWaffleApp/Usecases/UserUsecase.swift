@@ -17,7 +17,15 @@ final class UserUsecase {
     var user : User?
     var userResponse : UserResponse?
     
-    var userProfile : Profile?
+    var userProfile : Profile? {
+        didSet {
+            if let userProfile = userProfile {
+                profileRelay.accept(userProfile)
+            }
+        }
+    }
+    
+    var profileRelay: BehaviorRelay<Profile> = .init(value: Profile())
     
     ///toggle when logged in
     var loggedIn : Bool {
@@ -48,18 +56,12 @@ final class UserUsecase {
     //MARK: related to log in, log out, sign up
     ///signs in user with user defaults
     func getSavedUser(){
-        if let savedUser = repository.getUser(){
-            self.user = savedUser
-            self.loggedIn = true
-        }else{
-            print("no saved user")
-        }
-        
-        //TODO: 나중에는 only get user response
         Task {
             if let savedUserResponse = repository.getUserResponse(){
                 self.userResponse = savedUserResponse
+                self.loggedIn = true
                 await self.checkAccessToken()
+                self.user = savedUserResponse.user
             }else{
                 print("no saved user reponse")
             }
@@ -225,16 +227,17 @@ final class UserUsecase {
         }
     }
     
-    //TEST 용
-    func test_checkIfAccessTokenValid(){
-        repository.test_CheckIfValidToken { [weak self] (result) in
-            guard let self = self else {return}
+    func updateProfile(Profile: Profile){
+        profileRepository.updateUserProfile(profile: Profile, userId: self.user!.id , accessToken: self.userResponse!.accessToken){ [weak self] (result) in
+            guard let self = self else { return }
             switch result {
             case .success(let bool):
-                print(bool)
-            case .failure(_):
-                print("false")
+                print("update 완료")
+            case .failure(let error):
+                print(error)
             }
         }
     }
+    
+    
 }
