@@ -65,6 +65,11 @@ final class CommentViewController: UIViewController {
         textView.font = UIFont.systemFont(ofSize: 14)
         textView.text = textViewPlaceHolder
         textView.textColor = .lightGray
+        
+        textView.spellCheckingType = .no
+        textView.autocorrectionType = .no
+        textView.autocapitalizationType = .none
+        
         return textView
     }()
     
@@ -340,37 +345,18 @@ extension CommentViewController {
         }
     }
     
-    @objc func keyboardWillShow(_ notification: NSNotification)  {
-        moveViewWithKeyboard(notification: notification, viewBottomConstraint: self.textViewBottomConstraint!, keyboardWillShow: true)
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
     }
-    
-    @objc func keyboardWillHide(_ notification: NSNotification)  {
-        moveViewWithKeyboard(notification: notification, viewBottomConstraint: self.textViewBottomConstraint!, keyboardWillShow: false)
-    }
-    
-    func moveViewWithKeyboard(notification: NSNotification, viewBottomConstraint: NSLayoutConstraint, keyboardWillShow: Bool) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        let keyboardHeight = keyboardSize.height
 
-        let keyboardDuration = notification.userInfo![UIResponder.keyboardAnimationDurationUserInfoKey] as! Double
-            
-        let keyboardCurve = UIView.AnimationCurve(rawValue: notification.userInfo![UIResponder.keyboardAnimationCurveUserInfoKey] as! Int)!
-        
-        if keyboardWillShow {
-            let safeAreaExists = (self.view?.window?.safeAreaInsets.bottom != 0) // Check if safe area exists
-            let bottomConstant: CGFloat = 20
-            viewBottomConstraint.constant = keyboardHeight + (safeAreaExists ? 0 : bottomConstant)
-        }else {
-            viewBottomConstraint.constant = 20
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
         }
-        
-        let animator = UIViewPropertyAnimator(duration: keyboardDuration, curve: keyboardCurve) { [weak self] in
-            // Update Constraints
-            self?.view.layoutIfNeeded()
-        }
-        
-        // Perform the animation
-        animator.startAnimation()
     }
 }
 
