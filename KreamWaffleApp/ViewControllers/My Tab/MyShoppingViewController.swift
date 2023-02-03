@@ -26,6 +26,8 @@ class MyShoppingViewController: UIViewController {
     var subView2 : ProfileSubview?
     
     override func viewDidLoad() {
+        setUpBackButton()
+        
         super.viewDidLoad()
         self.subView1 = ProfileSubview(subviewData: sampleData1)
         self.subView2 = ProfileSubview(subviewData: sampleData2)

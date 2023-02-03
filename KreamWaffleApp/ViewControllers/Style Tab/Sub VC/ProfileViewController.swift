@@ -49,6 +49,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = .white
 //        requestProfile()
+        setUpBackButton()
         configureDesign()
         addSubviews()
         setUpFixedViewLayout()

@@ -35,6 +35,7 @@ class StyleTabViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpBackButton()
         setUpSegmentedControl()
         setUpNavigationBar()
         setUpButtons()

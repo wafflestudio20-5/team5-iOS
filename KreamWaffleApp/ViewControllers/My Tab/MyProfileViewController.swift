@@ -35,6 +35,7 @@ class MyProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpBackButton()
         self.view.backgroundColor = .white
         addSubviews()
         setUpSubviews()

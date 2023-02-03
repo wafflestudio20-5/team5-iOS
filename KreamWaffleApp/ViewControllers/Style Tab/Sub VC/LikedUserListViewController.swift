@@ -28,6 +28,7 @@ final class LikedUserListViewController: UIViewController {
     
     override func viewDidLoad() {
         self.view.backgroundColor = .white
+        setUpBackButton()
         setUpNavigationBar()
         setUpChildVC()
     }

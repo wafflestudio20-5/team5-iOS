@@ -53,6 +53,7 @@ final class StyleFeedCollectionViewVC : UIViewController{
         bindCollectionView()
         setUpRefreshControl()
         requestInitialFeed()
+        setUpBackButton()
     }
     
     func setUpCollectionView() {
