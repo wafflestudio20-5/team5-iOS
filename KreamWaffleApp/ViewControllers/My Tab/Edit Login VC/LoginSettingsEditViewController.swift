@@ -53,7 +53,7 @@ class LoginSettingsEditViewController: UIViewController, UIScrollViewDelegate, U
             if (element == .password){
                 //=========for changing password============
                 
-                //TODO: change this! 
+                //TODO: change this!
                 self.viewModel.pwTextRelay.subscribe { pw in
                    //get pw's count and make length of *
                     let str = String(repeating: "*", count: pw.element?.count ?? 8)

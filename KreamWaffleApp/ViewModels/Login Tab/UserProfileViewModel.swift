@@ -8,6 +8,7 @@
 import Foundation
 import RxRelay
 import UIKit
+import RxSwift
 
 class UserProfileViewModel {
     let usecase : UserUsecase
@@ -25,11 +26,16 @@ class UserProfileViewModel {
         bioRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.introduction ?? "나를 소개하세요")
     }
     
-
     
     var userProfile: Profile {
         get {
             return self.usecase.userProfile ?? Profile(user_id: 0, user_name: "", profile_name: "nil_profile", introduction: "", image: "", num_followers: 0, num_followings: 0, following: "")
+        }
+    }
+    
+    var userProfileDataSource: Observable<Profile> {
+        get {
+            return self.usecase.profileRelay.asObservable()
         }
     }
     

@@ -9,6 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import PhotosUI
+import Kingfisher
 
 class EditProfileViewController: UIViewController, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -25,8 +26,23 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     lazy var profileButton : UIButton  = {
         let button = UIButton()
         let editLabel = UILabel()
-        let URL = URL(string: self.viewModel.userProfile.image)
-        button.kf.setImage(with: URL, for: .normal)
+        let urlString = self.viewModel.userProfile.image
+        if let url = URL.init(string: urlString) {
+            let resource = ImageResource(downloadURL: url)
+            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    button.setImage(value.image, for: .normal)
+                case .failure(_):
+                    button.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+                    button.setImageTintColor(colors.lessLightGray)
+                }
+            }
+        } else {
+            button.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
+            button.setImageTintColor(colors.lessLightGray)
+        }
+        
         button.setImage(UIImage(named: viewModel.userProfile.image), for: .normal)
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"

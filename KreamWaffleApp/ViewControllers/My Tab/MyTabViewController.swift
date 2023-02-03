@@ -58,6 +58,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     
+    
     override func viewWillAppear(_ animated : Bool) {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){
@@ -85,12 +86,10 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         setUpSegmentedControl()
         setUpTabBarButton()
         setUpFixedViewLayout()
-        setUpData()
+        bindViews()
         setupDivider()
         setupChildVC()
     }
@@ -188,7 +187,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
         self.profileImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.profileImageView.leadingAnchor.constraint(equalTo: self.fixedView.leadingAnchor, constant: 10),
+            self.profileImageView.leadingAnchor.constraint(equalTo: self.fixedView.leadingAnchor, constant: 20),
             self.profileImageView.widthAnchor.constraint(equalToConstant: profileImageViewWidth),
             self.profileImageView.topAnchor.constraint(equalTo: self.fixedView.topAnchor, constant: 10),
             self.profileImageView.heightAnchor.constraint(equalToConstant: profileImageViewWidth),
@@ -255,21 +254,45 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.profileChangeButton.addTarget(self, action: #selector(profileChangeButtonTapped), for: .touchUpInside)
     }
     
-    func setUpData() {
+    func bindViews() {
+        self.userProfileVM.userProfileDataSource.subscribe { [weak self] event in
+            switch event {
+            case .next:
+                if let profile = event.element {
+                    self?.setUpData(with: profile)
+                }
+            case .completed:
+                break
+            case .error:
+                break
+            }
+        }.disposed(by: disposeBag)
+    }
+    
+    func setUpData(with profile: Profile) {
         // 서버에서 받아온 user data를 뷰에 세팅하는 함수.
         // 나중에 Rx로 바꿔야함.
-        if self.userProfileVM.userProfile != nil{
-            let url = URL(string: self.userProfileVM.userProfile.image)
-            self.profileImageView.kf.setImage(with: url)
-            self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
-            self.userNameLabel.text = self.userProfileVM.userProfile.user_name
-        }else {
-            let url = URL(string: self.temporaryUserData.profileImageUrl)
-            self.profileImageView.kf.setImage(with: url)
-            self.profileNameLabel.text = temporaryUserData.nickname
-            self.userNameLabel.text = self.userInfoVM.User?.parsed_email
+        let urlString = profile.image
+        if let url = URL.init(string: urlString) {
+            let resource = ImageResource(downloadURL: url)
+            
+            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    self.profileImageView.image = value.image
+                case .failure(_):
+                    self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                    self.profileImageView.tintColor = colors.lessLightGray
+                    
+                }
+            }
+        } else {
+            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+            self.profileImageView.tintColor = colors.lessLightGray
         }
         
+        self.profileNameLabel.text = profile.profile_name
+        self.userNameLabel.text = profile.user_name
     }
     
     func setupDivider(){
