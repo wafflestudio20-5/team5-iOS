@@ -20,5 +20,34 @@
 [Web Frontend](https://github.com/wafflestudio20-5/team5-web)   
 ## 🌄 Views
 ### MY Tab
-Login  
-<center><img src="/Assets/MY-1-login.PNG" width="30%" height="30%"></center>
+Login    
+<center><img src="/Assets/MY-1-login.PNG" width="30%" height="30%"></center>  
+내 쇼핑  
+<center><img src="/Assets/MY-2-MyShopping.PNG" width="30%" height="30%"></center>  
+내 프로필  
+<center><img src="/Assets/MY-3-MyProfile.PNG" width="30%" height="30%"></center>  
+내 팔로워 리스트  
+<center><img src="/Assets/MY-4-MyFollowers.PNG" width="30%" height="30%"></center>    
+내 팔로잉 리스트  
+<center><img src="/Assets/MY-5-MyFollowings.PNG" width="30%" height="30%"></center>    
+  
+### SHOP Tab
+상품 리스트  
+<center><img src="/Assets/SHOP-1-Products.PNG" width="30%" height="30%"></center>   
+상품 빠른 필터링  
+<center><img src="/Assets/SHOP-2-Filter1.PNG" width="30%" height="30%"></center>  
+<center><img src="/Assets/SHOP-3-Filter2.PNG" width="30%" height="30%"></center>  
+상품 상세 필터링
+<center><img src="/Assets/SHOP-4-Filter3.PNG" width="30%" height="30%"></center>  
+상품 디테일
+<center><img src="/Assets/SHOP-5-Detail.PNG" width="30%" height="30%"></center>  
+  
+### STYLE Tab
+최신순 피드  
+<center><img src="/Assets/STYLE-1-LatestFeed.PNG" width="30%" height="30%"></center>  
+팔로잉 피드
+<center><img src="/Assets/STYLE-2-FollowingFeed.PNG" width="30%" height="30%"></center>  
+새 글 작성  
+<center><img src="/Assets/STYLE-3-NewPost.PNG" width="30%" height="30%"></center>  
+포스팅 상세페이지
+<center><img src="/Assets/STYLE-4-StylePost.PNG" width="30%" height="30%"></center>  
