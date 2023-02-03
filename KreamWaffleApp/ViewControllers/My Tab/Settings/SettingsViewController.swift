@@ -91,11 +91,12 @@ class SettingsViewController: UIViewController, UIScrollViewDelegate, UISheetPre
             if (element == .password){
                 //=========for changing password============
                 
-                //TODO: change this!
-                self.viewModel?.pwTextRelay.subscribe { pw in
+                self.viewModel?.tappedChangePasswordRelay.subscribe{ editCase in
                    //get pw's count and make length of *
-                    let str = String(repeating: "*", count: pw.element?.count ?? 8)
-                    cell.currentTextLabel.text = str
+                    if (editCase.element == .password){
+                        let str = String(repeating: "*", count: self.viewModel?.pwTextRelay.value.count ?? 8)
+                        cell.currentTextLabel.text = str
+                    }
                 }
                 .disposed(by: disposeBag)
                 

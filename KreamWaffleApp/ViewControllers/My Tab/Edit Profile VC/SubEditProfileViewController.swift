@@ -244,8 +244,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             .tap
             .bind {
                 self.viewModel?.changePassword()
-                
-                //TODO: 에러처리해주기
+                self.viewModel?.tappedChangePasswordRelay.accept(.password)
                 self.showActionCompleteNotification()
             }
     }
