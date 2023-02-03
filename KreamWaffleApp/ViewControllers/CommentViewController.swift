@@ -125,7 +125,6 @@ final class CommentViewController: UIViewController {
     
     func configureDelegate() {
         enterCommentTextView.delegate = self
-        commentCollectionView.delegate = self
     }
     
     func setUpEnterCommentView() {
@@ -144,9 +143,6 @@ final class CommentViewController: UIViewController {
             self.sendCommentButton.topAnchor.constraint(equalTo: self.enterCommentTextView.topAnchor),
             self.sendCommentButton.heightAnchor.constraint(equalToConstant: 20),
         ])
-        
-//        self.enterCommentView.bringSubviewToFront(self.sendCommentButton)
-
     }
     
     func setUpCollectionView() {
@@ -276,23 +272,6 @@ extension CommentViewController: UITextViewDelegate {
     }
 }
 
-extension CommentViewController: UIScrollViewDelegate  {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if (position > (self.commentCollectionView.contentSize.height - 5 - scrollView.frame.size.height)) {
-            Task {
-                let isValidToken = await self.userInfoViewModel.checkAccessToken()
-                if isValidToken {
-                    let token = self.userInfoViewModel.UserResponse?.accessToken
-                    self.commentViewModel.requestNextData(token: token!)
-                } else {
-                    self.presentLoginAgainAlert()
-                }
-            }
-        }
-    }
-}
-
 extension CommentViewController {
     @objc func stopWritingReplyButtonTapped() {
         self.commentViewModel.isWritingComment = false
@@ -358,8 +337,4 @@ extension CommentViewController {
             self.view.frame.origin.y = 0
         }
     }
-}
-
-extension CommentViewController: UICollectionViewDelegate {
-    
 }

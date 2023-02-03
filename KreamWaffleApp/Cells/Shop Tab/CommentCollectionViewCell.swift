@@ -42,7 +42,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
         
         let urlString = comment.created_by.image
         guard let url = URL.init(string: urlString) else {
-            self.profileImageView.image = UIImage(systemName: "person")
+            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+            self.profileImageView.tintColor = colors.lessLightGray
             return
         }
         let resource = ImageResource(downloadURL: url)
@@ -52,7 +53,8 @@ final class CommentCollectionViewCell: UICollectionViewCell {
             case .success(let value):
                 self.profileImageView.image = value.image
             case .failure(_):
-                self.profileImageView.image = UIImage(systemName: "person")
+                self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                self.profileImageView.tintColor = colors.lessLightGray
             }
         }
     }
@@ -71,7 +73,7 @@ final class CommentCollectionViewCell: UICollectionViewCell {
     
     private func setUpProfileImageView() {
         
-        let imageHeight = UIScreen.main.bounds.height/16
+        let imageHeight = UIScreen.main.bounds.height/16 - 10
         
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

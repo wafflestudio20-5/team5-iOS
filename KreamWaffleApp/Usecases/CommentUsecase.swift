@@ -15,11 +15,9 @@ final class CommentUsecase {
     private let disposeBag = DisposeBag()
     
     let commentRelay: BehaviorRelay<[Comment]> = .init(value: [])
-    let commentDidLoad: BehaviorRelay<Bool> = .init(value: false)
     
     var commentList = [Comment]() {
         didSet {
-            commentDidLoad.accept(true)
             commentRelay.accept(commentList)
         }
     }
@@ -33,36 +31,14 @@ final class CommentUsecase {
             .requestInitialCommentData(token: token, id: id, completion: completion)
             .subscribe { event in
                 switch event {
-                case .success(let commentResponse):
-                    self.cursor = commentResponse.next
-                    self.commentList = commentResponse.results
+                case .success(let comments):
+                    self.commentList = comments
                 case .failure(let error):
-                    self.cursor = nil
                     self.commentList.removeAll()
                     print(error)
                 }
             }
             .disposed(by: disposeBag)
-    }
-    
-    func requestNextData(token: String, id: Int, completion: @escaping ()->()) {
-        if let cursor = self.cursor {
-            self.commentRepository
-                .requestNextCommentData(token: token, cursor: cursor, completion: completion)
-                .subscribe { event in
-                    switch event {
-                    case .success(let commentResponse):
-                        self.cursor = commentResponse.next
-                        self.commentList += commentResponse.results
-                    case .failure(let error):
-                        self.cursor = nil
-                        self.commentList.removeAll()
-                        print(error)
-                    }
-                }
-                .disposed(by: disposeBag)
-        }
-        
     }
     
     func sendComment(token: String, content: String, id: Int, completion: @escaping ()->(), onNetworkFailure: @escaping ()->()) {

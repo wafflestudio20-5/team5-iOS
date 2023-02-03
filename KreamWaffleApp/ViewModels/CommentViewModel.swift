@@ -26,10 +26,6 @@ final class CommentViewModel {
     let isWritingCommentRelay = BehaviorRelay<Bool>(value: false)
     
     var currentReplyToProfile: ReplyToProfile?
-
-    var commentDidLoad: Observable<Bool> {
-        return self.commentUsecase.commentDidLoad.asObservable()
-    }
     
     var commentDataSource: Observable<[Comment]> {
         return self.commentUsecase.commentRelay.asObservable()
@@ -44,15 +40,6 @@ final class CommentViewModel {
         isAlreadyFetchingDataFromServer = true
         self.commentUsecase.requestInitialData(token: token, id: id) { [weak self] in
             self?.isAlreadyFetchingDataFromServer = false
-        }
-    }
-    
-    func requestNextData(token: String) {
-        if (!isAlreadyFetchingDataFromServer) {
-            self.isAlreadyFetchingDataFromServer = true
-            self.commentUsecase.requestNextData(token: token, id: id) { [weak self] in
-                self?.isAlreadyFetchingDataFromServer = false
-            }
         }
     }
     
