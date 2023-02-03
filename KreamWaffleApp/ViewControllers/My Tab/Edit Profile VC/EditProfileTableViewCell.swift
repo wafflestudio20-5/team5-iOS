@@ -89,8 +89,12 @@ class EditProfileTableViewCell: UITableViewCell {
         self.currentTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.currentTextLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 5),
-            self.currentTextLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20)
+            self.currentTextLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20),
+            self.currentTextLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -40)
         ])
+        
+        self.currentTextLabel.numberOfLines = 1
+        self.currentTextLabel.lineBreakMode = .byTruncatingTail
         
         let attributes: [NSAttributedString.Key: Any] = [
             .font : UIFont.systemFont(ofSize: 13, weight: .regular),
@@ -105,6 +109,7 @@ class EditProfileTableViewCell: UITableViewCell {
             self.editButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20),
             self.editButton.centerYAnchor.constraint(equalTo: self.currentTextLabel.centerYAnchor)
         ])
+        
         
         
         self.underLine.backgroundColor = colors.lessLightGray

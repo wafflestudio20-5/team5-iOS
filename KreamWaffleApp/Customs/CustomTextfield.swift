@@ -99,7 +99,7 @@ class CustomTextfield : UIView, UITextFieldDelegate {
         self.textfield.backgroundColor = .clear
         self.textfield.translatesAutoresizingMaskIntoConstraints = false
         self.textfield.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        self.textfield.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.textfield.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30).isActive = true
         self.textfield.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 5).isActive = true
         self.textfield.autocorrectionType = .no
         self.textfield.autocapitalizationType = .none
@@ -107,6 +107,11 @@ class CustomTextfield : UIView, UITextFieldDelegate {
         self.textfield.addTarget(self, action: #selector(startEditTextfield(_:)), for: .editingChanged)
         self.textfield.addTarget(self, action: #selector(endEditTextfield(_:)), for: .editingDidEnd)
         self.textfield.addTarget(self, action: #selector(touchedTextfield(_:)), for: .editingDidBegin)
+        let oldStyle = self.textfield.defaultTextAttributes[.paragraphStyle, default: NSParagraphStyle()] as! NSParagraphStyle
+        let style = oldStyle.mutableCopy() as! NSMutableParagraphStyle
+        style.lineBreakMode = .byTruncatingTail
+        self.textfield.defaultTextAttributes[.paragraphStyle] = style
+        
         if (self.errorCondition == .password){
             self.textfield.isSecureTextEntry =  true
         }

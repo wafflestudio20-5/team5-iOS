@@ -9,6 +9,16 @@ import UIKit
 class MyShoppingViewController: UIViewController {
     private let userInfoVM: UserInfoViewModel
     
+    var purchaseTitle = UILabel()
+    var purchaseButton = UIButton()
+    var purchaseLabel = UILabel()
+    var purchaseNumber = UILabel()
+    var divider = UILabel()
+    
+    var salesTitle = UILabel()
+    var salesButton = UILabel()
+    
+    
     init(userInfoVM: UserInfoViewModel) {
         self.userInfoVM = userInfoVM
         super.init(nibName: nil, bundle: nil)
@@ -18,37 +28,107 @@ class MyShoppingViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var sampleData1 = subviewData(total_title: "구매 내역", set_1: titleNumberSet(title: "전체", number: 0), set_2: titleNumberSet(title: "입찰 중", number: 0), set_3: titleNumberSet(title: "진행 중", number: 0), set_4: titleNumberSet(title: "종료", number: 0))
+    let followerBar = MyTabSharedUIStackVIew(title1: "일반 회원", subtitle1: "회원등급", title2: "0P", subtitle2: "포인트", title3: "14", subtitle3: "관심 상품", setCount: 3)
     
-    var sampleData2 = subviewData(total_title: "판매 내역", set_1: titleNumberSet(title: "전체", number: 0), set_2: titleNumberSet(title: "입찰 중", number: 0), set_3: titleNumberSet(title: "진행 중", number: 0), set_4: titleNumberSet(title: "종료", number: 0))
-    
-    var subView1 : ProfileSubview?
-    var subView2 : ProfileSubview?
+    var purchasesButton = UIButton()
+    var salesButton = UIButton()
     
     override func viewDidLoad() {
         setUpBackButton()
-        
-        super.viewDidLoad()
-        self.subView1 = ProfileSubview(subviewData: sampleData1)
-        self.subView2 = ProfileSubview(subviewData: sampleData2)
+        setUpBackButton()
         self.view.backgroundColor = .white
-        self.view.addSubview(subView1!)
-        self.view.addSubview(subView2!)
-        self.subView1?.translatesAutoresizingMaskIntoConstraints = false
-        self.subView1?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        self.subView1?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
-        self.subView1?.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.subView1?.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        self.subView1?.backgroundColor = colors.lightGray
-       
+        addSubviews()
+        setUpSubviews()
+        setupPurchaseButton()
+        setupSalesButton()
+    }
+    
+    func addSubviews(){
+        self.view.addSubview(followerBar)
+        self.view.addSubview(purchaseTitle)
+        self.view.addSubview(purchaseButton)
+        self.view.addSubview(salesTitle)
+        self.view.addSubview(salesButton)
+    }
+    
+    func setUpSubviews(){
+        self.followerBar.translatesAutoresizingMaskIntoConstraints = false
+        self.followerBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0).isActive = true
+        self.followerBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0).isActive = true
+        self.followerBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.followerBar.heightAnchor.constraint(equalToConstant: self.view.frame.height/16).isActive = true
+    }
+    
+    func setupPurchaseButton(){
+        self.purchaseTitle.text = "구매내역"
+        self.purchaseTitle.textColor = .black
+        self.purchaseTitle.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         
-        self.subView2?.translatesAutoresizingMaskIntoConstraints = false
-        self.subView2?.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        self.subView2?.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
-        self.subView2?.topAnchor.constraint(equalTo: self.subView1!.bottomAnchor, constant: self.view.frame.height/64).isActive = true
-        self.subView2?.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        self.subView2?.backgroundColor = colors.lightGray
-       
+        self.purchaseButton.backgroundColor = colors.lightGray
+        self.purchaseButton.layer.cornerRadius = 10
+        
+        self.purchaseTitle.translatesAutoresizingMaskIntoConstraints = false
+        self.purchaseButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            self.purchaseTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            self.purchaseTitle.topAnchor.constraint(equalTo: self.followerBar.bottomAnchor, constant: 20),
+            
+            self.purchaseButton.leadingAnchor.constraint(equalTo: self.purchaseTitle.leadingAnchor),
+            self.purchaseButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            self.purchaseButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/8),
+            self.purchaseButton.topAnchor.constraint(equalTo: purchaseTitle.bottomAnchor, constant: 10)
+        ])
+    }
+    
+    func setupSalesButton(){
+        self.salesTitle.text = "판매내역"
+        self.salesTitle.textColor = .black
+        self.salesTitle.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        
+        self.salesButton.backgroundColor = colors.lightGray
+        self.salesButton.layer.cornerRadius = 10
+        
+        self.salesTitle.translatesAutoresizingMaskIntoConstraints = false
+        self.salesTitle.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.salesTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+            self.salesTitle.topAnchor.constraint(equalTo: self.followerBar.bottomAnchor, constant: 20),
+            
+            self.salesButton.leadingAnchor.constraint(equalTo: self.purchaseTitle.leadingAnchor),
+            self.salesButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+            self.salesButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/8),
+            self.salesButton.topAnchor.constraint(equalTo: purchaseTitle.bottomAnchor, constant: 10)
+        ])
+    }
+    
+    func titleLabel(title: String) -> UILabel{
+        let label = UILabel()
+        label.text = title
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        return label
+    }
+    
+    func subtitleLabel(title: String) -> UILabel{
+        let label = UILabel()
+        label.text = title
+        label.textColor = .darkGray
+        label.font = UIFont.systemFont(ofSize: 13, weight: .medium)
+        return label
+    }
+    
+    func miniStackView(subviews: [UILabel]) -> UIStackView{
+        let view = UIStackView()
+        view.addArrangedSubviews(subviews)
+        view.axis = .vertical
+        view.alignment = .center
+        view.spacing = 5
+        return view
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.followerBar.layer.addBorder([.bottom], color: colors.lightGray, width: 1.0)
     }
     
 }

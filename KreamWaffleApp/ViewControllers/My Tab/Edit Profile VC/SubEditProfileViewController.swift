@@ -101,7 +101,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             self.navBarTitle = "소개 변경"
             self.detail = nil
             self.textfield = CustomTextfield(titleText: "소개", errorText: "", errorCondition: .none, placeholderText: nil, defaultButtonImage: nil, pressedButtonImage: nil)
-            self.textfield?.setupTextCounter(maxCount: 100)
+            self.textfield?.setupTextCounter(maxCount: 40)
             self.currentText = self.myProfile?.introduction
         case .password:
             self.navBarTitle = "비밀번호 변경"

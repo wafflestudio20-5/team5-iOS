@@ -54,18 +54,19 @@ final class UserUsecase {
     }
     
     //MARK: related to log in, log out, sign up
+    //TODO: 여기 좀 걱정됨. checkAccessToken 도 안하고 Login 해도 되나?
     ///signs in user with user defaults
     func getSavedUser(){
         Task {
-            if let savedUserResponse = repository.getUserResponse(){
-            self.userResponse = savedUserResponse
-            self.loggedIn = true
-            await self.checkAccessToken()
-            self.user = savedUserResponse.user
+        if let savedUserResponse = repository.getUserResponse(){
+       self.userResponse = savedUserResponse
+        await self.checkAccessToken()
+       self.loggedIn = true
+     self.user = savedUserResponse.user
         }else{
-           print("no saved user reponse")
-            }
-        }
+            print("no saved user reponse")
+                    }
+                }
     }
     
     ///gets user info with customLogin
@@ -127,11 +128,9 @@ final class UserUsecase {
                     self.replaceAccessToken(newToken: response.accessToken)
                 case .failure(let error):
                     self.error = error as LoginError
-                    //TODO: 이거 에러.
-                    /*
                     if (error == .invalidRefreshTokenError){
                         self.logout()
-                    }*/
+                    }
                 }
             }
         }
@@ -145,7 +144,6 @@ final class UserUsecase {
                 switch result {
                 case .success:
                     print("[Log] UserUsecase: access token is still valid")
-                    print("[Log] UserUsecase: that valid token is: \(self.userResponse?.accessToken)")
                 case .failure(let error):
                     Task {
                         await self.requestNewAccessToken()
