@@ -9,12 +9,12 @@ import Foundation
 import RxSwift
 import Alamofire
 
-final class ShopCommentRepository {
+final class ShopCommentRepository: CommentRepositoryProtocol {
     private let baseUrl = "https://kream-waffle.cf/shop/"
 
-    func requestInitialCommentData(token: String, productId: Int, completion: @escaping () -> ()) -> Single<CommentResponse> {
+    func requestInitialCommentData(token: String, id: Int, completion: @escaping () -> ()) -> Single<[Comment]> {
         return Single.create { single in
-            let finalUrl = self.baseUrl + "productinfos/\(productId)/comments/"
+            let finalUrl = self.baseUrl + "productinfos/\(id)/comments/"
             
             let headers: HTTPHeaders = [
                 "accept": "application/json",
@@ -23,7 +23,7 @@ final class ShopCommentRepository {
             
             AF.request(finalUrl, method: .get, headers: headers)
                 .validate()
-                .responseDecodable(of: CommentResponse.self) { response in
+                .responseDecodable(of: [Comment].self) { response in
                     //**********
                     print("\n=============== shop comment 최초 불러오기 ===============\n")
                     debugPrint(response)
@@ -43,38 +43,8 @@ final class ShopCommentRepository {
         }
     }
     
-    func requestNextCommentData(token: String, cursor: String, completion: @escaping () -> ()) -> Single<CommentResponse> {
-        return Single.create { single in
-                
-            let headers: HTTPHeaders = [
-                "accept": "application/json",
-                "Authorization": "Bearer \(token)"
-            ]
-            
-            AF.request(cursor, method: .get, headers: headers)
-                .validate()
-                .responseDecodable(of: CommentResponse.self) { response in
-                    //**********
-                    print("\n=============== shop comment 이어서 불러오기 ===============\n")
-                    debugPrint(response)
-                    //**********
-                    
-                    switch response.result {
-                    case .success(let result):
-                        single(.success(result))
-                    case .failure(let error):
-                        single(.failure(error))
-                    }
-                    
-                    completion()
-                }
-            
-            return Disposables.create()
-        }
-    }
-    
-    func sendComment(token: String, content: String, productId: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
-        let finalUrl = baseUrl + "productinfos/\(productId)/comments/"
+    func sendComment(token: String, content: String, id: Int, completion: @escaping ()-> (), onNetworkFailure: @escaping () -> ()) {
+        let finalUrl = baseUrl + "productinfos/\(id)/comments/"
         
         let headers: HTTPHeaders = [
             "Content-Type": "application/json",
@@ -88,7 +58,7 @@ final class ShopCommentRepository {
         
         AF.request(finalUrl, method: .post, parameters:parameters,encoder:JSONParameterEncoder.default, headers: headers)
             .validate()
-            .responseDecodable(of: CommentResponse.self) { response in
+            .responseDecodable(of: Comment.self) { response in
                 //**********
                 print("\n=============== comment 등록 ===============\n")
                 debugPrint(response)
@@ -124,4 +94,5 @@ final class ShopCommentRepository {
                 }
             }
     }
+
 }

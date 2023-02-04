@@ -476,9 +476,9 @@ extension StylePostViewController { //button 관련 메서드들.
             self.tabBarController?.tabBar.isHidden = true
 
             let styleCommentRepository = StyleCommentRepository()
-            let styleCommentUsecase = StyleCommentUsecase(styleCommentRepository: styleCommentRepository)
-            let styleCommentViewModel = StyleCommentViewModel(styleCommentUsecase: styleCommentUsecase, postId: self.stylePostViewModel.getPostId())
-            self.navigationController?.pushViewController(StyleCommentViewController(userInfoViewModel: self.userInfoViewModel, styleCommentViewModel: styleCommentViewModel), animated: true)
+            let styleCommentUsecase = CommentUsecase(commentRepository: styleCommentRepository)
+            let styleCommentViewModel = CommentViewModel(commentUsecase: styleCommentUsecase, id: self.stylePostViewModel.getPostId())
+            self.navigationController?.pushViewController(CommentViewController(userInfoViewModel: self.userInfoViewModel, commentViewModel: styleCommentViewModel), animated: true)
         }
     }
     
