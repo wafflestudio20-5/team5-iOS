@@ -63,10 +63,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 self.userProfileVM.requestUserProfile {
                     print("Profile Loading 실패")
                 }
-            
-        self.profileNameLabel.text = self.userProfileVM.userProfile.profile_name
-        self.userNameLabel.text = self.userProfileVM.userProfile.user_name
-        self.bioLabel.text = self.userProfileVM.userProfile.introduction
     }
         }.disposed(by: disposeBag)
     }
@@ -74,6 +70,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.userProfileVM.requestUserProfile {
+            print("Profile Loading 실패")
+        }
         setUpBackButton()
         setUpSegmentedControl()
         setUpTabBarButton()
@@ -274,8 +273,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     func setUpData(with profile: Profile) {
-        // 서버에서 받아온 user data를 뷰에 세팅하는 함수.
-        // 나중에 Rx로 바꿔야함.
         let urlString = profile.image
         if let url = URL.init(string: urlString) {
             let resource = ImageResource(downloadURL: url)
@@ -287,7 +284,6 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 case .failure(_):
                     self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
                     self.profileImageView.tintColor = colors.lessLightGray
-                    
                 }
             }
         } else {
@@ -297,18 +293,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         
         self.profileNameLabel.text = profile.profile_name
         self.userNameLabel.text = profile.user_name
-        
-        self.userProfileVM.imageRelay.subscribe { [weak self] event in
-            switch event {
-            case .next:
-                self?.profileImageView.image = event.element
-            case .error(_):
-                break
-            case .completed:
-                break
-            }
-            
-        }
+        self.bioLabel.text = profile.introduction
     }
     
     func setupDivider(){

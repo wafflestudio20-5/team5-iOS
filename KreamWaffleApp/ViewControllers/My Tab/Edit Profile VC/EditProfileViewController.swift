@@ -39,22 +39,14 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     }
     
     func bindViews() {
-        self.viewModel.userProfileDataSource.subscribe { [weak self] event in
-            switch event {
-            case .next:
-                if let profile = event.element {
-                    self!.setupProfileButton(with: profile)
-                }
-            case .completed:
-                break
-            case .error:
-                break
+        self.viewModel.imageRelay.subscribe{ [weak self] event in
+            if let image = event.element {
+                self?.setupProfileButton(with: image)
             }
-        }.disposed(by: disposeBag)
+        }
     }
     
-    
-    func setupProfileButton(with fetchedProfile: Profile){
+    func setupProfileButton(with image: UIImage){
         
         profileButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(profileButton)
@@ -67,33 +59,12 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         profileButton.layer.masksToBounds = true
         profileButton.layer.cornerRadius = 50
         profileButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
+        profileButton.setImage(image, for: .normal)
         
         let editLabel = UILabel()
-        let urlString = fetchedProfile.image
-        if let url = URL.init(string: urlString) {
-        let resource = ImageResource(downloadURL: url)
-        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
-                switch result {
-                case .success(let value):
-                    self.profileButton.setImage(value.image, for: .normal)
-                case .failure(_):
-                    self.profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
-                    self.profileButton.setImageTintColor(colors.lessLightGray)
-                }
-            }
-        } else {
-            profileButton.setImage(UIImage(systemName: "person.crop.circle.fill"), for: .normal)
-            profileButton.setImageTintColor(colors.lessLightGray)
-        }
-        
-        //TODO: 나중에 시간 있으면 수정하기.
         profileButton.contentVerticalAlignment = .fill
         profileButton.contentHorizontalAlignment = .fill
-        
-        self.viewModel.imageRelay.subscribe { image in
-            self.profileButton.setImage(image, for: .normal)
-        }.disposed(by: self.bag)
-    
+
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"
         editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)

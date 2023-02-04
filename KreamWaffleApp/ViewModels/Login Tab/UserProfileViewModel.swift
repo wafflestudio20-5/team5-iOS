@@ -9,15 +9,17 @@ import Foundation
 import RxRelay
 import UIKit
 import RxSwift
+import Kingfisher
 
 class UserProfileViewModel {
+    
     let usecase : UserUsecase
     
     //var imageRelay : BehaviorRelay<UIImage>
     var profileNameRelay: BehaviorRelay<String>
     var userNameRelay:  BehaviorRelay<String>
     var bioRelay: BehaviorRelay<String>
-    var imageRelay = BehaviorRelay<UIImage>(value: UIImage(systemName: "person.crop.circle.fill")!)
+    var imageRelay : BehaviorRelay<UIImage>
     
     //저장 버튼 탭 저장하는 릴레이 (각자의 저장 버튼을 누르면 tap Relay 가 그걸 받고, Profile edit VC가 그것을 보고 알아서 맞는 값을 위 릴레이에서 할당해준다.
     var tapRelay = BehaviorRelay<editCase>(value: .none)
@@ -27,6 +29,27 @@ class UserProfileViewModel {
         profileNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.profile_name ?? "")
         userNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.user_name ?? "")
         bioRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.introduction ?? "나를 소개하세요")
+        var image = UIImage()
+        if let url = URL.init(string: self.usecase.userProfile?.image ?? "") {
+        let resource = ImageResource(downloadURL: url)
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    print("Bringing image success")
+                    image = value.image as UIImage
+                case .failure(_):
+                    image = UIImage(systemName: "person.crop.circle.fill")!
+                    print("Bringing image failure")
+                    image.withRenderingMode(.alwaysTemplate)
+                    image.withTintColor(colors.lessLightGray)
+                }
+            }
+        } else {
+            image = UIImage(systemName: "person.crop.circle.fill")!
+            image.withRenderingMode(.alwaysTemplate)
+            image.withTintColor(colors.lessLightGray)
+        }
+        self.imageRelay = BehaviorRelay<UIImage>(value: image)
     }
     
     var userProfile: Profile {
