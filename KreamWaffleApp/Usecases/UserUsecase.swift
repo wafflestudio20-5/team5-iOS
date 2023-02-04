@@ -47,7 +47,6 @@ final class UserUsecase {
     
     ///VC should observe login state and toggle logged in
     var loginState = BehaviorRelay<Bool>(value: false)
-    
     var errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
     

@@ -134,7 +134,9 @@ class LoginRepository {
             return
         }
         
-        AF.request(url, method: .get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil).response{ response in
+        AF.request(url, method: .get, parameters: nil, encoding: URLEncoding.httpBody, headers: nil)
+            .validate()
+            .response{ response in
             debugPrint(response)
             switch response.result {
             case .success(let data):
@@ -169,7 +171,7 @@ class LoginRepository {
             print("url error")
             return
         }
-        
+        print("dfhiofjiofjwiowiowojwo")
         let headers : HTTPHeaders = [
             .contentType("application/json")
         ]
@@ -181,17 +183,16 @@ class LoginRepository {
             "shoe_size": shoe_size,
         ] as [String : Any]
         
-        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers).response{ response in
+        AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            .validate()
+            .response{ response in
+            debugPrint(response)
             switch response.result {
             case .success(let data):
-                do{
-                    print("[Log] Login Repository: ", data)
-                    completion(.success(true))
-                }catch{
-                    completion(.failure(.signupError))
-                }
+                print("[Log] Login Repository: ", data)
+                completion(.success(true))
             case .failure(let error):
-                //TODO 에러 종류 바꾸기
+                debugPrint(response)
                 completion(.failure(.signupError))
                 print(error)
             }

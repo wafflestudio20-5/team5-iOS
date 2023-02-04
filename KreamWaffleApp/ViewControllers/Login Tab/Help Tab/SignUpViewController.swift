@@ -32,6 +32,25 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     init(viewModel : SignUpViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        self.viewModel.errorRelay
+            .asObservable()
+            .subscribe { [weak self] event in
+                switch event {
+                case .next(_):
+                    if (event.element == LoginError.signupError ){
+                        print("[Log] Signup VC: Error in signup")
+                        self?.showErrorNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
+                    }else if (event.element == LoginError.alreadySignedUpError){
+                        self?.showErrorNotification(errorText: "이미 회원가입된 이메일입니다.")
+                    }
+                case .error(_):
+                    break
+                case .completed:
+                    break
+                }
+        }
+            .disposed(by: bag)
     }
     
     required init?(coder: NSCoder) {
@@ -90,19 +109,7 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
             .tap
             .bind {
                 self.viewModel.didTapSignup()
-                self.viewModel.errorRelay
-                    .asObservable()
-                    .subscribe { error in //TODO: sync 가 안맞음. 수정하기
-                    if (error.element == LoginError.signupError ){
-                        print("[Log] Signup VC: Error in signup")
-                        self.showErrorNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
-                    }else if (error.element == LoginError.alreadySignedUpError){
-                        self.showErrorNotification(errorText: "이미 회원가입된 이메일입니다.")
-                    }else{
-                        self.showEmailSentNotification()
-                    }
                 }
-            }
             .disposed(by: bag)
         
         self.necessaryTerms?.checkButton.rx

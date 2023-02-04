@@ -44,6 +44,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
                 self?.setupProfileButton(with: image)
             }
         }
+        .disposed(by: bag)
     }
     
     func setupProfileButton(with image: UIImage){
