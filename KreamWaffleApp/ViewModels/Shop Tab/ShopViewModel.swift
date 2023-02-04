@@ -150,8 +150,19 @@ extension ShopViewModel {
 
 extension ShopViewModel {
     // request brands
-    func requestBrandData() {
-        self.usecase.loadBrands()
+//    func requestBrandData() {
+//        self.usecase.loadBrands()
+//    }
+    
+    func requestBrandData(resetPage: Bool) {
+        if (resetPage == true) {
+            self.page = 1
+            self.usecase.loadBrands()
+        } else {
+            self.page += 1
+            self.usecase.loadMoreBrands(page: self.page)
+        }
+       
     }
 }
 
@@ -180,11 +191,6 @@ extension ShopViewModel {
     
     func setSelectedDelivery(deliveryTagIndex: Int) {
         self.currentDeliveryTag = deliveryTagIndex
-    }
-    
-    
-    func requestFilteredData(resetPage: Bool, category: [String]?, brands: [Brand]?, prices: [String]?, deliveryTag: Int) {
-        self.usecase.loadFilteredData(resetPage: resetPage, category: category, brands: brands, prices: prices, deliveryTag: deliveryTag)
     }
     
     func requestFilteredData(resetPage: Bool) {
@@ -216,7 +222,6 @@ struct ProductData {
     let total_wishes: Int
     let total_shares: Int
     let  productimage_urls: [String]
-//    let imageSource: [ProductImage]
     
     init(product: Product) {
         self.id = product.id
@@ -227,10 +232,9 @@ struct ProductData {
         self.productimage_set = product.productimage_set
         self.brand_name = product.brand_name
         self.price = product.price
-        self.total_wishes = product.total_wishes
-        self.total_shares = product.total_shares
+        self.total_wishes = product.wishes
+        self.total_shares = product.shares
         self.productimage_urls = product.productimage_urls
-//        self.imageSource = product.imageSource
     }
 }
 

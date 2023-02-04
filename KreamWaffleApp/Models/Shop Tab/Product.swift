@@ -16,14 +16,14 @@ class Product: Codable {
     let productimage_set: [Int]
     var brand_name: String
     let price: Int
-    let total_wishes: Int
-    let total_shares: Int
+    let wishes: Int
+    let shares: Int
     let productimage_urls: [String]
 
     let thumbnailImageRatio: Float // (세로/가로) 비율
     
     private enum CodingKeys: String, CodingKey {
-        case id, brand, eng_name, kor_name, delivery_tag, productimage_set, brand_name, price, total_wishes, total_shares, productimage_urls
+        case id, brand, eng_name, kor_name, delivery_tag, productimage_set, brand_name, price, wishes, shares, productimage_urls
     }
     
     required init(from decoder: Decoder) throws {
@@ -37,8 +37,8 @@ class Product: Codable {
         productimage_set = try container.decodeIfPresent([Int].self, forKey: .productimage_set) ?? []
         brand_name = try container.decodeIfPresent(String.self, forKey: .brand_name) ?? "-"
         price = try container.decodeIfPresent(Int.self, forKey: .price) ?? 0
-        total_wishes = try container.decodeIfPresent(Int.self, forKey: .total_wishes) ?? 0
-        total_shares = try container.decodeIfPresent(Int.self, forKey: .total_shares) ?? 0
+        wishes = try container.decodeIfPresent(Int.self, forKey: .wishes) ?? 0
+        shares = try container.decodeIfPresent(Int.self, forKey: .shares) ?? 0
         productimage_urls = try container.decodeIfPresent([String].self, forKey: .productimage_urls) ?? []
 
         thumbnailImageRatio = 1
@@ -53,10 +53,9 @@ class Product: Codable {
         productimage_set: [Int],
         brand_name: String,
         price: Int,
-        total_wishes: Int,
-        total_shares: Int,
+        wishes: Int,
+        shares: Int,
         productimage_urls: [String],
-//        imageSource: [ProductImage],
         thumbnailImageRatio: Float
     ) {
         self.id = id
@@ -67,10 +66,9 @@ class Product: Codable {
         self.productimage_set = productimage_set
         self.brand_name = brand_name
         self.price = price
-        self.total_wishes = total_wishes
-        self.total_shares = total_shares
+        self.wishes = wishes
+        self.shares = shares
         self.productimage_urls = productimage_urls
-//        self.imageSource = imageSource
         self.thumbnailImageRatio = thumbnailImageRatio
     }
 
