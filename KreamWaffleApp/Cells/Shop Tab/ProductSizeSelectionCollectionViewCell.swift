@@ -36,7 +36,14 @@ class ProductSizeSelectionCollectionViewCell: UICollectionViewCell {
     
     func configure(productSizeInfo: ProductSize){
         self.sizeLabel.text = productSizeInfo.size
-        self.priceLabel.text = PriceFormatter.formatNumberToCurrency(intToFormat: productSizeInfo.sales_price)
+        let formattedPrice = PriceFormatter.formatNumberToCurrency(intToFormat: productSizeInfo.sales_price)
+        if (formattedPrice == "-1") {
+            self.priceLabel.text = " "
+            
+        } else {
+            self.priceLabel.text = formattedPrice
+        }
+        
     }
     
     override var reuseIdentifier: String {
