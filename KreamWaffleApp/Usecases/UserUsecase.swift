@@ -26,9 +26,7 @@ final class UserUsecase {
     
     var user : User?
     var userResponse : UserResponse?
-    
     var profileRelay: BehaviorRelay<Profile> = .init(value: Profile())
-    
     var userProfile : Profile? {
         didSet {
             if let userProfile = userProfile {
@@ -37,17 +35,23 @@ final class UserUsecase {
         }
     }
     
-    
     var error : LoginError {
         didSet {
             errorRelay.accept(error)
         }
     }
     
+    var signup : Bool {
+        didSet {
+            self.signupState.accept(signup)
+        }
+    }
     
     ///VC should observe login state and toggle logged in
     var loginState = BehaviorRelay<Bool>(value: false)
+    var loginErrorRelay = BehaviorRelay<LoginError>(value: .noError)
     var errorRelay = BehaviorRelay<LoginError>(value: .noError)
+    var signupState = BehaviorRelay<Bool>(value: false)
     
     
     // productinfo
@@ -113,6 +117,7 @@ final class UserUsecase {
         self.userShopRepository = UserShopRepository
         self.error = .noError
         self.loggedIn = false
+        self.signup = false
     }
     
     ///signs in user with user defaults
@@ -143,6 +148,7 @@ final class UserUsecase {
                 self.loggedIn = true
             case .failure(let error):
                 self.error = error as LoginError
+                self.loginErrorRelay.accept(error)
                 self.loggedIn = false
             }
         }
@@ -159,6 +165,7 @@ final class UserUsecase {
                 self.loggedIn = true
             case .failure(let error):
                 self.error = error as LoginError
+                self.loginErrorRelay.accept(error)
                 self.loggedIn = false
             }
         }
@@ -166,21 +173,18 @@ final class UserUsecase {
     
     
     ///registers new account
-    func signUp(email: String, password: String, shoeSize: Int)->Bool{
-        var signedIn = false
+    func signUp(email: String, password: String, shoeSize: Int){
         repository.registerAccount(with: email, password: password, shoe_size: shoeSize) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
             case .success(_):
-                signedIn = true
+                self.signup = true
             case .failure(let error):
                 self.error = error as LoginError
                 self.loggedIn = false
-                signedIn = false
+                self.signup = false
             }
         }
-        
-        return signedIn
     }
     
     //MARK: - checks/requests token
@@ -255,6 +259,7 @@ final class UserUsecase {
         self.errorRelay = BehaviorRelay<LoginError>.init(value: .noError)
         self.profileRelay = BehaviorRelay<Profile>.init(value: Profile())
         self.userProfile = nil
+        self.signup = false
     }
     
     func requestFollow(token: String, user_id: Int, onNetworkFailure: @escaping () -> ()) {

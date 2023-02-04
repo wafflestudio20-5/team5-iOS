@@ -16,7 +16,6 @@ import RxRelay
 class LoginViewController: UIViewController {
     
     var viewModel : LoginViewModel
-    var loginState = false
     let bag = DisposeBag()
     
     let NaverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
@@ -45,8 +44,6 @@ class LoginViewController: UIViewController {
         self.NaverLoginInstance!.delegate = self
         
         self.viewModel.loginState.asObservable().subscribe { status in
-            self.loginState = status.element!
-            print("[Log] Login VC: The login state is", status.element)
             if (status.element! == true){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
             }
@@ -70,21 +67,27 @@ class LoginViewController: UIViewController {
     init(viewModel : LoginViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        //bind to view model
-        self.viewModel
-            .errorRelay
+        createCallbacks()
+    }
+    
+    func createCallbacks(){
+        self.viewModel.errorRelay
             .asObservable()
-            .subscribe(
-                onNext: { error in
-                    print(error)
-                    if (error == .noUserInfoError){
-                        self.showNotification(errorText: "입력하신 이메일로 된 사용자가 없습니다.")
-                    }else if (error == .loginError){
-                        self.showNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
-                    }
+            .bind { error in
+                if (error == .noUserInfoError){
+                    self.showNotification(errorText: "입력하신 이메일로 된 사용자가 없습니다.")
+                }else if (error == .loginError){
+                    self.showNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
                 }
-            ).disposed(by: bag)
+            }.disposed(by: bag)
         
+        self.viewModel.loginState
+            .asObservable()
+            .bind { signup in
+                if (signup){
+                    self.dismiss(animated: true)
+                }
+            }.disposed(by: bag)
     }
     
     required init?(coder: NSCoder) {
@@ -136,12 +139,15 @@ class LoginViewController: UIViewController {
             .map { $0 ? UIColor.white: UIColor.darkGray}
             .bind(to: self.loginButton.rx.tintColor)
             .disposed(by: bag)
+        
+        self.loginButton.rx.tap.do(onNext: { [unowned self] in
+            self.emailfield?.textfield.resignFirstResponder()
+            self.passwordfield?.textfield.resignFirstResponder()
+        }).subscribe(onNext: { [unowned self] in
+            self.viewModel.loginUserWithCustom()
+        }).disposed(by: bag)
     }
-    
-    @objc func didTapLogin(){
-        self.viewModel.loginUserWithCustom()
-    }
-    
+
     
     func showNotification(errorText: String){
         let errorNotification = CustomNotificationView(notificationText: errorText)
@@ -183,12 +189,6 @@ class LoginViewController: UIViewController {
         self.NaverLoginInstance!.requestThirdPartyLogin()
     }
     
-    @objc func loginSuccess(){
-        if (self.loginState){
-            print("login success")
-            self.dismiss(animated: true)
-        }
-    }
     
     private func getNaverInfo() {
         guard let isValidAccessToken = NaverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
@@ -340,7 +340,6 @@ extension LoginViewController {
         self.loginButton.titleLabel?.textColor = .white
         self.loginButton.layer.cornerRadius = 10
         self.loginButton.clipsToBounds = true
-        self.loginButton.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
     }
     
     private func configureHelpStack(){
