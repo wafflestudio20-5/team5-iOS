@@ -49,11 +49,11 @@ class SignUpViewModel{
     }
     
     
-    public func didTapSignup(){
+    public func didTapSignup() -> Bool {
         let email = self.emailTextRelay.value
         let password = self.pwTextRelay.value
         let size = self.shoeSizeRelay.value
-        self.usecase.signUp(email: email, password: password, shoeSize: size)
+        return self.usecase.signUp(email: email, password: password, shoeSize: size)
     }
 
 }
