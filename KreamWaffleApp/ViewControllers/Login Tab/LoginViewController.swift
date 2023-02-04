@@ -85,7 +85,6 @@ class LoginViewController: UIViewController {
                 }
             ).disposed(by: bag)
         
-        
     }
     
     required init?(coder: NSCoder) {

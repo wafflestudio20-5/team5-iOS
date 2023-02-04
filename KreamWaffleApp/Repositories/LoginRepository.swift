@@ -171,7 +171,6 @@ class LoginRepository {
             print("url error")
             return
         }
-        print("dfhiofjiofjwiowiowojwo")
         let headers : HTTPHeaders = [
             .contentType("application/json")
         ]

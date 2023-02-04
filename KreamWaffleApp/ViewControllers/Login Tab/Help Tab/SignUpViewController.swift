@@ -105,12 +105,6 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
             .bind(to: self.signupButton.rx.tintColor)
             .disposed(by: bag)
         
-        self.signupButton.rx
-            .tap
-            .bind {
-                self.viewModel.didTapSignup()
-                }
-            .disposed(by: bag)
         
         self.necessaryTerms?.checkButton.rx
             .tap
@@ -119,8 +113,22 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
                 self.viewModel.liabilityCheckRelay.accept(necessaryTermChecked)
             }
             .disposed(by: bag)
+        
+        self.signupButton.rx
+            .tap
+            .bind {
+                self.viewModel.didTapSignup()
+                self.showEmailSentNotification()
+            }
+            .disposed(by: bag)
     }
     
+    @objc func didTapSignup(){
+        let signedIn = self.viewModel.didTapSignup()
+        if (signedIn) {
+            self.showEmailSentNotification()
+        }
+    }
     
     func addSubviews(){
         self.view.addSubview(backButton)
