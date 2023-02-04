@@ -16,7 +16,6 @@ import RxRelay
 class LoginViewController: UIViewController {
     
     var viewModel : LoginViewModel
-    var loginState = false
     let bag = DisposeBag()
     
     let NaverLoginInstance = NaverThirdPartyLoginConnection.getSharedInstance()
@@ -45,8 +44,6 @@ class LoginViewController: UIViewController {
         self.NaverLoginInstance!.delegate = self
         
         self.viewModel.loginState.asObservable().subscribe { status in
-            self.loginState = status.element!
-            print("[Log] Login VC: The login state is", status.element)
             if (status.element! == true){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToTabVC()
             }
@@ -192,12 +189,6 @@ class LoginViewController: UIViewController {
         self.NaverLoginInstance!.requestThirdPartyLogin()
     }
     
-    @objc func loginSuccess(){
-        if (self.loginState){
-            print("login success")
-            self.dismiss(animated: true)
-        }
-    }
     
     private func getNaverInfo() {
         guard let isValidAccessToken = NaverLoginInstance?.isValidAccessTokenExpireTimeNow() else { return }
