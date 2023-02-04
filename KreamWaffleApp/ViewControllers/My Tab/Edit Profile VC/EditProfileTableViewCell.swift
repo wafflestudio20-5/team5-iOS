@@ -110,8 +110,6 @@ class EditProfileTableViewCell: UITableViewCell {
             self.editButton.centerYAnchor.constraint(equalTo: self.currentTextLabel.centerYAnchor)
         ])
         
-        
-        
         self.underLine.backgroundColor = colors.lessLightGray
         self.underLine.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

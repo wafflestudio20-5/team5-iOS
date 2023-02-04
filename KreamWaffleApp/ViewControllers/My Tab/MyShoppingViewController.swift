@@ -25,9 +25,9 @@ class MyShoppingViewController: UIViewController {
     init(userInfoVM: UserInfoViewModel) {
         self.userInfoVM = userInfoVM
         super.init(nibName: nil, bundle: nil)
-        self.userInfoVM.requestData(myShopType: .purchase)
-        self.userInfoVM.requestData(myShopType: .sale)
-        self.userInfoVM.requestWishData()
+        //self.userInfoVM.requestData(myShopType: .purchase)
+        //self.userInfoVM.requestData(myShopType: .sale)
+        //self.userInfoVM.requestWishData()
     }
     
     required init?(coder: NSCoder) {

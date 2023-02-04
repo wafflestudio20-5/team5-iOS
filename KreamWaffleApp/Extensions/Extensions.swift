@@ -195,3 +195,33 @@ extension UIViewController {
     
 }
 
+extension Bundle {
+    
+    var NAVER_CONSUMER_KEY: String {
+        guard let file = self.path(forResource: "Secret", ofType: "plist") else { return "" }
+        guard let resource = NSDictionary(contentsOfFile: file) else { return "" }
+        guard let key = resource["NAVER_CONSUMER_KEY"] as? String else {
+            fatalError("NAVER_CONSUMER_KEY error")
+        }
+        return key
+    }
+    
+    var NAVER_CONSUMER_SECRET: String {
+        guard let file = self.path(forResource: "Secret", ofType: "plist") else { return "" }
+        guard let resource = NSDictionary(contentsOfFile: file) else { return "" }
+        guard let key = resource["NAVER_CONSUMER_SECRET"] as? String else {
+            fatalError("NAVER_CONSUMER_SECRET error")
+        }
+        return key
+    }
+    
+    var GOOGLE_CLIENT_ID: String {
+        guard let file = self.path(forResource: "Secret", ofType: "plist") else { return "" }
+        guard let resource = NSDictionary(contentsOfFile: file) else { return "" }
+        guard let key = resource["GOOGLE_CLIENT_ID"] as? String else {
+            fatalError("GOOGLE_CLIENT_ID error")
+        }
+        return key
+    }
+}
+

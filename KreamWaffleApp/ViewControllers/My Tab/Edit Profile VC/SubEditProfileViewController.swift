@@ -89,7 +89,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
             self.navBarTitle = "프로필 이름 변경"
             self.detail = "나만의 프로필 이름으로 변경하세요."
             self.currentText = self.myProfile?.profile_name
-            self.textfield = CustomTextfield(titleText: "프로필 이름", errorText: "영문, 숫자, 특수기호(_ .)만 사용 가능합니다.", errorCondition: .profileName, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
+            self.textfield = CustomTextfield(titleText: "프로필 이름", errorText: "", errorCondition: .none, placeholderText: "", defaultButtonImage: nil, pressedButtonImage: nil)
             self.textfield?.setupTextCounter(maxCount: 15)
         case .userName:
             self.navBarTitle = "이름 변경"

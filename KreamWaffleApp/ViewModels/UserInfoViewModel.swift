@@ -75,6 +75,7 @@ final class UserInfoViewModel {
         return User?.id
     }
 
+    
     func requestData(myShopType : myShopDataType) {
         self.UserUseCase.loadMyItems(myShopType: myShopType, token: self.UserUseCase.userResponse!.accessToken)
     }
