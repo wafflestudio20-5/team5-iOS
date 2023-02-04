@@ -21,6 +21,11 @@ final class UserUsecase {
         didSet {
             loginState.accept(loggedIn)
             print("[Log] User usecase: logged in changed to", loggedIn)
+            if (loggedIn){
+                self.requestProfile {
+                    print("[Log] User usecase: profile error")
+                }
+            }
         }
     }
     
@@ -52,7 +57,6 @@ final class UserUsecase {
     var loginErrorRelay = BehaviorRelay<LoginError>(value: .noError)
     var errorRelay = BehaviorRelay<LoginError>(value: .noError)
     var signupState = BehaviorRelay<Bool>(value: false)
-    
     
     // productinfo
     var purchaseProductRelay = BehaviorRelay<[UserProduct]>(value:[])
@@ -87,6 +91,7 @@ final class UserUsecase {
     var salesProductObservable : Observable<[UserProduct]> {
         return self.salesProductRelay.asObservable()
     }
+    
     var salesProductList = [UserProduct](){
         didSet {
             self.getSalesProductObserver()
@@ -109,7 +114,6 @@ final class UserUsecase {
     
     private var page: Int = 1
     private var paginating = false
-    
     
     init(dataRepository : LoginRepository, profileRepository: ProfileRepository, UserShopRepository: UserShopRepository){
         self.repository = dataRepository
@@ -235,7 +239,6 @@ final class UserUsecase {
     
     //MARK: user profile related
     func requestProfile(onNetworkFailure: @escaping ()->()) {
-            
             self.profileRepository
             .requestProfile(user_id: self.user?.id ?? 0, token: self.userResponse?.accessToken ?? "", onNetworkFailure: onNetworkFailure)
                 .subscribe(

@@ -70,16 +70,13 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.userProfileVM.requestUserProfile {
-            print("Profile Loading 실패")
-        }
         setUpBackButton()
         setUpSegmentedControl()
         setUpTabBarButton()
         setUpFixedViewLayout()
-        bindViews()
         setupDivider()
         setupChildVC()
+        bindViews()
     }
     
     func setUpTabBarButton(){
