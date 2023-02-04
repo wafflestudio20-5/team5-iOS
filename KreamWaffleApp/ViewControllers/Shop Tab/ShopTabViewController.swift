@@ -199,8 +199,6 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
             self.brandDeliveryButton.topAnchor.constraint(equalTo: self.immediateDeliveryButton.topAnchor),
         ])
         
-        // configure colors based on selection
-//        self.immediateDeliveryButton.isSelected = true
         updateDeliveryButtonConfiguration()
     }
     
@@ -254,7 +252,7 @@ class ShopTabViewController: UIViewController, UIScrollViewDelegate {
     private func setupCollectionView() {
         self.view.addSubview(collectionView)
         self.collectionView.backgroundColor = .white
-//        self.collectionView.showsVerticalScrollIndicator = false
+        self.collectionView.showsVerticalScrollIndicator = false
         
         self.collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -325,27 +323,41 @@ extension ShopTabViewController {
     
     // delivery buttons
     @objc func tappedImmediateDeliveryButton() {
-        self.immediateDeliveryButton.isSelected = true
-        self.brandDeliveryButton.isSelected = false
-        updateDeliveryButtonConfiguration()
+        if (self.immediateDeliveryButton.isSelected == false) {
+            self.immediateDeliveryButton.isSelected = true
+            self.brandDeliveryButton.isSelected = false
+            
+            self.deliveryTag = 1
+            self.viewModel.setSelectedDelivery(deliveryTagIndex: 1)
+        } else if (self.immediateDeliveryButton.isSelected == true) {
+            self.immediateDeliveryButton.isSelected = false
+            self.brandDeliveryButton.isSelected = false
+            
+            self.deliveryTag = 0
+            self.viewModel.setSelectedDelivery(deliveryTagIndex: 0)
+        }
         
-//        self.viewModel.currentDeliveryTag = 1
-        self.deliveryTag = 1
-        self.viewModel.setSelectedDelivery(deliveryTagIndex: 1)
+        updateDeliveryButtonConfiguration()
         self.viewModel.requestFilteredData(resetPage: true)
     }
     
     @objc func tappedBrandDeliveryButton() {
+        if (self.brandDeliveryButton.isSelected == false) {
+            self.immediateDeliveryButton.isSelected = false
+            self.brandDeliveryButton.isSelected = true
+            
+            self.deliveryTag = 2
+            self.viewModel.setSelectedDelivery(deliveryTagIndex: 2)
+        } else if (self.brandDeliveryButton.isSelected == true) {
+            self.immediateDeliveryButton.isSelected = false
+            self.brandDeliveryButton.isSelected = false
+            
+            self.deliveryTag = 0
+            self.viewModel.setSelectedDelivery(deliveryTagIndex: 0)
+        }
         
-        self.immediateDeliveryButton.isSelected = false
-        self.brandDeliveryButton.isSelected = true
         updateDeliveryButtonConfiguration()
-        
-//        self.viewModel.currentDeliveryTag = 2
-        self.deliveryTag = 2
-        self.viewModel.setSelectedDelivery(deliveryTagIndex: 2)
         self.viewModel.requestFilteredData(resetPage: true)
-//        self.viewModel.requestBrandDeliveryData()
     }
     
     @objc func updateCategorySelection(_ notification: Notification) {
@@ -401,18 +413,8 @@ extension ShopTabViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
         if position > (self.collectionView.contentSize.height - 100 - scrollView.frame.size.height) {
-            let group = DispatchGroup()
-            group.enter()
-            if (!isPaginating) {
-                isPaginating = true
-//                self.viewModel.requestMoreData()
-                self.viewModel.requestFilteredData(resetPage: false)
-                group.leave()
-            }
-            group.notify(queue: .main) {
-                self.isPaginating = false
-            }
-                 
+            self.viewModel.requestFilteredData(resetPage: false)
+            
         }
     }
 }

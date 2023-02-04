@@ -23,7 +23,7 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
     
     init(viewModel: ShopViewModel) {
         self.viewModel = viewModel
-        self.viewModel.requestBrandData()
+        self.viewModel.requestBrandData(resetPage: true)
         self.viewModel.resetFilter()
         super.init(nibName: nil, bundle: nil)
         
@@ -61,14 +61,14 @@ class ShopFilterViewController: UIViewController, UIScrollViewDelegate {
     
     private func setUpNavigationBarButtons() {
         //configure cancel button
-        let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelButtonTapped))
+        let cancelButton = UIBarButtonItem(title: "모두 삭제", style: .plain, target: self, action: #selector(cancelButtonTapped))
         cancelButton.tintColor = .black
         navigationItem.leftBarButtonItem = cancelButton
         
         //configure delete all button
-        let deleteAllButton = UIBarButtonItem(title: "모두 삭제", style: .plain, target: self, action: #selector(deleteAllButtonTapped))
-        deleteAllButton.tintColor = .lightGray
-        navigationItem.rightBarButtonItem = deleteAllButton
+//        let deleteAllButton = UIBarButtonItem(title: "모두 삭제", style: .plain, target: self, action: #selector(deleteAllButtonTapped))
+//        deleteAllButton.tintColor = .lightGray
+//        navigationItem.rightBarButtonItem = deleteAllButton
     }
     
     private func bindTableView() {

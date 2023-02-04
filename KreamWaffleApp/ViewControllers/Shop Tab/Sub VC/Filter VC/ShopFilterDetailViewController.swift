@@ -98,6 +98,8 @@ class ShopFilterDetailViewController: UIViewController, UIScrollViewDelegate {
         }
         
         self.tableView.backgroundColor = .white
+        self.tableView.showsVerticalScrollIndicator = false
+        
         self.view.addSubview(tableView)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -198,5 +200,15 @@ extension ShopFilterDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
 
+    }
+}
+
+extension ShopFilterDetailViewController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        if (position > (self.tableView.contentSize.height - 5 - scrollView.frame.size.height)) {
+            print("pagination")
+            self.viewModel.requestBrandData(resetPage: false)
+        }
     }
 }

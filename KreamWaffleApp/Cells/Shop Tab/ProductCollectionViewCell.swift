@@ -20,13 +20,11 @@ class ProductCollectionViewCell: UICollectionViewCell {
     let deliveryTagLabel = UILabel()
     let priceLabel = UILabel()
     let priceSubLabel = UILabel()
-
-    var bookmarkCount = Int()
-    let relatedStyleCountLabel = UILabel()
-    var relatedStyleCount = Int()
     
-    let bookmarkButton = UIButton()
-    let relatedStyleButton = UIButton()
+    let wishesImg = UIImageView()
+    let wishesLabel = UILabel()
+    let sharesImg = UIImageView()
+    let sharesLabel = UILabel()
     
     // font sizes
     let h1FontSize: CGFloat = 14 // priceLabel
@@ -49,12 +47,11 @@ class ProductCollectionViewCell: UICollectionViewCell {
         setupkor_nameLabel()
         setupDeliveryTagLabel()
         setupPriceLabel()
-        setupBookmarkButton()
-        setupRelatedStyleButton()
+        setupWishesLabel()
+        setupSharesLabel()
     }
     
     func configure(product: ProductData) {
-//        let imageUrlString = product.imageSource[0].url
         let imageUrlString = product.productimage_urls[0]
         let imageUrl = URL(string: imageUrlString)
         self.imageView.kf.setImage(with: imageUrl)
@@ -84,17 +81,34 @@ class ProductCollectionViewCell: UICollectionViewCell {
                 self.deliveryTagLabel.text = ""
         }
         
-        
-//        self.priceLabel.text = "\(product.price) 원"
+        // price
         let formattedPrice = PriceFormatter.formatNumberToCurrency(intToFormat: product.price)
         self.priceLabel.text = "\(formattedPrice) 원"
-//        self.transactionCountLabel.text = "\(product.transactionCount)"
-//        self.transactionCount = product.transactionCount
-//        self.bookmarkCountLabel.text = "\(product.total_wishes)"
-        self.bookmarkCount = product.total_wishes
-        self.relatedStyleCountLabel.text = "\(product.total_shares)"
-        self.relatedStyleCount = product.total_shares
+        
+        // wishes
+        let bookmarkString1 = NSMutableAttributedString(string: "\(product.total_wishes)")
+        let bookmarkImageAttachment = NSTextAttachment()
+        bookmarkImageAttachment.image = UIImage(systemName: "bookmark")?.withTintColor(ProductCollectionViewCell.subFontColor)
+        bookmarkImageAttachment.bounds = CGRect(x: 0, y: 0, width: 15, height: 15)
+        let bookmarkString2 = NSMutableAttributedString(attachment: bookmarkImageAttachment)
+        bookmarkString2.append(bookmarkString1)
+        self.wishesLabel.attributedText = bookmarkString2
+        self.wishesLabel.textColor = ProductCollectionViewCell.subFontColor
+//        self.deliveryTagLabel.backgroundColor = UIColor(red: 0.898, green: 0.9882, blue: 0.9216, alpha: 1.0)
+        
+        // shares
+        let sharesString1 = NSMutableAttributedString(string: "\(product.total_shares)")
+        let sharesImageAttachment = NSTextAttachment()
+        sharesImageAttachment.image = UIImage(systemName: "heart.text.square")?.withTintColor(ProductCollectionViewCell.subFontColor)
+        sharesImageAttachment.bounds = CGRect(x: 0, y: 0, width: 15, height: 15)
+        let sharesString2 = NSMutableAttributedString(attachment: sharesImageAttachment)
+        sharesString2.append(sharesString1)
+        self.sharesLabel.attributedText = sharesString2
+        self.sharesLabel.textColor = ProductCollectionViewCell.subFontColor
+
     }
+    
+   
     
     private func applyDesign() {
         self.contentView.backgroundColor = .white
@@ -119,24 +133,6 @@ class ProductCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-//    private func setupTransactionCountLabel() {
-//        self.transactionCountLabel.font = UIFont.boldSystemFont(ofSize: 15)
-//        self.transactionCountLabel.textColor = self.ProductCollectionViewCell.mainFontColor
-//        self.transactionCountLabel.lineBreakMode = .byWordWrapping
-//        self.transactionCountLabel.numberOfLines = 1
-//        self.transactionCountLabel.textAlignment = .left
-//        self.transactionCountLabel.adjustsFontSizeToFitWidth = true
-//
-//        self.contentView.addSubview(self.transactionCountLabel)
-//        transactionCountLabel.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            transactionCountLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-//            transactionCountLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-//            transactionCountLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-//            transactionCountLabel.topAnchor.constraint(equalTo: self.imageView.topAnchor, constant: 5),
-//            transactionCountLabel.bottomAnchor.constraint(equalTo: self.transactionCountLabel.topAnchor, constant: 30)
-//        ])
-//    }
     
     private func setupBrandLabel() {
         self.brandLabel.font = UIFont.boldSystemFont(ofSize: self.h2FontSize)
@@ -249,46 +245,38 @@ class ProductCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    private func setupBookmarkButton() {
-        self.bookmarkButton.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        self.bookmarkButton.setTitle("\(self.bookmarkCount)", for: .normal)
-//        self.bookmarkButton.addTarget(self, action: #selector(tappedBookmarkButton), for: .touchUpInside)
-        self.bookmarkButton.tintColor = ProductCollectionViewCell.subFontColor
-        self.bookmarkButton.setTitleColor(ProductCollectionViewCell.subFontColor, for: .normal)
-        self.bookmarkButton.titleLabel?.font = UIFont.systemFont(ofSize: self.h3FontSize)
-        self.bookmarkButton.contentHorizontalAlignment = .left
+    private func setupWishesLabel() {
+        self.wishesLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
+        self.wishesLabel.numberOfLines = 1
+        self.wishesLabel.textAlignment = .left
         
-        self.contentView.addSubview(self.bookmarkButton)
-        self.bookmarkButton.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.wishesLabel)
+        self.wishesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.bookmarkButton.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-            self.bookmarkButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            self.bookmarkButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            self.bookmarkButton.topAnchor.constraint(equalTo: self.priceSubLabel.bottomAnchor, constant: 10),
+//            self.wishesLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+            self.wishesLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
+            self.wishesLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            self.wishesLabel.topAnchor.constraint(equalTo: self.priceSubLabel.bottomAnchor, constant: 10),
 //            priceSubLabel.bottomAnchor.constraint(equalTo: self.priceLabel.topAnchor, constant: 30)
         ])
         
     }
     
-    private func setupRelatedStyleButton() {
-        self.relatedStyleButton.setImage(UIImage(systemName: "heart.text.square"), for: .normal)
-        self.relatedStyleButton.setTitle("\(self.relatedStyleCount)", for: .normal)
-//        self.bookmarkButton.addTarget(self, action: #selector(tappedBookmarkButton), for: .touchUpInside)
-        self.relatedStyleButton.tintColor = ProductCollectionViewCell.subFontColor
-        self.relatedStyleButton.setTitleColor(ProductCollectionViewCell.subFontColor, for: .normal)
-        self.relatedStyleButton.titleLabel?.font = UIFont.systemFont(ofSize: self.h3FontSize)
-        self.relatedStyleButton.contentHorizontalAlignment = .left
+    private func setupSharesLabel() {
+        self.sharesLabel.font = UIFont.systemFont(ofSize: self.h3FontSize)
+        self.sharesLabel.numberOfLines = 1
+        self.sharesLabel.textAlignment = .left
         
-        self.contentView.addSubview(self.relatedStyleButton)
-        self.relatedStyleButton.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.sharesLabel)
+        self.sharesLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            self.relatedStyleButton.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
-            self.relatedStyleButton.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 50),
-            self.relatedStyleButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
-            self.relatedStyleButton.topAnchor.constraint(equalTo: self.priceSubLabel.bottomAnchor, constant: 10),
+//            self.sharesLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor),
+            self.sharesLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 40),
+            self.sharesLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10),
+            self.sharesLabel.topAnchor.constraint(equalTo: self.priceSubLabel.bottomAnchor, constant: 10),
 //            priceSubLabel.bottomAnchor.constraint(equalTo: self.priceLabel.topAnchor, constant: 30)
         ])
-        
+
     }
     
     required init?(coder: NSCoder) {

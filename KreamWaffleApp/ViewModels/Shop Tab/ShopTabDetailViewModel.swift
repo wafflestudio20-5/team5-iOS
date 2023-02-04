@@ -54,7 +54,7 @@ final class ShopTabDetailViewModel {
     }
     
     func getTotalWishes() -> Int {
-        return self.shopPost.total_wishes
+        return self.shopPost.wishes
     }
     
     func getThumbnailImageRatio() -> Float {

@@ -297,10 +297,10 @@ extension ShopUsecase {
             .disposed(by: self.disposeBag)
     }
     
-    func loadMoreBrands() {
+    func loadMoreBrands(page: Int) {
         self.page += 1
         
-        let parameters = ShopPostRequestParameters(page: 1)
+        let parameters = ShopPostRequestParameters(page: self.page)
         self.repository
             .requestBrandsData(parameters: parameters)
             .subscribe(onSuccess: { [self] fetchedBrands in
@@ -314,6 +314,7 @@ extension ShopUsecase {
             .disposed(by: self.disposeBag)
     }
 }
+
 
 extension ShopUsecase {
     // filtered data

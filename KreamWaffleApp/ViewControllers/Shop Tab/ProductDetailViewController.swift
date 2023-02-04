@@ -25,7 +25,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     
     private var bookmarkCount = Int()
     var formattedPrice = String()
-//    var sellPrice = Int()
     
     // comment buttons
     private let commentButton = UIButton()
@@ -57,16 +56,12 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.userInfoViewModel = userInfoViewModel
         
         super.init(nibName: nil, bundle: nil)
-        
         requestProductSizeInfo(id: self.viewModel.getId())
-//        self.currentProductSizeInfo = self.viewModel.getProductInfoForSize(size: "ALL")
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateSizeField(_:)),
                                                name: NSNotification.Name("sizeField"),
                                                object: nil)
-    
-        
     }
     
     @objc func updateSizeField(_ notification: Notification) {
@@ -81,7 +76,7 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.view = UIView()
         configure()
         applyDesign()
-        setUpNavigationBar()
+        
         addSubviews()
         setUpScrollView()
         
@@ -118,10 +113,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         
     }
     
-    private func setUpNavigationBar() {
-        self.setUpBackButton()
-    }
-
     private func addSubviews() {
         self.view.addSubviews(scrollView, bottomBar)
         self.scrollView.addSubview(contentView)
@@ -235,8 +226,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
 //        self.kor_nameLabel.textAlignment = .left
         self.kor_nameLabel.adjustsFontSizeToFitWidth = false
         
-        
-//        self.view.addSubview(self.kor_nameLabel)
         kor_nameLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             kor_nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
@@ -271,7 +260,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         self.priceLabel.textAlignment = .right
         self.priceLabel.adjustsFontSizeToFitWidth = true
         
-//        self.view.addSubview(self.priceLabel)
         priceLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             priceLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
@@ -344,7 +332,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
         let imgView: UIImageView = {
             let imgView = UIImageView()
             imgView.image = UIImage(systemName: "bookmark")
-//            imgView.backgroundColor = .red
             imgView.tintColor = .black
             return imgView
         }()
@@ -499,10 +486,6 @@ class ProductDetailViewController: UIViewController, UISheetPresentationControll
     }
     
     private func addGestures() {
-        let bookmarkButtonTapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedBookmarkButton))
-        bookmarkButtonTapGesture.numberOfTapsRequired = 1
-        bookmarkButton.addGestureRecognizer(bookmarkButtonTapGesture)
-    
         let purchaseButtonTapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedPurchaseButton))
         purchaseButtonTapGesture.numberOfTapsRequired = 1
         purchaseButton.addGestureRecognizer(purchaseButtonTapGesture)
@@ -546,36 +529,32 @@ extension ProductDetailViewController {
     
     @objc func commentButtonTapped() {
         if (!self.userInfoViewModel.isLoggedIn()) {
-            self.presentLoginAgainAlert()
-        }
-        Task {
-            let isValidToken = await self.userInfoViewModel.checkAccessToken()
-            if (isValidToken) {
-                self.hidesBottomBarWhenPushed = true
-                self.tabBarController?.tabBar.isHidden = true
+            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+        } else {
+            self.hidesBottomBarWhenPushed = true
+            self.tabBarController?.tabBar.isHidden = true
 
-                let shopCommentRepository = ShopCommentRepository()
-                let shopCommentUsecase = ShopCommentUsecase(shopCommentRepository: shopCommentRepository)
-                let shopCommentViewModel = ShopCommentViewModel(shopCommentUsecase: shopCommentUsecase, productId: self.viewModel.getId())
-                self.navigationController?.pushViewController(ShopCommentViewController(userInfoViewModel: self.userInfoViewModel, shopCommentViewModel: shopCommentViewModel), animated: true)
-            } else {
-                self.presentLoginAgainAlert()
-            }
+            let shopCommentRepository = ShopCommentRepository()
+            let shopCommentUsecase = ShopCommentUsecase(shopCommentRepository: shopCommentRepository)
+            let shopCommentViewModel = ShopCommentViewModel(shopCommentUsecase: shopCommentUsecase, productId: self.viewModel.getId())
+            self.navigationController?.pushViewController(ShopCommentViewController(userInfoViewModel: self.userInfoViewModel, shopCommentViewModel: shopCommentViewModel), animated: true)
         }
-    }
-    
-    
-    
-    @objc func tappedBookmarkButton() {
-        print("tapped bookmark button")
     }
     
     @objc func tappedSellButton() {
-        print("tapped sell button")
+        let alert = UIAlertController(title: "판매 알림", message: "상품을 판매합니다.", preferredStyle: UIAlertController.Style.alert)
+        let cancelAction = UIAlertAction(title: "확인", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
     }
     
     @objc func tappedPurchaseButton() {
-        print("tapped purchase button")
+        let alert = UIAlertController(title: "구매 알림", message: "상품을 구매합니다.", preferredStyle: UIAlertController.Style.alert)
+        let cancelAction = UIAlertAction(title: "확인", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
     }
 }
 
