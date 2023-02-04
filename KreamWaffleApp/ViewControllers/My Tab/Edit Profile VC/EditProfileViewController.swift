@@ -28,13 +28,16 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     var profileButton = UIButton()
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.bindViews()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.title = "프로필 관리"
         self.setUpBackButton()
         self.view.addSubviews(self.profileButton, self.editTable)
-        self.bindViews()
+        //self.bindViews()
         self.inputTableView()
     }
     

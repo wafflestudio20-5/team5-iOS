@@ -44,9 +44,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.userInfoVM = userInfoVM
         self.loginVM = loginVM
         self.userProfileVM = userProfileVM
-
         self.myShoppingVC = MyShoppingViewController(userInfoVM: self.userInfoVM)
-        self.myProfileVC = MyProfileViewController(userInfoVM: self.userInfoVM)
+        self.myProfileVC = MyProfileViewController(userInfoVM: self.userInfoVM, userProfileVM: self.userProfileVM)
         super.init(nibName: nil, bundle: nil)
     }
     
