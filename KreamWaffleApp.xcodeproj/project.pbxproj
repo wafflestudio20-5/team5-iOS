@@ -97,7 +97,6 @@
 		94155C51297A4E720092B561 /* ShopTabDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94155C50297A4E720092B561 /* ShopTabDetailViewModel.swift */; };
 		9428AE302957170600DC7907 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE2F2957170600DC7907 /* AppDelegate.swift */; };
 		9428AE322957170600DC7907 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE312957170600DC7907 /* SceneDelegate.swift */; };
-		9428AE392957170E00DC7907 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9428AE382957170E00DC7907 /* Assets.xcassets */; };
 		9428AE47295718E200DC7907 /* ShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE46295718E200DC7907 /* ShopViewModel.swift */; };
 		9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE482957193D00DC7907 /* HomeTabViewController.swift */; };
 		9428AE4B2957197B00DC7907 /* StyleTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9428AE4A2957197B00DC7907 /* StyleTabViewController.swift */; };
@@ -137,6 +136,9 @@
 		CE9EBE12298D19E100F4131A /* UserShopRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBE11298D19E100F4131A /* UserShopRepository.swift */; };
 		CE9EBE14298D234800F4131A /* UserProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBE13298D234800F4131A /* UserProduct.swift */; };
 		CE9EBE16298D6F9900F4131A /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9EBE15298D6F9900F4131A /* Secret.plist */; };
+		CEA19A0F298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */; };
+		CEA19A11298EAD4D00D68DAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A10298EAD4D00D68DAC /* Assets.xcassets */; };
+		CEA19A13298EAD5C00D68DAC /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A12298EAD5C00D68DAC /* LaunchScreen.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -246,7 +248,6 @@
 		9428AE2C2957170600DC7907 /* KreamWaffleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KreamWaffleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9428AE2F2957170600DC7907 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9428AE312957170600DC7907 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9428AE382957170E00DC7907 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9428AE3D2957170E00DC7907 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9428AE46295718E200DC7907 /* ShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewModel.swift; sourceTree = "<group>"; };
 		9428AE482957193D00DC7907 /* HomeTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabViewController.swift; sourceTree = "<group>"; };
@@ -288,6 +289,9 @@
 		CE9EBE11298D19E100F4131A /* UserShopRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserShopRepository.swift; sourceTree = "<group>"; };
 		CE9EBE13298D234800F4131A /* UserProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProduct.swift; sourceTree = "<group>"; };
 		CE9EBE15298D6F9900F4131A /* Secret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
+		CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreenStoryboard.storyboard; sourceTree = "<group>"; };
+		CEA19A10298EAD4D00D68DAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
+		CEA19A12298EAD5C00D68DAC /* LaunchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreen.png; path = ../../.Trash/LaunchScreen.png; sourceTree = "<group>"; };
 		F7EF6F841C68824F321DFFC4 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -605,9 +609,11 @@
 				944A1143295D156B00F8CDB7 /* Layouts */,
 				944A1140295D0D7400F8CDB7 /* Models */,
 				65653F33295B5AF2002F250B /* Customs */,
-				9428AE382957170E00DC7907 /* Assets.xcassets */,
 				9428AE3D2957170E00DC7907 /* Info.plist */,
+				CEA19A10298EAD4D00D68DAC /* Assets.xcassets */,
 				CE9EBE15298D6F9900F4131A /* Secret.plist */,
+				CEA19A12298EAD5C00D68DAC /* LaunchScreen.png */,
+				CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */,
 			);
 			path = KreamWaffleApp;
 			sourceTree = "<group>";
@@ -796,8 +802,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEA19A13298EAD5C00D68DAC /* LaunchScreen.png in Resources */,
+				CEA19A0F298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard in Resources */,
+				CEA19A11298EAD4D00D68DAC /* Assets.xcassets in Resources */,
 				CE9EBE16298D6F9900F4131A /* Secret.plist in Resources */,
-				9428AE392957170E00DC7907 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1135,8 +1143,11 @@
 				DEVELOPMENT_TEAM = ZK7MDCDTQ4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = KreamWaffleApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"카메라 사용\"";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = yourWording;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"앨범 사용\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreenStoryboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1170,8 +1181,11 @@
 				DEVELOPMENT_TEAM = ZK7MDCDTQ4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = KreamWaffleApp/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"카메라 사용\"";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = yourWording;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"앨범 사용\"";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreenStoryboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
