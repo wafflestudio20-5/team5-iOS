@@ -115,6 +115,7 @@
 		94A394F92988FCC8002AFE4A /* Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394F82988FCC8002AFE4A /* Brand.swift */; };
 		94A394FB2988FCE4002AFE4A /* ShopFilterItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A394FA2988FCE4002AFE4A /* ShopFilterItem.swift */; };
 		94A39527298C0B9C002AFE4A /* ProductSizeSelectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A39526298C0B9C002AFE4A /* ProductSizeSelectionCollectionViewCell.swift */; };
+		94B466AD298ED12400AC555A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94B466AC298ED12400AC555A /* Assets.xcassets */; };
 		94CDFF9029746FF100C2095C /* HomeTabShopCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF8F29746FF100C2095C /* HomeTabShopCollectionViewVC.swift */; };
 		94CDFF932974730300C2095C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF922974730300C2095C /* HomeViewModel.swift */; };
 		94CDFF952974741200C2095C /* HomeTabStyleCollectionViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */; };
@@ -137,7 +138,6 @@
 		CE9EBE14298D234800F4131A /* UserProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9EBE13298D234800F4131A /* UserProduct.swift */; };
 		CE9EBE16298D6F9900F4131A /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9EBE15298D6F9900F4131A /* Secret.plist */; };
 		CEA19A0F298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */; };
-		CEA19A11298EAD4D00D68DAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A10298EAD4D00D68DAC /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -266,6 +266,7 @@
 		94A394F82988FCC8002AFE4A /* Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brand.swift; sourceTree = "<group>"; };
 		94A394FA2988FCE4002AFE4A /* ShopFilterItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopFilterItem.swift; sourceTree = "<group>"; };
 		94A39526298C0B9C002AFE4A /* ProductSizeSelectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSizeSelectionCollectionViewCell.swift; sourceTree = "<group>"; };
+		94B466AC298ED12400AC555A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Downloads/Assets.xcassets; sourceTree = "<group>"; };
 		94CDFF8F29746FF100C2095C /* HomeTabShopCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabShopCollectionViewVC.swift; sourceTree = "<group>"; };
 		94CDFF922974730300C2095C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		94CDFF942974741200C2095C /* HomeTabStyleCollectionViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabStyleCollectionViewVC.swift; sourceTree = "<group>"; };
@@ -289,7 +290,6 @@
 		CE9EBE13298D234800F4131A /* UserProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProduct.swift; sourceTree = "<group>"; };
 		CE9EBE15298D6F9900F4131A /* Secret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreenStoryboard.storyboard; sourceTree = "<group>"; };
-		CEA19A10298EAD4D00D68DAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
 		F7EF6F841C68824F321DFFC4 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -608,7 +608,7 @@
 				944A1140295D0D7400F8CDB7 /* Models */,
 				65653F33295B5AF2002F250B /* Customs */,
 				9428AE3D2957170E00DC7907 /* Info.plist */,
-				CEA19A10298EAD4D00D68DAC /* Assets.xcassets */,
+				94B466AC298ED12400AC555A /* Assets.xcassets */,
 				CE9EBE15298D6F9900F4131A /* Secret.plist */,
 				CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */,
 			);
@@ -800,7 +800,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEA19A0F298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard in Resources */,
-				CEA19A11298EAD4D00D68DAC /* Assets.xcassets in Resources */,
+				94B466AD298ED12400AC555A /* Assets.xcassets in Resources */,
 				CE9EBE16298D6F9900F4131A /* Secret.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
