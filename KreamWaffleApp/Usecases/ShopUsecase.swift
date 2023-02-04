@@ -49,7 +49,7 @@ final class ShopUsecase {
     
     // filter categories
     let filterCategoriesList = ["shoes", "clothes", "fashion", "life", "tech"]
-    let filterCategoriesListKor = ["신발", "의류", "패션잡화", "라이프", "테크"]
+    let filterCategoriesListKor = ["신발", "의류", "패션 잡화", "라이프", "테크"]
     private let filterCategoriesSubject: BehaviorRelay<[String]> = .init(value: ["shoes", "clothes", "fashion", "life", "tech"])
     
     var filterCategories: Observable<[String]> {
@@ -80,9 +80,6 @@ final class ShopUsecase {
     var brandFilterItemList: Observable<[Brand]> {
         return self.brandsRelay.asObservable()
     }
-//    var brandsObservable: Observable<[Brand]> {
-//        return self.brandsRelay.asObservable()
-//    }
     
     var brandsList = [Brand]() {
         didSet {
@@ -98,25 +95,16 @@ final class ShopUsecase {
     var priceFilterItemList: Observable<[String]> {
         return self.pricesRelay.asObservable()
     }
-//    var pricesObservable: Observable<[String]> {
-//        return self.pricesRelay.asObservable()
-//    }
     
     // category
-    var categoryRelay = BehaviorRelay<[String]>(value: ["신발", "의류", "패션잡화", "라이프", "테크"])
+    var categoryRelay = BehaviorRelay<[String]>(value: ["신발", "의류", "패션 잡화", "라이프", "테크"])
     var categoryListObservable: Observable<[String]> {
         return self.categoryRelay.asObservable()
     }
     
     init(repository: ShopRepository) {
         self.repository = repository
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(isLikedNotification(_:)),
-//                                               name: NSNotification.Name("isLikedNotificationMovie"),
-//                                               object: nil)
     }
-    
-    
 }
 
 extension ShopUsecase {
@@ -298,9 +286,8 @@ extension ShopUsecase {
     }
     
     func loadMoreBrands(page: Int) {
-        self.page += 1
         
-        let parameters = ShopPostRequestParameters(page: self.page)
+        let parameters = ShopPostRequestParameters(page: page)
         self.repository
             .requestBrandsData(parameters: parameters)
             .subscribe(onSuccess: { [self] fetchedBrands in

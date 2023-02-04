@@ -207,7 +207,6 @@ extension ShopFilterDetailViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
         if (position > (self.tableView.contentSize.height - 5 - scrollView.frame.size.height)) {
-            print("pagination")
             self.viewModel.requestBrandData(resetPage: false)
         }
     }
