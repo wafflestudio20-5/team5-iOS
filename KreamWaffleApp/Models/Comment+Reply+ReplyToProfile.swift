@@ -7,25 +7,6 @@
 
 import Foundation
 
-final class CommentResponse: Decodable {
-    private enum CodingKeys: String, CodingKey {
-        case next, previous, results
-    }
-    
-    let next: String?
-    let previous: String?
-    let results: [Comment]
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        self.next = try container.decodeIfPresent(String.self, forKey: .next) ?? nil
-        self.previous = try container.decodeIfPresent(String.self, forKey: .previous) ?? nil
-        self.results = try container.decodeIfPresent([Comment].self, forKey: .results) ?? []
-    }
-}
-
-
 final class Comment: Decodable {
     private enum CodingKeys: String, CodingKey {
         case id, content, created_by, created_at, replies

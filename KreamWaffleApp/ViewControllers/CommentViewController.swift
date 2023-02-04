@@ -10,8 +10,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class StyleCommentViewController: UIViewController {
-    private let styleCommentViewModel: StyleCommentViewModel
+final class CommentViewController: UIViewController {
+    private let commentViewModel: CommentViewModel
     private let userInfoViewModel: UserInfoViewModel
     
     private var textViewBottomConstraint: NSLayoutConstraint?
@@ -75,9 +75,9 @@ final class StyleCommentViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    init(userInfoViewModel: UserInfoViewModel, styleCommentViewModel: StyleCommentViewModel) {
+    init(userInfoViewModel: UserInfoViewModel, commentViewModel: CommentViewModel) {
         self.userInfoViewModel = userInfoViewModel
-        self.styleCommentViewModel = styleCommentViewModel
+        self.commentViewModel = commentViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -87,7 +87,6 @@ final class StyleCommentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setUpBackButton()
         self.hideKeyboardWhenTappedAround()
         self.view.backgroundColor = .white
         addSubviews()
@@ -199,15 +198,15 @@ final class StyleCommentViewController: UIViewController {
     func bindUI() {
         self.enterCommentTextView.rx.text
             .orEmpty
-            .bind(to: self.styleCommentViewModel.postTextRelay)
+            .bind(to: self.commentViewModel.postTextRelay)
             .disposed(by: disposeBag)
         
-        self.styleCommentViewModel.postTextRelay
+        self.commentViewModel.postTextRelay
             .map { $0.isEmpty || $0 == self.textViewPlaceHolder }
             .bind(to: sendCommentButton.rx.isHidden)
             .disposed(by: disposeBag)
         
-        self.styleCommentViewModel.isWritingCommentRelay
+        self.commentViewModel.isWritingCommentRelay
             .map { !$0 }
             .bind(to: writingReplyIndicator.rx.isHidden)
             .disposed(by: disposeBag)
@@ -216,7 +215,7 @@ final class StyleCommentViewController: UIViewController {
     func bindCollectionView() {
         commentCollectionView.register(CommentCollectionViewCell.self, forCellWithReuseIdentifier: "CommentCollectionViewCell")
 
-        self.styleCommentViewModel.commentDataSource
+        self.commentViewModel.commentDataSource
             .bind(to: commentCollectionView.rx.items(cellIdentifier: "CommentCollectionViewCell", cellType: CommentCollectionViewCell.self)) { index, item, cell in
                 cell.configure(with: item, currentUserId: self.userInfoViewModel.getUserId())
                 cell.deleteButton.tag = item.id
@@ -236,7 +235,7 @@ final class StyleCommentViewController: UIViewController {
             let isValidToken = await self.userInfoViewModel.checkAccessToken()
             if isValidToken {
                 let token = self.userInfoViewModel.UserResponse?.accessToken
-                self.styleCommentViewModel.requestInitialData(token: token!)
+                self.commentViewModel.requestInitialData(token: token!)
             } else {
                 let alert = UIAlertController(title: "실패", message: "다시 로그인해주세요.", preferredStyle: UIAlertController.Style.alert)
                 let okAction = UIAlertAction(title: "OK", style: .default) { _ in
@@ -249,9 +248,9 @@ final class StyleCommentViewController: UIViewController {
     }
 }
 
-extension StyleCommentViewController: UITextViewDelegate {
+extension CommentViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        self.styleCommentViewModel.isWritingComment = true
+        self.commentViewModel.isWritingComment = true
         if textView.text == textViewPlaceHolder {
             textView.text = nil
             textView.textColor = .black
@@ -276,9 +275,9 @@ extension StyleCommentViewController: UITextViewDelegate {
     }
 }
 
-extension StyleCommentViewController {
+extension CommentViewController {
     @objc func stopWritingReplyButtonTapped() {
-        self.styleCommentViewModel.isWritingComment = false
+        self.commentViewModel.isWritingComment = false
         self.enterCommentTextView.endEditing(true)
         self.enterCommentTextView.text = textViewPlaceHolder
     }
@@ -288,7 +287,7 @@ extension StyleCommentViewController {
             let isValidToken = await self.userInfoViewModel.checkAccessToken()
             if isValidToken {
                 let token = self.userInfoViewModel.UserResponse?.accessToken
-                self.styleCommentViewModel.requestInitialData(token: token!)
+                self.commentViewModel.requestInitialData(token: token!)
                 self.collectionViewRefreshControl.endRefreshing()
             } else {
                 self.presentLoginAgainAlert()
@@ -297,7 +296,7 @@ extension StyleCommentViewController {
     }
     
     @objc func sendButtonTapped() {
-        self.styleCommentViewModel.isWritingComment = false
+        self.commentViewModel.isWritingComment = false
         if self.enterCommentTextView.text == self.textViewPlaceHolder {
             return
         }
@@ -306,7 +305,7 @@ extension StyleCommentViewController {
             if isValidToken {
                 let token = self.userInfoViewModel.UserResponse!.accessToken
                 
-                self.styleCommentViewModel.sendComment(
+                self.commentViewModel.sendComment(
                     token: token,
                     content: self.enterCommentTextView.text,
                     completion: { [weak self] in
@@ -338,7 +337,7 @@ extension StyleCommentViewController {
                 if isValidToken {
                     let token = self.userInfoViewModel.UserResponse!.accessToken
                     
-                    self.styleCommentViewModel.deleteComment(
+                    self.commentViewModel.deleteComment(
                         commentId: sender.tag,
                         token: token,
                         completion: { [weak self] in
@@ -393,7 +392,7 @@ extension StyleCommentViewController {
     }
 }
 
-extension StyleCommentViewController: UICollectionViewDelegate {
+extension CommentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! CommentCollectionViewCell
         
