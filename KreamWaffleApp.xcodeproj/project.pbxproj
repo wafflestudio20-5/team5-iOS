@@ -138,7 +138,6 @@
 		CE9EBE16298D6F9900F4131A /* Secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE9EBE15298D6F9900F4131A /* Secret.plist */; };
 		CEA19A0F298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */; };
 		CEA19A11298EAD4D00D68DAC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A10298EAD4D00D68DAC /* Assets.xcassets */; };
-		CEA19A13298EAD5C00D68DAC /* LaunchScreen.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA19A12298EAD5C00D68DAC /* LaunchScreen.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -291,7 +290,6 @@
 		CE9EBE15298D6F9900F4131A /* Secret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secret.plist; sourceTree = "<group>"; };
 		CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreenStoryboard.storyboard; sourceTree = "<group>"; };
 		CEA19A10298EAD4D00D68DAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
-		CEA19A12298EAD5C00D68DAC /* LaunchScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LaunchScreen.png; path = ../../.Trash/LaunchScreen.png; sourceTree = "<group>"; };
 		F7EF6F841C68824F321DFFC4 /* Pods-KreamWaffleApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KreamWaffleApp.debug.xcconfig"; path = "Target Support Files/Pods-KreamWaffleApp/Pods-KreamWaffleApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -612,7 +610,6 @@
 				9428AE3D2957170E00DC7907 /* Info.plist */,
 				CEA19A10298EAD4D00D68DAC /* Assets.xcassets */,
 				CE9EBE15298D6F9900F4131A /* Secret.plist */,
-				CEA19A12298EAD5C00D68DAC /* LaunchScreen.png */,
 				CEA19A0E298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard */,
 			);
 			path = KreamWaffleApp;
@@ -802,7 +799,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEA19A13298EAD5C00D68DAC /* LaunchScreen.png in Resources */,
 				CEA19A0F298EAA5400D68DAC /* LaunchScreenStoryboard.storyboard in Resources */,
 				CEA19A11298EAD4D00D68DAC /* Assets.xcassets in Resources */,
 				CE9EBE16298D6F9900F4131A /* Secret.plist in Resources */,
