@@ -14,11 +14,13 @@ import RxSwift
 
 class MyProfileViewController: UIViewController {
     private let userInfoVM: UserInfoViewModel
+    private let userProfileVM: UserProfileViewModel
     private var userStyleFeedCollectionViewVC: StyleFeedCollectionViewVC?
     private let disposeBag = DisposeBag()
     
-    init(userInfoVM: UserInfoViewModel) {
+    init(userInfoVM: UserInfoViewModel, userProfileVM: UserProfileViewModel) {
         self.userInfoVM = userInfoVM
+        self.userProfileVM = userProfileVM
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,9 +39,26 @@ class MyProfileViewController: UIViewController {
         super.viewDidLoad()
         setUpBackButton()
         self.view.backgroundColor = .white
+        bindFollowerBar()
         addSubviews()
         setUpSubviews()
         addFollowerBarTapGestrue()
+    }
+    
+    func bindFollowerBar(){
+        
+        self.userProfileVM
+            .userProfileDataSource
+            .map{ String($0.num_followers) }
+            .bind(to: self.followerBar.titleLabel2.rx.text)
+            .disposed(by: disposeBag)
+        
+        self.userProfileVM
+            .userProfileDataSource
+            .map{ String($0.num_followings) }
+            .bind(to: self.followerBar.titleLabel3.rx.text)
+            .disposed(by: disposeBag)
+        
     }
     
     func addSubviews(){
@@ -58,11 +77,15 @@ class MyProfileViewController: UIViewController {
     }
     
     func addFollowerBarTapGestrue() {
-        self.followerBar.titleLabel2.isUserInteractionEnabled = true
-        self.followerBar.titleLabel2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followerNumLabelTapped)))
+        //self.followerBar.titleLabel2.isUserInteractionEnabled = true
+        //self.followerBar.titleLabel2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followerNumLabelTapped)))
         
-        self.followerBar.titleLabel3.isUserInteractionEnabled = true
-        self.followerBar.titleLabel3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followingNumLabelTapped)))
+        self.followerBar.clearButton2.addTarget(self, action: #selector(self.followerNumLabelTapped), for: .touchUpInside)
+        
+        self.followerBar.clearButton3.addTarget(self, action: #selector(self.followingNumLabelTapped), for: .touchUpInside)
+        
+        //self.followerBar.titleLabel3.isUserInteractionEnabled = true
+        //self.followerBar.titleLabel3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.followingNumLabelTapped)))
     }
     
     

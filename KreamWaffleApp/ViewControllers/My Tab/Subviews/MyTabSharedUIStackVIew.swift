@@ -25,6 +25,10 @@ class MyTabSharedUIStackVIew: UIStackView {
     lazy var titleLabel2 = UILabel()
     lazy var titleLabel3 = UILabel()
     
+    lazy var clearButton1 = UIButton()
+    lazy var clearButton2 = UIButton()
+    lazy var clearButton3 = UIButton()
+    
     init(title1: String, subtitle1: String, title2 : String?, subtitle2: String?, title3: String?, subtitle3: String?, setCount: Int){
         self.setCount = setCount
         self.title1 = title1
@@ -37,10 +41,38 @@ class MyTabSharedUIStackVIew: UIStackView {
         setupMainView()
         setupSubviews()
         setUpTitleLabel()
+        setupClearButton()
     }
     
-    func changeWishNumberCount(newString: String){
-        self.titleLabel3.text = newString
+    
+    func setupClearButton(){
+        
+        self.addSubview(clearButton1)
+        self.addSubview(clearButton2)
+        self.addSubview(clearButton3)
+        
+        self.clearButton3.backgroundColor = .clear
+        self.clearButton2.backgroundColor = .clear
+        self.clearButton1.backgroundColor = .clear
+        
+        self.clearButton1.translatesAutoresizingMaskIntoConstraints = false
+        self.clearButton2.translatesAutoresizingMaskIntoConstraints = false
+        self.clearButton3.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+           
+            self.clearButton1.topAnchor.constraint(equalTo: self.topAnchor),
+            self.clearButton1.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.clearButton1.centerXAnchor.constraint(equalTo: self.titleLabel1.centerXAnchor),
+            
+            self.clearButton2.centerXAnchor.constraint(equalTo: self.titleLabel2.centerXAnchor),
+            self.clearButton2.topAnchor.constraint(equalTo: self.topAnchor),
+            self.clearButton2.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            self.clearButton3.centerXAnchor.constraint(equalTo: self.titleLabel3.centerXAnchor),
+            self.clearButton3.topAnchor.constraint(equalTo: self.topAnchor),
+            self.clearButton3.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ])
     }
     
     required init(coder: NSCoder) {

@@ -25,58 +25,67 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     
     let bag = DisposeBag()
     
-    var profileButton = UIButton()
+    var profileImageView = UIImageView()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.bindViews()
         self.view.backgroundColor = .white
         self.title = "프로필 관리"
         self.setUpBackButton()
-        self.view.addSubviews(self.profileButton, self.editTable)
-        self.bindViews()
+        self.setupProfileButton()
+        self.view.addSubviews(self.profileImageView, self.editTable)
         self.inputTableView()
+        self.bindViews()
     }
     
     func bindViews() {
-        self.viewModel.imageRelay.subscribe{ [weak self] event in
-            if let image = event.element {
-                self?.setupProfileButton(with: image)
+        self.viewModel.userProfileDataSource.subscribe{ [weak self] event in
+            if let profile = event.element {
+                let image = self?.viewModel.getImage(with: profile.image)
+                self?.profileImageView.image = image
             }
         }
-        .disposed(by: bag)
+        /*
+        self.viewModel.imageRelay.subscribe{ [weak self] event in
+            if let image = event.element {
+                //self?.setupProfileButton(with: image)
+                self?.profileImageView.image = image
+            }
+        }
+        .disposed(by: bag)*/
     }
     
-    func setupProfileButton(with image: UIImage){
+    func setupProfileButton(){
         
-        profileButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(profileButton)
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(profileImageView)
         NSLayoutConstraint.activate([
-            profileButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            profileButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
-            profileButton.widthAnchor.constraint(equalToConstant: 100),
-            profileButton.heightAnchor.constraint(equalToConstant: 100)])
+            profileImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            profileImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100),
+            profileImageView.widthAnchor.constraint(equalToConstant: 100),
+            profileImageView.heightAnchor.constraint(equalToConstant: 100)])
         
-        profileButton.layer.masksToBounds = true
-        profileButton.layer.cornerRadius = 50
-        profileButton.addTarget(self, action: #selector(editProfileImage), for: .touchUpInside)
-        profileButton.setImage(image, for: .normal)
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = 50
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(editProfileImage))
+        profileImageView.isUserInteractionEnabled = true
+        profileImageView.addGestureRecognizer(tapGestureRecognizer)
         
         let editLabel = UILabel()
-        profileButton.contentVerticalAlignment = .fill
-        profileButton.contentHorizontalAlignment = .fill
-
         editLabel.backgroundColor = .systemGray
         editLabel.text = "편집"
         editLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         editLabel.textAlignment = .center
         editLabel.textColor = .white
         editLabel.translatesAutoresizingMaskIntoConstraints = false
-        profileButton.addSubview(editLabel)
+        profileImageView.addSubview(editLabel)
         NSLayoutConstraint.activate([
-            editLabel.leadingAnchor.constraint(equalTo: profileButton.leadingAnchor),
-            editLabel.trailingAnchor.constraint(equalTo: profileButton.trailingAnchor),
-            editLabel.bottomAnchor.constraint(equalTo: profileButton.bottomAnchor),
+            editLabel.leadingAnchor.constraint(equalTo: profileImageView.leadingAnchor),
+            editLabel.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor),
+            editLabel.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor),
             editLabel.heightAnchor.constraint(equalToConstant: 30)
         ])
     }
@@ -138,7 +147,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         NSLayoutConstraint.activate([
             self.editTable.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             self.editTable.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            self.editTable.topAnchor.constraint(equalTo: self.profileButton.bottomAnchor, constant: 50),
+            self.editTable.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 50),
             self.editTable.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
     }
@@ -169,6 +178,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         if let image = info[.originalImage] as? UIImage {
             self.viewModel.imageRelay.accept(image)
             self.viewModel.editProfileImage(newImage: image)
+            self.profileImageView.image = image
         }
         
         dismiss(animated: true, completion: nil)

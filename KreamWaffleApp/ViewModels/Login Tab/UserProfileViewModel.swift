@@ -14,23 +14,43 @@ import Kingfisher
 class UserProfileViewModel {
     
     let usecase : UserUsecase
+    let bag = DisposeBag()
     
     //var imageRelay : BehaviorRelay<UIImage>
-    var profileNameRelay: BehaviorRelay<String>
-    var userNameRelay:  BehaviorRelay<String>
-    var bioRelay: BehaviorRelay<String>
-    var imageRelay : BehaviorRelay<UIImage>
+    var profileNameRelay =  BehaviorRelay<String>.init(value: "")
+    var userNameRelay =  BehaviorRelay<String>.init(value: "")
+    var bioRelay =  BehaviorRelay<String>.init(value: "")
+    var imageRelay =  BehaviorRelay<UIImage>.init(value: UIImage())
     
     //저장 버튼 탭 저장하는 릴레이 (각자의 저장 버튼을 누르면 tap Relay 가 그걸 받고, Profile edit VC가 그것을 보고 알아서 맞는 값을 위 릴레이에서 할당해준다.
     var tapRelay = BehaviorRelay<editCase>(value: .none)
     
     init(usecase: UserUsecase) {
         self.usecase = usecase
-        profileNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.profile_name ?? "")
-        userNameRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.user_name ?? "")
-        bioRelay = BehaviorRelay<String>(value: self.usecase.userProfile?.introduction ?? "나를 소개하세요")
+        self.bindIndividualRelays()
+    }
+    
+    var userProfile: Profile {
+        get {
+            return self.usecase.userProfile ?? Profile(user_id: 0, user_name: "", profile_name: "nil_profile", introduction: "", image: "", num_followers: 0, num_followings: 0, following: "")
+        }
+    }
+    
+    //프로필 수정 탭에서 이용될 relay
+    func bindIndividualRelays(){
+        userProfileDataSource.subscribe { [weak self] event in
+            let image = self?.getImage(with: event.element?.image ?? "")
+            self?.imageRelay.accept(image!)
+            self?.userNameRelay.accept(event.element?.user_name ?? "")
+            self?.bioRelay.accept(event.element?.introduction ?? "")
+            self?.profileNameRelay.accept(event.element?.profile_name ?? "")
+        }.disposed(by: bag)
+    }
+    
+    //이거 공용 함수로 만들어도 되지 않을까?
+    func getImage(with imageString: String) -> UIImage {
         var image = UIImage()
-        if let url = URL.init(string: self.usecase.userProfile?.image ?? "") {
+        if let url = URL.init(string: imageString) {
         let resource = ImageResource(downloadURL: url)
         KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
                 switch result {
@@ -39,7 +59,6 @@ class UserProfileViewModel {
                     image = value.image as UIImage
                 case .failure(_):
                     image = UIImage(systemName: "person.crop.circle.fill")!
-                    print("Bringing image failure")
                     image.withRenderingMode(.alwaysTemplate)
                     image.withTintColor(colors.lessLightGray)
                 }
@@ -49,14 +68,10 @@ class UserProfileViewModel {
             image.withRenderingMode(.alwaysTemplate)
             image.withTintColor(colors.lessLightGray)
         }
-        self.imageRelay = BehaviorRelay<UIImage>(value: image)
+        
+        return image
     }
-    
-    var userProfile: Profile {
-        get {
-            return self.usecase.userProfile ?? Profile(user_id: 0, user_name: "", profile_name: "nil_profile", introduction: "", image: "", num_followers: 0, num_followings: 0, following: "")
-        }
-    }
+
     
     var userProfileDataSource: Observable<Profile> {
         get {

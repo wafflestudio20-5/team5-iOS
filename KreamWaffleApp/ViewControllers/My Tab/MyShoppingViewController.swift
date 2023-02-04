@@ -34,7 +34,10 @@ class MyShoppingViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //API 연결 안됨.
     let followerBar = MyTabSharedUIStackVIew(title1: "일반 회원", subtitle1: "회원등급", title2: "0P", subtitle2: "포인트", title3: "0", subtitle3: "관심 상품", setCount: 3)
+    let purchaseBar = MyTabSharedUIStackVIew(title1: "0", subtitle1: "전체", title2: "-", subtitle2: "진행중", title3: "-", subtitle3: "종료", setCount: 3)
+    let salesBar = MyTabSharedUIStackVIew(title1: "0", subtitle1: "전체", title2: "-", subtitle2: "진행중", title3: "-", subtitle3: "종료", setCount: 3)
     
     
     override func viewDidLoad() {
@@ -46,7 +49,7 @@ class MyShoppingViewController: UIViewController {
         setupPurchaseButton()
         setupSalesButton()
         //bind()
-        addNumberLabels()
+        //addNumberLabels()
     }
     
     func addSubviews(){
@@ -70,11 +73,17 @@ class MyShoppingViewController: UIViewController {
         self.purchaseTitle.textColor = .black
         self.purchaseTitle.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         
+        self.purchaseBar.backgroundColor = .clear
+        self.purchaseBar.titleLabel1.textColor = colors.errorRed
+        
+        self.purchaseButton.addSubview(purchaseBar)
         self.purchaseButton.backgroundColor = colors.lessLightGray
         self.purchaseButton.layer.cornerRadius = 10
         
         self.purchaseTitle.translatesAutoresizingMaskIntoConstraints = false
         self.purchaseButton.translatesAutoresizingMaskIntoConstraints = false
+        self.purchaseBar.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             self.purchaseTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
             self.purchaseTitle.topAnchor.constraint(equalTo: self.followerBar.bottomAnchor, constant: 20),
@@ -82,7 +91,12 @@ class MyShoppingViewController: UIViewController {
             self.purchaseButton.leadingAnchor.constraint(equalTo: self.purchaseTitle.leadingAnchor),
             self.purchaseButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             self.purchaseButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/10),
-            self.purchaseButton.topAnchor.constraint(equalTo: purchaseTitle.bottomAnchor, constant: 10)
+            self.purchaseButton.topAnchor.constraint(equalTo: purchaseTitle.bottomAnchor, constant: 10),
+            
+            self.purchaseBar.leadingAnchor.constraint(equalTo: self.purchaseButton.leadingAnchor, constant: 10),
+            self.purchaseBar.trailingAnchor.constraint(equalTo: self.purchaseButton.trailingAnchor, constant: -10),
+            self.purchaseBar.heightAnchor.constraint(equalToConstant: self.view.frame.height/16),
+            self.purchaseBar.centerYAnchor.constraint(equalTo: self.purchaseButton.centerYAnchor)
         ])
     }
     
@@ -95,8 +109,16 @@ class MyShoppingViewController: UIViewController {
         self.salesButton.layer.cornerRadius = 10
         self.salesButton.layer.masksToBounds = true
         
+        self.salesButton.addSubview(salesBar)
+        self.salesButton.backgroundColor = colors.lessLightGray
+        self.salesButton.layer.cornerRadius = 10
+        
+        self.salesBar.titleLabel1.textColor = colors.accentGreen
+        self.salesBar.backgroundColor = .clear
+        
         self.salesTitle.translatesAutoresizingMaskIntoConstraints = false
         self.salesButton.translatesAutoresizingMaskIntoConstraints = false
+        self.salesBar.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             self.salesTitle.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
@@ -105,7 +127,12 @@ class MyShoppingViewController: UIViewController {
             self.salesButton.leadingAnchor.constraint(equalTo: self.salesTitle.leadingAnchor),
             self.salesButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             self.salesButton.heightAnchor.constraint(equalToConstant: self.view.frame.height/10),
-            self.salesButton.topAnchor.constraint(equalTo: salesTitle.bottomAnchor, constant: 10)
+            self.salesButton.topAnchor.constraint(equalTo: salesTitle.bottomAnchor, constant: 10),
+            
+            self.salesBar.leadingAnchor.constraint(equalTo: self.salesButton.leadingAnchor, constant: 10),
+            self.salesBar.trailingAnchor.constraint(equalTo: self.salesButton.trailingAnchor, constant: -10),
+            self.salesBar.heightAnchor.constraint(equalToConstant: self.view.frame.height/16),
+            self.salesBar.centerYAnchor.constraint(equalTo: self.salesButton.centerYAnchor)
         ])
     }
     

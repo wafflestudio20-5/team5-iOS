@@ -44,9 +44,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.userInfoVM = userInfoVM
         self.loginVM = loginVM
         self.userProfileVM = userProfileVM
-
         self.myShoppingVC = MyShoppingViewController(userInfoVM: self.userInfoVM)
-        self.myProfileVC = MyProfileViewController(userInfoVM: self.userInfoVM)
+        self.myProfileVC = MyProfileViewController(userInfoVM: self.userInfoVM, userProfileVM: self.userProfileVM)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,16 +69,13 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.userProfileVM.requestUserProfile {
-            print("Profile Loading 실패")
-        }
         setUpBackButton()
         setUpSegmentedControl()
         setUpTabBarButton()
         setUpFixedViewLayout()
-        bindViews()
         setupDivider()
         setupChildVC()
+        bindViews()
     }
     
     func setUpTabBarButton(){
