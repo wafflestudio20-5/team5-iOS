@@ -15,8 +15,19 @@ final class UserUsecase {
     private let userShopRepository : UserShopRepository
     private let disposeBag = DisposeBag()
     
+    //log in related variables
+    ///toggle when logged in
+    var loggedIn : Bool {
+        didSet {
+            loginState.accept(loggedIn)
+            print("[Log] User usecase: logged in changed to", loggedIn)
+        }
+    }
+    
     var user : User?
     var userResponse : UserResponse?
+    
+    var profileRelay: BehaviorRelay<Profile> = .init(value: Profile())
     
     var userProfile : Profile? {
         didSet {
@@ -26,15 +37,6 @@ final class UserUsecase {
         }
     }
     
-    var profileRelay: BehaviorRelay<Profile> = .init(value: Profile())
-    
-    ///toggle when logged in
-    var loggedIn : Bool {
-        didSet {
-            loginState.accept(loggedIn)
-            print("[Log] User usecase: logged in changed to", loggedIn)
-        }
-    }
     
     var error : LoginError {
         didSet {
@@ -42,12 +44,12 @@ final class UserUsecase {
         }
     }
     
+    
     ///VC should observe login state and toggle logged in
     var loginState = BehaviorRelay<Bool>(value: false)
     
     var errorRelay = BehaviorRelay<LoginError>(value: .noError)
     
-    // MARK: For my tab========
     
     // productinfo
     var purchaseProductRelay = BehaviorRelay<[UserProduct]>(value:[])
@@ -77,7 +79,6 @@ final class UserUsecase {
     var purchaseProductCountObservable: Observable<Int> {
         return self.purchasedProductCountRelay.asObservable()
     }
-
     
     var salesProductRelay = BehaviorRelay<[UserProduct]>(value: [])
     var salesProductObservable : Observable<[UserProduct]> {
@@ -88,6 +89,7 @@ final class UserUsecase {
             self.getSalesProductObserver()
         }
     }
+    
     func getSalesProductObserver(){
         self.salesProductRelay.accept(salesProductList)
     }
@@ -105,7 +107,6 @@ final class UserUsecase {
     private var page: Int = 1
     private var paginating = false
     
-    //================
     
     init(dataRepository : LoginRepository, profileRepository: ProfileRepository, UserShopRepository: UserShopRepository){
         self.repository = dataRepository
@@ -115,20 +116,21 @@ final class UserUsecase {
         self.loggedIn = false
     }
     
-    //MARK: related to log in, log out, sign up
-    //TODO: 여기 좀 걱정됨. checkAccessToken 도 안하고 Login 해도 되나?
     ///signs in user with user defaults
     func getSavedUser(){
         Task {
         if let savedUserResponse = repository.getUserResponse(){
-       self.userResponse = savedUserResponse
-        await self.checkAccessToken()
-       self.loggedIn = true
-     self.user = savedUserResponse.user
+        self.userResponse = savedUserResponse
+            let isValidToken = await self.checkAccessToken()
+            if isValidToken {
+                self.userResponse = savedUserResponse
+                self.loggedIn = true
+                self.user = savedUserResponse.user
+            }
         }else{
-            print("no saved user reponse")
-                    }
-                }
+            print("[Log] User usecase: no saved user reponse -- Log in!")
+            }
+        }
     }
     
     ///gets user info with customLogin
@@ -169,7 +171,7 @@ final class UserUsecase {
         repository.registerAccount(with: email, password: password, shoe_size: shoeSize) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
-            case .success(let response):
+            case .success(_):
                 print("register success")
             case .failure(let error):
                 self.error = error as LoginError
@@ -228,7 +230,7 @@ final class UserUsecase {
     func requestProfile(onNetworkFailure: @escaping ()->()) {
             
             self.profileRepository
-                .requestProfile(user_id: self.user!.id, token: self.userResponse!.accessToken, onNetworkFailure: onNetworkFailure)
+            .requestProfile(user_id: self.user?.id ?? 0, token: self.userResponse?.accessToken ?? "", onNetworkFailure: onNetworkFailure)
                 .subscribe(
                     onSuccess: { [weak self] fetchedProfile in
                         self?.userProfile = fetchedProfile
@@ -284,7 +286,7 @@ final class UserUsecase {
         profileRepository.updateUserProfile(profile: Profile, userId: self.user!.id , accessToken: self.userResponse!.accessToken){ [weak self] (result) in
             guard let self = self else { return }
             switch result {
-            case .success(let bool):
+            case .success(_):
                 print("update 완료")
             case .failure(let error):
                 print(error)
@@ -296,7 +298,7 @@ final class UserUsecase {
         profileRepository.updatePartialUserProfile(newValue: newValue, editCase: editCase, userId: self.user!.id, accessToken: self.userResponse!.accessToken) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
-            case .success(let bool):
+            case .success(_):
                 print("update 완료")
             case .failure(let error):
                 print(error)
@@ -308,7 +310,7 @@ final class UserUsecase {
         profileRepository.updateUserProfileImage(newImage: newImage, userId: self.user!.id, accessToken: self.userResponse!.accessToken) { [weak self] (result) in
             guard let self = self else { return }
             switch result {
-            case .success(let bool):
+            case .success(_):
                 print("사진 update 완료")
             case .failure(let error):
                 print(error)
