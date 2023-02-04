@@ -32,7 +32,7 @@ class LoginViewModel {
     
     var errorRelay: BehaviorRelay<LoginError> {
         get {
-            self.UserUseCase.errorRelay
+            self.UserUseCase.loginErrorRelay
         }
     }
     

@@ -24,6 +24,12 @@ class SignUpViewModel{
         }
     }
     
+    var signupRelay : BehaviorRelay<Bool> {
+        get {
+            self.usecase.signupState
+        }
+    }
+    
     let usecase : UserUsecase
     
     init(usecase : UserUsecase){
@@ -49,11 +55,11 @@ class SignUpViewModel{
     }
     
     
-    public func didTapSignup() -> Bool {
+    public func didTapSignup(){
         let email = self.emailTextRelay.value
         let password = self.pwTextRelay.value
         let size = self.shoeSizeRelay.value
-        return self.usecase.signUp(email: email, password: password, shoeSize: size)
+        self.usecase.signUp(email: email, password: password, shoeSize: size)
     }
 
 }

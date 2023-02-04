@@ -32,25 +32,28 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
     init(viewModel : SignUpViewModel){
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
+        self.createCallbacks()
+    }
+    
+    func createCallbacks(){
         self.viewModel.errorRelay
             .asObservable()
-            .subscribe { [weak self] event in
-                switch event {
-                case .next(_):
-                    if (event.element == LoginError.signupError ){
-                        print("[Log] Signup VC: Error in signup")
-                        self?.showErrorNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
-                    }else if (event.element == LoginError.alreadySignedUpError){
-                        self?.showErrorNotification(errorText: "이미 회원가입된 이메일입니다.")
-                    }
-                case .error(_):
-                    break
-                case .completed:
-                    break
+            .bind { error in
+                if (error == LoginError.signupError){
+                print("[Log] Signup VC: Error in signup")
+                self.showErrorNotification(errorText: "이메일이나 비밀번호를 확인해주세요.")
+                }else if (error == LoginError.alreadySignedUpError){
+                self.showErrorNotification(errorText: "이미 회원가입된 이메일입니다.")
                 }
-        }
-            .disposed(by: bag)
+            }.disposed(by: bag)
+        
+        self.viewModel.signupRelay
+            .asObservable()
+            .bind { signup in
+                if (signup){
+                    self.showEmailSentNotification()
+                }
+            }.disposed(by: bag)
     }
     
     required init?(coder: NSCoder) {
@@ -114,20 +117,12 @@ class SignUpViewController: UIViewController, UIViewControllerTransitioningDeleg
             }
             .disposed(by: bag)
         
-        self.signupButton.rx
-            .tap
-            .bind {
-                self.viewModel.didTapSignup()
-                self.showEmailSentNotification()
-            }
-            .disposed(by: bag)
-    }
-    
-    @objc func didTapSignup(){
-        let signedIn = self.viewModel.didTapSignup()
-        if (signedIn) {
-            self.showEmailSentNotification()
-        }
+        self.signupButton.rx.tap.do(onNext: { [unowned self] in
+            self.emailField?.textfield.resignFirstResponder()
+            self.passwordField?.textfield.resignFirstResponder()
+        }).subscribe(onNext: { [unowned self] in
+            self.viewModel.didTapSignup()
+        }).disposed(by: bag)
     }
     
     func addSubviews(){
