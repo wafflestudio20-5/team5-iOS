@@ -118,4 +118,15 @@ extension ProductSizeSelectionViewController {
             let cellWidth = (width - 20) / 2
         return CGSize(width: cellWidth, height: cellWidth / 3.8)
         }
+    
+//    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+//        var selectedCell = sizeCollectionView.cellForItem(at: indexPath) as! ProductSizeSelectionCollectionViewCell
+//        if (selectedCell.priceLabel.text == "품") {
+//            return false
+//        } else {
+//            return true
+//        }
+//
+//
+//    }
 }
