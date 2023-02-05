@@ -542,7 +542,7 @@ extension ProductDetailViewController {
     }
     
     @objc func tappedSellButton() {
-        let alert = UIAlertController(title: "판매 알림", message: "상품을 판매합니다.", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "판매 알림", message: "판매기능 구현 예정", preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title: "확인", style: UIAlertAction.Style.cancel, handler: nil)
         alert.addAction(cancelAction)
         
@@ -550,7 +550,7 @@ extension ProductDetailViewController {
     }
     
     @objc func tappedPurchaseButton() {
-        let alert = UIAlertController(title: "구매 알림", message: "상품을 구매합니다.", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "구매 알림", message: "구매기능 구현 예정", preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title: "확인", style: UIAlertAction.Style.cancel, handler: nil)
         alert.addAction(cancelAction)
         
