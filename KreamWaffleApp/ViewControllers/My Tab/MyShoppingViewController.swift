@@ -70,7 +70,7 @@ class MyShoppingViewController: UIViewController {
     
     func setupPurchaseButton(){
         self.purchaseTitle.text = "구매내역"
-        self.purchaseTitle.textColor = .black
+        self.purchaseTitle.textColor = .darkGray //테스트용으로 회색처리
         self.purchaseTitle.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         
         self.purchaseBar.backgroundColor = .clear
@@ -102,7 +102,7 @@ class MyShoppingViewController: UIViewController {
     
     func setupSalesButton(){
         self.salesTitle.text = "판매내역"
-        self.salesTitle.textColor = .black
+        self.salesTitle.textColor = .darkGray //테스트용으로 회색처리
         self.salesTitle.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         
         self.salesButton.backgroundColor = colors.lessLightGray
@@ -158,7 +158,7 @@ class MyShoppingViewController: UIViewController {
         self.purchaseNumber.translatesAutoresizingMaskIntoConstraints = false
         self.purchaseNumber.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         self.purchaseNumber.text = "0"
-        self.purchaseNumber.textColor = colors.errorRed
+        self.purchaseNumber.textColor = .darkGray //colors.errorRed 테스트용으로 회색처리
         self.purchaseButton.addSubview(purchaseNumber)
         
         let subLabel_1 = UILabel()
@@ -180,7 +180,7 @@ class MyShoppingViewController: UIViewController {
         subLabel_2.translatesAutoresizingMaskIntoConstraints = false
         self.salesNumber.translatesAutoresizingMaskIntoConstraints = false
         self.salesNumber.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        self.salesNumber.textColor = colors.accentGreen
+        self.salesNumber.textColor = .darkGray //colors.accentGreen 테스트용으로 회색처리
         self.salesButton.addSubview(salesNumber)
         self.salesButton.setupCornerRadius(10)
         self.salesNumber.text = "0"

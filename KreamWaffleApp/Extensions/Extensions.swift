@@ -225,3 +225,18 @@ extension Bundle {
     }
 }
 
+extension UserDefaults {
+    func saveProfileImage(image: UIImage) {
+        guard let data = image.jpegData(compressionQuality: 0.5) else { return }
+        let encoded = try! PropertyListEncoder().encode(data)
+        UserDefaults.standard.set(encoded, forKey: "profileImage")
+    }
+
+    func loadProfileImage() -> UIImage?{
+         guard let data = UserDefaults.standard.data(forKey: "profileImage") else { return nil }
+         let decoded = try! PropertyListDecoder().decode(Data.self, from: data)
+         let image = UIImage(data: decoded)
+         return image
+    }
+}
+

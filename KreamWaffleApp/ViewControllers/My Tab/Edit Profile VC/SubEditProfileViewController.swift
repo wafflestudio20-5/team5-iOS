@@ -45,6 +45,7 @@ class SubEditProfileViewController: UIViewController, UINavigationBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.hideKeyboardWhenTappedAround()
         mapData()
         addNavigationBar()
         setupSubviews()

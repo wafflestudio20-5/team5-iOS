@@ -115,7 +115,7 @@ class LoginRepository {
                 let json = String(data: response.data!, encoding: String.Encoding.utf8)
                 let loginError = checkErrorMessage(String(describing: json))
                 completion(.failure(loginError))
-                print(error)
+                //print(error)
             }
         }
     }
@@ -190,12 +190,12 @@ class LoginRepository {
             debugPrint(response)
             switch response.result {
             case .success(let data):
-                print("[Log] Login Repository: ", data)
+                //print("[Log] Login Repository: ", data)
                 completion(.success(true))
             case .failure(let error):
-                debugPrint(response)
+                //debugPrint(response)
                 completion(.failure(.signupError))
-                print(error)
+                //print(error)
             }
         }
     }
