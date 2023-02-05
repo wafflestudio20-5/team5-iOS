@@ -58,6 +58,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
         self.loginVM.loginState.asObservable().subscribe { status in
             if (status.element! == false){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
+                print("[Log] My Tab: Changing to Login VC")
             }else{
                 self.userProfileVM.requestUserProfile {
                     print("Profile Loading 실패")
