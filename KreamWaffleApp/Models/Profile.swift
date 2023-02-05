@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class Profile: Codable {
     private enum CodingKeys: String, CodingKey {
@@ -41,6 +42,9 @@ final class Profile: Codable {
         self.num_followers = num_followers
         self.num_followings = num_followings
         self.following = following
+        
+        
+        self.getImage(with: self.image)
     }
     
     init() {
@@ -76,4 +80,29 @@ final class Profile: Codable {
                 print(error)
             }
         }    }
+    
+    func getImage(with imageString: String){
+        var image = UIImage()
+        if let url = URL.init(string: imageString) {
+        let resource = ImageResource(downloadURL: url)
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    print("Bringing image success")
+                    image = value.image as UIImage
+                case .failure(_):
+                    image = UIImage(systemName: "person.crop.circle.fill")!
+                    image.withRenderingMode(.alwaysTemplate)
+                    image.withTintColor(colors.lessLightGray)
+                }
+            }
+        } else {
+            image = UIImage(systemName: "person.crop.circle.fill")!
+            image.withRenderingMode(.alwaysTemplate)
+            image.withTintColor(colors.lessLightGray)
+        }
+        
+        self.updatedImage = image
+    }
+
 }

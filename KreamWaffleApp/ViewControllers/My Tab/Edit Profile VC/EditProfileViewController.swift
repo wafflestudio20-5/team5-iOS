@@ -45,26 +45,29 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         self.bindViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.viewModel.requestUserProfile{
+            print("[Log] EditProfileVC: Cannot update profile.") //토큰 체크를 해야할듯
+        }
+    }
+    
+    
     func bindViews() {
-        self.viewModel.userProfileDataSource.subscribe{ [weak self] event in
-            if let profile = event.element {
-                let image = self?.viewModel.getImage(with: profile.image)
+        self.viewModel.userProfileDataSource.subscribe(onNext: {[weak self] profile in
+            //프로필 이미지가 있다면 설정
+            if let image = profile.updatedImage {
                 self?.profileImageView.image = image
             }else{
+                //프로필 이미지가 없다면 캐시로 설정
                 if let image = UserDefaults.standard.loadProfileImage() {
-                self?.profileImageView.image = image
+                    self?.profileImageView.image = image
+                }else{
+                    //캐시도 없다면 기본으로 설정
+                    self?.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                    self?.profileImageView.tintColor = colors.lessLightGray
+                }
             }
-        }
-        }
-        .disposed(by: bag)
-        /*
-        self.viewModel.imageRelay.subscribe{ [weak self] event in
-            if let image = event.element {
-                //self?.setupProfileButton(with: image)
-                self?.profileImageView.image = image
-            }
-        }
-        .disposed(by: bag)*/
+        }).disposed(by: bag)
     }
     
     func setupProfileButton(){

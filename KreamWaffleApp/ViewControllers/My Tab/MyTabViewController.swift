@@ -55,8 +55,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     
     override func viewWillAppear(_ animated : Bool) {
-        self.loginVM.loginState.asObservable().subscribe { status in
-            if (status.element! == false){
+        self.loginVM.loginState.asObservable().subscribe(onNext: { status in
+            if (!status){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 print("[Log] My Tab: Changing to Login VC")
             }else{
@@ -65,7 +65,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                     print("Profile Loading 실패")
                 }
     }
-        }.disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
     }
 
 
@@ -256,18 +256,9 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     func bindViews() {
-        self.userProfileVM.userProfileDataSource.subscribe { [weak self] event in
-            switch event {
-            case .next:
-                if let profile = event.element {
-                    self?.setUpData(with: profile)
-                }
-            case .completed:
-                break
-            case .error:
-                break
-            }
-        }.disposed(by: disposeBag)
+        self.userProfileVM.userProfileDataSource.subscribe(onNext: { [weak self] profile in
+            self?.setUpData(with: profile)
+        }).disposed(by: disposeBag)
         
         //binding current value label to newest
         self.userProfileVM.tapRelay.asObservable()
@@ -286,32 +277,19 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     func setUpData(with profile: Profile) {
-        let urlString = profile.image
-        if let url = URL.init(string: urlString) {
-            let resource = ImageResource(downloadURL: url)
-            
-            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
-                switch result {
-                case .success(let value):
-                    self.profileImageView.image = value.image
-                case .failure(_):
-                    if let image = UserDefaults.standard.loadProfileImage() {
-                        self.profileImageView.image = image
-                    }else{
-                    self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
-                    self.profileImageView.tintColor = colors.lessLightGray
-                    }
-                }
-            }
-        } else {
+        //프로필 이미지가 있다면 설정
+        if let image = profile.updatedImage {
+            self.profileImageView.image = image
+        }else{
+            //프로필 이미지가 없다면 캐시로 설정
             if let image = UserDefaults.standard.loadProfileImage() {
                 self.profileImageView.image = image
             }else{
-            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
-            self.profileImageView.tintColor = colors.lessLightGray
+                //캐시도 없다면 기본으로 설정
+                self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                self.profileImageView.tintColor = colors.lessLightGray
             }
         }
-        
         self.profileNameLabel.text = profile.profile_name
         self.userNameLabel.text = profile.user_name
         self.bioLabel.text = profile.introduction
