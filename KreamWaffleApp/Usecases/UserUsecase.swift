@@ -32,6 +32,7 @@ final class UserUsecase {
     var user : User?
     var userResponse : UserResponse?
     var profileRelay: BehaviorRelay<Profile> = .init(value: Profile())
+    
     var userProfile : Profile? {
         didSet {
             if let userProfile = userProfile {

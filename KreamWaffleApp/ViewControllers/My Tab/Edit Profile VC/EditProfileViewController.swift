@@ -27,6 +27,11 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
     
     var profileImageView = UIImageView()
     
+    var editImage = false
+    var editProfileName = false
+    var editUserName = false
+    var editBio = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -179,6 +184,7 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
             self.viewModel.imageRelay.accept(image)
             self.viewModel.editProfileImage(newImage: image)
             self.profileImageView.image = image
+            UserDefaults.standard.saveProfileImage(image: image)
         }
         
         dismiss(animated: true, completion: nil)

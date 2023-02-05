@@ -60,6 +60,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 print("[Log] My Tab: Changing to Login VC")
             }else{
+                //로그인 된 상태라면 뿌려줄 user profile 요청하기
                 self.userProfileVM.requestUserProfile {
                     print("Profile Loading 실패")
                 }
@@ -267,6 +268,21 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 break
             }
         }.disposed(by: disposeBag)
+        
+        //binding current value label to newest
+        self.userProfileVM.tapRelay.asObservable()
+            .subscribe{ [self] editCase in
+                switch (editCase.element){
+                case .profileName:
+                    self.profileNameLabel.text = userProfileVM.profileNameRelay.value
+                case .userName:
+                    self.userNameLabel.text = userProfileVM.userNameRelay.value
+                case .introduction:
+                    self.bioLabel.text = userProfileVM.bioRelay.value
+                default:
+                    print("")
+                }
+        }.disposed(by: disposeBag)
     }
     
     func setUpData(with profile: Profile) {
@@ -279,13 +295,21 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                 case .success(let value):
                     self.profileImageView.image = value.image
                 case .failure(_):
+                    if let image = UserDefaults.standard.loadProfileImage() {
+                        self.profileImageView.image = image
+                    }else{
                     self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
                     self.profileImageView.tintColor = colors.lessLightGray
+                    }
                 }
             }
         } else {
+            if let image = UserDefaults.standard.loadProfileImage() {
+                self.profileImageView.image = image
+            }else{
             self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
             self.profileImageView.tintColor = colors.lessLightGray
+            }
         }
         
         self.profileNameLabel.text = profile.profile_name

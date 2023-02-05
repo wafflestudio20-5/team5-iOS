@@ -393,11 +393,13 @@ extension LoginViewController {
         self.helpStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -80).isActive = true
     }
     
+    //테스트 동안에는 네이버 로그인 비활성화
     func configureSocialLogin(){
         let Naver_logo = UIImage(named: "Naver_logo")
         let resized_Naver_logo = Naver_logo?.resize(targetSize: CGSize(width: self.view.frame.height/30, height: self.view.frame.height/30))
         //resizeImage(image: Naver_logo!, targetSize: CGSize(width: self.view.frame.height/30, height: self.view.frame.height/30))
         self.naverLoginButton.setImage(resized_Naver_logo, for: .normal)
+        self.naverLoginButton.setImageTintColor(.lightGray)
         self.naverLoginButton.translatesAutoresizingMaskIntoConstraints = false
         self.naverLoginButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         self.naverLoginButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
@@ -408,11 +410,10 @@ extension LoginViewController {
         self.naverLoginButton.backgroundColor = .clear
         self.naverLoginButton.layer.borderWidth = 0.5
         self.naverLoginButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.naverLoginButton.setTitleColor(.black, for: .normal)
+        self.naverLoginButton.setTitleColor(UIColor.lightGray, for: .normal)
         self.naverLoginButton.layer.cornerRadius = 10
         self.naverLoginButton.clipsToBounds = true
-        self.naverLoginButton.addTarget(self, action: #selector(loginWithNaver), for: .touchUpInside)
-        
+        //self.naverLoginButton.addTarget(self, action: #selector(loginWithNaver), for: .touchUpInside)
         
         let google_logo = UIImage(named: "Google_logo")
         let resized_Apple_logo = google_logo?.resize(targetSize: CGSize(width: self.view.frame.height/30, height: self.view.frame.height/30))
