@@ -50,8 +50,13 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
             if let profile = event.element {
                 let image = self?.viewModel.getImage(with: profile.image)
                 self?.profileImageView.image = image
+            }else{
+                if let image = UserDefaults.standard.loadProfileImage() {
+                self?.profileImageView.image = image
             }
         }
+        }
+        .disposed(by: bag)
         /*
         self.viewModel.imageRelay.subscribe{ [weak self] event in
             if let image = event.element {
