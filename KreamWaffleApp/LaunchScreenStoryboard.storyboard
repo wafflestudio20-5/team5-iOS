@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="OpeningScreen" translatesAutoresizingMaskIntoConstraints="NO" id="EU1-QU-2h3">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Launch_Screen" translatesAutoresizingMaskIntoConstraints="NO" id="EU1-QU-2h3">
                                 <rect key="frame" x="20" y="76" width="352" height="672"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -30,6 +30,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="OpeningScreen" width="374" height="809.33331298828125"/>
+        <image name="Launch_Screen" width="1122" height="2428"/>
     </resources>
 </document>
