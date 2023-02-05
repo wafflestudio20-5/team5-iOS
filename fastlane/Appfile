@@ -1,2 +1,3 @@
 apple_id "apple@wafflestudio.com"
 team_id ENV['TEAM_ID']
+ENV['ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD'] = "true"
