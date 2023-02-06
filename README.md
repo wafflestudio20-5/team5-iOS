@@ -30,7 +30,9 @@ Login
 <center><img src="/Assets/MY-4-MyFollowers.PNG" width="30%" height="30%"></center>    
 내 팔로잉 리스트  
 <center><img src="/Assets/MY-5-MyFollowings.PNG" width="30%" height="30%"></center>    
-  
+
+***
+
 ### SHOP Tab
 상품 리스트  
 <center><img src="/Assets/SHOP-1-Products.png" width="30%" height="30%"></center>   
@@ -57,7 +59,9 @@ Login
   <img src="/Assets/SHOP-11-Purchase.png" width="30%" height="30%">
   <img src="/Assets/SHOP-12-Sell.png" width="30%" height="30%">
 </p>
-  
+
+***
+
 ### STYLE Tab
 최신순 피드  
 <center><img src="/Assets/STYLE-1-LatestFeed.PNG" width="30%" height="30%"></center>  
