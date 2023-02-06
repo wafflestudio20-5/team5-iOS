@@ -40,8 +40,8 @@ Login
   <img src="/Assets/SHOP-3-Filter2.png" width="30%" height="30%"></center>  
 </p>
 상품 상세 필터링
+<center><img src="/Assets/SHOP-4-Filter3.png" width="30%" height="30%">
 <p float="left">
-  <img src="/Assets/SHOP-4-Filter3.png" width="30%" height="30%">
   <img src="/Assets/SHOP-5-Filter4.png" width="30%" height="30%">
   <img src="/Assets/SHOP-6-Filter5.png" width="30%" height="30%">
   <img src="/Assets/SHOP-7-Filter6.png" width="30%" height="30%">
