@@ -23,7 +23,7 @@
 Login    
 <center><img src="/Assets/MY-1-login.PNG" width="30%" height="30%"></center>  
 내 쇼핑  
-<center><img src="/Assets/MY-2-MyShopping.PNG" width="30%" height="30%"></center>  
+<center><img src="/Assets/MY-2-MyShopping.png" width="30%" height="30%"></center>  
 내 프로필  
 <center><img src="/Assets/MY-3-MyProfile.PNG" width="30%" height="30%"></center>  
 내 팔로워 리스트  
