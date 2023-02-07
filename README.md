@@ -21,13 +21,13 @@
 ## 🌄 Views
 ### MY Tab
 Login    
-<center><img src="/Assets/Login-Signup.png" width="50%" height="50%"></center>  
+<center><img src="/Assets/Login-Signup.png" width="70%" height="70%"></center>  
 내 쇼핑 및 내 프로필
-<center><img src="/Assets/MyTab.png" width="30%" height="30%"></center>  
+<center><img src="/Assets/MyTab.png" width="60%" height="60%"></center>  
 내 팔로워 및 내 팔로잉 리스트  
-<center><img src="/Assets/followingList.png" width="30%" height="30%"></center>  
+<center><img src="/Assets/followingList.png" width="60%" height="60%"></center>  
 프로필 수정 및 앱 설정
-<center><img src="/Assets/Settings.png" width="30%" height="30%"></center>      
+<center><img src="/Assets/Settings.png" width="60%" height="60%"></center>      
   
 ### SHOP Tab
 상품 리스트  
