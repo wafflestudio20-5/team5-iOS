@@ -35,7 +35,7 @@ class UserProfileViewModel {
     
     var userProfile: Profile {
         get {
-            return self.usecase.userProfile ?? Profile(user_id: 0, user_name: "", profile_name: "nil_profile", introduction: "", image: "", num_followers: 0, num_followings: 0, following: "")
+            return self.usecase.userProfile ?? Profile(user_id: 0, user_name: "", profile_name: "nil_profile", introduction: "", image: "", num_posts: 0, num_followers: 0, num_followings: 0, following: "")
         }
     }
     

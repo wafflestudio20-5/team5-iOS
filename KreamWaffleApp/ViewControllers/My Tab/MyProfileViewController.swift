@@ -59,6 +59,12 @@ class MyProfileViewController: UIViewController {
             .bind(to: self.followerBar.titleLabel3.rx.text)
             .disposed(by: disposeBag)
         
+        self.userProfileVM
+            .userProfileDataSource
+            .map{ String($0.num_posts) }
+            .bind(to: self.followerBar.titleLabel1.rx.text)
+            .disposed(by: disposeBag)
+        
     }
     
     func addSubviews(){

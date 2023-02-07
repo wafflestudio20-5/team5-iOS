@@ -11,7 +11,7 @@ import Kingfisher
 
 final class Profile: Codable {
     private enum CodingKeys: String, CodingKey {
-        case user_id, user_name, profile_name, introduction, image, num_followers, num_followings, following
+        case user_id, user_name, profile_name, introduction, image, num_followers, num_followings, following, num_posts
     }
     
     let user_id: Int
@@ -19,6 +19,7 @@ final class Profile: Codable {
     let profile_name: String
     let introduction: String
     let image: String
+    let num_posts : Int
     let num_followers: Int
     let num_followings: Int
     let following: String?
@@ -30,6 +31,7 @@ final class Profile: Codable {
         profile_name: String,
         introduction: String,
         image: String?,
+        num_posts : Int,
         num_followers: Int,
         num_followings: Int,
         following: String
@@ -39,6 +41,7 @@ final class Profile: Codable {
         self.profile_name = profile_name
         self.introduction = introduction
         self.image = image ?? ""
+        self.num_posts = num_posts
         self.num_followers = num_followers
         self.num_followings = num_followings
         self.following = following
@@ -84,6 +87,7 @@ final class Profile: Codable {
         self.num_followers = 0
         self.num_followings = 0
         self.following = nil
+        self.num_posts = 0
     }
     
     required init(from decoder: Decoder) throws {
@@ -96,6 +100,7 @@ final class Profile: Codable {
         image = try container.decodeIfPresent(String.self, forKey: .image) ?? ""
         num_followers = try container.decodeIfPresent(Int.self, forKey: .num_followers) ?? 0
         num_followings = try container.decodeIfPresent(Int.self, forKey: .num_followings) ?? 0
+        num_posts = try container.decodeIfPresent(Int.self, forKey: .num_posts) ?? 0
         do {
             let strFollowing = try container.decodeIfPresent(String.self, forKey: .following)
             self.following = strFollowing
