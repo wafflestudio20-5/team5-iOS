@@ -60,17 +60,31 @@
   
 ### SHOP Tab
 상품 리스트  
-<center><img src="/Assets/SHOP-1-Products.PNG" width="30%" height="30%"></center>   
+<center><img src="/Assets/SHOP-1-Products.png" width="30%" height="30%"></center>   
 상품 빠른 필터링  
-<center><img src="/Assets/SHOP-2-Filter1.PNG" width="30%" height="30%"></center>  
-<center><img src="/Assets/SHOP-3-Filter2.PNG" width="30%" height="30%"></center>  
+<p float="left">
+  <img src="/Assets/SHOP-2-Filter1.png" width="30%" height="30%"></center>  
+  <img src="/Assets/SHOP-3-Filter2.png" width="30%" height="30%"></center>  
+</p>
 상품 상세 필터링
-<center><img src="/Assets/SHOP-4-Filter3.PNG" width="30%" height="30%"></center>  
+<center><img src="/Assets/SHOP-4-Filter3.png" width="30%" height="30%">
+<p float="left">
+  <img src="/Assets/SHOP-5-Filter4.png" width="30%" height="30%">
+  <img src="/Assets/SHOP-6-Filter5.png" width="30%" height="30%">
+  <img src="/Assets/SHOP-7-Filter6.png" width="30%" height="30%">
+</p>
 상품 디테일
-<center><img src="/Assets/SHOP-5-Detail.PNG" width="30%" height="30%"></center> 
+<center><img src="/Assets/SHOP-8-Detail.png" width="30%" height="30%"></center>  
+상품 후기 댓글창
+<center><img src="/Assets/SHOP-9-Comments.png" width="30%" height="30%"></center> 
+상품 사이즈 선택
+<center><img src="/Assets/SHOP-10-SizeSelection.png" width="30%" height="30%"></center> 
+상품 구매/판매 (기능 구현 예정)
+<p float="left">
+  <img src="/Assets/SHOP-11-Purchase.png" width="30%" height="30%">
+  <img src="/Assets/SHOP-12-Sell.png" width="30%" height="30%">
+</p>
 
--------------- 
-  
 ### STYLE Tab
 최신순 피드  
 <center><img src="/Assets/STYLE-1-LatestFeed.PNG" width="30%" height="30%"></center>  
