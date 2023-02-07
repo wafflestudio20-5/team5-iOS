@@ -256,6 +256,15 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     func bindViews() {
+        //이미지 릴레이에서 이미지 새로 받으면 이걸로 세팅
+        /*
+        self.userProfileVM.imageRelay.subscribe(onNext: { [weak self] _ in
+            if let image = UserDefaults.standard.loadProfileImage() {
+                print("[Log] My tab: 캐시에서 이미지 불러욤.")
+                self?.profileImageView.image = image
+            }
+        }).disposed(by: disposeBag)*/
+        
         self.userProfileVM.userProfileDataSource.subscribe(onNext: { [weak self] profile in
             self?.setUpData(with: profile)
         }).disposed(by: disposeBag)
@@ -278,7 +287,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     func setUpData(with profile: Profile) {
         //프로필 이미지가 있다면 설정
-        //이거 왜 그럴까? 아무튼 changedProfile 구독해서 만약 changed 했다면 캐시에서 불러오도록하기
+        //이거 왜 그럴까? 아무튼 changedProfile 구독해서 만약 changed했다면 캐시에서 불러오도록하기 
         if let url = URL.init(string: profile.image) {
             let resource = ImageResource(downloadURL: url)
             KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
