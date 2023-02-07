@@ -45,27 +45,48 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
         self.bindViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.viewModel.requestUserProfile{
+            print("[Log] EditProfileVC: Cannot update profile.") //토큰 체크를 해야할듯
+        }
+    }
+    
+    
     func bindViews() {
-        self.viewModel.userProfileDataSource.subscribe{ [weak self] event in
-            if let profile = event.element {
-                let image = self?.viewModel.getImage(with: profile.image)
-                self?.profileImageView.image = image
+        self.viewModel.userProfileDataSource.subscribe(onNext: {[weak self] profile in
+            //프로필 이미지가 있다면 설정
+            if let url = URL.init(string: profile.image) {
+                let resource = ImageResource(downloadURL: url)
+                KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                    switch result {
+                    case .success(let value):
+                        self?.profileImageView.image = value.image
+                    case .failure(_):
+                        if let image = UserDefaults.standard.loadProfileImage() {
+                            print("[Log] My tab: 캐시에서 이미지 불러욤.")
+                            self?.profileImageView.image = image
+                        }else{
+                            //캐시도 없다면 기본으로 설정
+                            self?.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                            //그게 아니라면 여기서 난 문제
+                            self?.profileImageView.tintColor = .orange
+                        }
+                    }
+                }
             }else{
                 if let image = UserDefaults.standard.loadProfileImage() {
-                self?.profileImageView.image = image
+                    print("[Log] My tab: 캐시에서 이미지 불러욤.")
+                    self?.profileImageView.image = image
+                }else{
+                    //캐시도 없다면 기본으로 설정
+                    self?.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                    //그게 아니라면 여기서 난 문제
+                    self?.profileImageView.tintColor = .orange
+                }
             }
-        }
-        }
-        .disposed(by: bag)
-        /*
-        self.viewModel.imageRelay.subscribe{ [weak self] event in
-            if let image = event.element {
-                //self?.setupProfileButton(with: image)
-                self?.profileImageView.image = image
-            }
-        }
-        .disposed(by: bag)*/
+            }).disposed(by: bag)
     }
+                                                       
     
     func setupProfileButton(){
         
@@ -186,13 +207,34 @@ class EditProfileViewController: UIViewController, UITableViewDelegate, UIImageP
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
-            self.viewModel.imageRelay.accept(image)
+            UserDefaults.standard.saveProfileImage(image: image)
             self.viewModel.editProfileImage(newImage: image)
             self.profileImageView.image = image
-            UserDefaults.standard.saveProfileImage(image: image)
+            self.viewModel.imageRelay.accept(image)
         }
         
         dismiss(animated: true, completion: nil)
+        self.showLoadingView()
+    }
+    
+    
+    
+    func showLoadingView(){
+        let loadingVC = LoadingViewController()
+
+        // Animate loadingVC over the existing views on screen
+        loadingVC.modalPresentationStyle = .overCurrentContext
+
+        // Animate loadingVC with a fade in animation
+        loadingVC.modalTransitionStyle = .crossDissolve
+            
+        self.present(loadingVC, animated: true, completion: nil)
+            
+        let seconds = 3.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) { [self] in
+            loadingVC.dismiss(animated: true)
+            self.dismiss(animated: true)
+        }
     }
 
 }

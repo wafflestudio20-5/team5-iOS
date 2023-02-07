@@ -53,7 +53,6 @@
 		5CB810E529684F000021FDD6 /* UnderlineSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */; };
 		5CE9B340296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE9B33F296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift */; };
 		65188908295C1CE70026E003 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65188907295C1CE70026E003 /* LoginViewController.swift */; };
-		651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E71842977CF1A00D81E2F /* OpeningViewController.swift */; };
 		651E718B297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */; };
 		651E718D297B989000D81E2F /* AutoAddPaddingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */; };
 		6520AEAB295EB9D0002D549D /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6520AEAA295EB9CF002D549D /* CustomTextfield.swift */; };
@@ -201,7 +200,6 @@
 		5CB810E429684F000021FDD6 /* UnderlineSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentedControl.swift; sourceTree = "<group>"; };
 		5CE9B33F296878BC00B3C894 /* ProductDetailImagesCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailImagesCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		65188907295C1CE70026E003 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		651E71842977CF1A00D81E2F /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		651E718A297B7B5200D81E2F /* MyTabSharedUIStackVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabSharedUIStackVIew.swift; sourceTree = "<group>"; };
 		651E718C297B988F00D81E2F /* AutoAddPaddingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoAddPaddingButton.swift; sourceTree = "<group>"; };
 		6520AEAA295EB9CF002D549D /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
@@ -670,7 +668,6 @@
 		948C669629587B2200561C59 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				651E71842977CF1A00D81E2F /* OpeningViewController.swift */,
 				655A94CC296C6D4900F0184B /* CustomNotificationView.swift */,
 				655A94CA296C6D4200F0184B /* LoadingViewController.swift */,
 				65A2AD05295DB12400213175 /* Login Tab */,
@@ -982,7 +979,6 @@
 				94A394F12988FC27002AFE4A /* ShopFilterViewController.swift in Sources */,
 				94A394EE2988FBF2002AFE4A /* ShopFilterViewModel.swift in Sources */,
 				65DF48942961D4D300AF6CDB /* ShoeSizefield.swift in Sources */,
-				651E71852977CF1B00D81E2F /* OpeningViewController.swift in Sources */,
 				9428AE492957193D00DC7907 /* HomeTabViewController.swift in Sources */,
 				94A394F32988FC3D002AFE4A /* ShopFilterDetailViewController.swift in Sources */,
 				6537F71029837B3500FC58E8 /* EditProfileViewController.swift in Sources */,

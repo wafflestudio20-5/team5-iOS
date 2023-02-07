@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 final class Profile: Codable {
     private enum CodingKeys: String, CodingKey {
@@ -41,8 +42,39 @@ final class Profile: Codable {
         self.num_followers = num_followers
         self.num_followings = num_followings
         self.following = following
+        var stringToImage = UIImage()
+        if let url = URL.init(string: self.image) {
+        let resource = ImageResource(downloadURL: url)
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    print("Bringing image success")
+                    stringToImage = value.image
+                    //self.updatedImage = value.image as UIImage
+                case .failure(_):
+                    let personImage = UIImage(systemName: "person.crop.circle.fill")
+                    //let image = UIImage(systemName: "person.crop.circle.fill")!
+                    personImage?.withRenderingMode(.alwaysTemplate)
+                    //green 이면 여기서 난 것
+                    personImage?.withTintColor(colors.accentGreen)
+                    stringToImage = personImage!
+                    //self.updatedImage = image
+                }
+            }
+        } else {
+            let personImage = UIImage(systemName: "person.crop.circle.fill")
+            //let image = UIImage(systemName: "person.crop.circle.fill")!
+            personImage?.withRenderingMode(.alwaysTemplate)
+            //green 이면 여기서 난 것
+            personImage?.withTintColor(colors.accentGreen)
+            stringToImage = personImage!
+            //self.updatedImage = image
+        }
+        
+        self.updatedImage = stringToImage
     }
     
+    //ERROR: called when login with nil profile account.
     init() {
         self.user_id = 0
         self.user_name = "-"
@@ -76,4 +108,36 @@ final class Profile: Codable {
                 print(error)
             }
         }    }
+    
+    func getImage(imageString: String) -> UIImage? {
+        var image = UIImage()
+        if let url = URL.init(string: imageString) {
+        let resource = ImageResource(downloadURL: url)
+        KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    print("Bringing image success")
+                    image = value.image
+                    //self.updatedImage = value.image as UIImage
+                case .failure(_):
+                    let personImage = UIImage(systemName: "person.crop.circle.fill")
+                    //let image = UIImage(systemName: "person.crop.circle.fill")!
+                    personImage?.withRenderingMode(.alwaysTemplate)
+                    //green 이면 여기서 난 것
+                    personImage?.withTintColor(colors.accentGreen)
+                    image = personImage!
+                    //self.updatedImage = image
+                }
+            }
+        } else {
+            let personImage = UIImage(systemName: "person.crop.circle.fill")
+            //let image = UIImage(systemName: "person.crop.circle.fill")!
+            personImage?.withRenderingMode(.alwaysTemplate)
+            //green 이면 여기서 난 것
+            personImage?.withTintColor(colors.accentGreen)
+            image = personImage!
+            //self.updatedImage = image
+        }
+        return image
+    }
 }

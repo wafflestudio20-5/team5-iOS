@@ -55,8 +55,8 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     
     override func viewWillAppear(_ animated : Bool) {
-        self.loginVM.loginState.asObservable().subscribe { status in
-            if (status.element! == false){
+        self.loginVM.loginState.asObservable().subscribe(onNext: { status in
+            if (!status){
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.changeToLoginVC()
                 print("[Log] My Tab: Changing to Login VC")
             }else{
@@ -65,7 +65,7 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
                     print("Profile Loading 실패")
                 }
     }
-        }.disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
     }
 
 
@@ -256,18 +256,18 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     func bindViews() {
-        self.userProfileVM.userProfileDataSource.subscribe { [weak self] event in
-            switch event {
-            case .next:
-                if let profile = event.element {
-                    self?.setUpData(with: profile)
-                }
-            case .completed:
-                break
-            case .error:
-                break
+        //이미지 릴레이에서 이미지 새로 받으면 이걸로 세팅
+        /*
+        self.userProfileVM.imageRelay.subscribe(onNext: { [weak self] _ in
+            if let image = UserDefaults.standard.loadProfileImage() {
+                print("[Log] My tab: 캐시에서 이미지 불러욤.")
+                self?.profileImageView.image = image
             }
-        }.disposed(by: disposeBag)
+        }).disposed(by: disposeBag)*/
+        
+        self.userProfileVM.userProfileDataSource.subscribe(onNext: { [weak self] profile in
+            self?.setUpData(with: profile)
+        }).disposed(by: disposeBag)
         
         //binding current value label to newest
         self.userProfileVM.tapRelay.asObservable()
@@ -286,29 +286,35 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     }
     
     func setUpData(with profile: Profile) {
-        let urlString = profile.image
-        if let url = URL.init(string: urlString) {
+        //프로필 이미지가 있다면 설정
+        //이거 왜 그럴까? 아무튼 changedProfile 구독해서 만약 changed했다면 캐시에서 불러오도록하기 
+        if let url = URL.init(string: profile.image) {
             let resource = ImageResource(downloadURL: url)
-            
             KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
                 switch result {
                 case .success(let value):
                     self.profileImageView.image = value.image
                 case .failure(_):
                     if let image = UserDefaults.standard.loadProfileImage() {
+                        print("[Log] My tab: 캐시에서 이미지 불러욤.")
                         self.profileImageView.image = image
                     }else{
-                    self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
-                    self.profileImageView.tintColor = colors.lessLightGray
+                        //캐시도 없다면 기본으로 설정
+                        self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                        //그게 아니라면 여기서 난 문제
+                        self.profileImageView.tintColor = .orange
                     }
                 }
             }
-        } else {
+        }else{
             if let image = UserDefaults.standard.loadProfileImage() {
+                print("[Log] My tab: 캐시에서 이미지 불러욤.")
                 self.profileImageView.image = image
             }else{
-            self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
-            self.profileImageView.tintColor = colors.lessLightGray
+                //캐시도 없다면 기본으로 설정
+                self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                //그게 아니라면 여기서 난 문제
+                self.profileImageView.tintColor = .orange
             }
         }
         

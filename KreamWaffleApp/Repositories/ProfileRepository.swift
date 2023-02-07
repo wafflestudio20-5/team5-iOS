@@ -155,6 +155,7 @@ final class ProfileRepository {
                 }, to: fetchUserConstants.uri + "\(userId)/", method: .patch, headers: headers)
             .validate()
             .response() {response in
+                print("=======update profile image=========")
                 switch response.result {
                 case .success(_):
                     debugPrint(response)

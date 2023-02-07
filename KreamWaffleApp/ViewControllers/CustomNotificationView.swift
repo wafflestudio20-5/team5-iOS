@@ -35,8 +35,8 @@ class CustomNotificationView : UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
         imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: self.frame.height/2).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: self.frame.height/2).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.addSubview(label)
         label.text = self.notificationText

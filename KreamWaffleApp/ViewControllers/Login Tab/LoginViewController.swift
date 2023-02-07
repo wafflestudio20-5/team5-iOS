@@ -196,10 +196,7 @@ class LoginViewController: UIViewController {
         if !isValidAccessToken {
           return
         }
-        
         guard let accessToken = NaverLoginInstance?.accessToken else { return }
-        
-        print(accessToken, "is the access token")
         self.viewModel.loginUserWithSocial(token: accessToken, socialType: .Naver)
       }
 }
