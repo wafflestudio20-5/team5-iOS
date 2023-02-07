@@ -1,4 +1,4 @@
-#team5-iOS
+# team5-iOS
 <center><img src="/Assets/타이틀.png" width="80%" height="80%"></center> 
 
 ## ✋ 프로젝트 소개    
