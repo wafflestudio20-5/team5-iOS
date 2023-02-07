@@ -260,8 +260,8 @@ final class UserUsecase {
         self.userResponse = nil
         self.user = nil
         self.loggedIn = false
-        self.errorRelay = BehaviorRelay<LoginError>.init(value: .noError)
-        self.profileRelay = BehaviorRelay<Profile>.init(value: Profile())
+        //self.errorRelay = BehaviorRelay<LoginError>.init(value: .noError)
+        //self.profileRelay = BehaviorRelay<Profile>.init(value: Profile())
         self.userProfile = nil
         self.signup = false
     }

@@ -59,6 +59,7 @@ class LoginRepository {
     func logOutUser(){
         userDefaults.removeObject(forKey: "savedUser")
         userDefaults.removeObject(forKey: "savedUserResponse")
+        userDefaults.deleteProfileImage()
         GIDSignIn.sharedInstance()?.signOut()
         NaverThirdPartyLoginConnection.getSharedInstance().requestDeleteToken()
     }

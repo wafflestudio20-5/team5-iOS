@@ -25,6 +25,9 @@ class UserProfileViewModel {
     //저장 버튼 탭 저장하는 릴레이 (각자의 저장 버튼을 누르면 tap Relay 가 그걸 받고, Profile edit VC가 그것을 보고 알아서 맞는 값을 위 릴레이에서 할당해준다.
     var tapRelay = BehaviorRelay<editCase>(value: .none)
     
+    //image change 할때마다 true 값을 받고, 그렇다면 my tab 에서 캐시값으로 이미지 세팅을 한다. 
+    var imageChangeRelay = BehaviorRelay<Bool>(value: false)
+    
     init(usecase: UserUsecase) {
         self.usecase = usecase
         self.bindIndividualRelays()

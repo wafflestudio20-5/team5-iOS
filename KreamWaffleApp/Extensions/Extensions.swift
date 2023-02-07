@@ -238,5 +238,9 @@ extension UserDefaults {
          let image = UIImage(data: decoded)
          return image
     }
+    
+    func deleteProfileImage(){
+        UserDefaults.standard.removeObject(forKey: "profileImage")
+    }
 }
 

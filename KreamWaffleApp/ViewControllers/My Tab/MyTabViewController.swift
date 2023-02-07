@@ -278,18 +278,37 @@ class MyTabViewController: UIViewController, UITabBarControllerDelegate {
     
     func setUpData(with profile: Profile) {
         //프로필 이미지가 있다면 설정
-        if let image = profile.updatedImage {
-            self.profileImageView.image = image
+        //이거 왜 그럴까? 아무튼 changedProfile 구독해서 만약 changed 했다면 캐시에서 불러오도록하기
+        if let url = URL.init(string: profile.image) {
+            let resource = ImageResource(downloadURL: url)
+            KingfisherManager.shared.retrieveImage(with: resource, options: nil, progressBlock: nil) { result in
+                switch result {
+                case .success(let value):
+                    self.profileImageView.image = value.image
+                case .failure(_):
+                    if let image = UserDefaults.standard.loadProfileImage() {
+                        print("[Log] My tab: 캐시에서 이미지 불러욤.")
+                        self.profileImageView.image = image
+                    }else{
+                        //캐시도 없다면 기본으로 설정
+                        self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+                        //그게 아니라면 여기서 난 문제
+                        self.profileImageView.tintColor = .orange
+                    }
+                }
+            }
         }else{
-            //프로필 이미지가 없다면 캐시로 설정
             if let image = UserDefaults.standard.loadProfileImage() {
+                print("[Log] My tab: 캐시에서 이미지 불러욤.")
                 self.profileImageView.image = image
             }else{
                 //캐시도 없다면 기본으로 설정
                 self.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
-                self.profileImageView.tintColor = colors.lessLightGray
+                //그게 아니라면 여기서 난 문제
+                self.profileImageView.tintColor = .orange
             }
         }
+        
         self.profileNameLabel.text = profile.profile_name
         self.userNameLabel.text = profile.user_name
         self.bioLabel.text = profile.introduction
