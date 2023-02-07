@@ -21,7 +21,7 @@
 ## 🌄 Views
 ### MY Tab
 
-#### 로그인 및 회원가입   
+### 로그인 및 회원가입   
 <center><img src="/Assets/Login-Signup.png" width="70%" height="70%"></center>  
 
 * 로그인 탭에서는 커스텀 로그인 혹은 **네이버**나 **구글**을 이용한 로그인을 할 수 있습니다.   
@@ -30,7 +30,7 @@
 * 커스텀 회원가입을 위해서 **이메일 주소, 비밀번호, 신발 사이즈** 정보가 필요합니다.
 > 참고: 커스텀 회원가입에 사용한 이메일과 동일한 이메일로 소셜 로그인을 한다면, 같은 유저로 등록됩니다.
 
-#### 마이 쇼핑 및 마이 프로필 탭
+<h3 style="text-align: center;">마이 쇼핑 및 마이 프로필 탭</h3>
 <center><img src="/Assets/MyTab.png" width="60%" height="60%"></center> 
 
 * 마이탭은 상단의 segmented control 을 이용하여 마이 쇼핑 및 마이 프로필 탭으로 전환할 수 있습니다.
@@ -43,9 +43,16 @@
 * 마이탭에서는 현재 올린 사진과, 내 팔로워 및 팔로잉 리스트를 볼 수 있습니다. 
 
 ### 내 팔로워 및 내 팔로잉 리스트  
-<center><img src="/Assets/followingList.png" width="60%" height="60%"></center>  
+<center><img src="/Assets/followingList.png" width="60%" height="60%"></center> 
+
+* 마이탭에서 게시물 수와 팔로워, 팔로잉 수를 보여주는 바를 누르면 리스트 형태로 볼 수 있습니다. 
+
 프로필 수정 및 앱 설정
-<center><img src="/Assets/Settings.png" width="60%" height="60%"></center>      
+<center><img src="/Assets/Settings.png" width="60%" height="60%"></center>   
+
+* 프로필 수정 및 앱 설정이 가능합니다.
+> 참고: 회원 탈퇴를 하면 재가입은 불가능합니다.
+   
   
 ### SHOP Tab
 상품 리스트  
