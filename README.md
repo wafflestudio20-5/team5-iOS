@@ -20,8 +20,15 @@
 [Web Frontend](https://github.com/wafflestudio20-5/team5-web)   
 ## 🌄 Views
 ### MY Tab
-Login    
+
+#### 로그인 및 회원가입   
 <center><img src="/Assets/Login-Signup.png" width="70%" height="70%"></center>  
+- 로그인 탭에서는 커스텀 로그인 혹은 **네이버**나 **구글**을 이용한 로그인을 할 수 있습니다.   
+> 참고: 네이버는 개발 중 상태에서 이용 불가능하여 현재 연결 해제된 상태입니다.
+- 커스텀 로그인 시 회원 정보가 일치하지 않거나 회원가입되지 않은 정보라면 에러 노티피케이션이 뜹니다.
+* 커스텀 회원가입을 위해서 **이메일 주소, 비밀번호, 신발 사이즈** 정보가 필요합니다.
+> 참고: 커스텀 회원가입에 사용한 이메일과 동일한 이메일로 소셜 로그인을 한다면, 같은 유저로 등록됩니다.
+
 내 쇼핑 및 내 프로필
 <center><img src="/Assets/MyTab.png" width="60%" height="60%"></center>  
 내 팔로워 및 내 팔로잉 리스트  
