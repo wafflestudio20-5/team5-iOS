@@ -44,6 +44,7 @@
 
 * 마이탭에서는 현재 올린 사진과, 내 팔로워 및 팔로잉 리스트를 볼 수 있습니다. 
 
+
 ### 내 팔로워 및 내 팔로잉 리스트  
 <center><img src="/Assets/followingList.png" width="60%" height="60%"></center> 
 
@@ -54,7 +55,8 @@
 
 * 프로필 수정 및 앱 설정이 가능합니다.
 > 참고: 회원 탈퇴를 하면 재가입은 불가능합니다.
-   
+
+-------------- 
   
 ### SHOP Tab
 상품 리스트  
@@ -65,7 +67,9 @@
 상품 상세 필터링
 <center><img src="/Assets/SHOP-4-Filter3.PNG" width="30%" height="30%"></center>  
 상품 디테일
-<center><img src="/Assets/SHOP-5-Detail.PNG" width="30%" height="30%"></center>  
+<center><img src="/Assets/SHOP-5-Detail.PNG" width="30%" height="30%"></center> 
+
+-------------- 
   
 ### STYLE Tab
 최신순 피드  
