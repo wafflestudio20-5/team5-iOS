@@ -1,4 +1,6 @@
 # team5-iOS
+<center><img src="/Assets/타이틀.png" width="80%" height="80%"></center> 
+
 ## ✋ 프로젝트 소개    
 서울대학교 컴퓨터공학부 웹/앱 개발 동아리 와플스튜디오(20-5기) 5팀(iOS) 토이프로젝트 결과물입니다.    
 한정판 거래 플랫폼 KREAM의 iOS 앱을 클론코딩 하였습니다.  
@@ -20,19 +22,42 @@
 [Web Frontend](https://github.com/wafflestudio20-5/team5-web)   
 ## 🌄 Views
 ### MY Tab
-Login    
-<center><img src="/Assets/MY-1-login.PNG" width="30%" height="30%"></center>  
-내 쇼핑  
-<center><img src="/Assets/MY-2-MyShopping.png" width="30%" height="30%"></center>  
-내 프로필  
-<center><img src="/Assets/MY-3-MyProfile.PNG" width="30%" height="30%"></center>  
-내 팔로워 리스트  
-<center><img src="/Assets/MY-4-MyFollowers.PNG" width="30%" height="30%"></center>    
-내 팔로잉 리스트  
-<center><img src="/Assets/MY-5-MyFollowings.PNG" width="30%" height="30%"></center>    
 
-***
+### 로그인 및 회원가입   
+<center><img src="/Assets/Login-Signup.png" width="70%" height="70%"></center>  
 
+* 로그인 탭에서는 커스텀 로그인 혹은 **네이버**나 **구글**을 이용한 로그인을 할 수 있습니다.   
+> 참고: 네이버는 개발 중 상태에서 이용 불가능하여 현재 연결 해제된 상태입니다.
+* 커스텀 로그인 시 회원 정보가 일치하지 않거나 회원가입되지 않은 정보라면 에러 노티피케이션이 뜹니다.
+* 커스텀 회원가입을 위해서 **이메일 주소, 비밀번호, 신발 사이즈** 정보가 필요합니다.
+> 참고: 커스텀 회원가입에 사용한 이메일과 동일한 이메일로 소셜 로그인을 한다면, 같은 유저로 등록됩니다.
+
+<h3 style="text-align: center;">마이 쇼핑 및 마이 프로필 탭</h3>
+<center><img src="/Assets/MyTab.png" width="60%" height="60%"></center> 
+
+* 마이탭은 상단의 segmented control 을 이용하여 마이 쇼핑 및 마이 프로필 탭으로 전환할 수 있습니다.
+* 상단에서는 **사진, 유저 이름, 프로필 이름과 소개글**로 구성된 프로필을 볼 수 있습니다. 
+> 참고: 신규가입 회원은 랜덤한 프로필 이름을 배정 받고, 유저 이름은 이메일 앞부분으로 배정 받습니다.
+
+* 마이쇼핑 탭에서는 현재 **구매내역, 판매내역**을 알 수 있습니다. 
+> 참고: 구매 내역과 판매 내역은 현재  구현 중 입니다. 
+
+* 마이탭에서는 현재 올린 사진과, 내 팔로워 및 팔로잉 리스트를 볼 수 있습니다. 
+
+
+### 내 팔로워 및 내 팔로잉 리스트  
+<center><img src="/Assets/followingList.png" width="60%" height="60%"></center> 
+
+* 마이탭에서 게시물 수와 팔로워, 팔로잉 수를 보여주는 바를 누르면 리스트 형태로 볼 수 있습니다. 
+
+### 프로필 수정 및 앱 설정
+<center><img src="/Assets/Settings.png" width="60%" height="60%"></center>   
+
+* 프로필 수정 및 앱 설정이 가능합니다.
+> 참고: 회원 탈퇴를 하면 재가입은 불가능합니다.
+
+-------------- 
+  
 ### SHOP Tab
 상품 리스트  
 <center><img src="/Assets/SHOP-1-Products.png" width="30%" height="30%"></center>   
@@ -59,8 +84,6 @@ Login
   <img src="/Assets/SHOP-11-Purchase.png" width="30%" height="30%">
   <img src="/Assets/SHOP-12-Sell.png" width="30%" height="30%">
 </p>
-
-***
 
 ### STYLE Tab
 최신순 피드  
