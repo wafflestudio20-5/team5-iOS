@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 #team5-iOS
 <center><img src="/Assets/타이틀.png" width="80%" height="80%"></center> 
+=======
+<div align="center">
+<center><img src="/Assets/타이틀.png" width="80%" height="80%"></center> 
+<div style=" padding-bottom: 1rem;">
+
+>>>>>>> 97ddedadc264cd22fad0ef62fc3ea317dcf190cb
 ## ✋ 프로젝트 소개    
 서울대학교 컴퓨터공학부 웹/앱 개발 동아리 와플스튜디오(20-5기) 5팀(iOS) 토이프로젝트 결과물입니다.    
 한정판 거래 플랫폼 KREAM의 iOS 앱을 클론코딩 하였습니다.  
@@ -43,29 +50,47 @@
 
 * 마이탭에서는 현재 올린 사진과, 내 팔로워 및 팔로잉 리스트를 볼 수 있습니다. 
 
+
 ### 내 팔로워 및 내 팔로잉 리스트  
 <center><img src="/Assets/followingList.png" width="60%" height="60%"></center> 
 
 * 마이탭에서 게시물 수와 팔로워, 팔로잉 수를 보여주는 바를 누르면 리스트 형태로 볼 수 있습니다. 
 
-프로필 수정 및 앱 설정
+### 프로필 수정 및 앱 설정
 <center><img src="/Assets/Settings.png" width="60%" height="60%"></center>   
 
 * 프로필 수정 및 앱 설정이 가능합니다.
 > 참고: 회원 탈퇴를 하면 재가입은 불가능합니다.
-   
+
+-------------- 
   
 ### SHOP Tab
 상품 리스트  
-<center><img src="/Assets/SHOP-1-Products.PNG" width="30%" height="30%"></center>   
+<center><img src="/Assets/SHOP-1-Products.png" width="30%" height="30%"></center>   
 상품 빠른 필터링  
-<center><img src="/Assets/SHOP-2-Filter1.PNG" width="30%" height="30%"></center>  
-<center><img src="/Assets/SHOP-3-Filter2.PNG" width="30%" height="30%"></center>  
+<p float="left">
+  <img src="/Assets/SHOP-2-Filter1.png" width="30%" height="30%"></center>  
+  <img src="/Assets/SHOP-3-Filter2.png" width="30%" height="30%"></center>  
+</p>
 상품 상세 필터링
-<center><img src="/Assets/SHOP-4-Filter3.PNG" width="30%" height="30%"></center>  
+<center><img src="/Assets/SHOP-4-Filter3.png" width="30%" height="30%">
+<p float="left">
+  <img src="/Assets/SHOP-5-Filter4.png" width="30%" height="30%">
+  <img src="/Assets/SHOP-6-Filter5.png" width="30%" height="30%">
+  <img src="/Assets/SHOP-7-Filter6.png" width="30%" height="30%">
+</p>
 상품 디테일
-<center><img src="/Assets/SHOP-5-Detail.PNG" width="30%" height="30%"></center>  
-  
+<center><img src="/Assets/SHOP-8-Detail.png" width="30%" height="30%"></center>  
+상품 후기 댓글창
+<center><img src="/Assets/SHOP-9-Comments.png" width="30%" height="30%"></center> 
+상품 사이즈 선택
+<center><img src="/Assets/SHOP-10-SizeSelection.png" width="30%" height="30%"></center> 
+상품 구매/판매 (기능 구현 예정)
+<p float="left">
+  <img src="/Assets/SHOP-11-Purchase.png" width="30%" height="30%">
+  <img src="/Assets/SHOP-12-Sell.png" width="30%" height="30%">
+</p>
+
 ### STYLE Tab
 최신순 피드  
 <center><img src="/Assets/STYLE-1-LatestFeed.PNG" width="30%" height="30%"></center>  
