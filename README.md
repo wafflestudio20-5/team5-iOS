@@ -1,5 +1,6 @@
-# team5-iOS
+<div align="center">
 <center><img src="/Assets/타이틀.png" width="80%" height="80%"></center> 
+</div>
 
 ## ✋ 프로젝트 소개    
 서울대학교 컴퓨터공학부 웹/앱 개발 동아리 와플스튜디오(20-5기) 5팀(iOS) 토이프로젝트 결과물입니다.    
@@ -59,40 +60,34 @@
 -------------- 
   
 ### SHOP Tab
-상품 리스트  
-<center><img src="/Assets/SHOP-1-Products.png" width="30%" height="30%"></center>   
-상품 빠른 필터링  
-<p float="left">
-  <img src="/Assets/SHOP-2-Filter1.png" width="30%" height="30%"></center>  
-  <img src="/Assets/SHOP-3-Filter2.png" width="30%" height="30%"></center>  
-</p>
-상품 상세 필터링
-<center><img src="/Assets/SHOP-4-Filter3.png" width="30%" height="30%">
-<p float="left">
-  <img src="/Assets/SHOP-5-Filter4.png" width="30%" height="30%">
-  <img src="/Assets/SHOP-6-Filter5.png" width="30%" height="30%">
-  <img src="/Assets/SHOP-7-Filter6.png" width="30%" height="30%">
-</p>
-상품 디테일
-<center><img src="/Assets/SHOP-8-Detail.png" width="30%" height="30%"></center>  
-상품 후기 댓글창
-<center><img src="/Assets/SHOP-9-Comments.png" width="30%" height="30%"></center> 
-상품 사이즈 선택
-<center><img src="/Assets/SHOP-10-SizeSelection.png" width="30%" height="30%"></center> 
-상품 구매/판매 (기능 구현 예정)
-<p float="left">
-  <img src="/Assets/SHOP-11-Purchase.png" width="30%" height="30%">
-  <img src="/Assets/SHOP-12-Sell.png" width="30%" height="30%">
-</p>
+### 상품 리스트 및 상품 빠른 필터링
+
+<center><img src="/Assets/shop_1.png" width="70%" height="70%"></center>   
+
+### 상품 상세 필터링  
+<center><img src="/Assets/shop_2.png" width="70%" height="70%"></center> 
+
+### 상품 디테일 및 상품 후기 댓글창
+<center><img src="/Assets/shop_3.png" width="70%" height="70%"></center> 
+
+#### 상품 구매/판매 
+<center><img src="/Assets/shop_4.png" width="60%" height="60%"></center> 
+> 참고: 구매 내역과 판매 내역은 현재  구현 중 입니다. 
+
+-------------- 
 
 ### STYLE Tab
-최신순 피드  
-<center><img src="/Assets/STYLE-1-LatestFeed.PNG" width="30%" height="30%"></center>  
-팔로잉 피드
-<center><img src="/Assets/STYLE-2-FollowingFeed.PNG" width="30%" height="30%"></center>  
-새 글 작성  
-<center><img src="/Assets/STYLE-3-NewPost.PNG" width="30%" height="30%"></center>  
-포스팅 상세페이지
-<center><img src="/Assets/STYLE-4-StylePost.PNG" width="30%" height="30%"></center>  
-댓글  
-<center><img src="/Assets/STYLE-5-Comments.PNG" width="30%" height="30%"></center>  
+
+### 최신순 피드 및 팔로잉 피드
+
+<center><img src="/Assets/style_1.png" width="60%" height="60%"></center> 
+
+### 새 글 작성
+
+<center><img src="/Assets/style_3.png" width="60%" height="60%"></center>  
+
+### 포스팅 상세페이지, 댓글, 프로필 페이지
+
+<center><img src="/Assets/style_2.png" width="70%" height="70%"></center>   
+
+-------------- 
