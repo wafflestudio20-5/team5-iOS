@@ -1,5 +1,5 @@
+#team5-iOS
 <center><img src="/Assets/타이틀.png" width="80%" height="80%"></center> 
-
 ## ✋ 프로젝트 소개    
 서울대학교 컴퓨터공학부 웹/앱 개발 동아리 와플스튜디오(20-5기) 5팀(iOS) 토이프로젝트 결과물입니다.    
 한정판 거래 플랫폼 KREAM의 iOS 앱을 클론코딩 하였습니다.  
