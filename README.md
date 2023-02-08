@@ -1,6 +1,5 @@
 <div align="center">
 <center><img src="/Assets/타이틀.png" width="80%" height="80%"></center> 
-<div style=" padding-bottom: 1rem;">
 </div>
 
 ## ✋ 프로젝트 소개    
@@ -61,24 +60,24 @@
 -------------- 
   
 ### SHOP Tab
-###상품 리스트 및 상품 빠른 필터링
+### 상품 리스트 및 상품 빠른 필터링
 <center><img src="/Assets/shop_1.png" width="80%" height="80%"></center>   
-###상품 상세 필터링  
+### 상품 상세 필터링  
 <center><img src="/Assets/shop_2.png" width="80%" height="80%"></center>   
-###상품 디테일 및 상품 후기 댓글창
+### 상품 디테일 및 상품 후기 댓글창
 <center><img src="/Assets/shop_3.png" width="70%" height="70%"></center>  
-####상품 구매/판매 
+#### 상품 구매/판매 
 <center><img src="/Assets/shop_4.png" width="70%" height="70%"></center> 
 > 참고: 구매 내역과 판매 내역은 현재  구현 중 입니다. 
 
 -------------- 
 
 ### STYLE Tab
-###최신순 피드 및 팔로잉 피드
+### 최신순 피드 및 팔로잉 피드
 <center><img src="/Assets/style_1.png" width="60%" height="60%"></center>  
-###새 글 작성
+### 새 글 작성
 <center><img src="/Assets/style_3.png" width="30%" height="30%"></center>  
-###포스팅 상세페이지, 댓글, 프로필 페이지
+### 포스팅 상세페이지, 댓글, 프로필 페이지
 <center><img src="/Assets/style_4.png" width="30%" height="30%"></center>   
 
 -------------- 
